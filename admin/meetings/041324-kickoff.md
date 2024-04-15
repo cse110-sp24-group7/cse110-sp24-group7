@@ -2,7 +2,7 @@
 
 ## Meeting Information
 
-**Date, Time**: 04/13/24, 7 pm  
+**Date, Time**: 04/13/24, 7 pm. Concluded at 8 PM.
 **Meeting Location**: Price Center & Zoom  
 **Note Taker**: Arnav
 
