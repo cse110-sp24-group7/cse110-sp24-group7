@@ -48,7 +48,7 @@ Hey everyone, I'm Arnav Kamdar, a second year computer science major in Muir. So
 
 #### Jessica Qu - Designer
 
-Hello, my name is Jessica and I’m a 2nd year Math-CS major living in Warren! My hobbies include playing badminton and cooking, as well as trying new restaurants. My favorite shape is probably a triangle because they’re so useful and they were pretty fun in Geometry as well. I’m really looking forward to meeting everyone, working on a project together, and hopefully becoming good friends with y’all! My **Github Page**: [Jessica's Webpage](https://github.com/qujessica2048/JessicaUserPage)
+Hello, my name is Jessica and I’m a 2nd year Math-CS major living in Warren! My hobbies include playing badminton and cooking, as well as trying new restaurants. My favorite shape is probably a triangle because they’re so useful and they were pretty fun in Geometry as well. I’m really looking forward to meeting everyone, working on a project together, and hopefully becoming good friends with y’all! My **Github Page**: [Jessica's Webpage](https://qujessica2048.github.io/JessicaUserPage/)
 
 <img src="branding/profiles/Jessica.jpg" alt = "Jessica Image" style = "width: 200px; height: auto;">
 
@@ -84,7 +84,9 @@ Hi everyone, my name is Hashim Fituri and I'm a third year computer engineering 
 
 #### Matteo Persiani - Developer
 
-Hi all, I’m Matteo Persiani, a second year computer engineering major in Revelle. My hobbies include soccer, rock climbing, traveling, snowboarding, and some water sports. I’ve never thought about my favorite shape but the first one that comes to mind is an octagon. I’m hoping to get some experience working on a team for projects as well as learning whatever else the class offers. **Github Page**: [Matteo's Webpage](https://github.com/mapersiani/MyUserPage)
+Hi all, I’m Matteo Persiani, a second year computer engineering major in Revelle. My hobbies include soccer, rock climbing, traveling, snowboarding, and some water sports. I’ve never thought about my favorite shape but the first one that comes to mind is an octagon. I’m hoping to get some experience working on a team for projects as well as learning whatever else the class offers. **Github Page**: [Matteo's Webpage](https://mapersiani.github.io/MyUserPage/)
+
+<img src="branding/profiles/Matteo.jpg" alt = "Matteo Image" style = "width: 200px; height: auto;">
 
 #### Mialyssa Gomez - Developer
 
