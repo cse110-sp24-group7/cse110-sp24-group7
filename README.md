@@ -10,6 +10,10 @@ Our meeting agendas are located in this folder: `admin/meetings` visitable from 
 
 We are continuously iterating on our workflow preferences, and are finalizing them as the quarter progresses.
 
+### Team Video
+
+Watch our Team Video here: [Team Video](https://youtu.be/FQCCy9b4-sM)
+
 ### Inspiration behind the Brand
 
 Given our number **Team 7**, we decided to name ourselves after the Akatsuki, a reference from the Anime Show **Naruto**. The Team 7 was derived from the main trio of the group, Naruto, Sakura and Sasuke were all members of Team 7(led by Kakashi). Humorously, we have learned more about Naruto in the last two days than we have in our entire lives. As such, many of the branding elements are Ninja-esque and our main color scheme takes after the _Akatsuki_, a group of rogue ninja in the show that are clad in **red,black and white** robes.
