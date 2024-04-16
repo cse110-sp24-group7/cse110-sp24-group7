@@ -1,7 +1,7 @@
 # Akatsuki 7 - CSE 110 Spring '24
 
 <div style="text-align:center;">
-  <img src="../admin/branding/Akatsuki%207%20Logo.png" alt="Logo" style="max-width: 20%; height: auto;">
+  <img src="../admin/branding/Akatsuki%207%20Logo.png" alt="Logo" style="width = 300px; height: auto;">
 </div>
 
 ## Team Introduction
@@ -33,12 +33,10 @@ Hi everyone! My name is Samvrit Srinath, and I am a 2nd year computer science Ma
 #### Arnav Kamdar
 
 Hey everyone, I'm Arnav Kamdar, a second year computer science major in Muir. Some of my hobbies are wall climbing (you can find me at UCSD's climbing gym every other evening of the week) and hiking! My favorite shape has to be an isosceles triangle because of its balance of symmetry and imperfection - circles and equilateral triangles seem a bit too perfect to me, like they're hiding something. I'm looking forward to getting a much better idea of software engineering (to hopefully help with future internships and jobs) and also to build a strong community with some great budding SEs.
-Github page: ![Arnav's Webpage](https://arnavkamdar.github.io/CSE-110-Lab1/)
+Github page: [Arnav's Webpage](https://arnavkamdar.github.io/CSE-110-Lab1/)
 
 #### Developers and Designers
 
 #### Jessica Qu - Designer
 
 Hello, my name is Jessica and I’m a 2nd year Math-CS major living in Warren! My hobbies include playing badminton and cooking, as well as trying new restaurants. My favorite shape is probably a triangle because they’re so useful and they were pretty fun in Geometry as well. I’m really looking forward to meeting everyone, working on a project together, and hopefully becoming good friends with y’all! My GitHub page: [Jessica's Webpage](https://github.com/qujessica2048/JessicaUserPage)
-
-
