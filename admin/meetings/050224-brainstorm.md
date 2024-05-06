@@ -75,7 +75,6 @@ Similar to apps like **Todoist**, we will create a marked **divider** that dynam
 Incorporating markdown editors into the project can enhance the user experience and facilitate content creation within the app. Some potential markdown editors to consider include:
 
 -   SimpleMDE
--   CKEditor
 -   Quill
 
 After conferring with Professor Powell, we viewed it as **not feasible** to create our own custom Markdown Editor, and we aim to wrap one of these already pre-existing editors into our objects.
@@ -85,13 +84,12 @@ After conferring with Professor Powell, we viewed it as **not feasible** to crea
 The proposed Vault feature will enable users to securely upload and store files locally on their device.
 These files will be organized in a grid layout, categorized into two sections: text/code snippets (stored as .txt files) and images.
 
-
 #### V2/V3 Features
 
--  **V2**: Implement a **Kanban Board** for users to visualize their tasks in a more interactive and dynamic manner.
--  **V2**: Integrate Pomodoro Widget for possible focus on the main dashboard or as a togglable feature.
--  **V2**: Implement a **Dark Mode** for users who prefer a more subdued color scheme.
--  **V2**: Add the ability to link tasks to journals, and code snippets to tasks.(See Github Issues)
--  **V3**: Embedding Images to Journals should add Image to the Vault.
--  **V3**: Cloud Storage Integration for users to access their files across multiple devices.
--  **V2**: Have the ability to segment tasks with multiple projects, and have a Project Dashboard view that shows all tasks for a given project, and swap between projects.
+-   **V2**: Implement a **Kanban Board** for users to visualize their tasks in a more interactive and dynamic manner.
+-   **V2**: Integrate Pomodoro Widget for possible focus on the main dashboard or as a togglable feature.
+-   **V2**: Implement a **Dark Mode** for users who prefer a more subdued color scheme.
+-   **V2**: Add the ability to link tasks to journals, and code snippets to tasks.(See Github Issues)
+-   **V3**: Embedding Images to Journals should add Image to the Vault.
+-   **V3**: Cloud Storage Integration for users to access their files across multiple devices.
+-   **V2**: Have the ability to segment tasks with multiple projects, and have a Project Dashboard view that shows all tasks for a given project, and swap between projects.
