@@ -34,4 +34,3 @@
 ## Auxiliary Notes
 
 N/A
-git 
