@@ -1,0 +1,32 @@
+name: Fix Formatting on Branch
+
+on:
+    workflow_dispatch:
+
+jobs:
+    Prettier:
+        name: Run Prettier
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Check out Git repository
+              uses: actions/checkout@v2
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: 16
+
+            - name: Install Node.js dependencies
+              run: npm install
+
+            - name: Run Prettier
+              run: npm run format
+
+            - name: Cache node_modules on Cloud
+              uses: actions/cache@v2
+              with:
+                  path: ~/.npm
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node-

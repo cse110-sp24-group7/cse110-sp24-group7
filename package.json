@@ -1,0 +1,16 @@
+{
+	"devDependencies": {
+		"jest": "^29.7.0",
+		"prettier": "^3.2.5"
+	},
+	"scripts": {
+		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+		"format": "prettier --write .",
+		"lint-check": "prettier --check ."
+	},
+	"type": "module",
+	"jest": {
+		"transform": {},
+		"verbose": true
+	}
+}

@@ -1,0 +1,17 @@
+name: Lint-Check on PR
+
+on:
+    pull_request:
+        branches:
+            - dev
+            - main
+
+jobs:
+    lint-check:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Install Dependencies
+              run: npm install
+            - name: Lint Check
+              run: npm run lint-check
