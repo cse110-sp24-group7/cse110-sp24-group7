@@ -2,7 +2,7 @@
 
 ### Authors:
 
--   Samvrit, Arnav, Angie, Mialyssa, Emma, Naina, Andrew, Matteo, Hashim, Deena, Jessica
+- Samvrit, Arnav, Angie, Mialyssa, Emma, Naina, Andrew, Matteo, Hashim, Deena, Jessica
 
 ## Problem:
 
@@ -29,7 +29,7 @@ The problems presented here warrant the usage of a _centralized_ platform that e
 
 ### Time
 
--   Allotted Budget: **5 weeks**
+- Allotted Budget: **5 weeks**
 
 Given that we only have 5 weeks to complete this project, we need to be mindful of the possible features that we intend to implement. We want to create a psychologically safe environment for our developers to work in, and we want to ensure that we are able to deliver a product that is both functional and usable. This warrants that we attempt to keep our scope as narrow as possible, and once we have a Minimum Viable Product, we can then expand upon it.(Progressive Enhancement in terms of AGILE).
 
@@ -43,7 +43,7 @@ With **2 Weeks**, at Akatsuki 7 we aim to find the balance between time and qual
 
 ### Cost
 
--   Allotted Budget: **$0**
+- Allotted Budget: **$0**
 
 This project is meant to be free of cost and to serve as a learning experience for the team leads and the Developers/Designers. We will attempt to do our best at taking a "local-first" approach as we realize the complexity that occurs with using external APIs and services like MongoDB,AWS, and Google BigQuery/Cloud. By using a local-first approach, we can ensure that our project is not only secure, but also that we are able to deliver a product that is only reliant on the _user_ and the _local machine_ that they are using to run the application, _asynchronoous_ and _independent_ of our team.
 
@@ -51,10 +51,10 @@ This project is meant to be free of cost and to serve as a learning experience f
 
 Based on our established time constraints, we have decided to focus on the following features for MVP:
 
--   Weekly Task View
--   Create/Modify/Delete Tasks + Journals
--   Upload and view Files in the Vault (machine storage, local filesystem)
--   Basic Routing
+- Weekly Task View
+- Create/Modify/Delete Tasks + Journals
+- Upload and view Files in the Vault (machine storage, local filesystem)
+- Basic Routing
 
 This basic functionality encompasses our goal for the project, enabling users to manage their tasks and files in a single platform that is easy to use and navigate. By taking a minimalistic approach, we can ensure that we are able to deliver a product that is responsive, functional, and is modular with relation to future iterations and features we want to add.
 
@@ -62,16 +62,16 @@ This basic functionality encompasses our goal for the project, enabling users to
 
 While we will address this in our **risks and rabbit holes**, we have a few features that we would like to implement in the future. These include:
 
--   Togglable view of tasks(between weekly, monthly, and daily)
--   Kanban Board
--   Multi-Project Views
--   Support Recurring Tasks
--   Mobile-Website Support
--   Packaging and Deployment
--   User Authentification and personalized views
--   Statistics and Analytics regarding tasks
--   Sentiment Integration for Journals
--   Dependency Graphs for Tasks
+- Togglable view of tasks(between weekly, monthly, and daily)
+- Kanban Board
+- Multi-Project Views
+- Support Recurring Tasks
+- Mobile-Website Support
+- Packaging and Deployment
+- User Authentification and personalized views
+- Statistics and Analytics regarding tasks
+- Sentiment Integration for Journals
+- Dependency Graphs for Tasks
 
 Not all of these features will be implemented and we understand that, as we attempt our first iteration, the team leads will reassess the scope and level of features we aim to include in our web application.
 
@@ -97,17 +97,17 @@ Some possible users of our software include:
 
 From our user personas, we can derive not only **User Stories** but also Developer Stories that can help us understand the needs and desires of our users:
 
--   As a user, I want to be able to search for a task in my list.
--   As a user, I want to be able to export selected tasks to share with others.
--   As a user, I want to set reminders on entries so that I can be alerted to do something at a specific time
--   As a user, I want to have easy access to all of my upcoming due dates in one place.
--   As a user, I want to be able to toggle between different views to see my tasks
--   As a user I want to have the ability to track the amount of time spent on a given task
+- As a user, I want to be able to search for a task in my list.
+- As a user, I want to be able to export selected tasks to share with others.
+- As a user, I want to set reminders on entries so that I can be alerted to do something at a specific time
+- As a user, I want to have easy access to all of my upcoming due dates in one place.
+- As a user, I want to be able to toggle between different views to see my tasks
+- As a user I want to have the ability to track the amount of time spent on a given task
 
--   As a developer, I want to be able to easily write pseudocode in a journal
--   As a developer, I want to implement both a light and dark mode.
--   As a developer, I want to create a modular architecture so that the app can easily be expanded with additional features in the future without major changes.
--   As a developer, I need to ensure that the app is usable by people with disabilities.
+- As a developer, I want to be able to easily write pseudocode in a journal
+- As a developer, I want to implement both a light and dark mode.
+- As a developer, I want to create a modular architecture so that the app can easily be expanded with additional features in the future without major changes.
+- As a developer, I need to ensure that the app is usable by people with disabilities.
 
 ## Risks and Rabbit Holes
 
