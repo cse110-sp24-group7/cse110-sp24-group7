@@ -1,0 +1,25 @@
+name: Generate JSDocs for Scripts
+
+on:
+  push:
+    branches:
+      - dev # Adjust to your main branch name
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20' # Adjust to your Node.js version
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run JSDoc
+        run: npm run jsdoc # Adjust to your npm script for running JSDoc

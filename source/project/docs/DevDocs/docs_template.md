@@ -13,4 +13,4 @@
 
 #### Authors
 
--   \<Author>
+- \<Author>

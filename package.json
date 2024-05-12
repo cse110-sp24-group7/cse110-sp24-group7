@@ -1,12 +1,14 @@
 {
 	"devDependencies": {
 		"jest": "^29.7.0",
+		"jsdoc": "^4.0.3",
 		"prettier": "^3.2.5"
 	},
 	"scripts": {
 		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-		"format": "prettier --write .",
-		"lint-check": "prettier --check ."
+		"format": "prettier --write ./source/project/**/*",
+		"lint-check": "prettier --check ./source/project/**/*",
+		"jsdoc": "jsdoc -c jsdocs_conf.json"
 	},
 	"type": "module",
 	"jest": {

@@ -22,11 +22,11 @@ Given our number **Team 7**, we decided to name ourselves after the Akatsuki, a 
 
 ### Team Values
 
--   **Collaboration**: We believe that the best work is done when we work together. We value each other's opinions and ideas and work together to create the best possible solutions.
--   **Inclusivity**: We believe that everyone has a voice and we strive to make sure that everyone is heard.
--   **Dedication**: We are dedicated to our work and strive to put our best foot forward in everything we do.
--   **Shapes**: We place great importance on the value of shapes
--   **Fun**: We believe that we should have fun while working together, and strive to create a fun and inclusive environment for everyone.
+- **Collaboration**: We believe that the best work is done when we work together. We value each other's opinions and ideas and work together to create the best possible solutions.
+- **Inclusivity**: We believe that everyone has a voice and we strive to make sure that everyone is heard.
+- **Dedication**: We are dedicated to our work and strive to put our best foot forward in everything we do.
+- **Shapes**: We place great importance on the value of shapes
+- **Fun**: We believe that we should have fun while working together, and strive to create a fun and inclusive environment for everyone.
 
 ## Team Members
 

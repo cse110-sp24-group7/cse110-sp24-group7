@@ -8,7 +8,7 @@
 
 ## Attendees
 
--   Arnav, Samvrit, Matteo, Mialyssa, Emma, Jessica, Naina, Hashim, Deena
+- Arnav, Samvrit, Matteo, Mialyssa, Emma, Jessica, Naina, Hashim, Deena
 
 ## General Team Updates/Decisions
 
@@ -30,7 +30,7 @@
 
 ## Discussion
 
--   All team members don't have much preference between frontend and backend: roles will be defined as required upon announcement of the project.
+- All team members don't have much preference between frontend and backend: roles will be defined as required upon announcement of the project.
 
 ## Action Items
 
@@ -40,4 +40,4 @@ _Task_: Members to stay active on slack for the next couple of days as administr
 
 ## Auxillary Notes
 
--   Team social was playing **Articulate** on Saturday Night, 7 PM after grabbing dinner at Price. See rules here: [Articulate Cards](https://www.drumondpark.co.uk/articulate_cards)
+- Team social was playing **Articulate** on Saturday Night, 7 PM after grabbing dinner at Price. See rules here: [Articulate Cards](https://www.drumondpark.co.uk/articulate_cards)
