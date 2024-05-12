@@ -1,0 +1,59 @@
+<!-- File: index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal App</title>
+    <script src="journal-popup.js" defer></script>
+    <style>
+        .journal-box {
+            border: 1px solid #ccc;
+            margin: 10px;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="createJournal">Create New Journal</button>
+    <div id="journalApp"></div>
+
+    <journal-popup></journal-popup>
+
+    <script>
+        const journalPopup = document.querySelector('journal-popup');
+        document.getElementById('createJournal').addEventListener('click', () => journalPopup.open());
+
+        journalPopup.addEventListener('entry-submitted', (event) => {
+            const entry = event.detail;
+            renderJournalEntry(entry);
+        });
+
+        function renderJournalEntry(entry) {
+            const div = document.createElement('div');
+            div.classList.add('journal-box');
+            div.innerHTML = `<h3>${entry.title}</h3><p>${entry.description.substring(0, 40)}</p>`;
+            div.addEventListener('click', () => {
+                const loadedEntry = JSON.parse(localStorage.getItem(entry.title));
+                journalPopup.shadowRoot.getElementById('title').value = loadedEntry.title;
+                journalPopup.shadowRoot.getElementById('date').value = loadedEntry.date;
+                journalPopup.shadowRoot.getElementById('description').value = loadedEntry.description;
+                journalPopup.open();
+            });
+            document.getElementById('journalApp').appendChild(div);
+        }
+
+        // Load existing entries from local storage
+        document.addEventListener('DOMContentLoaded', () => {
+            Object.keys(localStorage).forEach(key => {
+                const entry = JSON.parse(localStorage.getItem(key));
+                renderJournalEntry(entry);
+            });
+        });
+    </script>
+</body>
+
+</html>
