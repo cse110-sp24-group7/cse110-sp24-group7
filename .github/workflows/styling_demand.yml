@@ -1,49 +1,56 @@
 name: Fix Formatting on Branch
 
 on:
-    workflow_dispatch:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - dev
+      - main
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
-    Prettier:
-        name: Run Prettier
-        runs-on: ubuntu-latest
+  Prettier:
+    name: Run Prettier
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Check out Git repository
-              uses: actions/checkout@v2
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
 
-            - name: Set up Node.js
-              uses: actions/setup-node@v2
-              with:
-                  node-version: 16
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20
 
-            - name: Install Node.js dependencies
-              run: npm install
+      - name: Install Node.js dependencies
+        run: npm install
 
-            - name: Run Prettier
-              run: npm run format
+      - name: Run Prettier
+        run: |
+          npm run format || exit 0
 
-            - name: Cache node_modules on Cloud
-              uses: actions/cache@v2
-              with:
-                  path: ~/.npm
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-                  restore-keys: |
-                      ${{ runner.os }}-node-
+      - name: Cache node_modules on Cloud
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-            - name: Extract branch name
-              id: extract_branch
-              run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
-
-            - name: Commit changes
-              uses: stefanzweifel/git-auto-commit-action@v2.3.0
-              with:
-                  commit_message: Apply Prettier changes
-                  branch: ${{ steps.extract_branch.outputs.branch }}
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit changes
+        if: always()
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Apply Prettier changes
+          branch: ${{ github.head_ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 permissions:
-    contents: write
-    pull-requests: write
-    issues: write
+  contents: write
+  pull-requests: write
+  issues: write
