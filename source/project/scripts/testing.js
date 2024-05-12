@@ -10,9 +10,9 @@
  * @example
  * testing('test');
  * // returns 'test'
- * 
+ *
  */
 
 function testing(test) {
-    return test;
+  return test;
 }
