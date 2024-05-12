@@ -16,3 +16,5 @@
 function testing(test) {
   return test;
 }
+
+export default testing;
