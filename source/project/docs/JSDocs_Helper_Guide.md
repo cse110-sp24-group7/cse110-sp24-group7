@@ -23,6 +23,7 @@
 - **`@deprecated`**: Marks a function, class, or property as deprecated.
 - **`@inheritdoc`**: Inherit documentation from a parent element.
 
+
 # JSDoc Tag Examples
 
 ## `@param`, `@returns`
