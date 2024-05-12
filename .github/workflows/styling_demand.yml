@@ -37,3 +37,7 @@ jobs:
                   branch: ${{ github.ref }}
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+permissions:
+    contents: write
+    pull-requests: write
+    issues: write
