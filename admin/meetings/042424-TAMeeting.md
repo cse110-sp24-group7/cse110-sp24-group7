@@ -19,4 +19,3 @@
 8. How to formalize LLM Usage? What should docs look like for bare bones HTML Implementation?
 
 ## Post-Meeting Reflections/Action Items:
-

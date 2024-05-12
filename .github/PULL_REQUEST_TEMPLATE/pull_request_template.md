@@ -6,13 +6,15 @@ Resolves #<issue number(s)>
 
 <!-- What changes did you make? -->
 
--   TODO
+- TODO
+
 
 ## Testing
 
 <!-- How did you confirm your changes worked? -->
 
--   TODO
+- TODO
+
 
 ## Confirmation of Change
 
