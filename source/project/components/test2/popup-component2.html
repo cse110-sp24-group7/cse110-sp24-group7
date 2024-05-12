@@ -1,1 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal App</title>
+    <style>
+        .journal-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .journal-popup {
+            /* display: none; */
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid black;
+            padding: 20px;
+            z-index: 2;
+        }
+
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .highlight {
+            color: green;
+        }
+
+        .description {
+            color: gray;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="overlay"></div>
+    <div id="journalApp"></div>
+    <div class="journal-popup">
+        <input type="text" id="title" placeholder="Title">
+        <input type="date" id="date">
+        <textarea id="description" placeholder="Description"></textarea>
+        <div>😀 😃 😄 😁 😆 😅 😂 🤣</div>
+        <button onclick=closePopup()>X</button>
+        <button class="highlight" onclick=saveEntry()>Submit</button>
+    </div>
+    <popup-component></popup-component>
+    <script type="module" src="popup-component2.js"></script>
+
+</body>
+
+</html>
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <person-name></person-name>
+    <script type="module" src="popup-component2.js"></script>
+
+</body>
+
+</html> -->
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journal Popup</title>
+<style>
+    #journalPopup {
+        display: none;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border: 1px solid #ccc;
+        background-color: #fff;
+        padding: 20px;
+        z-index: 1001;
+    }
+    #overlay {
+        display: none;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+</style>
+</head>
+<body>
+<div id="overlay"></div>
+<div id="journalPopup">
+    <textarea id="journalEntry" rows="10" cols="30"></textarea>
+    <button onclick="saveEntry()">Save Entry</button>
+    <button onclick="closePopup()">Close</button>
+</div>
+<button id="openPopup">Open Journal</button>
+
+<script type="module" src="popup-component2.js"></script>
+</body>
+</html> -->
