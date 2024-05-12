@@ -1,4 +1,4 @@
-name: Unit Tests # name of the test
+name: Unit Tests
 
 on: [push] # the Github Action will activate "on" the event that you "push" to the repo
 
