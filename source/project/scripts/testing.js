@@ -14,7 +14,7 @@
  */
 
 function testing(test) {
-  return test + " testing"; 
+  return test + " testing";
 }
 
 export default testing;
