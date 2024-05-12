@@ -30,13 +30,19 @@ jobs:
                   key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
                   restore-keys: |
                       ${{ runner.os }}-node-
+
+            - name: Extract branch name
+              id: extract_branch
+              run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
+
             - name: Commit changes
               uses: stefanzweifel/git-auto-commit-action@v2.3.0
               with:
                   commit_message: Apply Prettier changes
-                  branch: ${{ github.ref }}
+                  branch: ${{ steps.extract_branch.outputs.branch }}
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 permissions:
     contents: write
     pull-requests: write
