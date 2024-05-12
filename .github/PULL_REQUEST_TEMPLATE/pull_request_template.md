@@ -8,13 +8,11 @@ Resolves #<issue number(s)>
 
 - TODO
 
-
 ## Testing
 
 <!-- How did you confirm your changes worked? -->
 
 - TODO
-
 
 ## Confirmation of Change
 

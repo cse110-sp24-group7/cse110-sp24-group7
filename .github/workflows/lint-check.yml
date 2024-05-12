@@ -5,7 +5,9 @@ on:
     branches:
       - dev
       - main
-
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   lint-check:
     runs-on: ubuntu-latest
@@ -13,5 +15,5 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install Dependencies
         run: npm install
-      - name: Lint Check
+      - name: Lint Fix
         run: npm run lint-check
