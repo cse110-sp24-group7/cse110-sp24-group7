@@ -34,11 +34,6 @@ jobs:
             add: "./source/project/docs"
             author_name: "GitHub Actions"
             author_email: "sasrinath@ucsd.edu"
-      - name: Deploy to GH Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          publish_dir: ./source/project/docs/JSdocs
               
               
 
