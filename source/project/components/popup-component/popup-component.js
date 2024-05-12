@@ -15,7 +15,7 @@ class PopupComponent extends HTMLElement {
     const overlay = document.createElement('div');
     overlay.setAttribute('class', 'overlay');
     overlay.addEventListener('click', () => {
-      this.remove();
+      this.style.display = 'none';
     });
 
     // waits for the css to load before the html popup occurs
@@ -28,7 +28,7 @@ class PopupComponent extends HTMLElement {
     };
     
     // append everything to the shadow root
-    shadowRoot.append(div, style, overlay);
+    shadowRoot.append(div, overlay);
   }
 
   connectedCallback() {
@@ -39,15 +39,20 @@ class PopupComponent extends HTMLElement {
   onSubmit(event) {
     event.preventDefault();
 
-    const priority = this.shadowRoot.querySelector('#priority').value;
-    const title = this.shadowRoot.querySelector('#title').value;
-    const description = this.shadowRoot.querySelector('#description').value;
-    const label = this.shadowRoot.querySelector('#label').value;
+    // get the users input
+    let taskData = {
+      title: document.getElementById('title').value,
+      description: document.getElementById('description').value,
+      expectedTime: document.getElementById('expectedTime').value,
+      dueDate: document.getElementById('dueDate').value,
+      priority: document.getElementById('priority').value
+    };
 
-    console.log('Priority:', priority);
-    console.log('Title:', title);
-    console.log('Description:', description);
-    console.log('Label:', label);
+    // convert to JSON for local storage
+    localStorage.setItem('taskData', JSON.stringify(taskData));
+
+    // log the data to the console
+    console.log('Form Data Saved:', taskData);
 
     // reset form
     event.target.reset();
