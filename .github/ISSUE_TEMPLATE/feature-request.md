@@ -17,6 +17,6 @@ assignees: ''
 
 ## Backend
 
-<!-- What dependencies are present on the backend, are there any logic/external data required? >
+<!-- What dependencies are present on the backend, are there any logic/external data required?-->
 
 ## Additional Information
