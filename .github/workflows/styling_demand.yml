@@ -10,7 +10,9 @@ jobs:
 
         steps:
             - name: Check out Git repository
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
+              with:
+                  ref: ${{ github.head_ref }}
 
             - name: Set up Node.js
               uses: actions/setup-node@v2
@@ -34,6 +36,10 @@ jobs:
               uses: stefanzweifel/git-auto-commit-action@v2.3.0
               with:
                   commit_message: Apply Prettier changes
-                  branch: ${{ github.ref }}
+                  branch: ${{ github.head_ref }}
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+permissions:
+    contents: write
+    pull-requests: write
+    issues: write
