@@ -9,31 +9,32 @@ permissions:
   pull-requests: write
   issues: write
 jobs:
-    build:
-        runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-            - name: Set up Node.js
-              uses: actions/setup-node@v2
-              with:
-                  node-version: "14" # Adjust to your Node.js version
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20' # Adjust to your Node.js version
 
-            - name: Install dependencies
-              run: npm install
+      - name: Install dependencies
+        run: npm install
 
-            - name: Generate Docs
-              run: npm run jsdoc
+      - name: Generate Docs
+        run: npm run jsdoc
 
-            - name: Commit changes
-              uses: EndBug/add-and-commit@v9
-              with:
-                  message: "Update JSDocs"
-                  add: "./source/project/docs"
-                  author_name: "GitHub Actions"
-                  author_email: "sasrinath@ucsd.edu"
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+            message: "Update JSDocs"
+            add: "./source/project/docs"
+            author_name: "GitHub Actions"
+            author_email: "sasrinath@ucsd.edu"
+              
               
 
 
