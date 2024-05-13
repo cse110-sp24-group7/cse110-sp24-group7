@@ -6,8 +6,8 @@
 	},
 	"scripts": {
 		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-		"format": "prettier --write .",
-		"lint-check": "prettier --check .",
+		"format": "prettier --write ./source/project/**/*.{html,css,js} ./specs/**/*.md",
+		"lint-check": "prettier --check ./source/project/**/*.{html,css,js} ./specs/**/*.md",
 		"jsdoc": "jsdoc -c jsdocs_conf.json"
 	},
 	"type": "module",
