@@ -1,0 +1,4 @@
+.hidden { display: none; }
+#journal-popup { position: fixed; top: 20%; left: 30%; width: 40%; padding: 20px; background: white; border: 1px solid black; z-index: 100; }
+#journal-container.blur { filter: blur(8px); }
+button { margin: 10px; }

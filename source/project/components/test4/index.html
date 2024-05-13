@@ -1,1 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="journal-container">
+        <!-- Dynamically populated journal entries will go here -->
+    </div>
+    
+    <button id="add-journal">Add Journal Entry</button>
 
+    <div id="journal-popup" class="hidden">
+        <form id="journal-form">
+            <label for="title">Title:</label>
+            <input type="text" id="title" required>
+            
+            <label for="description">Description:</label>
+            <textarea id="description" required></textarea>
+            
+            <label for="date">Date:</label>
+            <input type="date" id="date" required>
+
+            <div>
+                Emojis:  😡 😔 😐 😊 😍
+            </div>
+            
+            <button type="button" onclick="closePopup()">Cancel</button>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
