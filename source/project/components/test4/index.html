@@ -14,13 +14,19 @@
     <button id="add-journal">Add Journal Entry</button>
 
     <div id="journal-popup" class="hidden">
+        <div class="journal-header">
+            <div class="title">My Journey
+            </div>  
+        </div>
+        <br>
         <form id="journal-form">
+
             <label for="title">Title:</label>
             <input type="text" id="title" required>
-            
+            <br>
             <label for="description">Description:</label>
             <textarea id="description" required></textarea>
-            
+            <br>
             <label for="date">Date:</label>
             <input type="date" id="date" required>
 
@@ -31,8 +37,8 @@
             <button type="button" onclick="closePopup()">Cancel</button>
             <button type="submit">Submit</button>
         </form>
-    </div>
-
+    
     <script src="app.js"></script>
+    
 </body>
 </html>

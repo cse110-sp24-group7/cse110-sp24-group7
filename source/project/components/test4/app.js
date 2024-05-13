@@ -1,4 +1,4 @@
-document.getElementById("add-journal").addEventListener("click", function() {
+document.getElementById("add-journal").addEventListener("click", function () {
     document.getElementById("journal-popup").classList.remove("hidden");
     document.getElementById("journal-container").classList.add("blur");
 });
@@ -9,7 +9,7 @@ function closePopup() {
     document.getElementById("journal-form").reset();
 }
 
-document.getElementById("journal-form").addEventListener("submit", function(event) {
+document.getElementById("journal-form").addEventListener("submit", function (event) {
     event.preventDefault();
     const title = document.getElementById("title").value;
     const description = document.getElementById("description").value;
@@ -34,5 +34,6 @@ function addJournalToPage(entry) {
     div.innerHTML = `<strong>${entry.title}</strong><p>${entry.description.substring(0, 40)}</p>`;
     document.getElementById("journal-container").appendChild(div);
 }
+
 
 window.onload = loadJournals;

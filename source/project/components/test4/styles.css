@@ -1,4 +1,56 @@
 .hidden { display: none; }
-#journal-popup { position: fixed; top: 20%; left: 30%; width: 40%; padding: 20px; background: white; border: 1px solid black; z-index: 100; }
+
+#journal-popup { 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+    padding: 20px;
+    background: lightyellow;
+    border: 2px solid black; z-index: 10;
+    border-radius: 10px;
+    width:400px;
+    max-width: 80%;
+ }
+
+
+
 #journal-container.blur { filter: blur(8px); }
 button { margin: 10px; }
+
+.journal{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: 200ms ease-in-out;
+    border: 1px solid black;
+    border-radius: 10px;
+    z-index: 10;
+    background-color: lightyellow;
+    width:500px;
+    max-width: 80%;
+}
+
+.journal-header {
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+    border-bottom: 2px solid darkgreen;
+}
+.journal-header .title{
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .5);
+    pointer-events: none;
+}
