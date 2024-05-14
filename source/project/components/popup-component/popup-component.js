@@ -1,5 +1,14 @@
-// popup-component.js
+/**
+ * @class
+ * @description Represents a popup component that can be dynamically added to the DOM. This component
+ * supports custom styling and behavior through a Shadow DOM, and handles form submissions to save task data.
+ */
 class PopupComponent extends HTMLElement {
+  /**
+     * @constructor
+     * @description Creates an instance of PopupComponent, sets up the shadow DOM, and initializes
+     * the component with CSS and HTML content loaded asynchronously.
+     */
   constructor() {
     super();
     let shadowRoot = this.attachShadow({ mode: 'open' });
@@ -31,11 +40,21 @@ class PopupComponent extends HTMLElement {
     shadowRoot.append(div, overlay);
   }
 
+  /**
+     * @method connectedCallback
+     * @description Lifecycle method that is called when the component is inserted into the DOM.
+     * It sets up event listeners for form submission within the shadow DOM.
+     */
   connectedCallback() {
     // event listener to form submission
     this.shadowRoot.querySelector('#taskForm').addEventListener('submit', this.onSubmit.bind(this));
   }
 
+  /**
+     * @method onSubmit
+     * @description Handles form submission, prevents default submission, saves and logs data, resets form, and hides popup.
+     * @param {Event} event - The form submission event
+     */
   onSubmit(event) {
     event.preventDefault();
 
