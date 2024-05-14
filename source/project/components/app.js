@@ -1,4 +1,3 @@
-//Adding Event Listeners
 document.getElementById("add-journal").addEventListener("click", function () {
     document.getElementById("journal-popup").classList.remove("hidden");
     document.getElementById("journal-container").classList.add("blur");
@@ -27,6 +26,8 @@ document.getElementById("journal-form").addEventListener("submit", function (eve
 
     addJournalToPage(journalEntry);
     closePopup();
+    // Clear the title field after saving the entry
+    document.getElementById("title").value = '';
 });
 
 //Loading Journals on Page Load
@@ -39,8 +40,29 @@ function loadJournals() {
 function addJournalToPage(entry) {
     const div = document.createElement("div");
     div.innerHTML = `<strong>${entry.title}</strong><p>${entry.description.substring(0, 40)}</p>`;
+    div.addEventListener("dblclick", function() {
+        deleteJournal(entry);
+    });
     document.getElementById("journal-container").appendChild(div);
 }
 
+//Deletes a single specific note with double click
+function deleteJournal(entry) {
+    let entries = JSON.parse(localStorage.getItem("journals") || "[]");
+    entries = entries.filter(e => e.title !== entry.title || e.description !== entry.description || e.date !== entry.date);
+    localStorage.setItem("journals", JSON.stringify(entries));
+    loadJournals();
+}
+
+//deletes all notes with ctrl + shift + D
+function deleteAllJournal(event) {
+    if (event.ctrlKey && event.shiftKey && event.key === 'D') {
+        localStorage.removeItem("journals");
+        loadJournals();
+    }
+}
+
+// Add event listener for keydown event to handle deleteAllJournal
+document.addEventListener("keydown", deleteAllJournal);
 
 window.onload = loadJournals;
