@@ -1,10 +1,13 @@
 name: Generate JSDocs for Scripts
 
 on:
-  push:
-    branches:
-      - dev # Adjust to your main branch name
-
+    push:
+        branches:
+            - dev # Adjust to your main branch name
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,5 +24,18 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run JSDoc
-        run: npm run jsdoc # Adjust to your npm script for running JSDoc
+      - name: Generate Docs
+        run: npm run jsdoc
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+            message: "Update JSDocs"
+            add: "./source/project/docs"
+            author_name: "GitHub Actions"
+            author_email: "sasrinath@ucsd.edu"
+              
+              
+
+
+              

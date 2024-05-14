@@ -1,13 +1,12 @@
 name: Lint-Check on PR
 
 on:
-  pull_request:
-    branches:
-      - dev
-      - main
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+    pull_request:
+        branches:
+            - dev
+            - main
+        types: [opened, synchronize]
+
 jobs:
   lint-check:
     runs-on: ubuntu-latest
