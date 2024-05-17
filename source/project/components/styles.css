@@ -1,4 +1,3 @@
-
 /*the "done" button*/
 #submit-button {
   position: absolute; /* or use 'fixed' if you want it relative to the viewport */
@@ -15,9 +14,7 @@
   justify-content: center; /* Centers text horizontally */
   align-items: center;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Added box-shadow for background shadow */
-} 
-
-
+}
 
 .popup-container {
   position: fixed;
@@ -39,7 +36,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-} 
+}
 
 .overlay {
   position: fixed;
@@ -123,11 +120,11 @@ textarea.form-control {
 }
 
 .nav-bar {
-  background-color: rgba(0, 0, 0, 0.2); 
-  position: fixed; 
-  width: 100%; 
-  top: 0; 
-  z-index: 1000; 
+  background-color: rgba(0, 0, 0, 0.2);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;

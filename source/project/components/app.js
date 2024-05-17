@@ -1,5 +1,3 @@
-
-
 class PopupComponent extends HTMLElement {
   /**
    * @constructor
@@ -15,7 +13,6 @@ class PopupComponent extends HTMLElement {
     style.rel = "stylesheet";
     style.href = "styles.css";
     shadowRoot.append(style);
-    
 
     // adds the overlay css style to our program(makes the background grey out)
     // click anywhere outside the container to close the container and remove overlay
@@ -24,7 +21,6 @@ class PopupComponent extends HTMLElement {
     overlay.addEventListener("click", () => {
       this.style.display = "none";
     });
-    
 
     // waits for the css to load before the html popup occurs
     const div = document.createElement("div");
@@ -40,23 +36,22 @@ class PopupComponent extends HTMLElement {
   }
 
   /**
-     * @method connectedCallback
-     * @description Lifecycle method that is called when the component is inserted into the DOM.
-     * It sets up event listeners for form submission within the shadow DOM.
-     */
+   * @method connectedCallback
+   * @description Lifecycle method that is called when the component is inserted into the DOM.
+   * It sets up event listeners for form submission within the shadow DOM.
+   */
   connectedCallback() {
     // event listener to form submission
-    setTimeout( () => {
+    setTimeout(() => {
       this.shadowRoot
-      .querySelector("#journalForm")
-      .addEventListener("submit", this.onSubmit.bind(this));
-    }, 3000)
-     
-      // const closeButton = document.getElementById("closeBtn"); old
+        .querySelector("#journalForm")
+        .addEventListener("submit", this.onSubmit.bind(this));
+    }, 3000);
 
-      // // Add event listener for the "click" event
-      // closeButton.addEventListener("click", this.onClose.bind(this));
+    // const closeButton = document.getElementById("closeBtn"); old
 
+    // // Add event listener for the "click" event
+    // closeButton.addEventListener("click", this.onClose.bind(this));
   }
 
   /**
@@ -69,11 +64,10 @@ class PopupComponent extends HTMLElement {
 
     // get the users input
     let journalData = {
-      entry_id: Math.random().toString(36).substr(2,9),
+      entry_id: Math.random().toString(36).substr(2, 9),
       title: this.shadowRoot.querySelector("#title").value,
       description: this.shadowRoot.querySelector("#description").value,
       currDate: this.shadowRoot.querySelector("#currDate").value,
-      
     };
 
     // convert to JSON for local storage
@@ -87,14 +81,13 @@ class PopupComponent extends HTMLElement {
     this.style.display = "none";
   }
 
-onClose(event){
+  onClose(event) {
     event.preventDefault();
     event.target.reset();
-    document.getElementById("title").removeAttribute('required');
+    document.getElementById("title").removeAttribute("required");
     this.style.display = "none";
   }
 }
-
 
 // define the custom element
 customElements.define("popup-component", PopupComponent);
