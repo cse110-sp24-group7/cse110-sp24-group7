@@ -9,35 +9,40 @@
 </head>
 
 <body>
-    <div id="journal-container">
-        <!-- Dynamically populated journal entries will go here -->
-    </div>
-    <button id="add-journal">Add Journal Entry</button>
-
-    <div id="journal-popup" class="hidden">
-        <nav class="nav-bar">
-            <button class="close-button" onclick="closePopup()">&times;</button>
-        </nav>
-        <br>
-        <div class="journal-header">
-            <div class="title"><input type="text" id="title" required placeholder="Add Journal Title">
+    
+        <form id="journalForm" class="journal-form">
+            <div class="left-column">
+              <input
+                type="text"
+                id="title"
+                class="form-control"
+                placeholder="Add Journal Title"
+                required
+              />
+              <div class="date-time-section">
+                <input
+                  type="datetime-local"
+                  id="currDate"
+                  class="form-control"
+                  placeholder="Date"
+                  required
+                />
+              </div>
+              <textarea
+                id="description"
+                class="form-control"
+                placeholder="Insert Journal Entry ..."
+                required
+              ></textarea>
             </div>
-        </div>
-
-        <form id="journal-form">
-            <label for="date"></label>
-            <input type="date" id="date" required>
-            <br>
-            <br>
-            <textarea id="description" required placeholder="Insert journal entry ..."></textarea>
-            <div>
-                😡 😔 😐 😊 😍
+            <div class="right-column">
+              <button type="submit" id="addBtn">Done</button>
             </div>
-            <button type="submit" id="submit-button">Done</button>
-        </form>
-
-        <script src="app.js"></script>
+            <nav class="nav-bar">
+                <button type="button" id="closeBtn" class="close-popup">x</button>
+            </nav>
+            
+          </form>
 
 </body>
-
 </html>
