@@ -89,7 +89,7 @@ class PopupComponent extends HTMLElement {
   /**
    * @method saveTasksToStorage
    * @description Saves the given tasks array to local storage after converting it to a JSON string.
-   * @param {Array} tasks - The array of tasks to save 
+   * @param {Array} tasks - The array of tasks to save
    */
   saveTasksToStorage(tasks) {
     localStorage.setItem("tasks", JSON.stringify(tasks));
