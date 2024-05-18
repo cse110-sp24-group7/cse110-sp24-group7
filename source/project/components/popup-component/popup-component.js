@@ -39,9 +39,11 @@ class PopupComponent extends HTMLElement {
       this.shadowRoot.append(div, overlay);
 
       // add the close button event listener here
-      this.shadowRoot.querySelector("#closeBtn").addEventListener("click", () => {
-        this.style.display = "none";
-      });
+      this.shadowRoot
+        .querySelector("#closeBtn")
+        .addEventListener("click", () => {
+          this.style.display = "none";
+        });
     };
   }
 
