@@ -39,9 +39,11 @@ class PopupComponent extends HTMLElement {
       this.shadowRoot.append(div, overlay);
 
       // add the close button event listener here
-      this.shadowRoot.querySelector("#closeBtn").addEventListener("click", () => {
-        this.style.display = "none";
-      });
+      this.shadowRoot
+        .querySelector("#closeBtn")
+        .addEventListener("click", () => {
+          this.style.display = "none";
+        });
     };
   }
 
@@ -52,9 +54,45 @@ class PopupComponent extends HTMLElement {
    */
   connectedCallback() {
     // event listener to form submission
-    this.shadowRoot
-      .querySelector("#taskForm")
-      .addEventListener("submit", this.onSubmit.bind(this));
+    setTimeout(() => {
+      this.shadowRoot
+        .querySelector("#taskForm")
+        .addEventListener("submit", this.onSubmit.bind(this));
+    }, 3000);
+  }
+
+  /**
+   * @method getUserID
+   * @description Generates a unique user ID for the current user, or retrieves an existing one from local storage.
+   * @returns {string} The user ID
+   */
+  getUserID() {
+    // check if the user ID already exists in local storage
+    let userID = localStorage.getItem("userID");
+    if (!userID) {
+      // if not, generate a new user ID and store it
+      userID = Math.random().toString(36).substr(2, 9);
+      localStorage.setItem("userID", userID);
+    }
+    return userID;
+  }
+
+  /**
+   * @method getTasksFromStorage
+   * @description Retrieves the tasks array from local storage, or returns an empty array if no tasks are found.
+   * @returns {Array} The array of tasks
+   */
+  getTasksFromStorage() {
+    return JSON.parse(localStorage.getItem("tasks")) || [];
+  }
+
+  /**
+   * @method saveTasksToStorage
+   * @description Saves the given tasks array to local storage after converting it to a JSON string.
+   * @param {Array} tasks - The array of tasks to save 
+   */
+  saveTasksToStorage(tasks) {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
   }
 
   /**
@@ -65,22 +103,38 @@ class PopupComponent extends HTMLElement {
   onSubmit(event) {
     event.preventDefault();
 
-    // get the users input
-    let taskData = {
-      title: this.shadowRoot.getElementById("title").value,
-      description: this.shadowRoot.getElementById("description").value,
-      expectedTime: this.shadowRoot.getElementById("expectedTime").value,
-      dueDate: this.shadowRoot.getElementById("dueDate").value,
+    // get the current date and time
+    let currentDate = new Date();
+    let dateString = currentDate.toString();
+
+    // get the user ID
+    let userID = this.getUserID();
+
+    // get the users input and store it in a task object
+    let task = {
+      task_id: Math.random().toString(36).substr(2, 9),
+      creator_id: userID,
+      task_name: this.shadowRoot.getElementById("title").value,
+      task_content: this.shadowRoot.getElementById("description").value,
+      creation_date: dateString,
+      due_date: this.shadowRoot.getElementById("dueDate").value,
       priority: this.shadowRoot.getElementById("priority").value,
+      label: this.shadowRoot.getElementById("label").value,
+      expectedTime: this.shadowRoot.getElementById("expectedTime").value,
     };
 
-    // convert to JSON for local storage
-    localStorage.setItem("taskData", JSON.stringify(taskData));
+    // get existing tasks from local storage or initialize an empty array
+    let tasks = this.getTasksFromStorage();
 
-    // log the data to the console
-    console.log("Form Data Saved:", taskData);
+    // add the new task to the array
+    tasks.push(task);
 
-    // reset form
+    // convert the updated array to JSON and save it back to local storage
+    this.saveTasksToStorage(tasks);
+    // log the updated tasks array so see it working
+    console.log("Form Data Saved:", tasks);
+
+    // reset form and hide popup
     event.target.reset();
     this.style.display = "none";
   }
