@@ -62,7 +62,8 @@
   padding-right: 50px;
 }
 
-#dueDate, #expectedTime {
+#dueDate,
+#expectedTime {
   border-radius: 8px;
 }
 
@@ -83,7 +84,8 @@
 textarea.form-control {
   height: 200px;
   border-radius: 8px;
-  resize: none;}
+  resize: none;
+}
 
 #title {
   border: none;
@@ -134,10 +136,10 @@ nav {
   color: white;
 }
 
-#priority{
+#priority {
   border-radius: 8px;
 }
 
-#label{
+#label {
   border-radius: 8px;
 }
