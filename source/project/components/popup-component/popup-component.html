@@ -1,38 +1,52 @@
-<form id="taskForm" class="task-form">
-  <div class="left-column">
+<!-- <div class="overlay"></div> -->
+<nav id="formHeader" aria-label="Form Header">
+  <button type="button" id="closeBtn" class="close-popup" aria-label="Close Popup">×</button>
+</nav>
+<form id="taskForm" class="task-form" aria-labelledby="formHeader">
+  <div class="title-section">
     <input
       type="text"
       id="title"
       class="form-control"
       placeholder="Add Task Title"
       required
+      aria-required="true"
     />
-    <div class="date-time-section">
-      <input
-        type="datetime-local"
-        id="dueDate"
+  </div>
+  <div class="main-content">
+    <div class="left-column">
+      <div class="date-time-section">
+        <input
+          type="datetime-local"
+          id="dueDate"
+          class="form-control"
+          placeholder="Due Date"
+          required
+          aria-required="true"
+        />
+        <input 
+          type="text" 
+          id="expectedTime" 
+          class="form-control" 
+          placeholder="Expected Time" 
+        />
+      </div>
+      <textarea
+        id="description"
         class="form-control"
-        placeholder="Due Date"
-        required
-      />
-      <input type="text" class="form-control" placeholder="Expected Time" />
+        placeholder="Description"
+      ></textarea>
     </div>
-    <textarea
-      id="description"
-      class="form-control"
-      placeholder="Description"
-    ></textarea>
+    <div class="right-column">
+      <select id="priority" class="form-control" required aria-required="true">
+        <option value="P0">P0</option>
+        <option value="P1">P1</option>
+        <option value="P2">P2</option>
+        <option value="P3">P3</option>
+        <option value="P4">P4</option>
+      </select>
+      <input type="text" id="label" class="form-control" placeholder="Label" />
+      <button type="submit" id="addBtn" class="submit-btn">Done</button>
+    </div>
   </div>
-  <div class="right-column">
-    <select id="priority" class="form-control" required>
-      <option value="P0">P0</option>
-      <option value="P1">P1</option>
-      <option value="P2">P2</option>
-      <option value="P3">P3</option>
-      <option value="P4">P4</option>
-    </select>
-    <input type="text" id="label" class="form-control" placeholder="Label" />
-    <button type="submit" id="addBtn">Done</button>
-  </div>
-  <button type="button" id="closeBtn" class="close-popup">x</button>
 </form>

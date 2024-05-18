@@ -11,13 +11,13 @@ class PopupComponent extends HTMLElement {
    */
   constructor() {
     super();
-    let shadowRoot = this.attachShadow({ mode: "open" });
+    this.attachShadow({ mode: "open" });
 
     // get the css file and append it to the shadow root
     const style = document.createElement("link");
     style.rel = "stylesheet";
     style.href = "popup-component.css";
-    shadowRoot.append(style);
+    this.shadowRoot.append(style);
 
     // adds the overlay css style to our program(makes the background grey out)
     // click anywhere outside the container to close the container and remove overlay
@@ -34,10 +34,15 @@ class PopupComponent extends HTMLElement {
       const response = await fetch("popup-component.html");
       const html = await response.text();
       div.innerHTML = html;
-    };
 
-    // append everything to the shadow root
-    shadowRoot.append(div, overlay);
+      // append everything to the shadow root after loading HTML
+      this.shadowRoot.append(div, overlay);
+
+      // add the close button event listener here
+      this.shadowRoot.querySelector("#closeBtn").addEventListener("click", () => {
+        this.style.display = "none";
+      });
+    };
   }
 
   /**
@@ -62,11 +67,11 @@ class PopupComponent extends HTMLElement {
 
     // get the users input
     let taskData = {
-      title: document.getElementById("title").value,
-      description: document.getElementById("description").value,
-      expectedTime: document.getElementById("expectedTime").value,
-      dueDate: document.getElementById("dueDate").value,
-      priority: document.getElementById("priority").value,
+      title: this.shadowRoot.getElementById("title").value,
+      description: this.shadowRoot.getElementById("description").value,
+      expectedTime: this.shadowRoot.getElementById("expectedTime").value,
+      dueDate: this.shadowRoot.getElementById("dueDate").value,
+      priority: this.shadowRoot.getElementById("priority").value,
     };
 
     // convert to JSON for local storage

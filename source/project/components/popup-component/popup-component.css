@@ -15,7 +15,6 @@
   transform: translate(-50%, -50%);
   background-color: white;
   padding: 20px;
-  border-radius: 12px;
   border: 1px solid #ccc;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 500px;
@@ -27,27 +26,38 @@
 
 .task-form {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+}
+
+.title-section {
+  flex: 0 0 100%;
+  padding-bottom: none;
+  padding-top: 15px;
+}
+
+.main-content {
+  display: flex;
   justify-content: space-between;
 }
 
 .left-column {
-  flex: 0 0 80%;
-  margin-right: 20px;
+  flex: 1;
+  padding-right: 10px;
 }
 
 .right-column {
-  flex: 0 0 20%;
+  flex: 0 0 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .date-time-section {
   display: flex;
-  flex-direction: row;
-  margin-right: 150px;
-}
-
-.left-column {
-  margin-right: 5px;
+  justify-content: space-between;
+  gap: 10px;
+  border-radius: 20px;
+  padding-right: 50px;
 }
 
 .form-control {
@@ -56,13 +66,22 @@
   width: 100%;
   box-sizing: border-box;
   border: 2px solid #ccc;
-  border-radius: 8px;
   transition: border-color 0.3s;
 }
 
 .form-control:focus {
   border-color: #0056b3;
   outline: none;
+}
+
+textarea.form-control {
+  height: 150px;
+}
+
+#title {
+  border: none;
+  border-bottom: black 1px solid;
+  font-size: 24px;
 }
 
 #addBtn {
@@ -82,23 +101,28 @@
   background-color: green;
 }
 
+nav {
+  background-color: rgba(0, 0, 0, 0.2);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 10000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
+  left: 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid black;
+}
+
 #closeBtn {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 5px;
+  right: 5px;
   cursor: pointer;
-  background-color: #ee6e6e;
+  background-color: #ed7f7f;
   border: none;
   border-radius: 100%;
   color: white;
-}
-
-textarea.form-control {
-  height: 150px;
-}
-
-#title {
-  border: none;
-  text-decoration: underline;
-  font-size: 24px;
 }
