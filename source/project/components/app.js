@@ -1,5 +1,3 @@
-
-
 class PopupComponent extends HTMLElement {
   /**
    * @constructor
@@ -15,7 +13,6 @@ class PopupComponent extends HTMLElement {
     style.rel = "stylesheet";
     style.href = "styles.css";
     shadowRoot.append(style);
-    
 
     // adds the overlay css style to our program(makes the background grey out)
     // click anywhere outside the container to close the container and remove overlay
@@ -26,7 +23,6 @@ class PopupComponent extends HTMLElement {
 
       
     });
-    
 
     // waits for the css to load before the html popup occurs
     const div = document.createElement("div");
@@ -48,19 +44,18 @@ class PopupComponent extends HTMLElement {
   }
 
   /**
-     * @method connectedCallback
-     * @description Lifecycle method that is called when the component is inserted into the DOM.
-     * It sets up event listeners for form submission within the shadow DOM.
-     */
+   * @method connectedCallback
+   * @description Lifecycle method that is called when the component is inserted into the DOM.
+   * It sets up event listeners for form submission within the shadow DOM.
+   */
   connectedCallback() {
     // event listener to form submission
-    setTimeout( () => {
+    setTimeout(() => {
       this.shadowRoot
-      .querySelector("#journalForm")
-      .addEventListener("submit", this.onSubmit.bind(this));
-    }, 500)
-    
 
+        .querySelector("#journalForm")
+        .addEventListener("submit", this.onSubmit.bind(this));
+    }, 500);
 
   }
 
@@ -92,16 +87,13 @@ class PopupComponent extends HTMLElement {
     this.style.display = "none";
   }
 
-
-
-onClose(event){
-    //event.preventDefault();
+  onClose(event) {
+    event.preventDefault();
     event.target.reset();
-    // document.getElementById("title").removeAttribute('required');
+    document.getElementById("title").removeAttribute("required");
     this.style.display = "none";
   }
 }
-
 
 // define the custom element
 customElements.define("popup-component", PopupComponent);
