@@ -20,8 +20,6 @@ class PopupComponent extends HTMLElement {
     overlay.setAttribute("class", "overlay");
     overlay.addEventListener("click", () => {
       this.style.display = "none";
-
-      
     });
 
     // waits for the css to load before the html popup occurs
@@ -32,11 +30,11 @@ class PopupComponent extends HTMLElement {
       const html = await response.text();
       div.innerHTML = html;
 
-      // close the popup when user presses x 
+      // close the popup when user presses x
       const closeButton = div.querySelector("#closeBtn");
       closeButton.addEventListener("click", () => {
-      this.style.display = "none";
-    });
+        this.style.display = "none";
+      });
     };
 
     // append everything to the shadow root
@@ -56,7 +54,6 @@ class PopupComponent extends HTMLElement {
         .querySelector("#journalForm")
         .addEventListener("submit", this.onSubmit.bind(this));
     }, 500);
-
   }
 
   /**
@@ -69,11 +66,10 @@ class PopupComponent extends HTMLElement {
 
     // get the users input from form
     let journalData = {
-      entry_id: Math.random().toString(36).substr(2,9),
+      entry_id: Math.random().toString(36).substr(2, 9),
       entry_title: this.shadowRoot.querySelector("#title").value,
       entry_content: this.shadowRoot.querySelector("#description").value,
       creation_date: this.shadowRoot.querySelector("#currDate").value,
-      
     };
 
     // convert to JSON for local storage
