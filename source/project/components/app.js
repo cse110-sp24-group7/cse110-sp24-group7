@@ -23,6 +23,8 @@ class PopupComponent extends HTMLElement {
     overlay.setAttribute("class", "overlay");
     overlay.addEventListener("click", () => {
       this.style.display = "none";
+
+      
     });
     
 
@@ -33,6 +35,12 @@ class PopupComponent extends HTMLElement {
       const response = await fetch("popup.html");
       const html = await response.text();
       div.innerHTML = html;
+
+      // close the popup when user presses x 
+      const closeButton = div.querySelector("#closeBtn");
+      closeButton.addEventListener("click", () => {
+      this.style.display = "none";
+    });
     };
 
     // append everything to the shadow root
@@ -50,12 +58,9 @@ class PopupComponent extends HTMLElement {
       this.shadowRoot
       .querySelector("#journalForm")
       .addEventListener("submit", this.onSubmit.bind(this));
-    }, 3000)
-     
-      // const closeButton = document.getElementById("closeBtn"); old
+    }, 500)
+    
 
-      // // Add event listener for the "click" event
-      // closeButton.addEventListener("click", this.onClose.bind(this));
 
   }
 
@@ -67,12 +72,12 @@ class PopupComponent extends HTMLElement {
   onSubmit(event) {
     event.preventDefault();
 
-    // get the users input
+    // get the users input from form
     let journalData = {
       entry_id: Math.random().toString(36).substr(2,9),
-      title: this.shadowRoot.querySelector("#title").value,
-      description: this.shadowRoot.querySelector("#description").value,
-      currDate: this.shadowRoot.querySelector("#currDate").value,
+      entry_title: this.shadowRoot.querySelector("#title").value,
+      entry_content: this.shadowRoot.querySelector("#description").value,
+      creation_date: this.shadowRoot.querySelector("#currDate").value,
       
     };
 
@@ -87,10 +92,12 @@ class PopupComponent extends HTMLElement {
     this.style.display = "none";
   }
 
+
+
 onClose(event){
-    event.preventDefault();
+    //event.preventDefault();
     event.target.reset();
-    document.getElementById("title").removeAttribute('required');
+    // document.getElementById("title").removeAttribute('required');
     this.style.display = "none";
   }
 }
