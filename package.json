@@ -1,18 +1,36 @@
 {
-	"devDependencies": {
-		"jest": "^29.7.0",
-		"jsdoc": "^4.0.3",
-		"prettier": "^3.2.5"
-	},
-	"scripts": {
-		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-		"format": "prettier --write --ignore-path .prettierignore ./source/project/**/*.{html,css,js} ./specs/**/*.md",
-		"lint-check": "prettier --check --ignore-path .prettierignore ./source/project/**/*.{html,css,js} ./specs/**/*.md",
-		"jsdoc": "jsdoc -c jsdocs_conf.json"
-	},
-	"type": "module",
-	"jest": {
-		"transform": {},
-		"verbose": true
-	}
+  "productName": "Journal",
+  "name": "packagename",
+  "version": "1.0.0",
+  "devDependencies": {
+    "@electron-forge/cli": "^7.4.0",
+    "@electron-forge/maker-deb": "^7.4.0",
+    "@electron-forge/maker-rpm": "^7.4.0",
+    "@electron-forge/maker-squirrel": "^7.4.0",
+    "@electron-forge/maker-zip": "^7.4.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
+    "@electron-forge/plugin-fuses": "^7.4.0",
+    "@electron/fuses": "^1.8.0",
+    "electron": "^30.0.6",
+    "jest": "^29.7.0",
+    "jsdoc": "^4.0.3",
+    "prettier": "^3.2.5"
+  },
+  "scripts": {
+    "start": "electron-forge start",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "format": "prettier --write --ignore-path .prettierignore ./source/project/**/*.{html,css,js} ./specs/**/*.md",
+    "lint-check": "prettier --check --ignore-path .prettierignore ./source/project/**/*.{html,css,js} ./specs/**/*.md",
+    "jsdoc": "jsdoc -c jsdocs_conf.json",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "jest": {
+    "transform": {},
+    "verbose": true
+  },
+  "main": "./source/project/scripts/main.js",
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.1"
+  }
 }
