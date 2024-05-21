@@ -67,7 +67,6 @@ textarea.form-control {
   resize: none;
 }
 
-
 .form-control:focus {
   border-color: #0056b3;
   outline: none;
@@ -116,7 +115,6 @@ textarea.form-control {
   padding-left: 0px;
 }
 
-
 .nav-bar {
   background-color: rgba(0, 0, 0, 0.2);
   position: fixed;
@@ -138,6 +136,5 @@ textarea.form-control {
 }
 
 .label-container {
-  margin-left: 16px; 
+  margin-left: 16px;
 }
-
