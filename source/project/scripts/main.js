@@ -1,13 +1,12 @@
 const { app, BrowserWindow } = require('electron')
-const path = require('path');
+const path = require('node:path');
 
 const createWindow = () => {
-  let __dirname = path.resolve();
   const win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-        preload: path.join(__dirname, 'source/project/scripts/preload.js'),
+        preload: path.join(__dirname, 'preload.js'),
         nodeIntegration: true,
         contextIsolation: true,
     }
