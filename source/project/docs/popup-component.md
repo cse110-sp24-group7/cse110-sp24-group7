@@ -19,7 +19,7 @@ The popup can be implementing with the following code:
 ```
 ## Requirements
 
-The popup should allow the user to input details for a task. The background should blur to make the popup the center or attention. Furthermore, the popup should be intuitive and easy to use.
+The popup should allow the user to input details for a task. The background should blur to make the popup the center or attention. Furthermore, the popup should be intuitive and easy to use. Data should be stored locally to be easily accessed by the backend.
 
 ## Testing
 
