@@ -8,7 +8,7 @@ describe("PopupComponent E2E Tests", () => {
     browser = await puppeteer.launch({ headless: false }); // Set to true for headless mode
     page = await browser.newPage();
     await page.goto(
-      "http://127.0.0.1:5500/source/project/components/popup-component/index.html"
+      "http://127.0.0.1:5500/source/project/components/popup-component/index.html",
     );
   });
 
@@ -21,7 +21,7 @@ describe("PopupComponent E2E Tests", () => {
     await page.waitForSelector("popup-component >>> .popup-container");
     const isVisible = await page.$eval(
       "popup-component >>> .popup-container",
-      (el) => !!el
+      (el) => !!el,
     );
     expect(isVisible).toBe(true);
   });
@@ -33,7 +33,7 @@ describe("PopupComponent E2E Tests", () => {
     await page.type("popup-component >>> #title", "Test Task");
     await page.type(
       "popup-component >>> #description",
-      "This is a test description"
+      "This is a test description",
     );
     await page.type("popup-component >>> #dueDate", "2024-12-31T23:59");
     await page.select("popup-component >>> #priority", "P1");
@@ -72,27 +72,27 @@ describe("PopupComponent E2E Tests", () => {
 
     const titleValue = await page.$eval(
       "popup-component >>> #title",
-      (el) => el.value
+      (el) => el.value,
     );
     const descriptionValue = await page.$eval(
       "popup-component >>> #description",
-      (el) => el.value
+      (el) => el.value,
     );
     const dueDateValue = await page.$eval(
       "popup-component >>> #dueDate",
-      (el) => el.value
+      (el) => el.value,
     );
     const priorityValue = await page.$eval(
       "popup-component >>> #priority",
-      (el) => el.value
+      (el) => el.value,
     );
     const labelValue = await page.$eval(
       "popup-component >>> #label",
-      (el) => el.value
+      (el) => el.value,
     );
     const expectedTimeValue = await page.$eval(
       "popup-component >>> #expectedTime",
-      (el) => el.value
+      (el) => el.value,
     );
 
     expect(titleValue).toBe("");
