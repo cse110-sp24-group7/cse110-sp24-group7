@@ -70,6 +70,7 @@ class PopupComponent extends HTMLElement {
       entry_title: this.shadowRoot.querySelector("#title").value,
       entry_content: this.shadowRoot.querySelector("#description").value,
       creation_date: this.shadowRoot.querySelector("#currDate").value,
+      enrty_label: this.shadowRoot.querySelector("#label").value,
     };
 
     // convert to JSON for local storage

@@ -40,10 +40,14 @@
 
 .date-time-section {
   display: flex;
-  flex-direction: row;
-  margin-right: 150px;
+  justify-content: space-between;
+  gap: 10px;
+  width: 40%;
 }
 
+.label-container {
+  width: 15%;
+}
 .left-column {
   margin-right: 5px;
 }
@@ -57,6 +61,12 @@
   border-radius: 8px;
   transition: border-color 0.3s;
 }
+textarea.form-control {
+  height: 200px;
+  border-radius: 8px;
+  resize: none;
+}
+
 
 .form-control:focus {
   border-color: #0056b3;
@@ -66,14 +76,14 @@
 #addBtn {
   padding: 4px 20px;
   background-color: lightgreen;
-  color: white;
+  color: black;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s;
   position: absolute;
   bottom: 10px;
-  right: 10px;
+  right: 21px;
 }
 
 #addBtn:hover {
@@ -98,9 +108,14 @@ textarea.form-control {
 
 #title {
   border: none;
-  text-decoration: underline;
-  font-size: 24px;
+  border-bottom: black 1px solid;
+  font-size: 22px;
+  border-radius: 0px;
+  width: 125%;
+  padding-bottom: 0px;
+  padding-left: 0px;
 }
+
 
 .nav-bar {
   background-color: rgba(0, 0, 0, 0.2);
@@ -115,3 +130,14 @@ textarea.form-control {
   left: 0;
   border-radius: 8px 8px 0 0;
 }
+
+.date-time-section,
+.label-container {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.label-container {
+  margin-left: 16px; 
+}
+
