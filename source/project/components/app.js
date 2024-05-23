@@ -1,3 +1,5 @@
+
+//***UPDATED app.js */
 class PopupComponent extends HTMLElement {
   /**
    * @constructor
@@ -55,6 +57,24 @@ class PopupComponent extends HTMLElement {
         .addEventListener("submit", this.onSubmit.bind(this));
     }, 500);
   }
+  /**
+   * @method getJournalsFromStorage
+   * @description Retrieves the tasks array from local storage, or returns an of journal entries if no entries are found.
+   * @returns {Array} The array of journal entries
+   */
+  getJournalsFromStorage() {
+    const storedData = JSON.parse(localStorage.getItem("journalData"));
+    return Array.isArray(storedData) ? storedData : [];
+  }
+
+   /**
+   * @method saveJournalsToStorage
+   * @description Saves the given journalData array to local storage after converting it to a JSON string.
+   * @param {Array} tasks - The array of Journals to save
+   */
+   saveJournalsToStorage(journalData) {
+    localStorage.setItem("journalData", JSON.stringify(journalData));
+  }
 
   /**
    * @method onSubmit
@@ -73,8 +93,14 @@ class PopupComponent extends HTMLElement {
       enrty_label: this.shadowRoot.querySelector("#label").value,
     };
 
-    // convert to JSON for local storage
-    localStorage.setItem("journalData", JSON.stringify(journalData));
+    // get existing tasks from local storage or initialize an empty array
+    let journalDatas = this.getJournalsFromStorage();
+
+    // add the new task to the array
+    journalDatas.push(journalData);
+
+    // convert the updated array to JSON and save it back to local storage
+    this.saveJournalsToStorage(journalDatas);
 
     // log the data to the console
     console.log("Journal Form Data Saved:", journalData);
@@ -100,3 +126,6 @@ document.getElementById("open-popup").addEventListener("click", function () {
   const popup = document.createElement("popup-component");
   document.body.appendChild(popup);
 });
+
+
+

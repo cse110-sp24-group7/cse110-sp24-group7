@@ -41,12 +41,12 @@
 .date-time-section {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
-  width: 40%;
+  gap: 5px;
+  width: auto;
 }
 
 .label-container {
-  width: 15%;
+  width: 100px;
 }
 .left-column {
   margin-right: 5px;
@@ -82,7 +82,7 @@ textarea.form-control {
   transition: background-color 0.3s;
   position: absolute;
   bottom: 10px;
-  right: 21px;
+  right: 20px;
 }
 
 #addBtn:hover {
@@ -137,4 +137,6 @@ textarea.form-control {
 
 .label-container {
   margin-left: 16px;
+  
 }
+
