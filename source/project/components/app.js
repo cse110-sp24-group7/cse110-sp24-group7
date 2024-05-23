@@ -1,4 +1,3 @@
-
 //***UPDATED app.js */
 class PopupComponent extends HTMLElement {
   /**
@@ -67,12 +66,12 @@ class PopupComponent extends HTMLElement {
     return Array.isArray(storedData) ? storedData : [];
   }
 
-   /**
+  /**
    * @method saveJournalsToStorage
    * @description Saves the given journalData array to local storage after converting it to a JSON string.
    * @param {Array} tasks - The array of Journals to save
    */
-   saveJournalsToStorage(journalData) {
+  saveJournalsToStorage(journalData) {
     localStorage.setItem("journalData", JSON.stringify(journalData));
   }
 
@@ -126,6 +125,3 @@ document.getElementById("open-popup").addEventListener("click", function () {
   const popup = document.createElement("popup-component");
   document.body.appendChild(popup);
 });
-
-
-
