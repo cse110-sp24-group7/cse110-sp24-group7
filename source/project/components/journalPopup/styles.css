@@ -1,0 +1,140 @@
+.popup-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 500px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.journal-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+.left-column {
+  flex: 0 0 80%;
+  margin-right: 20px;
+}
+
+.right-column {
+  flex: 0 0 20%;
+}
+
+.date-time-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  width: auto;
+}
+
+.label-container {
+  width: 100px;
+}
+.left-column {
+  margin-right: 5px;
+}
+
+.form-control {
+  margin-bottom: 16px;
+  padding: 8px 10px;
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.3s;
+}
+textarea.form-control {
+  height: 200px;
+  border-radius: 8px;
+  resize: none;
+}
+
+.form-control:focus {
+  border-color: #0056b3;
+  outline: none;
+}
+
+#addBtn {
+  padding: 4px 20px;
+  background-color: lightgreen;
+  color: black;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+}
+
+#addBtn:hover {
+  background-color: green;
+}
+
+#closeBtn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  cursor: pointer;
+  background-color: #ee6e6e;
+  border: none;
+  border-radius: 100%;
+  color: white;
+}
+
+textarea.form-control {
+  height: 150px;
+  width: 125%;
+}
+
+#title {
+  border: none;
+  border-bottom: black 1px solid;
+  font-size: 22px;
+  border-radius: 0px;
+  width: 125%;
+  padding-bottom: 0px;
+  padding-left: 0px;
+}
+
+.nav-bar {
+  background-color: rgba(0, 0, 0, 0.2);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 8%;
+  left: 0;
+  border-radius: 8px 8px 0 0;
+}
+
+.date-time-section,
+.label-container {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.label-container {
+  margin-left: 16px;
+}
