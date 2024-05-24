@@ -34,12 +34,14 @@
           placeholder="Due Date"
           required
           aria-required="true"
+          step = "900"
         />
         <input
-          type="text"
+          type="number"
           id="expectedTime"
           class="form-control"
           placeholder="Expected Time (hours)"
+          required
         />
         <!-- Priority Dropdown -->
         <select
@@ -48,6 +50,7 @@
           required
           aria-required="true"
         >
+          <option value="P0" disabled selected>Priority</option>
           <option value="P1">P1</option>
           <option value="P2">P2</option>
           <option value="P3">P3</option>
@@ -59,6 +62,7 @@
           id="label"
           class="form-control"
           placeholder="Label"
+          required
         />
       </div>
       <!-- Description Section -->
