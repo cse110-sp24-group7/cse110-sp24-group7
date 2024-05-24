@@ -17,6 +17,6 @@
 		"preset": "jest-puppeteer",
 		"transform": {},
 		"verbose": true,
-		"testPatternIgnorePatterns": ["./source/project/__tests__/E2E"]
+		"testPathIgnorePatterns": ["./source/project/__tests__/E2E"]
 	}
 }
