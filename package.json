@@ -15,6 +15,7 @@
 	"type": "module",
 	"jest": {
 		"preset": "jest-puppeteer",
-		"verbose": true
+		"verbose": true,
+		"testPathIgnorePatterns": ["./source/project/__tests__/E2E/"]
 	}
 }
