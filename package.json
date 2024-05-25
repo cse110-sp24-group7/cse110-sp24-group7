@@ -33,8 +33,9 @@
     "verbose": true,
 		"testPathIgnorePatterns": ["./source/project/__tests__/E2E"]
   },
-  "main": "./source/project/scripts/main.js",
+  "main": "./source/project/scripts/main.cjs",
   "dependencies": {
     "electron-squirrel-startup": "^1.0.1"
-  }
+  },
+  "type": "module"
 }
