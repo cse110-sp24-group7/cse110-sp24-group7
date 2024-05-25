@@ -1,8 +1,10 @@
 {
 	"devDependencies": {
 		"jest": "^29.7.0",
+		"jest-puppeteer": "^10.0.1",
 		"jsdoc": "^4.0.3",
-		"prettier": "^3.2.5"
+		"prettier": "^3.2.5",
+		"puppeteer": "^22.9.0"
 	},
 	"scripts": {
 		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
@@ -12,8 +14,10 @@
 	},
 	"type": "module",
 	"jest": {
+		"preset": "jest-puppeteer",
 		"transform": {},
-		"verbose": true
+		"verbose": true,
+		"testPathIgnorePatterns": ["./source/project/__tests__/E2E"]
 	},
 	"dependencies": {
 		"sqlite3": "^5.1.7"
