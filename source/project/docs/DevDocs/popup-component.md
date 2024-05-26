@@ -26,6 +26,7 @@ The popup should allow the user to input details for a task. The background shou
 For testing our popupcomponent, we used the LiveServer to periodically check any changes that were made and the effects of those changes. We also made a separate HTML called index.html purely for testing our code.
 
 ![Image of popup](./popup.png)
+![Label Dropdown](./label.png)
 #### Authors
 
 - Hashim Fituri

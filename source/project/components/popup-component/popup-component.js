@@ -75,12 +75,16 @@ class PopupComponent extends HTMLElement {
     const labelContainer = this.shadowRoot.getElementById("label");
     const labels = JSON.parse(localStorage.getItem("labels")) || [];
 
+    // clear the label container
+    labelContainer.innerHTML = "";
+    
     // add "New Label" option
     let newLabelDiv = document.createElement("div");
     newLabelDiv.textContent = "New Label";
     newLabelDiv.classList.add("label-item");
     newLabelDiv.addEventListener("click", this.newLabel.bind(this));
     labelContainer.appendChild(newLabelDiv);
+    labelContainer.appendChild(document.createElement("hr"));
 
     // populate the dropdown with stored labels
     labels.forEach((label) => {
