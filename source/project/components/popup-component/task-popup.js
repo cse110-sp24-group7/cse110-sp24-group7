@@ -16,7 +16,7 @@ class PopupComponent extends HTMLElement {
     // get the css file and append it to the shadow root
     const style = document.createElement("link");
     style.rel = "stylesheet";
-    style.href = "popup-component.css";
+    style.href = "task-popup.css";
     this.shadowRoot.append(style);
 
     // adds the overlay css style to our program(makes the background grey out)

@@ -27,7 +27,7 @@ class PopupComponent extends HTMLElement {
     const div = document.createElement("div");
     style.onload = async () => {
       div.setAttribute("class", "popup-container");
-      const response = await fetch("popup.html");
+      const response = await fetch("journal-popup.html");
       const html = await response.text();
       div.innerHTML = html;
 

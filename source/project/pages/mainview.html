@@ -6,8 +6,21 @@
   <title>Developer Journal</title>
   <link rel="icon" type="image/x-icon" href="/source\project\assets\res\favicon.ico">
   <link rel="stylesheet" href="/source\project\styles\mainview-styles.css">
+
+  <!--References to component css files-->
+  <link rel="stylesheetTask" href="/source\project\components\popup-component\popup-component.css">
+  <link rel="stylesheetJournal" href="/source\project\components\journalPopup\styles.css">
+
+  <!--References to component js files-->
+  <script src="/source\project\pages\integrate.js" type="module"></script>
+
+  <!-- <script src="/source\project\components\popup-component\popup-component.js"></script> -->
+
+  <!--Html reference-->
+
 </head>
 <body>
+    <!--Header-->
     <div class="header">
         <div class="logo">
             <img src="/source\project\assets\res\logo.png" alt="Logo">
@@ -17,8 +30,12 @@
             <img src="/res/menuBtn.png" alt="Menu">
         </div>
     </div>
-    <div class="calendar">  
+    <!--Calendar Container-->
+    <div class="calendar">
+      <!--Day Container (for css)-->  
       <div class = "day">
+
+        <!--Sunday Container-->
         <div class="day1">
           <h2>SUN</h2>
           <ul id="UL1"> </ul>
@@ -30,65 +47,56 @@
           <button class="add-task">Add Task</button>
           <button class="add-journal">Add Journal</button>      
         </div>
+
+        <!--Monday Container-->
         <div class="day2">
           <h2>MON</h2>
-          <ul id="UL2"></ul>
           <hr>
-          <button class="add-task">Add Task</button>
-          <button class="add-journal">Add Journal</button>
+          <!--Current test button to test popup integration-->
+          <div class id="open-popup">Add Task</div>
+
         </div>
+
+        <!--Tuesday Container-->
         <div class="day3">
           <h2>TUES</h2>
-          <ul id="UL3"></ul>
           <hr>
-          <button class="add-task">Add Task</button>
-          <button class="add-journal">Add Journal</button>
         </div>
+
+        <!--Wednesday Container-->
         <div class="day4">
           <h2>WED</h2>
-          <ul id="UL4"></ul>
-          <hr>
-          <button class="add-task">Add Task</button>
-          <button class="add-journal">Add Journal</button>
+          <hr>  
         </div>
+        
+        <!--Thursday Container-->
         <div class="day5">
           <h2>THURS</h2>
-          <ul id="UL5"></ul>
           <hr>
-          <button class="add-task">Add Task</button>
-          <button class="add-journal">Add Journal</button>
         </div>
+
+        <!--Friday Container-->
         <div class="day6">
           <h2>FRI</h2>
-          <ul id="UL6"></ul>
           <hr>
-          <button class="add-task">Add Task</button>
-          <button class="add-journal">Add Journal</button>
         </div>
+
+        <!--Saturday Container-->
         <div class="day7">
           <h2>SAT</h2>
-          <ul id="UL7"></ul>
           <hr>
-          <button class="add-task">Add Task</button>
-          <button class="add-journal">Add Journal</button>
+          
+          
+         
         </div>
-      </div>
-    </div>
-    <script src="/cse110-sp24-group7\source\project\scripts\main.js"></script>
+      </div> <!--Day-->
+    </div> <!--Calendar-->
 
-    
-    <button class="add-task">Add Task</button>
-    <button class="add-journal">Add Journal</button>
+  <button class="add-task">Add Task</button>
+  <button class="add-journal">Add Journal</button> 
 
-    <div class="journal-pv"> 
-      <h2 id="journal-title">Journal Title</h2>
-      <p id="journal-desc">journal description</p>
-    </div>
 
-    <div class="task-pv"> 
-      <h2 id="journal-title">Task Title</h2>
-      <p id="journal-desc">task description</p>
-    </div></div>
+  
 
 
 </body>
