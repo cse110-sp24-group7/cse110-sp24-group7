@@ -172,7 +172,7 @@ nav {
   width: auto;
   border-radius: 8px;
   z-index: 1;
-  overflow: scroll; 
+  overflow: scroll;
   height: 150px;
 }
 
@@ -189,7 +189,9 @@ nav {
   background-color: #ddd;
 }
 
-.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
 
 .label-item {
   cursor: pointer;

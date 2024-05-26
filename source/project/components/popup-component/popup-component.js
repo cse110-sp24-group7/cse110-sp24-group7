@@ -77,7 +77,7 @@ class PopupComponent extends HTMLElement {
 
     // clear the label container
     labelContainer.innerHTML = "";
-    
+
     // add "New Label" option
     let newLabelDiv = document.createElement("div");
     newLabelDiv.textContent = "New Label";
