@@ -135,9 +135,64 @@ nav {
   cursor: pointer;
 }
 
-#label {
+.dropbtn {
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 8px;
+  width: 90px;
+  cursor: pointer;
+  background-color: transparent;
+  padding-left: 0px;
+  padding-right: 25px;
+}
+
+.dropdown {
+  margin-bottom: 16px;
+  padding: 8px 10px;
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  transition: border-color 0.3s;
   border-radius: 8px;
   width: 90px;
   cursor: pointer;
   overflow-y: auto;
+}
+
+.dropdown:hover {
+  border-color: #0056b3;
+  outline: none;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  width: 120px;
+  border-radius: 8px;
+  z-index: 1;
+  overflow: scroll; 
+  height: 150px;
+}
+
+.dropdown-content div {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content div:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.label-item {
+  cursor: pointer;
+}
+
+.label-item.selected {
+  background-color: #0056b3;
 }

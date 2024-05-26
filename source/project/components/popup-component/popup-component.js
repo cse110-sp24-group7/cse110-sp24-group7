@@ -13,6 +13,9 @@ class PopupComponent extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
 
+    // set to store selected labels
+    this.selectedLabels = new Set();
+
     // get the css file and append it to the shadow root
     const style = document.createElement("link");
     style.rel = "stylesheet";
@@ -45,10 +48,6 @@ class PopupComponent extends HTMLElement {
           this.style.display = "none";
         });
 
-      this.shadowRoot
-        .querySelector("#label")
-        .addEventListener("change", this.newLabel.bind(this));
-
       // populate the labels from local storage
       this.populateLabels();
     };
@@ -73,17 +72,61 @@ class PopupComponent extends HTMLElement {
    * @description Populates the label selector with labels from local storage.
    */
   populateLabels() {
-    // get the label and the labels from local storage
-    const labelSelector = this.shadowRoot.querySelector("#label");
+    const labelContainer = this.shadowRoot.getElementById("label");
     const labels = JSON.parse(localStorage.getItem("labels")) || [];
 
-    // populate the selector with stored labels
+    // add "New Label" option
+    let newLabelDiv = document.createElement("div");
+    newLabelDiv.textContent = "New Label";
+    newLabelDiv.classList.add("label-item");
+    newLabelDiv.addEventListener("click", this.newLabel.bind(this));
+    labelContainer.appendChild(newLabelDiv);
+
+    // populate the dropdown with stored labels
     labels.forEach((label) => {
-      let option = document.createElement("option");
-      option.value = label;
-      option.textContent = label;
-      labelSelector.appendChild(option);
+      let div = document.createElement("div");
+      div.textContent = label;
+      div.classList.add("label-item");
+      div.addEventListener("click", () => this.selectLabel(div));
+      div.addEventListener("dblclick", () => this.deleteLabel(div));
+      labelContainer.appendChild(div);
     });
+  }
+
+  /**
+   * @method selectLabel
+   * @description Toggles the selection state of a label.
+   * @param {HTMLElement} labelElement - The label element to toggle
+   */
+  selectLabel(labelElement) {
+    const label = labelElement.textContent;
+    if (this.selectedLabels.has(label)) {
+      this.selectedLabels.delete(label);
+      labelElement.classList.remove("selected");
+    } else {
+      this.selectedLabels.add(label);
+      labelElement.classList.add("selected");
+    }
+  }
+
+  /**
+   * @method deleteLabel
+   * @description Deletes a label from the list and updates local storage.
+   * @param {HTMLElement} labelElement - The label element to delete
+   */
+  deleteLabel(labelElement) {
+    const label = labelElement.textContent;
+    let labels = JSON.parse(localStorage.getItem("labels")) || [];
+
+    // remove the label from the local storage array
+    labels = labels.filter((item) => item !== label);
+    localStorage.setItem("labels", JSON.stringify(labels));
+
+    // remove the label from the selected labels set
+    this.selectedLabels.delete(label);
+
+    // remove the label element from the DOM
+    labelElement.remove();
   }
 
   /**
@@ -91,32 +134,14 @@ class PopupComponent extends HTMLElement {
    * @description Handles the creation of a new label and saves it to local storage.
    * @param {Event} event - The change event
    */
-  newLabel(event) {
-    // load labels from local storage
-    let labels = JSON.parse(localStorage.getItem("labels")) || [];
-    if (event.target.value === "New-Label") {
-      // let the user input a new label and add it to the selector list
-      let newLabel = prompt("Enter a new label:");
-      // check if the label is valid and not already in the list
-      if (newLabel === null || newLabel === "") {
-        // default back to Label
-        event.target.value = "Label";
-        return;
-      }
-      else if (labels.includes(newLabel)) {
-        // select the already existing label
-        event.target.value = newLabel;
-      }
-      else {
-        let option = document.createElement("option");
-        option.value = newLabel;
-        option.textContent = newLabel;
-        event.target.appendChild(option);
-        event.target.value = newLabel;
-        // save the new label to local storage
-        let labels = JSON.parse(localStorage.getItem("labels")) || [];
+  newLabel() {
+    let newLabel = prompt("Enter a new label:");
+    if (newLabel !== null && newLabel.trim() !== "") {
+      let labels = JSON.parse(localStorage.getItem("labels")) || [];
+      if (!labels.includes(newLabel)) {
         labels.push(newLabel);
         localStorage.setItem("labels", JSON.stringify(labels));
+        this.populateLabels();
       }
     }
   }
@@ -179,7 +204,7 @@ class PopupComponent extends HTMLElement {
       creation_date: dateString,
       due_date: this.shadowRoot.getElementById("dueDate").value,
       priority: this.shadowRoot.getElementById("priority").value,
-      label: this.shadowRoot.getElementById("label").value,
+      labels: Array.from(this.selectedLabels),
       expectedTime: this.shadowRoot.getElementById("expectedTime").value,
     };
 
