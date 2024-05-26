@@ -42,10 +42,6 @@
   justify-content: space-between;
 }
 
-.left-column {
-  flex: 1;
-}
-
 .date-time-section {
   display: flex;
   justify-content: space-between;
@@ -125,22 +121,23 @@ nav {
 #dueDate {
   border-radius: 8px;
   width: 200px;
+  cursor: pointer;
 }
+
 #expectedTime {
   border-radius: 8px;
   width: 160px;
 }
+
 #priority {
   border-radius: 8px;
-  width: 70px;
+  width: 90px;
+  cursor: pointer;
 }
 
 #label {
   border-radius: 8px;
-  width: 100px;
+  width: 90px;
+  cursor: pointer;
+  overflow-y: auto;
 }
-
-/* .dropdown-menu {
-  max-height: 150px;
-  overflow-y: scroll;
-} */

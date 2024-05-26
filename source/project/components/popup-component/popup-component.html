@@ -57,13 +57,15 @@
           <option value="P4">P4</option>
         </select>
         <!-- Label Selection -->
-        <input
-          type="text"
+        <select
           id="label"
           class="form-control"
-          placeholder="Label"
           required
-        />
+          aria-required="true"
+        >
+          <option value="0" disabled selected>Label</option>
+          <option value="New-Label">New Label</option>
+        </select>
       </div>
       <!-- Description Section -->
       <textarea

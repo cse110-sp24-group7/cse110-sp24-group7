@@ -44,6 +44,13 @@ class PopupComponent extends HTMLElement {
         .addEventListener("click", () => {
           this.style.display = "none";
         });
+
+      this.shadowRoot
+        .querySelector("#label")
+        .addEventListener("change", this.newLabel.bind(this));
+
+      // populate the labels from local storage
+      this.populateLabels();
     };
   }
 
@@ -59,6 +66,59 @@ class PopupComponent extends HTMLElement {
         .querySelector("#taskForm")
         .addEventListener("submit", this.onSubmit.bind(this));
     }, 3000);
+  }
+
+  /**
+   * @method populateLabelSelector
+   * @description Populates the label selector with labels from local storage.
+   */
+  populateLabels() {
+    // get the label and the labels from local storage
+    const labelSelector = this.shadowRoot.querySelector("#label");
+    const labels = JSON.parse(localStorage.getItem("labels")) || [];
+
+    // populate the selector with stored labels
+    labels.forEach((label) => {
+      let option = document.createElement("option");
+      option.value = label;
+      option.textContent = label;
+      labelSelector.appendChild(option);
+    });
+  }
+
+  /**
+   * @method newLabel
+   * @description Handles the creation of a new label and saves it to local storage.
+   * @param {Event} event - The change event
+   */
+  newLabel(event) {
+    // load labels from local storage
+    let labels = JSON.parse(localStorage.getItem("labels")) || [];
+    if (event.target.value === "New-Label") {
+      // let the user input a new label and add it to the selector list
+      let newLabel = prompt("Enter a new label:");
+      // check if the label is valid and not already in the list
+      if (newLabel === null || newLabel === "") {
+        // default back to Label
+        event.target.value = "Label";
+        return;
+      }
+      else if (labels.includes(newLabel)) {
+        // select the already existing label
+        event.target.value = newLabel;
+      }
+      else {
+        let option = document.createElement("option");
+        option.value = newLabel;
+        option.textContent = newLabel;
+        event.target.appendChild(option);
+        event.target.value = newLabel;
+        // save the new label to local storage
+        let labels = JSON.parse(localStorage.getItem("labels")) || [];
+        labels.push(newLabel);
+        localStorage.setItem("labels", JSON.stringify(labels));
+      }
+    }
   }
 
   /**
