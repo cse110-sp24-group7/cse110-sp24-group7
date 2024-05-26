@@ -9,6 +9,9 @@ class JournalPopup extends HTMLElement {
     super();
     let shadowRoot = this.attachShadow({ mode: "open" });
 
+    // set to store selected labels
+    this.selectedLabels = new Set();
+
     // get the css file and append it to the shadow root
     const style = document.createElement("link");
     style.rel = "stylesheet";
@@ -36,6 +39,9 @@ class JournalPopup extends HTMLElement {
       closeButton.addEventListener("click", () => {
         this.style.display = "none";
       });
+
+      // populate the labels from local storage
+      this.populateLabels();
     };
 
     // append everything to the shadow root
@@ -55,6 +61,89 @@ class JournalPopup extends HTMLElement {
         .querySelector("#journalForm")
         .addEventListener("submit", this.onSubmit.bind(this));
     }, 500);
+  }
+
+  /**
+   * @method populateLabelSelector
+   * @description Populates the label selector with labels from local storage.
+   */
+  populateLabels() {
+    const labelContainer = this.shadowRoot.getElementById("label");
+    const labels = JSON.parse(localStorage.getItem("labels")) || [];
+
+    // clear the label container
+    labelContainer.innerHTML = "";
+
+    // add "New Label" option
+    let newLabelDiv = document.createElement("div");
+    newLabelDiv.textContent = "New Label";
+    newLabelDiv.classList.add("label-item");
+    newLabelDiv.addEventListener("click", this.newLabel.bind(this));
+    labelContainer.appendChild(newLabelDiv);
+    labelContainer.appendChild(document.createElement("hr"));
+
+    // populate the dropdown with stored labels
+    labels.forEach((label) => {
+      let div = document.createElement("div");
+      div.textContent = label;
+      div.classList.add("label-item");
+      div.addEventListener("click", () => this.selectLabel(div));
+      div.addEventListener("dblclick", () => this.deleteLabel(div));
+      labelContainer.appendChild(div);
+    });
+  }
+
+  /**
+   * @method selectLabel
+   * @description Toggles the selection state of a label.
+   * @param {HTMLElement} labelElement - The label element to toggle
+   */
+  selectLabel(labelElement) {
+    const label = labelElement.textContent;
+    if (this.selectedLabels.has(label)) {
+      this.selectedLabels.delete(label);
+      labelElement.classList.remove("selected");
+    } else {
+      this.selectedLabels.add(label);
+      labelElement.classList.add("selected");
+    }
+  }
+
+  /**
+   * @method deleteLabel
+   * @description Deletes a label from the list and updates local storage.
+   * @param {HTMLElement} labelElement - The label element to delete
+   */
+  deleteLabel(labelElement) {
+    const label = labelElement.textContent;
+    let labels = JSON.parse(localStorage.getItem("labels")) || [];
+
+    // remove the label from the local storage array
+    labels = labels.filter((item) => item !== label);
+    localStorage.setItem("labels", JSON.stringify(labels));
+
+    // remove the label from the selected labels set
+    this.selectedLabels.delete(label);
+
+    // remove the label element from the DOM
+    labelElement.remove();
+  }
+
+  /**
+   * @method newLabel
+   * @description Handles the creation of a new label and saves it to local storage.
+   * @param {Event} event - The change event
+   */
+  newLabel() {
+    let newLabel = prompt("Enter a new label:");
+    if (newLabel !== null && newLabel.trim() !== "") {
+      let labels = JSON.parse(localStorage.getItem("labels")) || [];
+      if (!labels.includes(newLabel)) {
+        labels.push(newLabel);
+        localStorage.setItem("labels", JSON.stringify(labels));
+        this.populateLabels();
+      }
+    }
   }
   /**
    * @method getJournalsFromStorage
@@ -89,7 +178,7 @@ class JournalPopup extends HTMLElement {
       entry_title: this.shadowRoot.querySelector("#title").value,
       entry_content: this.shadowRoot.querySelector("#description").value,
       creation_date: this.shadowRoot.querySelector("#currDate").value,
-      enrty_label: this.shadowRoot.querySelector("#label").value,
+      labels: Array.from(this.selectedLabels),
     };
 
     // get existing tasks from local storage or initialize an empty array

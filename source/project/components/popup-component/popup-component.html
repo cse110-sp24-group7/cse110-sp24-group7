@@ -34,7 +34,6 @@
           placeholder="Due Date"
           required
           aria-required="true"
-          step="900"
         />
         <input
           type="number"
@@ -57,13 +56,12 @@
           <option value="P4">P4</option>
         </select>
         <!-- Label Selection -->
-        <input
-          type="text"
-          id="label"
-          class="form-control"
-          placeholder="Label"
-          required
-        />
+        <div class="dropdown">
+          <button class="dropbtn">Label</button>
+          <div id="label" class="dropdown-content">
+            <!-- labels will be added here -->
+          </div>
+        </div>
       </div>
       <!-- Description Section -->
       <textarea
