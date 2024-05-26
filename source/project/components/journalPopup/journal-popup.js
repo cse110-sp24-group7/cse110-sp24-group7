@@ -1,8 +1,8 @@
 //***UPDATED app.js */
-class PopupComponent extends HTMLElement {
+class JournalPopup extends HTMLElement {
   /**
    * @constructor
-   * @description Creates an instance of PopupComponent, sets up the shadow DOM, and initializes
+   * @description Creates an instance of JournalPopup, sets up the shadow DOM, and initializes
    * the component with CSS and HTML content loaded asynchronously.
    */
   constructor() {
@@ -12,7 +12,7 @@ class PopupComponent extends HTMLElement {
     // get the css file and append it to the shadow root
     const style = document.createElement("link");
     style.rel = "stylesheet";
-    style.href = "styles.css";
+    style.href = "/source/project/components/journalPopup/journal-styles.css";
     shadowRoot.append(style);
 
     // adds the overlay css style to our program(makes the background grey out)
@@ -27,7 +27,7 @@ class PopupComponent extends HTMLElement {
     const div = document.createElement("div");
     style.onload = async () => {
       div.setAttribute("class", "popup-container");
-      const response = await fetch("journal-popup.html");
+      const response = await fetch("/source/project/components/journalPopup/journal-popup.html");
       const html = await response.text();
       div.innerHTML = html;
 
@@ -118,10 +118,12 @@ class PopupComponent extends HTMLElement {
 }
 
 // define the custom element
-customElements.define("popup-component", PopupComponent);
+customElements.define("journal-popup", JournalPopup);
 
 // creates the popup when the add task button is clicked
-document.getElementById("open-journal-popup").addEventListener("click", function () {
-  const popup = document.createElement("popup-component");
-  document.body.appendChild(popup);
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById("open-journal-popup").addEventListener("click", function () {
+    const popup = document.createElement("journal-popup");
+    document.body.appendChild(popup);
+  });
 });
