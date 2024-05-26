@@ -1,3 +1,3 @@
-window.addEventListener('DOMContentLoaded', () => {
-    // preload content
-})
+window.addEventListener("DOMContentLoaded", () => {
+  // preload content
+});
