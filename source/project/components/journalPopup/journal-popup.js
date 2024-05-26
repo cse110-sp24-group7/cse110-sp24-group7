@@ -121,7 +121,7 @@ class PopupComponent extends HTMLElement {
 customElements.define("popup-component", PopupComponent);
 
 // creates the popup when the add task button is clicked
-document.getElementById("open-popup").addEventListener("click", function () {
+document.getElementById("open-journal-popup").addEventListener("click", function () {
   const popup = document.createElement("popup-component");
   document.body.appendChild(popup);
 });
