@@ -16,7 +16,7 @@ class PopupComponent extends HTMLElement {
     // get the css file and append it to the shadow root
     const style = document.createElement("link");
     style.rel = "stylesheet";
-    style.href = "popup-component.css";
+    style.href = "/source/project/components/popup-component/task-popup.css";
     this.shadowRoot.append(style);
 
     // adds the overlay css style to our program(makes the background grey out)
@@ -31,7 +31,7 @@ class PopupComponent extends HTMLElement {
     const div = document.createElement("div");
     style.onload = async () => {
       div.setAttribute("class", "popup-container");
-      const response = await fetch("popup-component.html");
+      const response = await fetch("/source/project/components/popup-component/popup-component.html");
       const html = await response.text();
       div.innerHTML = html;
 
@@ -141,10 +141,12 @@ class PopupComponent extends HTMLElement {
 }
 
 // define the custom element
-customElements.define("popup-component", PopupComponent);
+customElements.define("task-popup-component", PopupComponent);
 
 // creates the popup when the add task button is clicked
-document.getElementById("open-popup").addEventListener("click", function () {
-  const popup = document.createElement("popup-component");
-  document.body.appendChild(popup);
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById("open-task-popup").addEventListener("click", function () {
+    const popup = document.createElement("task-popup-component");
+    document.body.appendChild(popup);
+  });
 });
