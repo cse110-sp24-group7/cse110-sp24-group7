@@ -157,6 +157,7 @@ nav {
   border-radius: 8px;
   width: 90px;
   cursor: pointer;
+  overflow-x: hidden;
   overflow-y: auto;
 }
 
