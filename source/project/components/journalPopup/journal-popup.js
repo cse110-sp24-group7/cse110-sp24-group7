@@ -15,7 +15,7 @@ class JournalPopup extends HTMLElement {
     // get the css file and append it to the shadow root
     const style = document.createElement("link");
     style.rel = "stylesheet";
-    style.href = "/source/project/components/journalPopup/journal-styles.css";
+    style.href = "../components/journalPopup/journal-styles.css";
     shadowRoot.append(style);
 
     // adds the overlay css style to our program(makes the background grey out)
@@ -30,7 +30,7 @@ class JournalPopup extends HTMLElement {
     const div = document.createElement("div");
     style.onload = async () => {
       div.setAttribute("class", "popup-container");
-      const response = await fetch("/source/project/components/journalPopup/journal-popup.html");
+      const response = await fetch("../components/journalPopup/journal-popup.html");
       const html = await response.text();
       div.innerHTML = html;
 
@@ -158,10 +158,12 @@ class JournalPopup extends HTMLElement {
   /**
    * @method saveJournalsToStorage
    * @description Saves the given journalData array to local storage after converting it to a JSON string.
-   * @param {Array} tasks - The array of Journals to save
+   * @param {Array} journalData - The array of Journals to save
    */
   saveJournalsToStorage(journalData) {
     localStorage.setItem("journalData", JSON.stringify(journalData));
+    let event = new CustomEvent("storageUpdate", { bubbles: true });
+    this.dispatchEvent(event);
   }
 
   /**
@@ -182,13 +184,17 @@ class JournalPopup extends HTMLElement {
     };
 
     // get existing tasks from local storage or initialize an empty array
-    let journalDatas = this.getJournalsFromStorage();
+    // let journalDatas = this.getJournalsFromStorage();
 
     // add the new task to the array
-    journalDatas.push(journalData);
+    // journalDatas.push(journalData);
 
     // convert the updated array to JSON and save it back to local storage
-    this.saveJournalsToStorage(journalDatas);
+    // this.saveJournalsToStorage(journalDatas);
+
+    window.api.addEntry(journalData, (entries) => {
+      this.saveJournalsToStorage(entries);
+    });
 
     // log the data to the console
     console.log("Journal Form Data Saved:", journalData);
@@ -208,11 +214,3 @@ class JournalPopup extends HTMLElement {
 
 // define the custom element
 customElements.define("journal-popup", JournalPopup);
-
-// creates the popup when the add task button is clicked
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById("open-journal-popup").addEventListener("click", function () {
-    const popup = document.createElement("journal-popup");
-    document.body.appendChild(popup);
-  });
-});

@@ -1,24 +1,33 @@
-window.addEventListener('DOMContentLoaded', init);
+// import { app, BrowserWindow } from 'electron';
+// import path from 'node:path';
+// import { fileURLToPath } from 'url';
+// import { dirname } from 'path';
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = dirname(__filename);
+// import * as dbMgr from './database/dbMgr.js';
 
-function init() {
-    
-    var addTask = document.getElementById('add-task');
-    var imageList = document.getElementById('UL1');
+const { app, BrowserWindow } = require('electron')
+const path = require('node:path');
+const dbMgr = require("./database/dbMgr.js");
 
-    addTask.addEventListener('click', function() {
-        console.log("Hi")
-        // Create a new list item (li) and image element (img)
-        const listItem = document.createElement('li');
-        const placeholder = document.createElement('img');
-
-        // Set the src attribute of the image
-        placeholder.src = 'res/newTask.png'; 
-        placeholder.alt = 'Image';
-        placeholder.style.width = '100px';
-
-        // Append the placeholder task to the list item and the list item to the task list
-        listItem.appendChild(placeholder);
-        imageList.appendChild(listItem);
+const createWindow = () => {
+    const win = new BrowserWindow({
+      width: 2560,
+      height: 1440,
+      webPreferences:{
+        preload: path.join(__dirname, 'preload.js'),
+        nodeIntegration: true
+      }
     });
-
+  
+    win.loadFile('./source/project/pages/mainview.html');
+    win.webContents.openDevTools();
 }
+
+app.whenReady().then(() => {
+    dbMgr.init(createWindow);
+})
+
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') app.quit()
+})

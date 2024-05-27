@@ -1,4 +1,10 @@
 {
+	"name": "tbd",
+	"version": "1.0.0",
+	"description": "Akatsuki 7's CSE 110 Developer Journal",
+	"main": "./source/project/scripts/main.js",
+	"author": "Akatsuki 7",
+	"type": "commonjs",
 	"devDependencies": {
 		"@babel/core": "^7.24.6",
 		"@babel/preset-env": "^7.24.6",
@@ -17,7 +23,6 @@
 		"jsdoc": "jsdoc -c jsdocs_conf.json",
 		"start": "electron ."
 	},
-	"type": "module",
 	"jest": {
 		"preset": "jest-puppeteer",
 		"transform": {},

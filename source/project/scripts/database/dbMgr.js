@@ -1,10 +1,13 @@
-import sqlite from 'sqlite3';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+// import sqlite from 'sqlite3';
+// import path from 'path';
+// import { fileURLToPath } from 'url';
+// import { dirname } from 'path';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = dirname(__filename);
+
+const sqlite = require('sqlite3');
+const path = require('path');
 
 const dbPath = path.resolve(__dirname, '../../data/data.db');
 const db = new sqlite.Database(dbPath);
@@ -46,10 +49,18 @@ const db = new sqlite.Database(dbPath);
  */
 
 /**
+ * beginCallback should be called when loading the initial mainview.html, after initializing connection to database.
+ * 
+ * @callback beginCallback
+ */
+
+/**
  * Initializes database by creating tables if needed.
  * Must call this function before any queries to prevent error.
+ * 
+ * @param {beginCallback} bcb - beginCallback to load main window.
  */
-export function init() {
+function init(bcb) {
     const fk_sql = `PRAGMA foreign_keys=ON`;
     // SQL queries for each table
     const tasks_sql = `CREATE TABLE IF NOT EXISTS tasks (
@@ -80,7 +91,7 @@ export function init() {
         db.run(fk_sql, [], (err) => {if(err) throw err;})
         db.run(tasks_sql, [], (err) => {if(err) throw err;});
         db.run(entries_sql, [], (err) => {if(err) throw err;});
-        db.run(task_labels_sql, [], (err) => {if(err) throw err;});
+        db.run(task_labels_sql, [], (err) => {if(err) throw err;}, bcb);
     });
 }
 
@@ -88,7 +99,7 @@ export function init() {
  * Queries and returns all tasks.
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
-export function getTasks(trcb) {
+function getTasks(trcb) {
     const sql = `
     SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels
     FROM tasks t
@@ -121,7 +132,7 @@ export function getTasks(trcb) {
  * @param {string[]} labels - an array of labels that each task must contain
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
-export function getTasksConjunctLabels(labels, trcb) {
+function getTasksConjunctLabels(labels, trcb) {
     if (labels.length === 0) {
         return trcb([]);
     }
@@ -161,7 +172,7 @@ export function getTasksConjunctLabels(labels, trcb) {
  * @param {string[]} labels - an array of labels; each task must contain AT LEAST one
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
-export function getTasksDisjunctLabels(labels, trcb) {
+function getTasksDisjunctLabels(labels, trcb) {
     let sql = `
     SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels
     FROM tasks t
@@ -202,7 +213,7 @@ export function getTasksDisjunctLabels(labels, trcb) {
  * Queries and returns all entries.
  * @param {entriesRenderCallback} ercb - the tasks render callback to update the frontend.
  */
-export function getEntries(ercb) {
+function getEntries(ercb) {
     const sql = "SELECT * FROM entries";
     const ret = [];
     db.each(sql, [], (err, row) => {
@@ -220,7 +231,7 @@ export function getEntries(ercb) {
  * @param {task} task - the task to add
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
-export function addTask(task, trcb) {
+function addTask(task, trcb) {
     const taskSql = `INSERT INTO tasks (task_id, task_name, task_content, creation_date, due_date, priority, expected_time)
         VALUES('${task.task_id}', '${task.task_name}', '${task.task_content}', '${task.creation_date}', '${task.due_date}', '${task.priority}', '${task.expected_time}');`;
     
@@ -250,7 +261,7 @@ export function addTask(task, trcb) {
  * @param {task[]} tasks - the tasks to add
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
-export function addTasks(tasks, trcb) {
+function addTasks(tasks, trcb) {
     const taskSql = `INSERT INTO tasks (task_id, task_name, task_content, creation_date, due_date, priority, expected_time)
         VALUES (?, ?, ?, ?, ?, ?, ?);`;
     const labelSql = `INSERT INTO task_labels (task_id, label) VALUES (?, ?);`;
@@ -287,7 +298,7 @@ export function addTasks(tasks, trcb) {
  * @param {entry} entry - the entry to add
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
  */
-export function addEntry(entry, ercb) {
+function addEntry(entry, ercb) {
     const sql = `INSERT INTO entries (entry_id, entry_title, entry_content, creation_date)
         VALUES('${entry.entry_id}', '${entry.entry_title}', '${entry.entry_content}', '${entry.creation_date}');`;
     db.run(sql, [], (err) => {
@@ -303,7 +314,7 @@ export function addEntry(entry, ercb) {
  * @param {task} task - the task to edit. The ID must exist in the database.
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
-export function editTask(task, trcb) {
+function editTask(task, trcb) {
     const sql = `UPDATE tasks SET
             task_name = '${task.task_name}',
             task_content = '${task.task_content}',
@@ -325,7 +336,7 @@ export function editTask(task, trcb) {
  * @param {entry} entry - the entry to add
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
  */
-export function editEntry(entry, ercb) {
+function editEntry(entry, ercb) {
     const sql = `UPDATE entries SET
             entry_title = '${entry.entry_title}',
             entry_content = '${entry.entry_content}',
@@ -344,7 +355,7 @@ export function editEntry(entry, ercb) {
  * @param {string} task_id - the ID of the task to be deleted.
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
-export function deleteTask(task_id, trcb){
+function deleteTask(task_id, trcb){
     const sql = `DELETE FROM tasks WHERE task_id = '${task_id}'`;
     db.run(sql, [], (err) => {
         if (err) {
@@ -359,7 +370,7 @@ export function deleteTask(task_id, trcb){
  * @param {string[]} task_ids - the IDs of tasks to be deleted.
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
-export function deleteTasks(task_ids, trcb) {
+function deleteTasks(task_ids, trcb) {
     const deleteTaskSql = `DELETE FROM tasks WHERE task_id = ?`;
 
     db.serialize(() => {
@@ -384,7 +395,7 @@ export function deleteTasks(task_ids, trcb) {
  * @param {string} entry_id - the ID of the entry to be deleted.
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
  */
-export function deleteEntry(entry_id, ercb){
+function deleteEntry(entry_id, ercb){
     const sql = `DELETE FROM entries WHERE entry_id = '${entry_id}'`;
     db.run(sql, [], (err) => {
         if (err) {
@@ -393,3 +404,19 @@ export function deleteEntry(entry_id, ercb){
         getEntries(ercb);
     });
 }
+
+module.exports = {
+    init,
+    getTasks,
+    getTasksConjunctLabels,
+    getTasksDisjunctLabels,
+    getEntries,
+    addTask,
+    addTasks,
+    addEntry,
+    editTask,
+    editEntry,
+    deleteTask,
+    deleteTasks,
+    deleteEntry
+};

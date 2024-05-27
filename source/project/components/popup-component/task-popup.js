@@ -1,3 +1,6 @@
+// import { tasksRendererCallback } from '../../pages/integrate.js';
+// const { tasksRendererCallback } = require('../../pages/integrate.js');
+
 /**
  * @class
  * @description Represents a popup component that can be dynamically added to the DOM. This component
@@ -19,7 +22,8 @@ class PopupComponent extends HTMLElement {
     // get the css file and append it to the shadow root
     const style = document.createElement("link");
     style.rel = "stylesheet";
-    style.href = "/source/project/components/popup-component/task-popup.css";
+    // NOTE this is relative to the integrate.js loading it from pages/integrate.js
+    style.href = "../components/popup-component/task-popup.css";
     this.shadowRoot.append(style);
 
     // adds the overlay css style to our program(makes the background grey out)
@@ -34,7 +38,7 @@ class PopupComponent extends HTMLElement {
     const div = document.createElement("div");
     style.onload = async () => {
       div.setAttribute("class", "popup-container");
-      const response = await fetch("/source/project/components/popup-component/popup-component.html");
+      const response = await fetch("../components/popup-component/popup-component.html");
       const html = await response.text();
       div.innerHTML = html;
 
@@ -73,7 +77,7 @@ class PopupComponent extends HTMLElement {
    */
   populateLabels() {
     const labelContainer = this.shadowRoot.getElementById("label");
-    const labels = JSON.parse(localStorage.getItem("labels")) || [];
+    const labels = JSON.parse(window.localStorage.getItem("labels")) || [];
 
     // clear the label container
     labelContainer.innerHTML = "";
@@ -120,11 +124,11 @@ class PopupComponent extends HTMLElement {
    */
   deleteLabel(labelElement) {
     const label = labelElement.textContent;
-    let labels = JSON.parse(localStorage.getItem("labels")) || [];
+    let labels = JSON.parse(window.localStorage.getItem("labels")) || [];
 
     // remove the label from the local storage array
     labels = labels.filter((item) => item !== label);
-    localStorage.setItem("labels", JSON.stringify(labels));
+    window.localStorage.setItem("labels", JSON.stringify(labels));
 
     // remove the label from the selected labels set
     this.selectedLabels.delete(label);
@@ -141,10 +145,10 @@ class PopupComponent extends HTMLElement {
   newLabel() {
     let newLabel = prompt("Enter a new label:");
     if (newLabel !== null && newLabel.trim() !== "") {
-      let labels = JSON.parse(localStorage.getItem("labels")) || [];
+      let labels = JSON.parse(window.localStorage.getItem("labels")) || [];
       if (!labels.includes(newLabel)) {
         labels.push(newLabel);
-        localStorage.setItem("labels", JSON.stringify(labels));
+        window.localStorage.setItem("labels", JSON.stringify(labels));
         this.populateLabels();
       }
     }
@@ -157,11 +161,11 @@ class PopupComponent extends HTMLElement {
    */
   getUserID() {
     // check if the user ID already exists in local storage
-    let userID = localStorage.getItem("userID");
+    let userID = window.localStorage.getItem("userID");
     if (!userID) {
       // if not, generate a new user ID and store it
       userID = Math.random().toString(36).substr(2, 9);
-      localStorage.setItem("userID", userID);
+      window.localStorage.setItem("userID", userID);
     }
     return userID;
   }
@@ -172,7 +176,7 @@ class PopupComponent extends HTMLElement {
    * @returns {Array} The array of tasks
    */
   getTasksFromStorage() {
-    return JSON.parse(localStorage.getItem("tasks")) || [];
+    return JSON.parse(window.localStorage.getItem("tasks")) || [];
   }
 
   /**
@@ -182,7 +186,9 @@ class PopupComponent extends HTMLElement {
    */
   saveTasksToStorage(tasks) {
     localStorage.setItem("tasks", JSON.stringify(tasks));
-  }
+    let event = new CustomEvent("storageUpdate", { bubbles: true });
+    this.dispatchEvent(event);
+}
 
   /**
    * @method onSubmit
@@ -202,7 +208,7 @@ class PopupComponent extends HTMLElement {
     // get the users input and store it in a task object
     let task = {
       task_id: Math.random().toString(36).substr(2, 9),
-      creator_id: userID,
+      // creator_id: userID,
       task_name: this.shadowRoot.getElementById("title").value,
       task_content: this.shadowRoot.getElementById("description").value,
       creation_date: dateString,
@@ -213,15 +219,20 @@ class PopupComponent extends HTMLElement {
     };
 
     // get existing tasks from local storage or initialize an empty array
-    let tasks = this.getTasksFromStorage();
+    // let tasks = this.getTasksFromStorage();
 
     // add the new task to the array
-    tasks.push(task);
+    // tasks.push(task);
 
     // convert the updated array to JSON and save it back to local storage
-    this.saveTasksToStorage(tasks);
+    // this.saveTasksToStorage(tasks);
+
+    window.api.addTask(task, (tasks) => {
+      this.saveTasksToStorage(tasks);
+    });
+
     // log the updated tasks array so see it working
-    console.log("Form Data Saved:", tasks);
+    console.log("Form Data Saved:", task);
 
     // reset form and hide popup
     event.target.reset();
@@ -231,11 +242,3 @@ class PopupComponent extends HTMLElement {
 
 // define the custom element
 customElements.define("task-popup-component", PopupComponent);
-
-// creates the popup when the add task button is clicked
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById("open-task-popup").addEventListener("click", function () {
-    const popup = document.createElement("task-popup-component");
-    document.body.appendChild(popup);
-  });
-});
