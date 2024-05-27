@@ -85,6 +85,7 @@ Following is feedback that we received on Retrium, segmented into groups as per 
 
 ### Action Items:
 - Samvrit: Have a slackbot ping us daily to send a message with three quick bullet points: "what you worked on, blockers, scheduling conflicts for the n
+- Samvrit + Arnav: Create a Google Calendar for team members to provide availability during the week for when they'll be working on the project(5+ hours over the course of all the school days)
 
 ### Overall Takeaways
 
