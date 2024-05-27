@@ -105,22 +105,27 @@ nav {
   height: 30px;
   left: 0;
   margin-bottom: 20px;
+  border-radius: 8px 8px 0 0;
 }
 
 #closeBtn {
+  background-color: transparent;
+  border: none;
+}
+
+#closeBtn img {
+  width: 20px;
+  height: 20px;
   position: absolute;
   top: 5px;
   right: 5px;
   cursor: pointer;
-  background-color: #ed7f7f;
   border: none;
-  border-radius: 100%;
-  color: white;
 }
 
 #dueDate {
   border-radius: 8px;
-  width: 200px;
+  width: 194px;
   cursor: pointer;
 }
 
@@ -157,7 +162,6 @@ nav {
   border-radius: 8px;
   width: 90px;
   cursor: pointer;
-  overflow-x: hidden;
   overflow-y: auto;
 }
 
