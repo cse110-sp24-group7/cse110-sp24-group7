@@ -79,18 +79,37 @@ class PopupComponent extends HTMLElement {
     labelContainer.innerHTML = "";
 
     // add "New Label" option
-    let newLabelDiv = document.createElement("div");
-    newLabelDiv.textContent = "New Label";
-    newLabelDiv.classList.add("label-item");
-    newLabelDiv.addEventListener("click", this.newLabel.bind(this));
-    labelContainer.appendChild(newLabelDiv);
+    const input = document.createElement("input");
+    input.type = "text";
+    input.classList.add("label-input");
+    input.placeholder = "New Label";
+    labelContainer.appendChild(input);
     labelContainer.appendChild(document.createElement("hr"));
+
+    // add event listener for input to save new label
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        const newLabel = input.value.trim();
+        if (newLabel) {
+          let labels = JSON.parse(localStorage.getItem("labels")) || [];
+          if (!labels.includes(newLabel)) {
+            labels.push(newLabel);
+            localStorage.setItem("labels", JSON.stringify(labels));
+          }
+          this.selectedLabels.add(newLabel);
+          this.populateLabels();
+        }
+      }
+    });
 
     // populate the dropdown with stored labels
     labels.forEach((label) => {
       let div = document.createElement("div");
       div.textContent = label;
       div.classList.add("label-item");
+      if (this.selectedLabels.has(label)) {
+        div.classList.add("selected");
+      }
       div.addEventListener("click", () => this.selectLabel(div));
       div.addEventListener("dblclick", () => this.deleteLabel(div));
       labelContainer.appendChild(div);
@@ -131,23 +150,6 @@ class PopupComponent extends HTMLElement {
 
     // remove the label element from the DOM
     labelElement.remove();
-  }
-
-  /**
-   * @method newLabel
-   * @description Handles the creation of a new label and saves it to local storage.
-   * @param {Event} event - The change event
-   */
-  newLabel() {
-    let newLabel = prompt("Enter a new label:");
-    if (newLabel !== null && newLabel.trim() !== "") {
-      let labels = JSON.parse(localStorage.getItem("labels")) || [];
-      if (!labels.includes(newLabel)) {
-        labels.push(newLabel);
-        localStorage.setItem("labels", JSON.stringify(labels));
-        this.populateLabels();
-      }
-    }
   }
 
   /**
