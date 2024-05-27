@@ -207,14 +207,14 @@ nav {
   border-radius: 8px;
   text-align: center;
   width: 90px;
-  font-family: inherit; 
-  font-size: inherit;  
+  font-family: inherit;
+  font-size: inherit;
   color: inherit;
   cursor: pointer;
 }
 
 .label-input::placeholder {
-  color: black;  
-  font-family: inherit; 
-  font-size: inherit;  
+  color: black;
+  font-family: inherit;
+  font-size: inherit;
 }
