@@ -1,4 +1,4 @@
-# Sprint 1 Retrospective
+# Warmup Sprint Retrospective
 
 ### Attendees:
 
@@ -8,7 +8,7 @@ Arnav, Samvrit, Andrew, Angie, Deena, Emma, Hashim, Jessica, Matteo, Mialyssa, N
 
 The link we used is linked here: [Retrium](https://app.retrium.com/team-room/15a25aa7-0e5e-47f3-9d75-dde7474be12b/history/49f43de7-3644-4ed9-b01e-496359627cd6)
 
-The Retrium is also listed as a txt file in the `admin/misc` folder. [Retrium_Txt](../misc/Retrospective-Sprint1.txt)
+The Retrium is also listed as a txt file in the `admin/misc` folder. [Retrium_Txt](../misc/Retrospective-SprintWarmup.txt)
 
 ### Purpose of the Retrospective
 

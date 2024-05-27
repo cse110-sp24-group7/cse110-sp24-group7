@@ -1,4 +1,4 @@
-# Sprint 1 Review Meeting
+# Warmup Sprint Review Meeting
 
 ### Attendees:
 
