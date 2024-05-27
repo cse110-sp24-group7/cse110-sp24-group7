@@ -159,7 +159,8 @@ textarea.form-control {
   border-radius: 8px;
   z-index: 1;
   overflow: scroll;
-  height: 150px;
+  max-height: 150px;
+  left: 45%;
 }
 
 .dropdown-content div {
@@ -184,11 +185,32 @@ textarea.form-control {
 }
 
 .label-item.selected {
-  background-color: #0056b3;
+  background-color: #87c1ff;
 }
 
 #currDate {
   border-radius: 8px;
   width: 220px;
   cursor: pointer;
+}
+
+.label-input {
+  background-color: transparent;
+  padding-bottom: 5px;
+  padding-top: 10px;
+  border-color: none;
+  border: none;
+  border-radius: 8px;
+  text-align: center;
+  width: 90px;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.label-input::placeholder {
+  color: black;
+  font-family: inherit;
+  font-size: inherit;
 }
