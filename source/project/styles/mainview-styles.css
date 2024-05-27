@@ -86,7 +86,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Other styles */
+
 /*Journal and Task Previews*/
 .journal-pv,
 .task-pv{
@@ -116,7 +116,7 @@
     text-overflow: clip;
     overflow: hidden;
     overflow: ellipsis; 
-} 
+    } 
   .journal-pv p {
     margin: 0;
     font-size: 10px;
@@ -126,7 +126,19 @@
     flex: auto;
     text-overflow: clip;
     overflow: hidden;
-    overflow: ellipsis;   }
+    overflow: ellipsis;   
+    }
+    .label-box {
+        background-color: #bdf6ff;
+        color: #000000;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 14px;
+        position: absolute; 
+        top: 10px;
+        left: 10px;
+    }
+
 
     /* TODO: task formatting needs to be confirmed! */
     .task-pv h2 {
@@ -141,13 +153,25 @@
         overflow: hidden;
         overflow: ellipsis; 
     } 
-      .task-pv p {
-        margin: 0;
-        font-size: 10px;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2; /* Adjust the number of lines to show before truncating */
-        flex: auto;
-        text-overflow: clip;
-        overflow: hidden;
-        overflow: ellipsis;   }
+    .task-pv p {
+    margin: 0;
+    font-size: 10px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* Adjust the number of lines to show before truncating */
+    flex: auto;
+    text-overflow: clip;
+    overflow: hidden;
+    overflow: ellipsis;   
+    }
+
+    .task-pv label-box {
+        background-color: #bdf6ff;
+        color: #000000;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 14px;
+        position: absolute; 
+        top: 10px;
+        left: 10px;
+    }
