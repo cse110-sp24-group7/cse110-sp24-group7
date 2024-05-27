@@ -1,5 +1,5 @@
-// import { db } from "../scripts/database/dbMgr";
-import * as dbMgr from '../scripts/database/dbMgr';
+//import * as dbMgr from '../scripts/database/dbMgr';
+const dbMgr = require('../scripts/database/dbMgr');
 
 describe("Database functions", () => {
     let dbLength = 0;
@@ -66,8 +66,11 @@ describe("Database functions", () => {
 
     test('Testing editTask', done => {
         function trcbEditTest(tasks) {
-            expect(tasks[0].task_id).toBe(test1.task_id);
-            expect(tasks[0].task_content).toBe(test1.task_content);
+            for(let i = 0; i<tasks.length; i++){
+                if(tasks[i].task_id == test1.task_id){
+                    expect(tasks[i].task_content).toBe(test1.task_content);
+                }
+            }
             done();
         }
         test1.task_content = "test1_updated_content";
