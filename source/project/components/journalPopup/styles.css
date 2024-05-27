@@ -158,7 +158,7 @@ textarea.form-control {
   width: auto;
   border-radius: 8px;
   z-index: 1;
-  overflow: scroll; 
+  overflow: scroll;
   height: 150px;
 }
 
@@ -175,7 +175,9 @@ textarea.form-control {
   background-color: #ddd;
 }
 
-.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
 
 .label-item {
   cursor: pointer;
