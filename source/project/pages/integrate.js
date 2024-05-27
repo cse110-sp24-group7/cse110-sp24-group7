@@ -81,12 +81,6 @@ function entriesRendererCallback(entries) {
     });
 }
 
-function syncEntries(entries){
-    localStorage.setItem("entries" , JSON.stringify(entries));
-    entriesRendererCallback(entries)
-}
-
-
 document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener("storageUpdate", () => {
         let storedEntries = JSON.parse(localStorage.getItem("journalData"));
@@ -101,7 +95,11 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem("tasks", JSON.stringify(tasks));
         tasksRendererCallback(tasks);
     });
-    window.api.getEntries(syncEntries);
+    window.api.getEntries((entries) =>{
+        localStorage.setItem("journalData" , JSON.stringify(entries));
+        entriesRendererCallback(entries)
+    });
+    
     // creates the popup when the add task button is clicked
     document.querySelectorAll(".add-task").forEach(button => {
         button.addEventListener("click", function () {
