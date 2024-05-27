@@ -26,4 +26,4 @@ function factorial(n) {
   return result;
 }
 
-export { factorial };
+module.exports = { factorial };

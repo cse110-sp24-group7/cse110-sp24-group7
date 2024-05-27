@@ -17,4 +17,4 @@ function testing(test) {
   return test + " testing";
 }
 
-export default testing;
+module.exports = testing;

@@ -17,4 +17,4 @@ function formatNote(content, user = "Anonymous") {
   return `${timestamp} - ${user}: ${content}`;
 }
 
-export { formatNote };
+module.exports = { formatNote };
