@@ -25,6 +25,7 @@
 .logo span {
     font-weight: bold;
     font-size: 35px;
+    font-family: 'Courier New';
 }
 
 .menu-icon img {
@@ -37,6 +38,7 @@
     display: flex;
     flex-direction: column;
     height: calc(100vh - 50px); /* Adjust height to leave space for header */
+    font-family: 'Courier New';
 
 }
 
@@ -52,6 +54,7 @@
     text-align: center;
     padding: 10px 0;
     font-weight: bold;
+    font-family: 'Lucida Sans Unicode';
 }
 
 /* Ensure the vertical lines reach all the way down */
@@ -67,9 +70,10 @@
     width: calc(100% - 10px); /* Stretch button width to fill container */
     border: 1px dotted #000; /* Dotted outline */
     border-spacing: 100px; /* Increase spacing between dots */
-    border-radius:10px; /* Rounded corners */
+    border-radius:7px; /* Rounded corners */
+    border-color: #969696; /* Border outline color */
     cursor: pointer; /* Change cursor to pointer */
-    background-color: #fff; /* Background color */
+    background-color: #f8f8f8; /* Background color */
     color: #000; /* Text color */
     font-weight: bold; /* Bold text */
 }
@@ -97,7 +101,7 @@
     width: calc(100% - 10px); /* Adjusted to add-journal width */
     flex: none;
     border: 1px solid black; /* Outline */
-    border-radius:10px; /* Rounded corners */
+    border-radius:7px; /* Rounded corners */
     justify-content: flex-start; 
     text-align: left; /* Text alignment */
     align-items: stretch; /* Box alignment */
