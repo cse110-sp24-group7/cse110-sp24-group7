@@ -24,12 +24,12 @@
 
 .logo span {
     font-weight: bold;
-    font-size: 20px;
+    font-size: 35px;
 }
 
 .menu-icon img {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
 }
 
 /* Styling the calendar */
@@ -37,6 +37,7 @@
     display: flex;
     flex-direction: column;
     height: calc(100vh - 50px); /* Adjust height to leave space for header */
+
 }
 
 .day {
