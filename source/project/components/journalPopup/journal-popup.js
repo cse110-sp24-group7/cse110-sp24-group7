@@ -147,7 +147,7 @@ class PopupComponent extends HTMLElement {
     // remove the label element from the DOM
     labelElement.remove();
   }
-  
+
   /**
    * @method getJournalsFromStorage
    * @description Retrieves the tasks array from local storage, or returns an of journal entries if no entries are found.
