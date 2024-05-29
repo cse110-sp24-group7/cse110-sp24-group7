@@ -163,7 +163,10 @@ class JournalPopup extends HTMLElement {
    */
   saveJournalsToStorage(journalData) {
     localStorage.setItem("journalData", JSON.stringify(journalData));
-    let event = new CustomEvent("storageUpdate", { bubbles: true, composed: true });
+    let event = new CustomEvent("storageUpdate", {
+      bubbles: true,
+      composed: true,
+    });
     this.dispatchEvent(event);
     this.remove();
   }

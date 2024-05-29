@@ -185,7 +185,10 @@ class PopupComponent extends HTMLElement {
    */
   saveTasksToStorage(tasks) {
     localStorage.setItem("tasks", JSON.stringify(tasks));
-    let event = new CustomEvent("storageUpdate", { bubbles: true, composed: true });
+    let event = new CustomEvent("storageUpdate", {
+      bubbles: true,
+      composed: true,
+    });
     this.dispatchEvent(event);
     this.remove();
   }
