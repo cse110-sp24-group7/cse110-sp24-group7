@@ -1,4 +1,3 @@
-//***UPDATED app.js */
 class JournalPopup extends HTMLElement {
   /**
    * @constructor
@@ -23,7 +22,7 @@ class JournalPopup extends HTMLElement {
     const overlay = document.createElement("div");
     overlay.setAttribute("class", "overlay");
     overlay.addEventListener("click", () => {
-      this.style.display = "none";
+      this.remove();
     });
 
     // waits for the css to load before the html popup occurs
@@ -37,7 +36,7 @@ class JournalPopup extends HTMLElement {
       // close the popup when user presses x
       const closeButton = div.querySelector("#closeBtn");
       closeButton.addEventListener("click", () => {
-        this.style.display = "none";
+        this.remove();
       });
 
       // populate the labels from local storage
@@ -57,7 +56,6 @@ class JournalPopup extends HTMLElement {
     // event listener to form submission
     setTimeout(() => {
       this.shadowRoot
-
         .querySelector("#journalForm")
         .addEventListener("submit", this.onSubmit.bind(this));
     }, 500);
@@ -186,15 +184,6 @@ class JournalPopup extends HTMLElement {
       labels: Array.from(this.selectedLabels),
     };
 
-    // get existing tasks from local storage or initialize an empty array
-    // let journalDatas = this.getJournalsFromStorage();
-
-    // add the new task to the array
-    // journalDatas.push(journalData);
-
-    // convert the updated array to JSON and save it back to local storage
-    // this.saveJournalsToStorage(journalDatas);
-
     window.api.addEntry(journalData, (entries) => {
       this.saveJournalsToStorage(entries);
     });
@@ -204,14 +193,14 @@ class JournalPopup extends HTMLElement {
 
     // reset form
     event.target.reset();
-    this.style.display = "none";
+    this.remove();
   }
 
   onClose(event) {
     event.preventDefault();
     event.target.reset();
     document.getElementById("title").removeAttribute("required");
-    this.style.display = "none";
+    this.remove();
   }
 }
 
