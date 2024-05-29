@@ -20,7 +20,7 @@ const createWindow = () => {
       }
     });
   
-    win.loadFile('./source/project/pages/mainview.html');
+    win.loadFile('./source/project/components/mainview/mainview.html');
     win.webContents.openDevTools();
 }
 

@@ -20,7 +20,7 @@ class PopupComponent extends HTMLElement {
         const style = document.createElement("link");
         style.rel = "stylesheet";
         // NOTE this is relative to the integrate.js loading it from pages/integrate.js
-        style.href = "../components/task-popup/task-popup.css";
+        style.href = "../task-popup/task-popup.css";
         this.shadowRoot.append(style);
 
         // adds the overlay css style to our program(makes the background grey out)
@@ -35,7 +35,7 @@ class PopupComponent extends HTMLElement {
         const div = document.createElement("div");
         style.onload = async () => {
             div.setAttribute("class", "popup-container");
-            const response = await fetch("../components/task-popup/task-popup.html");
+            const response = await fetch("../task-popup/task-popup.html");
             const html = await response.text();
             div.innerHTML = html;
 
