@@ -13,7 +13,6 @@ Previous ADRs of our product considered various options for wrapping our applica
 - How well do these libraries perform with different amounts of data?
 - How will the complexities of each library affect the team's learning curve to use them?
 
-
 ## Considered Options
 
 - SQLite3
@@ -27,28 +26,31 @@ Chosen option: SQLite3, because it provides the best balance between simplicity 
 ## Pros and Cons of the Options Considered
 
 ### SQLite3
- - Pro: Simple setup and usage.
- - Pro: Suitable for applications with moderate data requirements.
- - Pro: No need for a separate server process.
- - Pro: Supports complex queries and relationships.
- - Pro: Lightweight and portable.
- - Con: Limited concurrency handling compared to MySQL.
- - Con: Not ideal for very large-scale applications.
+
+- Pro: Simple setup and usage.
+- Pro: Suitable for applications with moderate data requirements.
+- Pro: No need for a separate server process.
+- Pro: Supports complex queries and relationships.
+- Pro: Lightweight and portable.
+- Con: Limited concurrency handling compared to MySQL.
+- Con: Not ideal for very large-scale applications.
 
 ### MySQL
- - Pro: Handles large-scale applications well.
- - Pro: Strong concurrency support.
- - Pro: Robust security features.
- - Pro: Widely supported and documented.
- - Con: Requires a separate server process.
- - Con: More complex setup and maintenance.
- - Con: Potential overkill for moderate data requirements.
+
+- Pro: Handles large-scale applications well.
+- Pro: Strong concurrency support.
+- Pro: Robust security features.
+- Pro: Widely supported and documented.
+- Con: Requires a separate server process.
+- Con: More complex setup and maintenance.
+- Con: Potential overkill for moderate data requirements.
 
 ### electron-store
- - Pro: Extremely simple setup and usage.
- - Pro: Ideal for small-scale data storage.
- - Pro: No need for SQL knowledge.
- - Pro: Very lightweight.
- - Con: Limited to key-value storage, unsuitable for complex data relationships.
- - Con: Not designed for handling large datasets.
- - Con: Lacks the advanced querying capabilities of SQL databases.
+
+- Pro: Extremely simple setup and usage.
+- Pro: Ideal for small-scale data storage.
+- Pro: No need for SQL knowledge.
+- Pro: Very lightweight.
+- Con: Limited to key-value storage, unsuitable for complex data relationships.
+- Con: Not designed for handling large datasets.
+- Con: Lacks the advanced querying capabilities of SQL databases.
