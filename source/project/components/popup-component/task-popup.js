@@ -217,7 +217,7 @@ class PopupComponent extends HTMLElement {
       due_date: this.shadowRoot.getElementById("dueDate").value,
       priority: this.shadowRoot.getElementById("priority").value,
       labels: Array.from(this.selectedLabels),
-      expectedTime: this.shadowRoot.getElementById("expectedTime").value,
+      expected_time: this.shadowRoot.getElementById("expectedTime").value,
     };
 
     // get existing tasks from local storage or initialize an empty array
