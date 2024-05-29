@@ -37,9 +37,10 @@
         />
         <input
           type="number"
+          step="0.1"
           id="expectedTime"
           class="form-control"
-          placeholder="Expected Time (hours)"
+          placeholder="Expected Time (hr)"
           required
         />
         <!-- Priority Dropdown -->
@@ -49,7 +50,7 @@
           required
           aria-required="true"
         >
-          <option value="P0" disabled selected>Priority</option>
+          <option value="default" disabled selected>Priority</option>
           <option value="P1">P1</option>
           <option value="P2">P2</option>
           <option value="P3">P3</option>

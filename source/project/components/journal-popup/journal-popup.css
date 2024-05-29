@@ -141,6 +141,7 @@ textarea.form-control {
 
 .dropdown {
   margin-bottom: 16px;
+  margin-top: 16px;
   padding: 8px 10px;
   width: 100%;
   box-sizing: border-box;
@@ -166,7 +167,7 @@ textarea.form-control {
   z-index: 1;
   overflow: scroll;
   max-height: 150px;
-  left: 45%;
+  left: 41%;
 }
 
 .dropdown-content div {

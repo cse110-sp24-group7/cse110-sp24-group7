@@ -125,13 +125,13 @@ nav {
 
 #dueDate {
   border-radius: 8px;
-  width: 194px;
+  width: 215px;
   cursor: pointer;
 }
 
 #expectedTime {
   border-radius: 8px;
-  width: 160px;
+  width: 145px;
 }
 
 #priority {
