@@ -35,9 +35,47 @@ class Filter extends HTMLElement {
     // Add styles
     const style = document.createElement("style");
     style.textContent = `
-      .item { display: none; }
-      #filter-container { margin-bottom: 10px; }
-      .indented-option { padding-left: 20px; }
+      :host {
+        display: block;
+        font-family: Arial, sans-serif;
+      }
+      button {
+        color: black;
+        border: 2px solid #ccc;
+        transition: border-color 0.3s;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+      }
+      button:hover {
+        background-color: #f9f9f9;
+      }
+      select {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;
+      }
+      .item {
+        display: none;
+        padding: 10px;
+        margin-bottom: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      }
+      .indented-option {
+        padding-left: 20px;
+      }
+      #content {
+        max-height: 400px;
+        overflow-y: auto;
+      }
     `;
 
     // Append elements to the shadow DOM
