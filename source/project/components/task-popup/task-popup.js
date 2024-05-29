@@ -180,13 +180,14 @@ class PopupComponent extends HTMLElement {
 
   /**
    * @method saveTasksToStorage
-   * @description Saves the given tasks array to local storage after converting it to a JSON string.
+   * @description Saves the given tasks array to local storage after converting it to a JSON string, then closes the popup.
    * @param {Array} tasks - The array of tasks to save
    */
   saveTasksToStorage(tasks) {
     localStorage.setItem("tasks", JSON.stringify(tasks));
-    let event = new CustomEvent("storageUpdate", { bubbles: true });
+    let event = new CustomEvent("storageUpdate", { bubbles: true, composed: true });
     this.dispatchEvent(event);
+    this.remove();
   }
 
   /**
@@ -220,13 +221,7 @@ class PopupComponent extends HTMLElement {
     window.api.addTask(task, (tasks) => {
       this.saveTasksToStorage(tasks);
     });
-
-    // log the updated tasks array so see it working
-    console.log("Form Data Saved:", task);
-
-    // reset form and hide popup
     event.target.reset();
-    this.remove();
   }
 }
 

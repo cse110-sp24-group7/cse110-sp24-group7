@@ -163,8 +163,9 @@ class JournalPopup extends HTMLElement {
    */
   saveJournalsToStorage(journalData) {
     localStorage.setItem("journalData", JSON.stringify(journalData));
-    let event = new CustomEvent("storageUpdate", { bubbles: true });
+    let event = new CustomEvent("storageUpdate", { bubbles: true, composed: true });
     this.dispatchEvent(event);
+    this.remove();
   }
 
   /**
@@ -187,20 +188,7 @@ class JournalPopup extends HTMLElement {
     window.api.addEntry(journalData, (entries) => {
       this.saveJournalsToStorage(entries);
     });
-
-    // log the data to the console
-    console.log("Journal Form Data Saved:", journalData);
-
-    // reset form
     event.target.reset();
-    this.remove();
-  }
-
-  onClose(event) {
-    event.preventDefault();
-    event.target.reset();
-    document.getElementById("title").removeAttribute("required");
-    this.remove();
   }
 }
 
