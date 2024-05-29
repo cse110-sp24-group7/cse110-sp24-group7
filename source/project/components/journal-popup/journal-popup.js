@@ -15,7 +15,7 @@ class JournalPopup extends HTMLElement {
     // get the css file and append it to the shadow root
     const style = document.createElement("link");
     style.rel = "stylesheet";
-    style.href = "../components/journalPopup/journal-styles.css";
+    style.href = "../components/journal-popup/journal-styles.css";
     shadowRoot.append(style);
 
     // adds the overlay css style to our program(makes the background grey out)
@@ -30,7 +30,7 @@ class JournalPopup extends HTMLElement {
     const div = document.createElement("div");
     style.onload = async () => {
       div.setAttribute("class", "popup-container");
-      const response = await fetch("../components/journalPopup/journal-popup.html");
+      const response = await fetch("../components/journal-popup/journal-popup.html");
       const html = await response.text();
       div.innerHTML = html;
 
