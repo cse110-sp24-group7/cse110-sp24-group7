@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // creates the popup when the add task button is clicked
     document.querySelectorAll(".add-task").forEach(button => {
         button.addEventListener("click", function () {
-            const popup = document.createElement("task-popup-component");
+            const popup = document.createElement("task-popup");
             document.body.appendChild(popup);
         });
     });

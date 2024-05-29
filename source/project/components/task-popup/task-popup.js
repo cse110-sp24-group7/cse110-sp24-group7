@@ -231,4 +231,4 @@ class PopupComponent extends HTMLElement {
 }
 
 // define the custom element
-customElements.define("task-popup-component", PopupComponent);
+customElements.define("task-popup", PopupComponent);
