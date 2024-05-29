@@ -2,7 +2,7 @@
 describe("Basic user flow for PopupComponent", () => {
   beforeAll(async () => {
     await page.goto(
-      "http://127.0.0.1:5502/source/project/components/journal-popup/testingDeena.html",
+      "http://127.0.0.1:5502/source/project/components/journal-popup/journal-popup-standalone.html",
     ); // Adjust the path as needed
   });
 
