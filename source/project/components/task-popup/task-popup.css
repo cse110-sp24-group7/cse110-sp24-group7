@@ -42,10 +42,6 @@
   justify-content: space-between;
 }
 
-.left-column {
-  flex: 1;
-}
-
 .date-time-section {
   display: flex;
   justify-content: space-between;
@@ -109,38 +105,121 @@ nav {
   height: 30px;
   left: 0;
   margin-bottom: 20px;
+  border-radius: 8px 8px 0 0;
 }
 
 #closeBtn {
+  background-color: transparent;
+  border: none;
+}
+
+#closeBtn img {
+  width: 20px;
+  height: 20px;
   position: absolute;
   top: 5px;
   right: 5px;
   cursor: pointer;
-  background-color: #ed7f7f;
   border: none;
-  border-radius: 100%;
-  color: white;
 }
 
 #dueDate {
   border-radius: 8px;
-  width: 200px;
+  width: 215px;
+  cursor: pointer;
 }
+
 #expectedTime {
   border-radius: 8px;
-  width: 160px;
+  width: 145px;
 }
+
 #priority {
   border-radius: 8px;
-  width: 70px;
+  width: 85px;
+  cursor: pointer;
 }
 
-#label {
+.dropbtn {
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
   border-radius: 8px;
-  width: 100px;
+  width: 90px;
+  cursor: pointer;
+  background-color: transparent;
+  padding-left: 0px;
+  padding-right: 25px;
 }
 
-/* .dropdown-menu {
+.dropdown {
+  margin-bottom: 16px;
+  padding: 8px 10px;
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  transition: border-color 0.3s;
+  border-radius: 8px;
+  width: 90px;
+  cursor: pointer;
+  overflow-y: auto;
+}
+
+.dropdown:hover {
+  border-color: #0056b3;
+  outline: none;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  width: auto;
+  border-radius: 8px;
+  z-index: 1;
+  overflow: scroll;
   max-height: 150px;
-  overflow-y: scroll;
-} */
+  left: 82%;
+}
+
+.dropdown-content div {
+  color: black;
+  padding: 12px 16px;
+  padding-bottom: 8px;
+  padding-top: 8px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.label-item {
+  cursor: pointer;
+}
+
+.label-item.selected {
+  background-color: #87c1ff;
+}
+
+.label-input {
+  background-color: transparent;
+  padding-bottom: 5px;
+  padding-top: 10px;
+  border-color: none;
+  border: none;
+  border-radius: 8px;
+  text-align: center;
+  width: 90px;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.label-input::placeholder {
+  color: black;
+  font-family: inherit;
+  font-size: inherit;
+}

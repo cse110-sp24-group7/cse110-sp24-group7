@@ -1,4 +1,4 @@
-import { formatNote } from "../scripts/parseNote";
+const { formatNote } = require("../scripts/parseNote");
 
 describe("formatNote function", () => {
   it("should format a note with timestamp and user", () => {
