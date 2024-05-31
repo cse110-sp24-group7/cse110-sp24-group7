@@ -14,15 +14,14 @@ To use the `FilterComponent`, include it in your HTML as follows:
 
 ```html
 <filter-component></filter-component>
-<script src="path/to/filter.js"></script>
+<script src="./filter.js"></script>
 ```
 
 ## Requirements
 
 The filter should allow the user to:
 - Select multiple filter criteria from a dropdown.
-- Filter tasks by labels, expected time, priority, and due date.
-- Display "High" and "Low" options under the "Expected Time" and "Priority" categories when these are selected.
+- Filter tasks by labels, and priority.
 - Dynamically show or hide tasks based on the selected filter criteria.
 - Populate the dropdown with labels retrieved from local storage.
 - Provide a user-friendly interface for interacting with the filter options.

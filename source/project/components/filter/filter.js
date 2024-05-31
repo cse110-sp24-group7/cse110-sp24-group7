@@ -8,134 +8,24 @@ class Filter extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
 
-    // Create a button
-    const button = document.createElement("button");
-    button.textContent = "Filter";
-    button.addEventListener("click", () => this.toggleDropdown());
+    // Load the CSS file
+    const style = document.createElement("link");
+    style.rel = "stylesheet";
+    style.href = "../filter/filter.css";
+    this.shadowRoot.append(style);
 
-    // Create the multi-select dropdown, initially hidden
-    this.select = document.createElement("select");
-    this.select.setAttribute("multiple", "");
-    this.select.style.display = "none";
-    this.select.innerHTML = `
-      <option value="label">Label</option>
-      <option value="time">Expected Time</option>
-      <option value="priority">Priority</option>
-      <option value="due-date">Due Date</option>
-    `;
-    this.select.addEventListener("change", () => this.filterItems());
+    const body = document.createElement("div");
+    body.setAttribute("class", "filter-container");
 
-    // Create the content container
-    this.content = document.createElement("div");
-    this.content.setAttribute("id", "content");
-    this.content.innerHTML = `
-      <!-- the tasks should be added here -->
-    `;
-
-    // Add styles
-    const style = document.createElement("style");
-    style.textContent = `
-      :host {
-        display: block;
-        font-family: Arial, sans-serif;
-      }
-      button {
-        color: black;
-        border: 2px solid #ccc;
-        transition: border-color 0.3s;
-        padding: 10px 20px;
-        cursor: pointer;
-        font-size: 16px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-      }
-      button:hover {
-        background-color: #f9f9f9;
-      }
-      select {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        margin-bottom: 10px;
-      }
-      .item {
-        display: none;
-        padding: 10px;
-        margin-bottom: 5px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-      }
-      .indented-option {
-        padding-left: 20px;
-      }
-      #content {
-        max-height: 400px;
-        overflow-y: auto;
-      }
-    `;
-
-    // Append elements to the shadow DOM
-    this.shadowRoot.append(style, button, this.select, this.content);
-
-    // Initial filter to show all items
-    this.filterItems();
-  }
-
-  /**
-   * @method toggleDropdown
-   * @description Toggles the visibility of the multi-select dropdown.
-   * If the dropdown is hidden, it will be displayed, and vice versa.
-   * @returns {void}
-   */
-  toggleDropdown() {
-    if (this.select.style.display === "none") {
-      this.select.style.display = "block";
-    } else {
-      this.select.style.display = "none";
-    }
-  }
-
-  /**
-   * @method filterItems
-   * @description Filters the items based on the selected options in the dropdown.
-   * @returns {void}
-   */
-  filterItems() {
-    const selectedOptions = Array.from(this.select.selectedOptions).map(
-      (option) => option.value
-    );
-
-    // Check if label is selected
-    if (selectedOptions.includes("label")) {
-      // Populate the labels as options
+    style.onload = async () => {
+      const response = await fetch("../filter/filter.html");
+      const html = await response.text();
+      body.innerHTML = html;
+      this.shadowRoot.append(body);
       this.populateLabels();
-    }
-
-    // Check if "time" or "priority" is selected and add "High" and "Low" options
-    if (selectedOptions.includes("time")) {
-      this.addHighLowOptions("time");
-    }
-
-    if (selectedOptions.includes("priority")) {
-      this.addHighLowOptions("priority");
-    }
-
-    const items = this.shadowRoot.querySelectorAll(".item");
-    items.forEach((item) => {
-      const itemCategory = item.getAttribute("data-category");
-      if (
-        selectedOptions.includes(itemCategory) ||
-        selectedOptions.length === 0
-      ) {
-        item.style.display = "block";
-      } else {
-        item.style.display = "none";
-      }
-    });
+        this.addPriorityListeners();
+        this.addResetListener();
+    };
   }
 
   /**
@@ -146,73 +36,48 @@ class Filter extends HTMLElement {
   populateLabels() {
     const labels = this.getLabelsFromStorage();
 
-    // Remove previous label options
-    Array.from(this.select.options).forEach((option) => {
-      if (
-        option.classList.contains("indented-option") &&
-        option.value.startsWith("label-")
-      ) {
-        this.select.removeChild(option);
-      }
-    });
+    const labelContainer = this.shadowRoot.getElementById("labels");
 
-    // Find the position of the "Label" option
-    const labelOptionIndex = Array.from(this.select.options).findIndex(
-      (option) => option.value === "label"
-    );
+    // Clear the label container
+    labelContainer.innerHTML = "";
 
-    // Populate the labels as indented options
-    labels.forEach((label) => {
-      const option = document.createElement("option");
-      option.value = `label-${label}`;
-      option.textContent = label;
-      option.classList.add("indented-option");
-      this.select.add(option, this.select.options[labelOptionIndex + 1]);
-    });
+    // Check if labels is an array and has elements
+    if (Array.isArray(labels) && labels.length > 0) {
+      // Populate the dropdown with stored labels
+      labels.forEach((label) => {
+        let div = document.createElement("div");
+        div.textContent = label;
+        div.classList.add("label-item");
+        div.addEventListener("click", () =>
+          this.toggleSelection(div, "labels")
+        );
+        labelContainer.appendChild(div);
+      });
+    }
   }
 
   /**
-   * @method addHighLowOptions
-   * @description Adds "High" and "Low" options under the selected category.
-   * @param {string} category - The category under which "High" and "Low" options will be added.
+   * @method addPriorityEventListeners
+   * @description Adds event listeners to priority items.
+   * @returns {void}
    */
-  addHighLowOptions(category) {
-    // Find the position of the category option
-    const categoryOptionIndex = Array.from(this.select.options).findIndex(
-      (option) => option.value === category
-    );
-
-    // Check if "High" option already exists under this category
-    let highExists = false;
-    let lowExists = false;
-    for (let i = categoryOptionIndex + 1; i < this.select.options.length; i++) {
-      const option = this.select.options[i];
-      if (option && option.classList.contains("indented-option")) {
-        if (option.value === `${category}-high`) highExists = true;
-        if (option.value === `${category}-low`) lowExists = true;
-      } else {
-        break;
-      }
-    }
-
-    if (!highExists) {
-      // Create and add "High" option
-      const high = document.createElement("option");
-      high.value = `${category}-high`;
-      high.textContent = "High";
-      high.classList.add("indented-option");
-      this.select.add(high, this.select.options[categoryOptionIndex + 1]);
-    }
-
-    if (!lowExists) {
-      // Create and add "Low" option
-      const low = document.createElement("option");
-      low.value = `${category}-low`;
-      low.textContent = "Low";
-      low.classList.add("indented-option");
-      this.select.add(low, this.select.options[categoryOptionIndex + 2]);
+  addPriorityListeners() {
+    const priorityContainer = this.shadowRoot.getElementById("priority");
+    if (priorityContainer) {
+      const priorityItems =
+        priorityContainer.getElementsByClassName("priority-item");
+      Array.from(priorityItems).forEach((item) => {
+        item.addEventListener("click", () =>
+          this.toggleSelection(item, "priorities")
+        );
+      });
     }
   }
+    
+    addResetListener() {
+        const resetButton = this.shadowRoot.getElementById("resetBtn");
+        resetButton.addEventListener("click", () => this.clearFilter());
+    }
 
   /**
    * @method getLabelsFromStorage
@@ -220,20 +85,51 @@ class Filter extends HTMLElement {
    * @returns {Array} An array of labels.
    */
   getLabelsFromStorage() {
-    // Get the labels from local storage
     return JSON.parse(localStorage.getItem("labels")) || [];
   }
 
   /**
+   * @method toggleSelection
+   * @description Toggles the selection of a label or priority.
+   * @param {HTMLElement} element - The element to toggle.
+   * @param {string} type - The type of selection ('labels' or 'priorities').
+   * @returns {void}
+   */
+  toggleSelection(element, type) {
+    const selectedClass = "selected";
+    const isSelected = element.classList.toggle(selectedClass);
+    const selectedItems =
+      JSON.parse(localStorage.getItem(`selected${type}`)) || [];
+
+    if (isSelected) {
+      selectedItems.push(element.textContent);
+    } else {
+      const index = selectedItems.indexOf(element.textContent);
+      if (index > -1) {
+        selectedItems.splice(index, 1);
+      }
+    }
+
+    localStorage.setItem(`selected${type}`, JSON.stringify(selectedItems));
+  }
+
+    /**
+     * @method clearFilter
+     * @description Clears the filter by removing the selected labels and priorities from local storage.
+     * @returns {void}
+     */
+  clearFilter() {
+    localStorage.removeItem("selectedlabels");
+    localStorage.removeItem("selectedpriorities");
+  }
+  /**
    * @method connectedCallback
    * @description Called when the element is added to the DOM.
-   * It initializes the filter by calling the filterItems method.
    * @returns {void}
    */
   connectedCallback() {
-    this.filterItems();
+    this.clearFilter();
   }
 }
 
-// Define the custom element
 customElements.define("filter-component", Filter);
