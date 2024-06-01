@@ -54,6 +54,24 @@ class PopupComponent extends HTMLElement {
     };
   }
 
+  openForEdit(taskDetails) {
+    // Populate the task popup with the details of the selected task for editing
+    const titleInput = this.shadowRoot.getElementById("title");
+    const descriptionTextarea = this.shadowRoot.getElementById("description");
+    const dueDateInput = this.shadowRoot.getElementById("dueDate");
+    const prioritySelect = this.shadowRoot.getElementById("priority");
+    const expectedTimeInput = this.shadowRoot.getElementById("expectedTime");
+
+    titleInput.value = taskDetails.task_name;
+    descriptionTextarea.value = taskDetails.task_content;
+    dueDateInput.value = taskDetails.due_date;
+    prioritySelect.value = taskDetails.priority;
+    expectedTimeInput.value = taskDetails.expected_time;
+
+    // Show the popup for editing
+    this.style.display = "block";
+}
+
   /**
    * @method connectedCallback
    * @description Lifecycle method that is called when the component is inserted into the DOM.

@@ -1,3 +1,4 @@
+//import { PopupComponent } from "../task-popup/task-popup.js";
 /**
  * Adds tasks to the task containers.
  * @param {import("../scripts/database/dbMgr").task[]} tasks - an array of task objects.
@@ -34,6 +35,19 @@ function tasksRendererCallback(tasks) {
     taskExpectedTime.textContent = `Expected Time: ${task.expected_time}`;
     taskPv.appendChild(taskExpectedTime);
 
+    const editButton = document.createElement("button");
+    editButton.textContent = "Edit";
+    editButton.classList.add("edit-task"); // Adding class for event delegation
+    taskPv.appendChild(editButton);
+
+    // Add Delete Button
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+    deleteButton.addEventListener("click", () => {
+      taskPv.remove();
+    });
+    taskPv.appendChild(deleteButton);
+
     // Find the appropriate day container based on the task's due date
     // Assuming due_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
     const dueDate = new Date(task.due_date);
@@ -46,6 +60,17 @@ function tasksRendererCallback(tasks) {
       dayContainer.appendChild(taskPv);
     }
   });
+}
+
+/**
+ * Opens the task popup for editing with the provided task details and the corresponding task preview element.
+ * @param {Object} taskDetails - The task details to populate the popup with.
+ * @param {HTMLElement} taskPv - The task preview element associated with the task.
+ */
+function openTaskPopupForEdit(taskDetails) {
+    const popup = document.createElement("task-popup");
+    document.body.appendChild(popup);
+    popup.openForEdit(taskDetails);
 }
 
 /**
@@ -118,5 +143,26 @@ document.addEventListener("DOMContentLoaded", function () {
       const popup = document.createElement("journal-popup");
       document.body.appendChild(popup);
     });
+  });
+  document.body.addEventListener("click", (event) => {
+    // Check if the clicked element is a button with class "edit-task"
+    if (event.target.matches(".edit-task")) {
+      // Extract task details from the task preview element
+      const taskPv = event.target.closest(".task-pv");
+      if (taskPv) {
+        // Assuming you have logic here to extract task details from task preview
+        const taskDetails = {
+          task_name: taskPv.querySelector('h2').textContent,
+          task_content: taskPv.querySelector('p').textContent,
+          due_date: taskPv.querySelector('p').textContent,
+          priority: taskPv.querySelector('p').textContent,
+          expected_time: taskPv.querySelector('p').textContent
+          // Example: task_name: taskPv.querySelector('h2').textContent
+        };
+
+        // Open task popup for editing with task details
+        openTaskPopupForEdit(taskDetails);
+      }
+    }
   });
 });
