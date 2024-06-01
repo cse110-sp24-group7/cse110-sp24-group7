@@ -1,4 +1,4 @@
-import { factorial } from "../scripts/factorial";
+const { factorial } = require("../scripts/factorial");
 
 describe("factorial function", () => {
   it("should return 1 for 0", () => {

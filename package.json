@@ -1,8 +1,14 @@
 {
   "productName": "Journal",
-  "name": "cse110-sp24-group7",
+  "name": "tbd",
   "version": "1.0.0",
+  "description": "Akatsuki 7's CSE 110 Developer Journal",
+  "main": "./source/project/scripts/main.js",
+  "author": "Akatsuki 7",
+  "type": "commonjs",
   "devDependencies": {
+    "@babel/core": "^7.24.6",
+    "@babel/preset-env": "^7.24.6",
     "@electron-forge/cli": "^7.4.0",
     "@electron-forge/maker-deb": "^7.4.0",
     "@electron-forge/maker-rpm": "^7.4.0",
@@ -13,11 +19,14 @@
     "@electron/fuses": "^1.8.0",
     "@playwright/test": "^1.44.1",
     "@types/node": "^20.12.12",
-    "electron": "^30.0.6",
+    "babel-jest": "^29.7.0",
+    "electron": "^30.0.9",
     "jest": "^29.7.0",
     "jest-puppeteer": "^10.0.1",
     "jsdoc": "^4.0.3",
-    "prettier": "^3.2.5"
+    "prettier": "^3.2.5",
+    "puppeteer": "^22.10.0",
+    "sql.js": "^1.10.3"
   },
   "scripts": {
     "start": "electron-forge start",
@@ -37,10 +46,8 @@
       "./source/project/__tests__/playwright"
     ]
   },
-  "main": "./source/project/scripts/main.cjs",
   "dependencies": {
     "electron-squirrel-startup": "^1.0.1",
-    "puppeteer": "^22.10.0"
-  },
-  "type": "module"
+    "sqlite3": "^5.1.7"
+  }
 }

@@ -1,0 +1,177 @@
+/* Resetting default margin and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Styling the header */
+.header {
+  background-color: #fff;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ccc; /* Add border bottom to header */
+}
+
+.logo img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.logo span {
+  font-weight: bold;
+  font-size: 35px;
+  font-family: "Courier New";
+}
+
+.menu-icon img {
+  width: 35px;
+  height: 35px;
+}
+
+/* Styling the calendar */
+.calendar {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 50px); /* Adjust height to leave space for header */
+  font-family: "Courier New";
+}
+
+.day {
+  display: flex;
+  flex: 1;
+  height: 100%; /* Make each day section fill the available height */
+}
+
+.day > div {
+  flex: 1;
+  flex-direction: column;
+  text-align: center;
+  padding: 10px 0;
+  font-weight: bold;
+  font-family: "Lucida Sans Unicode";
+}
+
+/* Ensure the vertical lines reach all the way down */
+.day > div:not(:last-child) {
+  border-right: 1px solid #ccc;
+}
+
+/* Adjust button styles */
+.add-task,
+.add-journal {
+  margin: 5px; /* Adjust as needed */
+  padding: 10px; /* Adjust as needed */
+  width: calc(100% - 10px); /* Stretch button width to fill container */
+  border: 1px dotted #000; /* Dotted outline */
+  border-spacing: 100px; /* Increase spacing between dots */
+  border-radius: 7px; /* Rounded corners */
+  border-color: #969696; /* Border outline color */
+  cursor: pointer; /* Change cursor to pointer */
+  background-color: #f8f8f8; /* Background color */
+  color: #000; /* Text color */
+  font-weight: bold; /* Bold text */
+}
+
+/* Popup modals */
+.modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/*Journal and Task Previews*/
+.journal-pv,
+.task-pv {
+  margin: 5px; /* Adjust as needed */
+  padding: 10px; /* Adjust as needed */
+  width: calc(100% - 10px); /* Adjusted to add-journal width */
+  flex: none;
+  border: 1px solid black; /* Outline */
+  border-radius: 7px; /* Rounded corners */
+  justify-content: flex-start;
+  text-align: left; /* Text alignment */
+  align-items: stretch; /* Box alignment */
+  background-color: #fff; /* Background Color */
+  cursor: pointer; /* Change cursor to pointer */
+  font-size: 10px; /* Size of text */
+}
+
+.journal-pv h2 {
+  font-style: bold;
+  margin: 0;
+  font-size: auto;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; /* Adjust the number of lines to show before truncating */
+  flex: auto;
+  text-overflow: clip;
+  overflow: hidden;
+  overflow: ellipsis;
+}
+.journal-pv p {
+  margin: 0;
+  font-size: 10px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* Adjust the number of lines to show before truncating */
+  flex: auto;
+  text-overflow: clip;
+  overflow: hidden;
+  overflow: ellipsis;
+}
+.journal-pv label-box {
+  background-color: #bdf6ff;
+  color: #000000;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+/* TODO: task formatting needs to be confirmed! */
+.task-pv h2 {
+  font-style: bold;
+  margin: 0;
+  font-size: auto;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; /* Adjust the number of lines to show before truncating */
+  flex: auto;
+  text-overflow: clip;
+  overflow: hidden;
+  overflow: ellipsis;
+}
+.task-pv p {
+  margin: 0;
+  font-size: 10px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* Adjust the number of lines to show before truncating */
+  flex: auto;
+  text-overflow: clip;
+  overflow: hidden;
+  overflow: ellipsis;
+}
+
+.task-pv label-box {
+  background-color: #bdf6ff;
+  color: #000000;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}

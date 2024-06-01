@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Journal App</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="../journal-popup/journal-popup.css" />
   </head>
 
   <body>
@@ -28,14 +28,12 @@
             placeholder="Date"
             required
           />
-        </div>
-        <div class="label-container">
-          <input
-            type="text"
-            id="label"
-            class="form-control"
-            placeholder="Label"
-          />
+          <div class="dropdown">
+            <button class="dropbtn">Label</button>
+            <div id="label" class="dropdown-content">
+              <!-- labels will be added here -->
+            </div>
+          </div>
         </div>
         <textarea
           id="description"
@@ -48,7 +46,9 @@
         <button type="submit" id="addBtn">Done</button>
       </div>
       <nav class="nav-bar">
-        <button type="button" id="closeBtn" class="close-popup">x</button>
+        <button id="closeBtn" class="close-btn">
+          <img src="../../assets/res/exit-button.png" alt="Close Button" />
+        </button>
       </nav>
     </form>
   </body>

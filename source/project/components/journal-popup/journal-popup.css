@@ -8,7 +8,7 @@
   border-radius: 12px;
   border: 1px solid #ccc;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 500px;
+  width: 550px;
   z-index: 10000;
   display: flex;
   flex-direction: column;
@@ -28,6 +28,7 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 9999;
+  backdrop-filter: blur(5px);
 }
 .left-column {
   flex: 0 0 80%;
@@ -40,16 +41,8 @@
 
 .date-time-section {
   display: flex;
-  justify-content: space-between;
   gap: 5px;
   width: auto;
-}
-
-.label-container {
-  width: 100px;
-}
-.left-column {
-  margin-right: 5px;
 }
 
 .form-control {
@@ -90,14 +83,18 @@ textarea.form-control {
 }
 
 #closeBtn {
+  background-color: transparent;
+  border: none;
+}
+
+#closeBtn img {
+  width: 20px;
+  height: 20px;
   position: absolute;
   top: 5px;
-  right: 10px;
+  right: 5px;
   cursor: pointer;
-  background-color: #ee6e6e;
   border: none;
-  border-radius: 100%;
-  color: white;
 }
 
 textarea.form-control {
@@ -107,6 +104,7 @@ textarea.form-control {
 
 #title {
   border: none;
+  padding-top: 20px;
   border-bottom: black 1px solid;
   font-size: 22px;
   border-radius: 0px;
@@ -124,17 +122,102 @@ textarea.form-control {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 8%;
+  height: 9%;
   left: 0;
   border-radius: 8px 8px 0 0;
 }
 
-.date-time-section,
-.label-container {
-  display: inline-block;
-  vertical-align: top;
+.dropbtn {
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 8px;
+  width: 90px;
+  cursor: pointer;
+  background-color: transparent;
+  padding-left: 0px;
+  padding-right: 25px;
 }
 
-.label-container {
-  margin-left: 16px;
+.dropdown {
+  margin-bottom: 16px;
+  margin-top: 16px;
+  padding: 8px 10px;
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  transition: border-color 0.3s;
+  border-radius: 8px;
+  width: 90px;
+  cursor: pointer;
+  overflow-y: auto;
+}
+
+.dropdown:hover {
+  border-color: #0056b3;
+  outline: none;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  width: auto;
+  border-radius: 8px;
+  z-index: 1;
+  overflow: scroll;
+  max-height: 150px;
+  left: 41%;
+}
+
+.dropdown-content div {
+  color: black;
+  padding: 12px 16px;
+  padding-bottom: 8px;
+  padding-top: 8px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content div:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.label-item {
+  cursor: pointer;
+}
+
+.label-item.selected {
+  background-color: #87c1ff;
+}
+
+#currDate {
+  border-radius: 8px;
+  width: 220px;
+  cursor: pointer;
+}
+
+.label-input {
+  background-color: transparent;
+  padding-bottom: 5px;
+  padding-top: 10px;
+  border-color: none;
+  border: none;
+  border-radius: 8px;
+  text-align: center;
+  width: 90px;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.label-input::placeholder {
+  color: black;
+  font-family: inherit;
+  font-size: inherit;
 }
