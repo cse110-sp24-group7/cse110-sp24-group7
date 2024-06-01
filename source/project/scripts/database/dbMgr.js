@@ -49,6 +49,13 @@ const db = new sqlite.Database(dbPath);
  */
 
 /**
+ * labelRendererCallback should be called when an edit to labels is made and a render is required.
+ *
+ * @callback labelRendererCallback
+ * @param {string[]} labels - the updated array of label strings.
+ */
+
+/**
  * beginCallback should be called when loading the initial mainview.html, after initializing connection to database.
  *
  * @callback beginCallback
@@ -76,12 +83,18 @@ function init(bcb) {
         entry_title TEXT,
         entry_content TEXT,
         creation_date TEXT);`;
+  const labels_sql = `CREATE TABLE IF NOT EXISTS labels(
+        label TEXT PRIMARY KEY);`;
   const task_labels_sql = `CREATE TABLE IF NOT EXISTS task_labels (
         task_id TEXT,
         label TEXT,
         CONSTRAINT fk_task_id
             FOREIGN KEY (task_id)
             REFERENCES tasks(task_id)
+            ON DELETE CASCADE,
+        CONSTRAINT fk_label
+            FOREIGN KEY (label)
+            REFERENCES labels(label)
             ON DELETE CASCADE
         );`;
 
@@ -96,6 +109,9 @@ function init(bcb) {
     db.run(entries_sql, [], (err) => {
       if (err) throw err;
     });
+    db.run(labels_sql, [], (err) => {
+      if (err) throw err;
+    });
     db.run(
       task_labels_sql,
       [],
@@ -104,6 +120,27 @@ function init(bcb) {
       },
       bcb,
     );
+  });
+}
+
+/**
+ * Queries and returns all labels.
+ * @param {labelRendererCallback} lrcb - the label render callback to update the frontend.
+ */
+function getLabels(lrcb) {
+  const sql = `
+    SELECT label
+    FROM labels;
+  `;
+
+  db.all(sql, [], (err, rows) => {
+    if (err) {
+      throw err;
+    }
+
+    const labels = rows.map((row) => row.label);
+
+    lrcb(labels);
   });
 }
 
@@ -205,6 +242,98 @@ function getTasksDisjunctLabels(labels, trcb) {
     params.push(...labels);
   } else {
     sql += ` GROUP BY t.task_id`;
+  }
+
+  db.all(sql, params, (err, rows) => {
+    if (err) {
+      throw err;
+    }
+
+    const tasks =
+      rows.length > 0
+        ? rows.map((row) => ({
+            task_id: row.task_id,
+            task_name: row.task_name,
+            task_content: row.task_content,
+            creation_date: row.creation_date,
+            due_date: row.due_date,
+            priority: row.priority,
+            expected_time: row.expected_time,
+            labels: row.labels ? row.labels.split(",") : [],
+          }))
+        : [];
+
+    trcb(tasks);
+  });
+}
+
+/**
+ * An object representing the filter criteria for querying tasks.
+ * @typedef {Object} filters
+ * @property {string} startTime - The start date and time for filtering tasks, in ISO 8601 format (yyyy-mm-ddTHH:MM).
+ * @property {string} endTime - The end date and time for filtering tasks, in ISO 8601 format (yyyy-mm-ddTHH:MM).
+ * @property {string[]} labels - An array of labels to filter tasks by.
+ * @property {string} priority - The priority level to filter tasks by.
+ * @property {boolean} exclusive - If true, perform a conjunctive (AND) search on labels, otherwise perform a disjunctive (OR) search.
+ */
+
+/**
+ * Queries and returns all tasks based on the provided filter criteria.
+ * @param {filters} filterCriteria - The filter criteria object.
+ * @param {tasksRenderCallback} trcb - The tasks render callback to update the frontend.
+ */
+function getFilteredTasks(filterCriteria, trcb) {
+  const { startTime, endTime, labels, priority, exclusive } = filterCriteria;
+
+  let sql = `
+    SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels
+    FROM tasks t
+    LEFT JOIN task_labels l ON t.task_id = l.task_id
+  `;
+  
+  const conditions = [];
+  const params = [];
+
+  // Filter by time range
+  if (startTime && endTime) {
+    conditions.push(`t.due_date BETWEEN ? AND ?`);
+    params.push(startTime, endTime);
+  }
+
+  // Filter by priority
+  if (priority) {
+    conditions.push(`t.priority = ?`);
+    params.push(priority);
+  }
+
+  // Filter by labels
+  if (labels.length > 0) {
+    const labelPlaceholders = labels.map(() => "?").join(",");
+    if (exclusive) {
+      conditions.push(`l.label IN (${labelPlaceholders})`);
+      params.push(...labels);
+    } else {
+      conditions.push(`l.label IN (${labelPlaceholders})`);
+      params.push(...labels);
+    }
+  }
+
+  if (conditions.length > 0) {
+    sql += ` WHERE ` + conditions.join(" AND ");
+  }
+  
+  sql += ` GROUP BY t.task_id`;
+
+  // Apply the HAVING clause for label filtering
+  if (labels.length > 0) {
+    if (exclusive) {
+      // Conjunctive (AND) filtering: Ensure the task has all specified labels
+      sql += ` HAVING COUNT(DISTINCT l.label) = ?`;
+      params.push(labels.length);
+    } else {
+      // Disjunctive (OR) filtering: Ensure the task has at least one of the specified labels
+      sql += ` HAVING COUNT(DISTINCT l.label) >= 1`;
+    }
   }
 
   db.all(sql, params, (err, rows) => {
@@ -347,6 +476,42 @@ function addEntry(entry, ercb) {
 }
 
 /**
+ * Adds a label to the database
+ * @param {string} label - the label to add
+ * @param {labelRendererCallback} lrcb - the labels render callback to update the frontend.
+ */
+function addLabel(label, lrcb) {
+  const sql = `INSERT INTO labels (label) VALUES (?);`;
+  db.run(sql, [label], (err) => {
+    if (err) {
+      throw err;
+    }
+    getLabels(lrcb);
+  });
+}
+
+/**
+ * Adds multiple labels to the database
+ * @param {string[]} labels - the labels to add
+ * @param {labelRendererCallback} lrcb - the labels render callback to update the frontend.
+ */
+function addLabels(labels, lrcb) {
+  const sql = `INSERT INTO labels (label) VALUES (?);`;
+  db.serialize(() => {
+    const stmt = db.prepare(sql);
+    labels.forEach((label) => {
+      stmt.run([label], (err) => {
+        if (err) {
+          throw err;
+        }
+      });
+    });
+    stmt.finalize();
+    getLabels(lrcb);
+  });
+}
+
+/**
  * Edits a task in the database
  * @param {task} task - the task to edit. The ID must exist in the database.
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
@@ -442,11 +607,48 @@ function deleteEntry(entry_id, ercb) {
   });
 }
 
+/**
+ * Deletes a label from the database
+ * @param {string} label - the label to delete
+ * @param {labelRendererCallback} lrcb - the labels render callback to update the frontend.
+ */
+function deleteLabel(label, lrcb) {
+  const sql = `DELETE FROM labels WHERE label = ?;`;
+  db.run(sql, [label], (err) => {
+    if (err) {
+      throw err;
+    }
+    getLabels(lrcb);
+  });
+}
+
+/**
+ * Deletes multiple labels from the database
+ * @param {string[]} labels - the labels to delete
+ * @param {labelRendererCallback} lrcb - the labels render callback to update the frontend.
+ */
+function deleteLabels(labels, lrcb) {
+  const sql = `DELETE FROM labels WHERE label = ?;`;
+  db.serialize(() => {
+    const stmt = db.prepare(sql);
+    labels.forEach((label) => {
+      stmt.run([label], (err) => {
+        if (err) {
+          throw err;
+        }
+      });
+    });
+    stmt.finalize();
+    getLabels(lrcb);
+  });
+}
+
 module.exports = {
   init,
   getTasks,
   getTasksConjunctLabels,
   getTasksDisjunctLabels,
+  getFilteredTasks,
   getEntries,
   addTask,
   addTasks,
@@ -456,4 +658,9 @@ module.exports = {
   deleteTask,
   deleteTasks,
   deleteEntry,
+  getLabels,
+  addLabel,
+  addLabels,
+  deleteLabel,
+  deleteLabels,
 };
