@@ -1,13 +1,10 @@
 <!-- Form Header with Close Button -->
 <nav id="formHeader" aria-label="Form Header">
-  <button
-    type="button"
+  <img
     id="closeBtn"
-    class="close-popup"
-    aria-label="Close Popup"
-  >
-    <img src="../../assets/res/exit-button.png" alt="Close Button" />
-  </button>
+    src="../../assets/res/exit-button.png"
+    alt="Close Button"
+  />
 </nav>
 <!-- Task Form -->
 <form id="taskForm" class="task-form" aria-labelledby="formHeader">
@@ -40,7 +37,7 @@
           step="0.1"
           id="expectedTime"
           class="form-control"
-          placeholder="Expected Time (hr)"
+          placeholder="Estimated Hours"
           required
         />
         <!-- Priority Dropdown -->
@@ -58,10 +55,25 @@
         </select>
         <!-- Label Selection -->
         <div class="dropdown">
-          <button class="dropbtn">Label</button>
+          Label
           <div id="label" class="dropdown-content">
             <!-- labels will be added here -->
           </div>
+        </div>
+      </div>
+      <div class="selectedLabels">
+        <!-- selected labels will go here -->
+        <div class="selected-label-item">
+          <span class="removeBtn">x</span>
+          <span>internships</span>
+        </div>
+        <div class="selected-label-item">
+          <span class="removeBtn">x</span>
+          <span>cse 101</span>
+        </div>
+        <div class="selected-label-item">
+          <span class="removeBtn">x</span>
+          <span>cse 110</span>
         </div>
       </div>
       <!-- Description Section -->
