@@ -20,7 +20,7 @@
 		"test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
 		"format": "prettier --write --ignore-path .prettierignore ./source/project/**/*.{html,css,js} ./specs/**/*.md",
 		"lint-check": "prettier --check --ignore-path .prettierignore ./source/project/**/*.{html,css,js} ./specs/**/*.md",
-		"jsdoc": "jsdoc -c jsdocs_conf.json",
+		"jsdoc": "jsdoc -c ./source/project/config/jsdocs_conf.json",
 		"start": "electron ."
 	},
 	"jest": {
