@@ -1,9 +1,11 @@
 # Calendar View V2
 
 ## Purpose
+
 This is the calendar view of the Akatsuki 7 Developer Journal. The main page is meant to be a week view with a "Tasks" and "Journal" section for each column. Each column displays a different day of the week that shows the user's tasks and journal entries they have filled out for that day. There will also be a sidebar that pops out when the menu button with three lines is clicked.
 
 ## Features
+
 **Three Lines Button**
 This button serves as a "Menu" button that takes the user to a different page of the app. So far, this button will give the user the option to go to the vault page.
 

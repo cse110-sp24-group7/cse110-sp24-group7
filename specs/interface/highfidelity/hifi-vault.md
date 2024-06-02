@@ -1,10 +1,12 @@
 # Vault View
 
 ## Purpose
-This is the vault view of the Akatsuki 7 Developer Journal. This secondary page is meant to be a vault view of all the user's images and files. The Vault page serves as an all-in-one vault for the user's images and files that they may have included in their journal entries. It is meant to be an easy way to grab images and files from previous days without having to scroll through the calendar. 
+
+This is the vault view of the Akatsuki 7 Developer Journal. This secondary page is meant to be a vault view of all the user's images and files. The Vault page serves as an all-in-one vault for the user's images and files that they may have included in their journal entries. It is meant to be an easy way to grab images and files from previous days without having to scroll through the calendar.
 
 ## Features
-**Upload Button:** 
+
+**Upload Button:**
 The upload button allows users to add a new file or image to the vault that is not tied to any specific day. By clicking the button, it asks the user to provide a new file or image, which will be saved within in the main view.
 
 **File and Image Boxes**

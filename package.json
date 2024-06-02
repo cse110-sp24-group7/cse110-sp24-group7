@@ -23,11 +23,11 @@
 	},
 	"scripts": {
 		"test:unit": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-		"prettier:fix": "prettier --write --ignore-path .prettierignore ./source/project/**/*.{html,css,js} ./specs/**/*.md",
-		"prettier:check": "prettier --check --ignore-path .prettierignore ./source/project/**/*.{html,css,js} ./specs/**/*.md",
+		"prettier:fix": "prettier --write --ignore-path .prettierignore \"./source/project/**/*.{html,css,js}\" \"./specs/**/*.md\"",
+		"prettier:check": "prettier --check --ignore-path .prettierignore \"./source/project/**/*.{html,css,js}\" \"./specs/**/*.md\"",
 		"jsdoc": "jsdoc -c ./source/project/config/jsdoc.config.json",
-		"eslint:check": "eslint ./source/project/**/*.js ./source/project/components/**/*.js ./source/project/scripts/**/*.js",
-		"eslint:fix": "eslint --fix ./source/project/**/*.js ./source/project/components/**/*.js ./source/project/scripts/**/*.js --debug",
+		"eslint:check": "eslint \"./source/project/**/*.js\" \"./source/project/components/**/*.js\" \"./source/project/scripts/**/*.js\"",
+		"eslint:fix": "eslint --fix \"./source/project/**/*.js\" \"./source/project/components/**/*.js\" \"./source/project/scripts/**/*.js\" --debug",
 		"start": "electron ."
 	},
 	"jest": {
@@ -46,39 +46,5 @@
 		"trailingComma": "none",
 		"tabWidth": 4,
 		"useTabs": true
-	},
-	"eslintConfig": {
-		"extends": [
-			"eslint:recommended",
-			"plugin:node/recommended"
-		],
-		"parser": "@babel/eslint-parser",
-		"parserOptions": {
-			"ecmaVersion": 6,
-			"sourceType": "module",
-			"requireConfigFile": false,
-			"ecmaFeatures": {
-				"jsx": true
-			}
-		},
-		"env": {
-			"node": true,
-			"es6": true
-		},
-		"ignorePatterns": [
-			"source/project/__tests__/**/*.js",
-			"source/project/docs/**/*.js",
-			"source/project/config/**/*.js"
-		],
-		"rules": {
-			"no-var": "error",
-			"prefer-const": "warn",
-			"no-console": "off",
-			"no-unused-vars": "warn",
-			"no-undef": "warn",
-			"no-redeclare": "error",
-			"prefer-arrow-callback": "warn",
-			"node/no-unpublished-require": "off"
-		}
 	}
 }
