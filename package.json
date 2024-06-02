@@ -41,6 +41,12 @@
 	"dependencies": {
 		"sqlite3": "^5.1.7"
 	},
+	"prettier": {
+		"singleQuote": false,
+		"trailingComma": "none",
+		"tabWidth": 4,
+		"useTabs": true
+	},
 	"eslintConfig": {
 		"extends": [
 			"eslint:recommended",
