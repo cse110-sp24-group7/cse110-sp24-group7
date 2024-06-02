@@ -181,26 +181,27 @@ class PopupComponent extends HTMLElement {
       if (!this.selectedLabels.has(label)) {
         const labelDiv = document.createElement("div");
         labelDiv.classList.add("unselected-label-item");
-        labelDiv.addEventListener("dblclick", () =>
-          this.deleteLabel(labelText)
-        );
-        // labelDiv.style.backgroundColor = this.labelToColor.get(label);
+
+        const labelContent = document.createElement("div");
+        labelContent.classList.add("unselected-label-content");
+        labelContent.style.backgroundColor = this.labelToColor.get(label);
 
         const addSpan = document.createElement("span");
         addSpan.textContent = "+";
         addSpan.classList.add("addBtn");
-        // addSpan.style.backgroundColor = this.labelToColor.get(label);
         addSpan.addEventListener("click", () =>
           this.selectLabel(label, labelDiv)
         );
 
         const labelText = document.createElement("span");
         labelText.textContent = label;
-        labelText.classList.add("label-text");
+        labelText.addEventListener("dblclick", () =>
+          this.deleteLabel(labelText)
+        );
 
-        labelDiv.style.backgroundColor = this.labelToColor.get(label);
-        labelDiv.appendChild(addSpan);
-        labelDiv.appendChild(labelText);
+        labelContent.appendChild(addSpan);
+        labelContent.appendChild(labelText);
+        labelDiv.appendChild(labelContent);
         container.appendChild(labelDiv);
       }
     });
