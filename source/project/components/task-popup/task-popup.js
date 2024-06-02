@@ -64,15 +64,13 @@ class PopupComponent extends HTMLElement {
     const prioritySelect = this.shadowRoot.getElementById("priority");
     const expectedTimeInput = this.shadowRoot.getElementById("expectedTime");
 
-    if (titleInput && descriptionTextarea && dueDateInput && prioritySelect && expectedTimeInput) {
-      titleInput.value = taskDetails.task_name;
-      descriptionTextarea.value = taskDetails.task_content;
+    // Populate the task with the information from taskPv into a popup
+    titleInput.value = taskDetails.task_name;
+    descriptionTextarea.value = taskDetails.task_content;
+    dueDateInput.value = taskDetails.due_date;
+    prioritySelect.value = taskDetails.priority;
+    expectedTimeInput.value = taskDetails.expected_time;
 
-      // Assuming taskDetails.due_date is in 'YYYY-MM-DD' format
-      dueDateInput.value = taskDetails.due_date;
-      prioritySelect.value = taskDetails.priority;
-      expectedTimeInput.value = taskDetails.expected_time;
-    }
     // Show the popup for editing
     this.style.display = "block";
 }
