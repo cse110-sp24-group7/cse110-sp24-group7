@@ -62,6 +62,12 @@ const db = new sqlite.Database(dbPath);
  */
 
 /**
+ * callback functions are used for general functions to notify the front-end that the query has been executed.
+ * 
+ * @callback callback
+ */
+
+/**
  * Initializes database by creating tables if needed.
  * Must call this function before any queries to prevent error.
  *
@@ -383,30 +389,48 @@ function getEntries(ercb) {
 /**
  * Adds a task to the database
  * @param {task} task - the task to add
- * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
+ * @param {callback} callback - callback to update the frontend.
  */
-function addTask(task, trcb) {
+function addTask(task, callback) {
   const taskSql = `INSERT INTO tasks (task_id, task_name, task_content, creation_date, due_date, priority, expected_time)
-        VALUES('${task.task_id}', '${task.task_name}', '${task.task_content}', '${task.creation_date}', '${task.due_date}', '${task.priority}', '${task.expected_time}');`;
+        VALUES (?, ?, ?, ?, ?, ?, ?);`;
 
   const labelSql = `INSERT INTO task_labels (task_id, label) VALUES (?, ?);`;
 
-  db.run(taskSql, [], (err) => {
+  db.run(taskSql, [task.task_id, task.task_name, task.task_content, task.creation_date, task.due_date, task.priority, task.expected_time], (err) => {
     if (err) {
       throw err;
     }
 
     const stmt = db.prepare(labelSql);
+    let remaining = task.labels.length;
+
+    if (remaining === 0) {
+      stmt.finalize((finalizeErr) => {
+        if (finalizeErr) {
+          throw finalizeErr;
+        }
+        callback();
+      });
+      return;
+    }
+
     task.labels.forEach((label) => {
       stmt.run([task.task_id, label], (err) => {
         if (err) {
           throw err;
         }
+        remaining--;
+        if (remaining === 0) {
+          stmt.finalize((finalizeErr) => {
+            if (finalizeErr) {
+              throw finalizeErr;
+            }
+            callback();
+          });
+        }
       });
     });
-    stmt.finalize();
-
-    this.getTasks(trcb);
   });
 }
 

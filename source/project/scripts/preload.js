@@ -1,7 +1,4 @@
-// import { contextBridge } from 'electron';
-// import * as dbMgr from './database/dbMgr.js';
-
-const {contextBridge} = require('electron');
+const { contextBridge } = require('electron');
 const dbMgr = require('./database/dbMgr');
 
 const init = bcb => {
@@ -24,8 +21,8 @@ const getEntries = ercb => {
   return dbMgr.getEntries(ercb);
 };
 
-const addTask = (task, trcb) => {
-  return dbMgr.addTask(task, trcb);
+const addTask = (task, callback) => {
+  return dbMgr.addTask(task, callback);
 };
 
 const addTasks = (tasks, trcb) => {
@@ -56,18 +53,48 @@ const deleteEntry = (entry_id, ercb) => {
   return dbMgr.deleteEntry(entry_id, ercb);
 };
 
+const getLabels = lrcb => {
+  return dbMgr.getLabels(lrcb);
+};
+
+const addLabel = (label, lrcb) => {
+  return dbMgr.addLabel(label, lrcb);
+};
+
+const addLabels = (labels, lrcb) => {
+  return dbMgr.addLabels(labels, lrcb);
+};
+
+const deleteLabel = (label, lrcb) => {
+  return dbMgr.deleteLabel(label, lrcb);
+};
+
+const deleteLabels = (labels, lrcb) => {
+  return dbMgr.deleteLabels(labels, lrcb);
+};
+
+const getFilteredTasks = (filterCriteria, trcb) => {
+  return dbMgr.getFilteredTasks(filterCriteria, trcb);
+};
+
 contextBridge.exposeInMainWorld('api', {
-  init: init,
-  getTasks: getTasks,
-  getTasksConjunctLabels: getTasksConjunctLabels,
-  getTasksDisjunctLabels: getTasksDisjunctLabels,
-  getEntries: getEntries,
-  addTask: addTask,
-  addTasks: addTasks,
-  addEntry: addEntry,
-  editTask: editTask,
-  editEntry: editEntry,
-  deleteTask: deleteTask,
-  deleteTasks: deleteTasks,
-  deleteEntry: deleteEntry,
+  init,
+  getTasks,
+  getTasksConjunctLabels,
+  getTasksDisjunctLabels,
+  getEntries,
+  addTask,
+  addTasks,
+  addEntry,
+  editTask,
+  editEntry,
+  deleteTask,
+  deleteTasks,
+  deleteEntry,
+  getLabels,
+  addLabel,
+  addLabels,
+  deleteLabel,
+  deleteLabels,
+  getFilteredTasks,
 });

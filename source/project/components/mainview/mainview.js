@@ -1,4 +1,13 @@
 /* eslint-disable no-undef */
+
+const filters = {
+  startTime: "",
+  endTime: "",
+  labels: [],
+  priority: "",
+  exclusive: false,
+};
+
 /**
  * Adds tasks to the task containers.
  * @param {Task[]} tasks - an array of task objects.
@@ -95,8 +104,17 @@ function setWeeklyView(weekOffset) {
 
   const currentDay = today.getDay();
   const currentDate = today.getDate();
+
   const startDate = new Date(today);
   startDate.setDate(startDate.getDate() - currentDay);
+  startDate.setHours(0, 0, 0, 0);
+
+  const endDate = new Date(startDate);
+  endDate.setDate(endDate.getDate() + 6); // Move to Saturday
+  endDate.setHours(23, 59, 59, 999); // Set to Saturday 23:59
+
+  filters.startTime = startDate.toISOString().substring(0, startDate.toISOString().indexOf(':', startDate.toISOString().indexOf(':') + 1));
+  filters.endTime = endDate.toISOString().substring(0, endDate.toISOString().indexOf(':', endDate.toISOString().indexOf(':') + 1));
 
   const monthNames = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
   const currentMonthElement = document.getElementById('current-month');
@@ -116,25 +134,24 @@ function setWeeklyView(weekOffset) {
           dateElement.classList.remove('today');
       }
   });
+
+  updateMainview();
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  document.addEventListener("storageUpdate", () => {
-    let storedEntries = JSON.parse(localStorage.getItem("journalData"));
-    storedEntries = Array.isArray(storedEntries) ? storedEntries : [];
-    let storedTasks = JSON.parse(localStorage.getItem("tasks"));
-    storedTasks = Array.isArray(storedTasks) ? storedTasks : [];
-    tasksRendererCallback(storedTasks);
-    entriesRendererCallback(storedEntries);
-  });
-
-  window.api.getTasks((tasks) => {
+function updateMainview() {
+  window.api.getFilteredTasks(filters, (tasks) => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
     tasksRendererCallback(tasks);
   });
   window.api.getEntries((entries) => {
     localStorage.setItem("journalData", JSON.stringify(entries));
     entriesRendererCallback(entries);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("storageUpdate", () => {
+    updateMainview();
   });
 
   // creates the popup when the add task button is clicked
@@ -173,4 +190,6 @@ document.addEventListener("DOMContentLoaded", function () {
     currentWeekOffset = 0;
     setWeeklyView(currentWeekOffset);
   });
+
+  updateMainview();
 });

@@ -95,11 +95,12 @@ class PopupComponent extends HTMLElement {
         if (newLabel) {
           const labels = JSON.parse(localStorage.getItem("labels")) || [];
           if (!labels.includes(newLabel)) {
-            labels.push(newLabel);
-            localStorage.setItem("labels", JSON.stringify(labels));
+            window.api.addLabel(newLabel, (labels) => {
+              localStorage.setItem("labels", JSON.stringify(labels));
+              this.selectedLabels.add(newLabel);
+              this.populateLabels();
+            });
           }
-          this.selectedLabels.add(newLabel);
-          this.populateLabels();
         }
       }
     });
@@ -141,17 +142,22 @@ class PopupComponent extends HTMLElement {
    */
   deleteLabel(labelElement) {
     const label = labelElement.textContent;
-    let labels = JSON.parse(window.localStorage.getItem("labels")) || [];
+    window.api.deleteLabel(label, (labels) => {
+      window.localStorage.setItem("labels", JSON.stringify(labels));
+      this.selectedLabels.delete(label);
+      labelElement.remove();
+    })
+    // let labels = JSON.parse(window.localStorage.getItem("labels")) || [];
 
-    // remove the label from the local storage array
-    labels = labels.filter((item) => item !== label);
-    window.localStorage.setItem("labels", JSON.stringify(labels));
-
+    // // remove the label from the local storage array
+    // labels = labels.filter((item) => item !== label);
+    
+    // window.localStorage.setItem("labels", JSON.stringify(labels));
     // remove the label from the selected labels set
-    this.selectedLabels.delete(label);
+    // this.selectedLabels.delete(label);
 
     // remove the label element from the DOM
-    labelElement.remove();
+    // labelElement.remove();
   }
 
   /**
@@ -222,8 +228,14 @@ class PopupComponent extends HTMLElement {
       expected_time: this.shadowRoot.getElementById("expectedTime").value,
     };
 
-    window.api.addTask(task, (tasks) => {
-      this.saveTasksToStorage(tasks);
+    window.api.addTask(task, () => {
+      // this.saveTasksToStorage(tasks);
+      const event = new CustomEvent("storageUpdate", {
+        bubbles: true,
+        composed: true,
+      });
+      this.dispatchEvent(event);
+      this.remove();
     });
     event.target.reset();
   }
