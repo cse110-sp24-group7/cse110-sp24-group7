@@ -15,6 +15,8 @@ class PopupComponent extends HTMLElement {
 
     // set to store selected labels
     this.selectedLabels = new Set();
+    this.editMode = false; // Track whether we're editing an existing task
+    this.editTaskId = null; // Track the ID of the task being edited
 
     // get the css file and append it to the shadow root
     const style = document.createElement("link");
@@ -56,20 +58,33 @@ class PopupComponent extends HTMLElement {
     };
   }
 
-  openForEdit(taskDetails) {
-    // Populate the task popup with the details of the selected task for editing
+  /** 
+   * @method taskEdit
+   * @description Populates the popup component with data from taskpv when edit button is 
+   * clicked.
+  */
+  taskEdit(taskDetails) {
+    this.editMode = true;
+    this.editTaskId = taskDetails.task_id;
+
+    // Selects the ids from the shadow DOM of the current componenet
     const titleInput = this.shadowRoot.getElementById("title");
-    const descriptionTextarea = this.shadowRoot.getElementById("description");
+    const descriptionText = this.shadowRoot.getElementById("description");
     const dueDateInput = this.shadowRoot.getElementById("dueDate");
     const prioritySelect = this.shadowRoot.getElementById("priority");
     const expectedTimeInput = this.shadowRoot.getElementById("expectedTime");
+    
+    // Trims the information so that it is able to be passed through the popup
+    const dueDate = taskDetails.due_date.replace("Due: ", "").trim();
+    const expectedTime = taskDetails.expected_time.replace("Expected Time: ", "").trim();
+    const priority1 = taskDetails.priority.replace("Priority: ", "").trim();
 
-    // Populate the task with the information from taskPv into a popup
+    // Populate the task with the information from taskDetails into a popup
     titleInput.value = taskDetails.task_name;
-    descriptionTextarea.value = taskDetails.task_content;
-    dueDateInput.value = taskDetails.due_date;
-    prioritySelect.value = taskDetails.priority;
-    expectedTimeInput.value = taskDetails.expected_time;
+    descriptionText.value = taskDetails.task_content;
+    dueDateInput.value = dueDate;
+    prioritySelect.value = priority1;
+    expectedTimeInput.value = expectedTime;
 
     // Show the popup for editing
     this.style.display = "block";
@@ -231,7 +246,7 @@ class PopupComponent extends HTMLElement {
 
     // get the users input and store it in a task object
     let task = {
-      task_id: Math.random().toString(36).substr(2, 9),
+      task_id: this.editMode ? this.editTaskId :Math.random().toString(36).substr(2, 9),
       // creator_id: userID,
       task_name: this.shadowRoot.getElementById("title").value,
       task_content: this.shadowRoot.getElementById("description").value,
@@ -242,9 +257,30 @@ class PopupComponent extends HTMLElement {
       expected_time: this.shadowRoot.getElementById("expectedTime").value,
     };
 
-    window.api.addTask(task, (tasks) => {
+    if (this.editMode) {
+      let tasks = this.getTasksFromStorage();
+      let taskIndex = tasks.findIndex(t => t.task_id === this.editTaskId);
+      if (taskIndex > -1) {
+        tasks[taskIndex] = task; // Update existing task
+  
+        // Update the taskPv element
+        const taskPv = document.querySelector(`.task-pv[data-task-id="${this.editTaskId}"]`);
+        if (taskPv) {
+          taskPv.querySelector('h2').textContent = task.task_name;
+          taskPv.querySelector('p1').textContent = task.task_content;
+          taskPv.querySelector('p2').textContent = `Due: ${task.due_date}`;
+          taskPv.querySelector('p3').textContent = `Priority: ${task.priority}`;
+          taskPv.querySelector('p4').textContent = `Expected Time: ${task.expected_time}`;
+        }
+      }
       this.saveTasksToStorage(tasks);
-    });
+    }
+      else{
+        window.api.addTask(task, (tasks) => {
+          this.saveTasksToStorage(tasks);
+        });
+      }
+
     event.target.reset();
   }
 }

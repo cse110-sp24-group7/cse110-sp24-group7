@@ -10,6 +10,8 @@ class JournalPopup extends HTMLElement {
 
     // set to store selected labels
     this.selectedLabels = new Set();
+    this.editMode = false; // Track whether we're editing an existing journal
+    this.editJournalId = null; // Track the ID of the journal being edited
 
     // get the css file and append it to the shadow root
     const style = document.createElement("link");
@@ -41,10 +43,29 @@ class JournalPopup extends HTMLElement {
 
       // populate the labels from local storage
       this.populateLabels();
+
+      this.dispatchEvent(new CustomEvent('entryReady'));
     };
 
     // append everything to the shadow root
     shadowRoot.append(div, overlay);
+
+    
+  }
+
+  journalEdit(entryDeatails){
+    this.editMode = true; 
+    this.editJournalId = entryDeatails.entry_id;
+
+    // Selects the ids from the shadow DOM of the current componenet
+    const titleInput = this.shadowRoot.getElementById("title");
+    const descriptionText = this.shadowRoot.getElementById("description");
+    
+    // Populate the journal popup with the entryDetails
+    titleInput.value = entryDeatails.entry_name;
+    descriptionText.value = entryDeatails.entry_content;
+
+    this.style.display = "block";
   }
 
   /**
@@ -181,16 +202,32 @@ class JournalPopup extends HTMLElement {
 
     // get the users input from form
     let journalData = {
-      entry_id: Math.random().toString(36).substr(2, 9),
+      entry_id: this.editMode ? this.editJournalId :Math.random().toString(36).substr(2, 9),
       entry_title: this.shadowRoot.querySelector("#title").value,
       entry_content: this.shadowRoot.querySelector("#description").value,
       creation_date: this.shadowRoot.querySelector("#currDate").value,
       labels: Array.from(this.selectedLabels),
     };
-
-    window.api.addEntry(journalData, (entries) => {
-      this.saveJournalsToStorage(entries);
-    });
+    if (this.editMode) {
+      let journals = this.getJournalsFromStorage();
+      let journalIndex = journals.findIndex(j => j.entry_id === this.editJournalId);
+      if (journalIndex > -1) {
+        journals[journalIndex] = journalData; // Update existing task
+  
+        // Update the taskPv element
+        const journalPv = document.querySelector(`.journal-pv[data-entry-id="${this.editJournalId}"]`);
+        if (journalPv) {
+          journalPv.querySelector('h2').textContent = journalData.entry_title;
+          journalPv.querySelector('p').textContent = journalData.entry_content;
+        }
+      }
+      this.saveJournalsToStorage(journals);
+    }
+    else{
+      window.api.addEntry(journalData, (entries) => {
+        this.saveJournalsToStorage(entries);
+      });
+    }
     event.target.reset();
   }
 }

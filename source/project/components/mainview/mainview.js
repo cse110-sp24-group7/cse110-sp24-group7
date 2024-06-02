@@ -14,6 +14,7 @@ function tasksRendererCallback(tasks) {
     // Create elements for the task entry
     const taskPv = document.createElement("div");
     taskPv.classList.add("task-pv");
+    taskPv.setAttribute('data-task-id', task.task_id); // Set task ID for easy retrieval
 
     const taskName = document.createElement("h2");
     taskName.textContent = task.task_name;
@@ -44,6 +45,13 @@ function tasksRendererCallback(tasks) {
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Delete";
     deleteButton.addEventListener("click", () => {
+      const taskId = task.task_id;
+  
+      // Remove the task from local storage
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      tasks = tasks.filter(t => t.task_id !== taskId);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+
       taskPv.remove();
     });
     taskPv.appendChild(deleteButton);
@@ -71,7 +79,19 @@ function openTaskPopupForEdit(taskDetails) {
     const popup = document.createElement("task-popup");
     document.body.appendChild(popup);
     popup.addEventListener('popupReady', () => {
-      popup.openForEdit(taskDetails);
+      popup.taskEdit(taskDetails);
+  });
+}
+
+/**
+ * Opens the journal popup for editing with the provided journal details.
+ * @param {Object} journalDetails - The journal details to populate the popup with.
+ */
+function openJournalPopupForEdit(journalDetails) {
+  const popup = document.createElement("journal-popup");
+  document.body.appendChild(popup);
+  popup.addEventListener('entryReady', () => {
+    popup.journalEdit(journalDetails);
   });
 }
 
@@ -89,6 +109,7 @@ function entriesRendererCallback(entries) {
     // Create elements for the journal entry
     const journalPv = document.createElement("div");
     journalPv.classList.add("journal-pv");
+    journalPv.setAttribute('data-entry-id', entry.entry_id)
 
     const journalTitle = document.createElement("h2");
     journalTitle.textContent = entry.entry_title;
@@ -97,6 +118,25 @@ function entriesRendererCallback(entries) {
     const journalDesc = document.createElement("p");
     journalDesc.textContent = entry.entry_content;
     journalPv.appendChild(journalDesc);
+
+    const editButton = document.createElement("button");
+    editButton.textContent = "Edit";
+    editButton.classList.add("edit-entry"); // Adding class for event delegation
+    journalPv.appendChild(editButton);
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+    deleteButton.addEventListener("click", () => {
+      const entryId = entry.entry_id;
+  
+      // Remove the entry from local storage
+      let entries = JSON.parse(localStorage.getItem("journalData")) || [];
+      entries = entries.filter(e => e.entry_id !== entryId);
+      localStorage.setItem("journalData", JSON.stringify(entries));
+
+      journalPv.remove();
+    });
+    journalPv.appendChild(deleteButton);
 
     // Find the appropriate day container based on the entry's creation date
     // Assuming creation_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
@@ -152,18 +192,31 @@ document.addEventListener("DOMContentLoaded", function () {
       // Extract task details from the task preview element
       const taskPv = event.target.closest(".task-pv");
       if (taskPv) {
-        // Assuming you have logic here to extract task details from task preview
         const taskDetails = {
+          task_id: taskPv.getAttribute('data-task-id'),
           task_name: taskPv.querySelector('h2').textContent,
           task_content: taskPv.querySelector('p1').textContent,
           due_date: taskPv.querySelector('p2').textContent,
           priority: taskPv.querySelector('p3').textContent,
           expected_time: taskPv.querySelector('p4').textContent
-          // Example: task_name: taskPv.querySelector('h2').textContent
         };
 
         // Open task popup for editing with task details
         openTaskPopupForEdit(taskDetails);
+      }
+    }
+    else if (event.target.matches(".edit-entry")) {
+      // Extract task details from the task preview element
+      const journalPv = event.target.closest(".journal-pv");
+      if (journalPv) {
+        const journalDetails = {
+          entry_id: journalPv.getAttribute('data-entry-id'),
+          entry_name: journalPv.querySelector('h2').textContent,
+          entry_content: journalPv.querySelector('p').textContent,
+        };
+
+        // Open task popup for editing with task details
+        openJournalPopupForEdit(journalDetails);
       }
     }
   });
