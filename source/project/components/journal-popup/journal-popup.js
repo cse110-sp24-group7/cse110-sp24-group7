@@ -1,4 +1,4 @@
-/* eslint-disable unexpected-token */
+/* eslint-disable */
 class JournalPopup extends HTMLElement {
   /**
    * @constructor

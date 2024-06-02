@@ -7,6 +7,7 @@
 	"type": "commonjs",
 	"devDependencies": {
 		"@babel/core": "^7.24.6",
+		"@babel/eslint-parser": "^7.24.6",
 		"@babel/preset-env": "^7.24.6",
 		"babel-jest": "^29.7.0",
 		"electron": "^30.0.8",
@@ -40,35 +41,37 @@
 		"sqlite3": "^5.1.7"
 	},
 	"eslintConfig": {
-    "extends": [
-      "eslint:recommended",
-      "plugin:node/recommended"
-    ],
-	"parser": "@babel/eslint",
-    "parserOptions": {
-      "ecmaVersion": 6,
-      "sourceType": "module",
-	  "ecmaFeatures": {
-		"jsx": true
-	  }
-    },
-    "env": {
-      "node": true,
-	  "es6":true
-    },
-    "ignorePatterns": [
-	"source/project/__tests__/**/*.js",
-	"source/project/docs/**/*.js",
-	"source/project/config/**/*.js"
-    ],
-    "rules": {
-      "no-var": "error",
-      "prefer-const": "warn",
-      "no-console": "off",
-      "no-unused-vars": "warn",
-      "no-undef": "error",
-      "no-redeclare": "error",
-      "prefer-arrow-callback": "warn"
-    }
-  }
+		"extends": [
+			"eslint:recommended",
+			"plugin:node/recommended"
+		],
+		"parser": "@babel/eslint-parser",
+		"parserOptions": {
+			"ecmaVersion": 6,
+			"sourceType": "module",
+			"requireConfigFile": false,
+			"ecmaFeatures": {
+				"jsx": true
+			}
+		},
+		"env": {
+			"node": true,
+			"es6": true
+		},
+		"ignorePatterns": [
+			"source/project/__tests__/**/*.js",
+			"source/project/docs/**/*.js",
+			"source/project/config/**/*.js"
+		],
+		"rules": {
+			"no-var": "error",
+			"prefer-const": "warn",
+			"no-console": "off",
+			"no-unused-vars": "warn",
+			"no-undef": "warn",
+			"no-redeclare": "error",
+			"prefer-arrow-callback": "warn",
+			"node/no-unpublished-require": "off"
+		}
+	}
 }

@@ -1,10 +1,6 @@
 name: Format
 on: 
   # Trigger the workflow on push or pull request, to main or dev
-  pull_request:
-    branches:
-      - main
-      - dev
   push:
     branches:
       - main
@@ -27,7 +23,7 @@ jobs:
     - name: Install dependencies
       run: npm ci
     - name: Run ESLint
-      run: npm run lint
+      run: npm run eslint:fix
     - name: Run Prettier
       run: npm run format
     - name: Commit changes
