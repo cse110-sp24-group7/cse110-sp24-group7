@@ -1,45 +1,46 @@
+/* eslint-disable */
 class JournalPopup extends HTMLElement {
-  /**
-   * @constructor
-   * @description Creates an instance of JournalPopup, sets up the shadow DOM, and initializes
-   * the component with CSS and HTML content loaded asynchronously.
-   */
-  constructor() {
-    super();
-    let shadowRoot = this.attachShadow({ mode: "open" });
+	/**
+	 * @constructor
+	 * @description Creates an instance of JournalPopup, sets up the shadow DOM, and initializes
+	 * the component with CSS and HTML content loaded asynchronously.
+	 */
+	constructor() {
+		super();
+		const shadowRoot = this.attachShadow({ mode: "open" });
 
     // set to store selected labels
     this.selectedLabels = new Set();
     this.editMode = false; // Track whether we're editing an existing journal
     this.editJournalId = null; // Track the ID of the journal being edited
 
-    // get the css file and append it to the shadow root
-    const style = document.createElement("link");
-    style.rel = "stylesheet";
-    style.href = "../journal-popup/journal-popup.css";
-    shadowRoot.append(style);
+		// get the css file and append it to the shadow root
+		const style = document.createElement("link");
+		style.rel = "stylesheet";
+		style.href = "../journal-popup/journal-popup.css";
+		shadowRoot.append(style);
 
-    // adds the overlay css style to our program(makes the background grey out)
-    // click anywhere outside the container to close the container and remove overlay
-    const overlay = document.createElement("div");
-    overlay.setAttribute("class", "overlay");
-    overlay.addEventListener("click", () => {
-      this.remove();
-    });
+		// adds the overlay css style to our program(makes the background grey out)
+		// click anywhere outside the container to close the container and remove overlay
+		const overlay = document.createElement("div");
+		overlay.setAttribute("class", "overlay");
+		overlay.addEventListener("click", () => {
+			this.remove();
+		});
 
-    // waits for the css to load before the html popup occurs
-    const div = document.createElement("div");
-    style.onload = async () => {
-      div.setAttribute("class", "popup-container");
-      const response = await fetch("../journal-popup/journal-popup.html");
-      const html = await response.text();
-      div.innerHTML = html;
+		// waits for the css to load before the html popup occurs
+		const div = document.createElement("div");
+		style.onload = async () => {
+			div.setAttribute("class", "popup-container");
+			const response = await fetch("../journal-popup/journal-popup.html");
+			const html = await response.text();
+			div.innerHTML = html;
 
-      // close the popup when user presses x
-      const closeButton = div.querySelector("#closeBtn");
-      closeButton.addEventListener("click", () => {
-        this.remove();
-      });
+			// close the popup when user presses x
+			const closeButton = div.querySelector("#closeBtn");
+			closeButton.addEventListener("click", () => {
+				this.remove();
+			});
 
       // populate the labels from local storage
       this.populateLabels();
@@ -68,137 +69,138 @@ class JournalPopup extends HTMLElement {
     this.style.display = "block";
   }
 
-  /**
-   * @method connectedCallback
-   * @description Lifecycle method that is called when the component is inserted into the DOM.
-   * It sets up event listeners for form submission within the shadow DOM.
-   */
-  connectedCallback() {
-    // event listener to form submission
-    setTimeout(() => {
-      this.shadowRoot
-        .querySelector("#journalForm")
-        .addEventListener("submit", this.onSubmit.bind(this));
-    }, 500);
-  }
+	/**
+	 * @method connectedCallback
+	 * @description Lifecycle method that is called when the component is inserted into the DOM.
+	 * It sets up event listeners for form submission within the shadow DOM.
+	 */
+	connectedCallback() {
+		// event listener to form submission
+		setTimeout(() => {
+			this.shadowRoot
+				.querySelector("#journalForm")
+				.addEventListener("submit", this.onSubmit.bind(this));
+		}, 500);
+	}
 
-  /**
-   * @method populateLabelSelector
-   * @description Populates the label selector with labels from local storage.
-   */
-  populateLabels() {
-    const labelContainer = this.shadowRoot.getElementById("label");
-    const labels = JSON.parse(localStorage.getItem("labels")) || [];
+	/**
+	 * @method populateLabelSelector
+	 * @description Populates the label selector with labels from local storage.
+	 */
+	populateLabels() {
+		const labelContainer = this.shadowRoot.getElementById("label");
+		const labels = JSON.parse(localStorage.getItem("labels")) || [];
 
-    // clear the label container
-    labelContainer.innerHTML = "";
+		// clear the label container
+		labelContainer.innerHTML = "";
 
-    // add "New Label" option
-    const input = document.createElement("input");
-    input.type = "text";
-    input.classList.add("label-input");
-    input.placeholder = "New Label";
-    labelContainer.appendChild(input);
-    labelContainer.appendChild(document.createElement("hr"));
+		// add "New Label" option
+		const input = document.createElement("input");
+		input.type = "text";
+		input.classList.add("label-input");
+		input.placeholder = "New Label";
+		labelContainer.appendChild(input);
+		labelContainer.appendChild(document.createElement("hr"));
 
-    // add event listener for input to save new label
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        const newLabel = input.value.trim();
-        if (newLabel) {
-          let labels = JSON.parse(localStorage.getItem("labels")) || [];
-          if (!labels.includes(newLabel)) {
-            labels.push(newLabel);
-            localStorage.setItem("labels", JSON.stringify(labels));
-          }
-          this.selectedLabels.add(newLabel);
-          this.populateLabels();
-        }
-      }
-    });
+		// add event listener for input to save new label
+		input.addEventListener("keydown", (e) => {
+			if (e.key === "Enter") {
+				const newLabel = input.value.trim();
+				if (newLabel) {
+					const labels =
+						JSON.parse(localStorage.getItem("labels")) || [];
+					if (!labels.includes(newLabel)) {
+						labels.push(newLabel);
+						localStorage.setItem("labels", JSON.stringify(labels));
+					}
+					this.selectedLabels.add(newLabel);
+					this.populateLabels();
+				}
+			}
+		});
 
-    // populate the dropdown with stored labels
-    labels.forEach((label) => {
-      let div = document.createElement("div");
-      div.textContent = label;
-      div.classList.add("label-item");
-      if (this.selectedLabels.has(label)) {
-        div.classList.add("selected");
-      }
-      div.addEventListener("click", () => this.selectLabel(div));
-      div.addEventListener("dblclick", () => this.deleteLabel(div));
-      labelContainer.appendChild(div);
-    });
-  }
+		// populate the dropdown with stored labels
+		labels.forEach((label) => {
+			const div = document.createElement("div");
+			div.textContent = label;
+			div.classList.add("label-item");
+			if (this.selectedLabels.has(label)) {
+				div.classList.add("selected");
+			}
+			div.addEventListener("click", () => this.selectLabel(div));
+			div.addEventListener("dblclick", () => this.deleteLabel(div));
+			labelContainer.appendChild(div);
+		});
+	}
 
-  /**
-   * @method selectLabel
-   * @description Toggles the selection state of a label.
-   * @param {HTMLElement} labelElement - The label element to toggle
-   */
-  selectLabel(labelElement) {
-    const label = labelElement.textContent;
-    if (this.selectedLabels.has(label)) {
-      this.selectedLabels.delete(label);
-      labelElement.classList.remove("selected");
-    } else {
-      this.selectedLabels.add(label);
-      labelElement.classList.add("selected");
-    }
-  }
+	/**
+	 * @method selectLabel
+	 * @description Toggles the selection state of a label.
+	 * @param {HTMLElement} labelElement - The label element to toggle
+	 */
+	selectLabel(labelElement) {
+		const label = labelElement.textContent;
+		if (this.selectedLabels.has(label)) {
+			this.selectedLabels.delete(label);
+			labelElement.classList.remove("selected");
+		} else {
+			this.selectedLabels.add(label);
+			labelElement.classList.add("selected");
+		}
+	}
 
-  /**
-   * @method deleteLabel
-   * @description Deletes a label from the list and updates local storage.
-   * @param {HTMLElement} labelElement - The label element to delete
-   */
-  deleteLabel(labelElement) {
-    const label = labelElement.textContent;
-    let labels = JSON.parse(localStorage.getItem("labels")) || [];
+	/**
+	 * @method deleteLabel
+	 * @description Deletes a label from the list and updates local storage.
+	 * @param {HTMLElement} labelElement - The label element to delete
+	 */
+	deleteLabel(labelElement) {
+		const label = labelElement.textContent;
+		let labels = JSON.parse(localStorage.getItem("labels")) || [];
 
-    // remove the label from the local storage array
-    labels = labels.filter((item) => item !== label);
-    localStorage.setItem("labels", JSON.stringify(labels));
+		// remove the label from the local storage array
+		labels = labels.filter((item) => item !== label);
+		localStorage.setItem("labels", JSON.stringify(labels));
 
-    // remove the label from the selected labels set
-    this.selectedLabels.delete(label);
+		// remove the label from the selected labels set
+		this.selectedLabels.delete(label);
 
-    // remove the label element from the DOM
-    labelElement.remove();
-  }
+		// remove the label element from the DOM
+		labelElement.remove();
+	}
 
-  /**
-   * @method getJournalsFromStorage
-   * @description Retrieves the tasks array from local storage, or returns an of journal entries if no entries are found.
-   * @returns {Array} The array of journal entries
-   */
-  getJournalsFromStorage() {
-    const storedData = JSON.parse(localStorage.getItem("journalData"));
-    return Array.isArray(storedData) ? storedData : [];
-  }
+	/**
+	 * @method getJournalsFromStorage
+	 * @description Retrieves the tasks array from local storage, or returns an of journal entries if no entries are found.
+	 * @returns {Array} The array of journal entries
+	 */
+	getJournalsFromStorage() {
+		const storedData = JSON.parse(localStorage.getItem("journalData"));
+		return Array.isArray(storedData) ? storedData : [];
+	}
 
-  /**
-   * @method saveJournalsToStorage
-   * @description Saves the given journalData array to local storage after converting it to a JSON string.
-   * @param {Array} journalData - The array of Journals to save
-   */
-  saveJournalsToStorage(journalData) {
-    localStorage.setItem("journalData", JSON.stringify(journalData));
-    let event = new CustomEvent("storageUpdate", {
-      bubbles: true,
-      composed: true,
-    });
-    this.dispatchEvent(event);
-    this.remove();
-  }
+	/**
+	 * @method saveJournalsToStorage
+	 * @description Saves the given journalData array to local storage after converting it to a JSON string.
+	 * @param {Array} journalData - The array of Journals to save
+	 */
+	saveJournalsToStorage(journalData) {
+		localStorage.setItem("journalData", JSON.stringify(journalData));
+		const event = new CustomEvent("storageUpdate", {
+			bubbles: true,
+			composed: true
+		});
+		this.dispatchEvent(event);
+		this.remove();
+	}
 
-  /**
-   * @method onSubmit
-   * @description Handles form submission, prevents default submission, saves and logs data, resets form, and hides popup.
-   * @param {Event} event - The form submission event
-   */
-  onSubmit(event) {
-    event.preventDefault();
+	/**
+	 * @method onSubmit
+	 * @description Handles form submission, prevents default submission, saves and logs data, resets form, and hides popup.
+	 * @param {Event} event - The form submission event
+	 */
+	onSubmit(event) {
+		event.preventDefault();
 
     // get the users input from form
     let journalData = {
