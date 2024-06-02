@@ -145,7 +145,7 @@ function updateMainview() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
     tasksRendererCallback(tasks);
   });
-  window.api.getEntries((entries) => {
+  window.api.getFilteredEntries(filters, (entries) => {
     localStorage.setItem("journalData", JSON.stringify(entries));
     entriesRendererCallback(entries);
   });

@@ -1,4 +1,8 @@
-/* eslint-disable */
+/**
+ * @class
+ * @description Represents a popup component that can be dynamically added to the DOM. This component
+ * supports custom styling and behavior through a Shadow DOM, and handles form submissions to save task data.
+ */
 class JournalPopup extends HTMLElement {
 	/**
 	 * @constructor
@@ -90,21 +94,22 @@ class JournalPopup extends HTMLElement {
 	 */
 	populateLabels() {
 		const labelContainer = this.shadowRoot.getElementById("label");
-		const selectedLabelsContainer =
-			this.shadowRoot.querySelector(".selectedLabels");
+		const selectedLabelsContainer = this.shadowRoot.querySelector(".selectedLabels");
 		const labels = JSON.parse(window.localStorage.getItem("labels")) || [];
 
-		// Clear the label container
-		labelContainer.innerHTML = "";
-
-		// Add new label input
-		this.addNewLabelInput(labelContainer);
-
-		// Populate the dropdown with stored labels
-		this.populateLabelDropdown(labelContainer, labels);
-
-		// Populate the selected labels
-		this.populateSelectedLabels(selectedLabelsContainer);
+		window.api.getLabels((labels) => {
+			// Clear the label container
+			labelContainer.innerHTML = "";
+	  
+			// Add new label input
+			this.addNewLabelInput(labelContainer);
+	  
+			// Populate the dropdown with stored labels
+			this.populateLabelDropdown(labelContainer, labels);
+	  
+			// Populate the selected labels
+			this.populateSelectedLabels(selectedLabelsContainer);
+		  });
 	}
 
 	/**
@@ -133,17 +138,18 @@ class JournalPopup extends HTMLElement {
 				e.preventDefault();
 				const newLabel = input.value.trim();
 				if (newLabel) {
-					let labels =
-						JSON.parse(localStorage.getItem("labels")) || [];
-					if (!labels.includes(newLabel)) {
-						labels.push(newLabel);
-						localStorage.setItem("labels", JSON.stringify(labels));
-						const newColor = this.randomColor();
-						this.labelToColor.set(newLabel, newColor);
-						this.saveLabelColors();
-					}
-					this.selectedLabels.add(newLabel);
-					this.populateLabels();
+					window.api.getLabels((labels) => {
+						if (!labels.includes(newLabel)) {
+							window.api.addLabel(newLabel, (labels_added) => {
+								localStorage.setItem("labels", JSON.stringify(labels_added));
+								const newColor = this.randomColor();
+								this.labelToColor.set(newLabel, newColor);
+								this.saveLabelColors();
+							});
+						}
+						this.selectedLabels.add(newLabel);
+						this.populateLabels();
+					});
 				}
 			}
 		});

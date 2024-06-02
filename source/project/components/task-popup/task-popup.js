@@ -109,19 +109,6 @@ class TaskPopup extends HTMLElement {
       // Populate the selected labels
       this.populateSelectedLabels(selectedLabelsContainer);
     });
-    // const labels = JSON.parse(window.localStorage.getItem("labels")) || [];
-
-    // // Clear the label container
-    // labelContainer.innerHTML = "";
-
-    // // Add new label input
-    // this.addNewLabelInput(labelContainer);
-
-    // // Populate the dropdown with stored labels
-    // this.populateLabelDropdown(labelContainer, labels);
-
-    // // Populate the selected labels
-    // this.populateSelectedLabels(selectedLabelsContainer);
   }
 
   /**
@@ -150,17 +137,18 @@ class TaskPopup extends HTMLElement {
         e.preventDefault();
         const newLabel = input.value.trim();
         if (newLabel) {
-          let labels = JSON.parse(localStorage.getItem("labels")) || [];
-          if (!labels.includes(newLabel)) {
-            window.api.addLabel(newLabel, (labels) => {
-              localStorage.setItem("labels", JSON.stringify(labels));
-              const newColor = this.randomColor();
-              this.labelToColor.set(newLabel, newColor);
-              this.saveLabelColors();
-              this.selectedLabels.add(newLabel);
-              this.populateLabels();
-            });
-          }
+          window.api.getLabels((labels) => {
+						if (!labels.includes(newLabel)) {
+							window.api.addLabel(newLabel, (labels_added) => {
+								localStorage.setItem("labels", JSON.stringify(labels_added));
+								const newColor = this.randomColor();
+								this.labelToColor.set(newLabel, newColor);
+								this.saveLabelColors();
+							});
+						}
+						this.selectedLabels.add(newLabel);
+						this.populateLabels();
+					});
         }
       }
     });
