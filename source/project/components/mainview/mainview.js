@@ -19,19 +19,19 @@ function tasksRendererCallback(tasks) {
     taskName.textContent = task.task_name;
     taskPv.appendChild(taskName);
 
-    const taskContent = document.createElement("p");
+    const taskContent = document.createElement("p1");
     taskContent.textContent = task.task_content;
     taskPv.appendChild(taskContent);
 
-    const taskDueDate = document.createElement("p");
+    const taskDueDate = document.createElement("p2");
     taskDueDate.textContent = `Due: ${task.due_date}`;
     taskPv.appendChild(taskDueDate);
 
-    const taskPriority = document.createElement("p");
+    const taskPriority = document.createElement("p3");
     taskPriority.textContent = `Priority: ${task.priority}`;
     taskPv.appendChild(taskPriority);
 
-    const taskExpectedTime = document.createElement("p");
+    const taskExpectedTime = document.createElement("p4");
     taskExpectedTime.textContent = `Expected Time: ${task.expected_time}`;
     taskPv.appendChild(taskExpectedTime);
 
@@ -153,10 +153,10 @@ document.addEventListener("DOMContentLoaded", function () {
         // Assuming you have logic here to extract task details from task preview
         const taskDetails = {
           task_name: taskPv.querySelector('h2').textContent,
-          task_content: taskPv.querySelector('p').textContent,
-          due_date: taskPv.querySelector('p').textContent,
-          priority: taskPv.querySelector('p').textContent,
-          expected_time: taskPv.querySelector('p').textContent
+          task_content: taskPv.querySelector('p1').textContent,
+          due_date: taskPv.querySelector('p2').textContent,
+          priority: taskPv.querySelector('p3').textContent,
+          expected_time: taskPv.querySelector('p4').textContent
           // Example: task_name: taskPv.querySelector('h2').textContent
         };
 
