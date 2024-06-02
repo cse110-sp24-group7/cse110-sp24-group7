@@ -1,0 +1,193 @@
+/* Resetting default margin and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Styling the header */
+.header {
+  background-color: #fff;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ccc; /* Add border bottom to header */
+}
+
+.logo img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.logo span {
+  font-weight: bold;
+  font-size: 35px;
+  font-family: "Courier New";
+}
+
+.menu-icon img {
+  width: 35px;
+  height: 35px;
+}
+
+.search-filter-bar {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-top: 20px;
+}
+
+.search-bar {
+display: flex;
+align-items: center;
+}
+
+.search-container {
+position: relative;
+display: flex;
+align-items: center;
+}
+
+#searchInput {
+padding: 5px 5px 5px 30px; /* Adjusted padding for smaller size */
+width: 200px; /* Adjust the width to make the search bar smaller */
+border: none;
+border-radius: 5px; /* Less rounded corners */
+background-color: #eee;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+font-size: 14px; /* Adjusted font size for smaller input */
+}
+
+hr {
+  margin-top: 20px; /* Adjust the value as needed */
+}
+
+.filter-bar {
+display: flex;
+align-items: center;
+}
+
+.filter-bar select,
+.filter-bar .dropdown,
+#clearButton {
+margin-left: 10px;
+}
+
+#priority {
+padding: 5px;
+font-size: 14px;
+border-radius: 5px;
+}
+
+.dropdown {
+position: relative;
+}
+
+.dropbtn {
+padding: 5px 10px;
+font-size: 14px;
+border-radius: 5px;
+border: none;
+cursor: pointer;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-content {
+display: none;
+position: absolute;
+background-color: #f9f9f9;
+min-width: 160px;
+box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+display: block;
+}
+
+.dropdown-content a {
+color: black;
+padding: 12px 16px;
+text-decoration: none;
+display: block;
+}
+
+.dropdown-content a:hover {
+background-color: #f1f1f1;
+}
+
+#clearButton {
+padding: 5px 10px; /* Adjusted padding for smaller button */
+border: none;
+border-radius: 5px; /* Less rounded corners */
+background-color: #f9f9f9;
+color: black;
+font-size: 14px; /* Adjusted font size for smaller button */
+cursor: pointer;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#clearButton:hover {
+background-color: #f9f9f9;
+}
+
+  
+
+/* Styling the calendar */
+.calendar {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 50px); /* Adjust height to leave space for header */
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    font-family: "Courier New";
+}
+
+.day {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    width: 50%; /* Make each day section fill the available height */
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+}
+
+.time-left-container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  font-weight: bold;
+  font-family: "Lucida Sans Unicode";
+}
+
+.day > div {
+    flex: 1;
+    flex-direction: row;
+    text-align: center;
+    align-items: center; 
+    padding: 10px 0;
+    font-weight: bold;
+    font-family: "Lucida Sans Unicode";
+}
+
+.days-left {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; /* Allow squares to wrap if needed */
+  justify-content: center;
+}
+
+.day-left-square {
+  height: 20px;
+  width: 20px;
+  background-color: #bdbdbd;
+  margin: 5px;
+  border-radius: 5px;
+} 

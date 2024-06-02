@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All tasks</title>
+  <link rel="icon" type="image/x-icon" href="../assets/res/favicon.ico" />
+  <link rel="stylesheet" href="../all-tasks/all-tasks.css" />
+  
+  <!--References to component css files-->
+  <link rel="stylesheetTask" href="../task-popup/task-popup.css" />
+  <link rel="stylesheetJournal" href="../journal-popup/journal-popup.css" />
+  
+  <!--References to component js files-->
+  <script src="../all-tasks/all-tasks.js" type="module"></script>
+  <script src="../task-popup/task-popup.js"></script>
+  <script src="../journal-popup/journal-popup.js"></script>
+</head>
+
+<body>
+  <!--Header-->
+  <div class="header">
+      <div class="logo">
+          <img src="../../assets/res/logo.png" alt="Logo">
+          <span>tasks</span>
+      </div>
+      <div class="menu-icon">
+          <img src="../../assets/res/menuBtn.png" alt="Menu">
+      </div>
+  </div>
+
+
+<!--Search and Filter Container-->
+<div class="search-filter-bar">
+  <div class="search-bar">
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="" />
+    </div>
+  </div>
+  <div class="filter-bar">
+    <select id="priority" class="form-control" required aria-required="true">
+      <option value="default" disabled selected>Priority</option>
+      <option value="P1">P1</option>
+      <option value="P2">P2</option>
+      <option value="P3">P3</option>
+      <option value="P4">P4</option>
+    </select>
+    <div class="dropdown">
+      <button class="dropbtn">Label</button>
+      <div id="label" class="dropdown-content">
+        <!-- labels will be added here -->
+      </div>
+    </div>
+    <button id="clearButton">Clear</button>
+  </div>
+</div>
+
+  <hr>
+  
+  <!--Calendar Container-->
+  <div class="calendar">
+      <!--Sunday Container-->
+      <div class="day">
+        <h2>SUN</h2>
+        <hr>
+        <ul id="UL1"> </ul>
+        <div class="task-container">
+          tasks
+          <div class="label-box"></div>
+        </div>
+        <div class="time-left-container"> 
+          <div class="label-box"></div>
+          <div class="days-left">
+            <div class="day-left-square"></div>
+            <div class="day-left-square"></div>
+            <div class="day-left-square"></div>
+            <div class="day-left-square"></div>
+            <div class="day-left-square"></div>
+            <div class="day-left-square"></div>
+            <div class="day-left-square"></div>
+            <div class="day-left-square"></div>
+            <div class="day-left-square"></div>
+            <div class="day-left-square"></div>
+          </div>
+          <div class="days-left-text">
+            <h3>3 days left</h3>
+          </div>
+        </div>
+      </div>
+
+      <!--Monday Container-->
+      <div class="day">
+        <h2>MON</h2>
+        <hr>
+        <div class="task-container">
+          <div class="label-box"></div>
+        </div> 
+        <div class="time-left-container">
+          <div class="label-box"></div>
+        </div>   
+      </div>
+
+      <!--Tuesday Container-->
+      <div class="day">
+        <h2>TUES</h2>
+        <hr>
+        <div class="task-container">
+          <div class="label-box"></div>
+        </div> 
+        <div class="time-left-container">
+          <div class="label-box"></div>
+        </div>
+      </div>
+
+      <!--Wednesday Container-->
+      <div class="day">
+        <h2>WED</h2>
+        <hr>  
+        <div class="task-container">
+          <div class="label-box"></div>
+        </div> 
+        <div class="time-left-container">
+          <div class="label-box"></div>
+        </div>  
+      </div>
+      
+      <!--Thursday Container-->
+      <div class="day">
+        <h2>THURS</h2>
+        <hr>
+        <div class="task-container">
+          <div class="label-box"></div>
+        </div> 
+        <div class="time-left-container">
+          <div class="label-box"></div>
+        </div>
+      </div>
+
+      <!--Friday Container-->
+      <div class="day">
+        <h2>FRI</h2>
+        <hr>
+        <div class="task-container">
+          <div class="label-box"></div>
+        </div> 
+        <div class="time-left-container">
+          <div class="label-box"></div>
+        </div>  
+      </div>
+
+      <!--Saturday Container--> 
+      <div class="day">
+        <h2>SAT</h2>
+        <hr>
+        <div class="task-container">
+          <div class="label-box"></div>
+        </div> 
+        <div class="time-left-container">
+          <div class="label-box"></div>
+        </div>
+      </div>
+    </div> <!--Calendar-->
+</body>
+</html>

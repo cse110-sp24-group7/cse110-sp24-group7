@@ -9,12 +9,12 @@
  * // "2024-05-12 10:30:45 - John: This is a sample note."
  * formatNote("This is a sample note.", "John");
  */
-function formatNote(content, user = 'Anonymous') {
+function formatNote(content, user = "Anonymous") {
   const timestamp = new Date()
     .toISOString()
-    .replace('T', ' ')
-    .replace(/\.\d+Z/, '');
+    .replace("T", " ")
+    .replace(/\.\d+Z/, "");
   return `${timestamp} - ${user}: ${content}`;
 }
 
-export {formatNote};
+module.exports = { formatNote };
