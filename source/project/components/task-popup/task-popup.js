@@ -35,33 +35,6 @@ class PopupComponent extends HTMLElement {
       "#d1s8f4",
       "#ebad6f",
       "#cdb4db",
-      // "#ffc8dd",
-      // "#bde0fe",
-      // "#a2d2ff",
-      // "#ffafcc",
-      // "#f7d9c4",
-      // "#fde4cf",
-      // "#f1faee",
-      // "#e9edc9",
-      // "#ccd5ae",
-      // "#b7b7a4",
-      // "#a8dadc",
-      // "#c3aed6",
-      // "#adc178",
-      // "#d0b8ac",
-      // "#9cadce",
-      // "#a7bed3",
-      // "#b5c9c5",
-      // "#d8e2dc",
-      // "#e8dab2",
-      // "#c8d5b9",
-      // "#ecb7a8",
-      // "#f2d3ac",
-      // "#e3d5d0",
-      // "#b0c4de",
-      // "#c5dedd",
-      // "#cfe2f3",
-      // "#d5c9df",
     ];
 
     // get the css file and append it to the shadow root
@@ -194,10 +167,7 @@ class PopupComponent extends HTMLElement {
   }
 
   randomColor() {
-    // pick a color and remove it from the list
-    let color = this.colors[Math.floor(Math.random() * this.colors.length)];
-    this.colors = this.colors.filter((item) => item !== color);
-    return color;
+    return this.colors[Math.floor(Math.random() * this.colors.length)];
   }
   /**
    * @method populateLabelDropdown
