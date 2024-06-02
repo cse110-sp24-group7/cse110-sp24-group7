@@ -9,6 +9,7 @@
 		"@babel/core": "^7.24.6",
 		"@babel/eslint-parser": "^7.24.6",
 		"@babel/preset-env": "^7.24.6",
+		"@playwright/test": "^1.44.1",
 		"babel-jest": "^29.7.0",
 		"electron": "^30.0.8",
 		"eslint": "^8.57.0",
