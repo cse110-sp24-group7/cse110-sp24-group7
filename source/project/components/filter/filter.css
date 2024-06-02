@@ -1,73 +1,73 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap");
 
 :host {
-  font-family: "Roboto Mono", monospace;
-  font-size: small;
+	font-family: "Roboto Mono", monospace;
+	font-size: small;
 }
 
 .filter-container {
-  display: flex;
-  gap: 5px;
+	display: flex;
+	gap: 5px;
 }
 
 .holder {
-  position: relative;
-  width: 130px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: white;
-  cursor: pointer;
-  padding: 0;
-  margin: 0;
-  height: 30px;
-  display: flex;
+	position: relative;
+	width: 130px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background-color: white;
+	cursor: pointer;
+	padding: 0;
+	margin: 0;
+	height: 30px;
+	display: flex;
 }
 
 #resetBtn {
-  position: relative;
-  width: 130px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: white;
-  cursor: pointer;
-  padding: 0;
-  margin: 0;
-  height: 30px;
-  display: flex;
+	position: relative;
+	width: 130px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background-color: white;
+	cursor: pointer;
+	padding: 0;
+	margin: 0;
+	height: 30px;
+	display: flex;
 }
 
 .mainText {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
 }
 
 .dropdown-content {
-  display: none;
-  position: absolute;
-  width: 100%;
-  top: 100%;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 0 0 5px 5px;
-  max-height: 150px;
-  overflow-y: scroll;
-  z-index: 1;
-  box-sizing: border-box;
+	display: none;
+	position: absolute;
+	width: 100%;
+	top: 100%;
+	background-color: white;
+	border: 1px solid #ccc;
+	border-radius: 0 0 5px 5px;
+	max-height: 150px;
+	overflow-y: scroll;
+	z-index: 1;
+	box-sizing: border-box;
 }
 
 .dropdown-content div {
-  display: flex;
-  align-items: center;
-  padding: 5px;
-  border-bottom: 1px solid #ddd;
+	display: flex;
+	align-items: center;
+	padding: 5px;
+	border-bottom: 1px solid #ddd;
 }
 
 .dropdown-content div:hover {
-  background-color: #ddd;
+	background-color: #ddd;
 }
 
 /* .dropdown-content .priority-item {
@@ -75,18 +75,18 @@
 } */
 
 .priority-item {
-  cursor: pointer;
-  text-align: center;
+	cursor: pointer;
+	text-align: center;
 }
 
 .checkbox {
-  margin-right: 10px;
+	margin-right: 10px;
 }
 
 .holder:hover .dropdown-content {
-  display: block;
+	display: block;
 }
 
 .holder:hover {
-  border-radius: 5px 5px 0 0;
+	border-radius: 5px 5px 0 0;
 }
