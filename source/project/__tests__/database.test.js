@@ -1,7 +1,7 @@
 //import * as dbMgr from '../scripts/database/dbMgr';
-const dbMgr = require("../scripts/database/dbMgr");
+const dbMgr = require('../scripts/database/dbMgr');
 
-describe("Database functions", () => {
+describe('Database functions', () => {
   let dbLength = 0;
   let labelLength = 0;
 
@@ -41,7 +41,7 @@ describe("Database functions", () => {
     });
   });
 
-  test("Get table length", (done) => {
+  test('Get table length', done => {
     function trcbLengthTest(tasks) {
       dbLength = tasks.length;
       done();
@@ -73,7 +73,7 @@ describe("Database functions", () => {
     dbMgr.addLabels(["test_label_2", "test_label_3"], lrcbAddLabels);
   });
 
-  test("Testing addTask", (done) => {
+  test('Testing addTask', done => {
     function trcbAddTest(tasks) {
       expect(tasks.length).toBe(dbLength + 1);
       done();
@@ -89,7 +89,7 @@ describe("Database functions", () => {
     dbMgr.addTasks([test2, test3], trcbAddTests);
   });
 
-  test("Testing editTask", (done) => {
+  test('Testing editTask', done => {
     function trcbEditTest(tasks) {
       for (let i = 0; i < tasks.length; i++) {
         if (tasks[i].task_id == test1.task_id) {
@@ -98,11 +98,11 @@ describe("Database functions", () => {
       }
       done();
     }
-    test1.task_content = "test1_updated_content";
+    test1.task_content = 'test1_updated_content';
     dbMgr.editTask(test1, trcbEditTest);
   });
 
-  test("Testing conjunctive label search", (done) => {
+  test('Testing conjunctive label search', done => {
     function trcbConjunctiveTest(tasks) {
       expect(tasks.length).toBe(2);
 
@@ -123,12 +123,12 @@ describe("Database functions", () => {
       done();
     }
     dbMgr.getTasksConjunctLabels(
-      ["test_label_1", "test_label_2"],
+      ['test_label_1', 'test_label_2'],
       trcbConjunctiveTest,
     );
   });
 
-  test("Testing disjunctive label search", (done) => {
+  test('Testing disjunctive label search', done => {
     function trcbDisjunctiveTest(tasks) {
       expect(tasks.length).toBe(3);
 
@@ -139,7 +139,7 @@ describe("Database functions", () => {
 
       done();
     }
-    dbMgr.getTasksDisjunctLabels(["test_label_2"], trcbDisjunctiveTest);
+    dbMgr.getTasksDisjunctLabels(['test_label_2'], trcbDisjunctiveTest);
   });
 
   test("Testing getFilteredTasks with time range", (done) => {
@@ -241,7 +241,28 @@ describe("Database functions", () => {
     dbMgr.getFilteredTasks(filters, trcbFilteredTest);
   });
 
-  test("Testing deleteTask", (done) => {
+  test("Testing getFilteredTasks with time range", (done) => {
+    const filters = {
+      startTime: "1900-01-01T00:00",
+      endTime: "1900-01-02T23:59",
+      labels: [],
+      priority: "",
+      exclusive: false,
+    };
+
+    function trcbFilteredTest(tasks) {
+      expect(tasks.length).toBe(2);
+      let task_ids = tasks.map(task => task.task_id);
+      expect(task_ids.sort()).toEqual(
+        [test1.task_id, test2.task_id].sort(),
+      );
+      done();
+    }
+
+    dbMgr.getFilteredTasks(filters, trcbFilteredTest);
+  });
+
+  test('Testing deleteTask', (done) => {
     function trcbDeleteTest(tasks) {
       expect(tasks.length).toBe(dbLength + 2);
       done();
@@ -249,12 +270,12 @@ describe("Database functions", () => {
     dbMgr.deleteTask(test1.task_id, trcbDeleteTest);
   });
 
-  test("Testing deleteTasks", (done) => {
-    function trcbDeletesTest(tasks) {
+  test('Testing deleteTasks', (done) => {
+    function trcbDeleteTests(tasks) {
       expect(tasks.length).toBe(dbLength);
       done();
     }
-    dbMgr.deleteTasks([test2.task_id, test3.task_id], trcbDeletesTest);
+    dbMgr.deleteTasks([test2.task_id, test3.task_id], trcbDeleteTests);
   });
 
   test("Testing deleteLabel", (done) => {

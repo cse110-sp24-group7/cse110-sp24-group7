@@ -10,4 +10,4 @@ jobs: # the things being executed
       - name: Install Dependencies
         run: npm install
       - name: Sanity Test Test
-        run: npm test ./source/project/__tests__/
+        run: npm test:unit ./source/project/__tests__/

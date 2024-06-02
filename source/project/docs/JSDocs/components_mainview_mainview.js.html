@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/mainview/mainview.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/mainview/mainview.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* eslint-disable no-undef */
+/**
+ * Adds tasks to the task containers.
+ * @param {Task[]} tasks - an array of task objects.
+ */
+function tasksRendererCallback(tasks) {
+  // Clear all existing task entries first
+  document.querySelectorAll(".task-container").forEach((container) => {
+    container.innerHTML = ""; // Clears all child elements
+  });
+
+  // Add new tasks
+  tasks.forEach((task) => {
+    // Create elements for the task entry
+    const taskPv = document.createElement("div");
+    taskPv.classList.add("task-pv");
+
+    const taskName = document.createElement("h2");
+    taskName.textContent = task.task_name;
+    taskPv.appendChild(taskName);
+
+    const taskContent = document.createElement("p");
+    taskContent.textContent = task.task_content;
+    taskPv.appendChild(taskContent);
+
+    const taskDueDate = document.createElement("p");
+    taskDueDate.textContent = `Due: ${task.due_date}`;
+    taskPv.appendChild(taskDueDate);
+
+    const taskPriority = document.createElement("p");
+    taskPriority.textContent = `Priority: ${task.priority}`;
+    taskPv.appendChild(taskPriority);
+
+    const taskExpectedTime = document.createElement("p");
+    taskExpectedTime.textContent = `Expected Time: ${task.expected_time}`;
+    taskPv.appendChild(taskExpectedTime);
+
+    // Find the appropriate day container based on the task's due date
+    // Assuming due_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
+    const dueDate = new Date(task.due_date);
+    const dayIndex = dueDate.getDay(); // Sunday - Saturday : 0 - 6
+    const dayContainer = document.querySelector(
+      `.day${dayIndex + 1} .task-container`
+    );
+
+    if (dayContainer) {
+      dayContainer.appendChild(taskPv);
+    }
+  });
+}
+
+/**
+ * Adds journal entries to the journal containers.
+ * @param {Entry[]} entries - an array of journal entry objects.
+ */
+function entriesRendererCallback(entries) {
+  // Clear all existing journal entries first
+  document.querySelectorAll(".journal-container").forEach((container) => {
+    container.innerHTML = ""; // Clears all child elements
+  });
+
+  entries.forEach((entry) => {
+    // Create elements for the journal entry
+    const journalPv = document.createElement("div");
+    journalPv.classList.add("journal-pv");
+
+    const journalTitle = document.createElement("h2");
+    journalTitle.textContent = entry.entry_title;
+    journalPv.appendChild(journalTitle);
+
+    const journalDesc = document.createElement("p");
+    journalDesc.textContent = entry.entry_content;
+    journalPv.appendChild(journalDesc);
+
+    // Find the appropriate day container based on the entry's creation date
+    // Assuming creation_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
+    const creationDate = new Date(entry.creation_date);
+    const dayIndex = creationDate.getDay(); // Sunday - Saturday : 0 - 6
+    const dayContainer = document.querySelector(`.day${dayIndex + 1} .journal-container`);
+
+    if (dayContainer) {
+      dayContainer.appendChild(journalPv);
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("storageUpdate", () => {
+    let storedEntries = JSON.parse(localStorage.getItem("journalData"));
+    storedEntries = Array.isArray(storedEntries) ? storedEntries : [];
+    let storedTasks = JSON.parse(localStorage.getItem("tasks"));
+    storedTasks = Array.isArray(storedTasks) ? storedTasks : [];
+    tasksRendererCallback(storedTasks);
+    entriesRendererCallback(storedEntries);
+  });
+
+  window.api.getTasks((tasks) => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    tasksRendererCallback(tasks);
+  });
+  window.api.getEntries((entries) => {
+    localStorage.setItem("journalData", JSON.stringify(entries));
+    entriesRendererCallback(entries);
+  });
+
+  // creates the popup when the add task button is clicked
+  document.querySelectorAll(".add-task").forEach((button) => {
+    button.addEventListener("click", () => {
+      const popup = document.createElement("task-popup");
+      document.body.appendChild(popup);
+    });
+  });
+
+  // creates the popup when the add journal entry button is clicked
+  document.querySelectorAll(".add-journal").forEach((button) => {
+    button.addEventListener("click", () => {
+      const popup = document.createElement("journal-popup");
+      document.body.appendChild(popup);
+    });
+  });
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="JournalPopup.html">JournalPopup</a></li><li><a href="PopupComponent.html">PopupComponent</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addEntry">addEntry</a></li><li><a href="global.html#addTask">addTask</a></li><li><a href="global.html#addTasks">addTasks</a></li><li><a href="global.html#connectedCallback">connectedCallback</a></li><li><a href="global.html#deleteEntry">deleteEntry</a></li><li><a href="global.html#deleteLabel">deleteLabel</a></li><li><a href="global.html#deleteTask">deleteTask</a></li><li><a href="global.html#deleteTasks">deleteTasks</a></li><li><a href="global.html#editEntry">editEntry</a></li><li><a href="global.html#editTask">editTask</a></li><li><a href="global.html#entriesRendererCallback">entriesRendererCallback</a></li><li><a href="global.html#factorial">factorial</a></li><li><a href="global.html#formatNote">formatNote</a></li><li><a href="global.html#getEntries">getEntries</a></li><li><a href="global.html#getJournalsFromStorage">getJournalsFromStorage</a></li><li><a href="global.html#getTasks">getTasks</a></li><li><a href="global.html#getTasksConjunctLabels">getTasksConjunctLabels</a></li><li><a href="global.html#getTasksDisjunctLabels">getTasksDisjunctLabels</a></li><li><a href="global.html#getTasksFromStorage">getTasksFromStorage</a></li><li><a href="global.html#getUserID">getUserID</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#onSubmit">onSubmit</a></li><li><a href="global.html#populateLabelSelector">populateLabelSelector</a></li><li><a href="global.html#saveJournalsToStorage">saveJournalsToStorage</a></li><li><a href="global.html#saveTasksToStorage">saveTasksToStorage</a></li><li><a href="global.html#selectLabel">selectLabel</a></li><li><a href="global.html#tasksRendererCallback">tasksRendererCallback</a></li><li><a href="global.html#testing">testing</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Sun Jun 02 2024 00:39:56 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

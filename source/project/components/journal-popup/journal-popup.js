@@ -1,3 +1,4 @@
+/* eslint-disable */
 class JournalPopup extends HTMLElement {
   /**
    * @constructor
@@ -6,7 +7,7 @@ class JournalPopup extends HTMLElement {
    */
   constructor() {
     super();
-    let shadowRoot = this.attachShadow({ mode: "open" });
+    const shadowRoot = this.attachShadow({ mode: "open" });
 
     // set to store selected labels
     this.selectedLabels = new Set();
@@ -85,7 +86,7 @@ class JournalPopup extends HTMLElement {
       if (e.key === "Enter") {
         const newLabel = input.value.trim();
         if (newLabel) {
-          let labels = JSON.parse(localStorage.getItem("labels")) || [];
+          const labels = JSON.parse(localStorage.getItem("labels")) || [];
           if (!labels.includes(newLabel)) {
             labels.push(newLabel);
             localStorage.setItem("labels", JSON.stringify(labels));
@@ -98,7 +99,7 @@ class JournalPopup extends HTMLElement {
 
     // populate the dropdown with stored labels
     labels.forEach((label) => {
-      let div = document.createElement("div");
+      const div = document.createElement("div");
       div.textContent = label;
       div.classList.add("label-item");
       if (this.selectedLabels.has(label)) {
@@ -163,7 +164,7 @@ class JournalPopup extends HTMLElement {
    */
   saveJournalsToStorage(journalData) {
     localStorage.setItem("journalData", JSON.stringify(journalData));
-    let event = new CustomEvent("storageUpdate", {
+    const event = new CustomEvent("storageUpdate", {
       bubbles: true,
       composed: true,
     });
@@ -180,7 +181,7 @@ class JournalPopup extends HTMLElement {
     event.preventDefault();
 
     // get the users input from form
-    let journalData = {
+    const journalData = {
       entry_id: Math.random().toString(36).substr(2, 9),
       entry_title: this.shadowRoot.querySelector("#title").value,
       entry_content: this.shadowRoot.querySelector("#description").value,

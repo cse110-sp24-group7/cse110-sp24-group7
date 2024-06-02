@@ -1,3 +1,4 @@
+
 /**
  * @class
  * @description Represents a popup component that can be dynamically added to the DOM. This component
@@ -33,7 +34,7 @@ class PopupComponent extends HTMLElement {
 
     // waits for the css to load before the html popup occurs
     const div = document.createElement("div");
-    style.onload = async () => {
+    style.onload = async () => { //eslint-disable-line
       div.setAttribute("class", "popup-container");
       const response = await fetch("../task-popup/task-popup.html");
       const html = await response.text();
@@ -92,7 +93,7 @@ class PopupComponent extends HTMLElement {
       if (e.key === "Enter") {
         const newLabel = input.value.trim();
         if (newLabel) {
-          let labels = JSON.parse(localStorage.getItem("labels")) || [];
+          const labels = JSON.parse(localStorage.getItem("labels")) || [];
           if (!labels.includes(newLabel)) {
             labels.push(newLabel);
             localStorage.setItem("labels", JSON.stringify(labels));
@@ -105,7 +106,7 @@ class PopupComponent extends HTMLElement {
 
     // populate the dropdown with stored labels
     labels.forEach((label) => {
-      let div = document.createElement("div");
+      const div = document.createElement("div");
       div.textContent = label;
       div.classList.add("label-item");
       if (this.selectedLabels.has(label)) {
@@ -185,7 +186,7 @@ class PopupComponent extends HTMLElement {
    */
   saveTasksToStorage(tasks) {
     localStorage.setItem("tasks", JSON.stringify(tasks));
-    let event = new CustomEvent("storageUpdate", {
+    const event = new CustomEvent("storageUpdate", {
       bubbles: true,
       composed: true,
     });
@@ -202,14 +203,14 @@ class PopupComponent extends HTMLElement {
     event.preventDefault();
 
     // get the current date and time
-    let currentDate = new Date();
-    let dateString = currentDate.toString();
+    const currentDate = new Date();
+    const dateString = currentDate.toString();
 
     // get the user ID
-    let userID = this.getUserID();
+    const userID = this.getUserID();
 
     // get the users input and store it in a task object
-    let task = {
+    const task = {
       task_id: Math.random().toString(36).substr(2, 9),
       // creator_id: userID,
       task_name: this.shadowRoot.getElementById("title").value,

@@ -1,14 +1,14 @@
 // import { contextBridge } from 'electron';
 // import * as dbMgr from './database/dbMgr.js';
 
-const { contextBridge } = require("electron");
-const dbMgr = require("./database/dbMgr");
+const {contextBridge} = require('electron');
+const dbMgr = require('./database/dbMgr');
 
-const init = (bcb) => {
+const init = bcb => {
   dbMgr.init(bcb);
 };
 
-const getTasks = (trcb) => {
+const getTasks = trcb => {
   return dbMgr.getTasks(trcb);
 };
 
@@ -20,7 +20,7 @@ const getTasksDisjunctLabels = (labels, trcb) => {
   return dbMgr.getTasksDisjunctLabels(labels, trcb);
 };
 
-const getEntries = (ercb) => {
+const getEntries = ercb => {
   return dbMgr.getEntries(ercb);
 };
 
@@ -56,7 +56,7 @@ const deleteEntry = (entry_id, ercb) => {
   return dbMgr.deleteEntry(entry_id, ercb);
 };
 
-contextBridge.exposeInMainWorld("api", {
+contextBridge.exposeInMainWorld('api', {
   init: init,
   getTasks: getTasks,
   getTasksConjunctLabels: getTasksConjunctLabels,
