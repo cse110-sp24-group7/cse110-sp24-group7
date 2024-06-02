@@ -2,10 +2,11 @@
   "source": {
     "include": ["./source/project/scripts", "./source/project/components"],
     "includePattern": ".+\\.js(doc|x)?$",
-    "excludePattern": "(^|\\/|\\\\)_"
+    "excludePattern": "(^|\\/|\\\\)_",
+    "recurseDepth": 5
   },
-  "recurseDepth": 4,
   "opts": {
-    "destination": "./source/project/docs/JSDocs"
+    "destination": "./source/project/docs/JSDocs",
+    "recurse": true
   }
 }

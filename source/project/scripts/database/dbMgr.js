@@ -86,7 +86,7 @@ function init(bcb) {
         );`;
 
   // Table creation queries are serialized to ensure key constraints are followed.
-  db.serialize(function () {
+  db.serialize(() => {
     db.run(fk_sql, [], (err) => {
       if (err) throw err;
     });
@@ -102,8 +102,7 @@ function init(bcb) {
       (err) => {
         if (err) throw err;
       },
-      bcb,
-    );
+      bcb);
   });
 }
 
@@ -248,7 +247,7 @@ function getEntries(ercb) {
     },
     () => {
       ercb(ret);
-    },
+    }
   );
 }
 
@@ -311,7 +310,7 @@ function addTasks(tasks, trcb) {
           if (err) {
             throw err;
           }
-        },
+        }
       );
 
       task.labels.forEach((label) => {

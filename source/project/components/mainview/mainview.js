@@ -1,6 +1,7 @@
+/* eslint-disable no-undef */
 /**
  * Adds tasks to the task containers.
- * @param {import("../scripts/database/dbMgr").task[]} tasks - an array of task objects.
+ * @param {Task[]} tasks - an array of task objects.
  */
 function tasksRendererCallback(tasks) {
   // Clear all existing task entries first
@@ -39,7 +40,7 @@ function tasksRendererCallback(tasks) {
     const dueDate = new Date(task.due_date);
     const dayIndex = dueDate.getDay(); // Sunday - Saturday : 0 - 6
     const dayContainer = document.querySelector(
-      `.day${dayIndex + 1} .task-container`,
+      `.day${dayIndex + 1} .task-container`
     );
 
     if (dayContainer) {
@@ -50,7 +51,7 @@ function tasksRendererCallback(tasks) {
 
 /**
  * Adds journal entries to the journal containers.
- * @param {import("../scripts/database/dbMgr").entry[]} entries - an array of journal entry objects.
+ * @param {Entry[]} entries - an array of journal entry objects.
  */
 function entriesRendererCallback(entries) {
   // Clear all existing journal entries first
@@ -75,9 +76,7 @@ function entriesRendererCallback(entries) {
     // Assuming creation_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
     const creationDate = new Date(entry.creation_date);
     const dayIndex = creationDate.getDay(); // Sunday - Saturday : 0 - 6
-    const dayContainer = document.querySelector(
-      `.day${dayIndex + 1} .journal-container`,
-    );
+    const dayContainer = document.querySelector(`.day${dayIndex + 1} .journal-container`);
 
     if (dayContainer) {
       dayContainer.appendChild(journalPv);
@@ -85,7 +84,7 @@ function entriesRendererCallback(entries) {
   });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("storageUpdate", () => {
     let storedEntries = JSON.parse(localStorage.getItem("journalData"));
     storedEntries = Array.isArray(storedEntries) ? storedEntries : [];
@@ -106,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // creates the popup when the add task button is clicked
   document.querySelectorAll(".add-task").forEach((button) => {
-    button.addEventListener("click", function () {
+    button.addEventListener("click", () => {
       const popup = document.createElement("task-popup");
       document.body.appendChild(popup);
     });
@@ -114,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // creates the popup when the add journal entry button is clicked
   document.querySelectorAll(".add-journal").forEach((button) => {
-    button.addEventListener("click", function () {
+    button.addEventListener("click", () => {
       const popup = document.createElement("journal-popup");
       document.body.appendChild(popup);
     });
