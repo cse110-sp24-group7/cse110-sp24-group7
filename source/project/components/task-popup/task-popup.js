@@ -161,6 +161,7 @@ class PopupComponent extends HTMLElement {
     // Add event listener for input to save new label
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
+        e.preventDefault();
         const newLabel = input.value.trim();
         if (newLabel) {
           let labels = JSON.parse(localStorage.getItem("labels")) || [];
