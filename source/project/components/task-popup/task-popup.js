@@ -3,10 +3,10 @@
  * @description Represents a popup component that can be dynamically added to the DOM. This component
  * supports custom styling and behavior through a Shadow DOM, and handles form submissions to save task data.
  */
-class PopupComponent extends HTMLElement {
+class TaskPopup extends HTMLElement {
   /**
    * @constructor
-   * @description Creates an instance of PopupComponent, sets up the shadow DOM, and initializes
+   * @description Creates an instance of TaskPopup, sets up the shadow DOM, and initializes
    * the component with CSS and HTML content loaded asynchronously.
    */
   constructor() {
@@ -379,4 +379,4 @@ class PopupComponent extends HTMLElement {
 }
 
 // define the custom element
-customElements.define("task-popup", PopupComponent);
+customElements.define("task-popup", TaskPopup);
