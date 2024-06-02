@@ -6,6 +6,9 @@ on:
             - dev
             - main
         types: [opened, synchronize]
+    push: 
+        branches:
+            - dev
 
 jobs:
   lint-check:
