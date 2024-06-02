@@ -204,7 +204,8 @@ img {
   border: 1px solid #0056b3;
   border-radius: 0 0 8px 8px;
   z-index: 1;
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: hidden;
   max-height: 100px;
   left: 78.8%;
   text-align: left;

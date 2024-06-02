@@ -94,21 +94,34 @@ class PopupComponent extends HTMLElement {
    */
   populateLabels() {
     const labelContainer = this.shadowRoot.getElementById("label");
-    const selectedLabelsContainer =
-      this.shadowRoot.querySelector(".selectedLabels");
-    const labels = JSON.parse(window.localStorage.getItem("labels")) || [];
+    const selectedLabelsContainer = this.shadowRoot.querySelector(".selectedLabels");
 
-    // Clear the label container
-    labelContainer.innerHTML = "";
+    window.api.getLabels((labels) => {
+      // Clear the label container
+      labelContainer.innerHTML = "";
 
-    // Add new label input
-    this.addNewLabelInput(labelContainer);
+      // Add new label input
+      this.addNewLabelInput(labelContainer);
 
-    // Populate the dropdown with stored labels
-    this.populateLabelDropdown(labelContainer, labels);
+      // Populate the dropdown with stored labels
+      this.populateLabelDropdown(labelContainer, labels);
 
-    // Populate the selected labels
-    this.populateSelectedLabels(selectedLabelsContainer);
+      // Populate the selected labels
+      this.populateSelectedLabels(selectedLabelsContainer);
+    });
+    // const labels = JSON.parse(window.localStorage.getItem("labels")) || [];
+
+    // // Clear the label container
+    // labelContainer.innerHTML = "";
+
+    // // Add new label input
+    // this.addNewLabelInput(labelContainer);
+
+    // // Populate the dropdown with stored labels
+    // this.populateLabelDropdown(labelContainer, labels);
+
+    // // Populate the selected labels
+    // this.populateSelectedLabels(selectedLabelsContainer);
   }
 
   /**
@@ -139,13 +152,12 @@ class PopupComponent extends HTMLElement {
         if (newLabel) {
           let labels = JSON.parse(localStorage.getItem("labels")) || [];
           if (!labels.includes(newLabel)) {
-            labels.push(newLabel);
-            localStorage.setItem("labels", JSON.stringify(labels));
-            this.labelToColor.set(newLabel, newColor);
-            this.saveLabelColors();
+            window.api.addLabel(newLabel, (labels) => {
+              localStorage.setItem("labels", JSON.stringify(labels));
+              this.selectedLabels.add(newLabel);
+              this.populateLabels();
+            });
           }
-          this.selectedLabels.add(newLabel);
-          this.populateLabels();
         }
       }
     });

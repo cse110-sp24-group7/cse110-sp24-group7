@@ -63,7 +63,7 @@ class JournalPopup extends HTMLElement {
 	}
 
 	/**
-	 * @method populateLabelSelector
+	 * @method populateLabels
 	 * @description Populates the label selector with labels from local storage.
 	 */
 	populateLabels() {
