@@ -138,6 +138,7 @@ class JournalPopup extends HTMLElement {
 					if (!labels.includes(newLabel)) {
 						labels.push(newLabel);
 						localStorage.setItem("labels", JSON.stringify(labels));
+						const newColor = this.randomColor();
 						this.labelToColor.set(newLabel, newColor);
 						this.saveLabelColors();
 					}

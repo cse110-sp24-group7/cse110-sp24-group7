@@ -154,6 +154,9 @@ class PopupComponent extends HTMLElement {
           if (!labels.includes(newLabel)) {
             window.api.addLabel(newLabel, (labels) => {
               localStorage.setItem("labels", JSON.stringify(labels));
+              const newColor = this.randomColor();
+              this.labelToColor.set(newLabel, newColor);
+              this.saveLabelColors();
               this.selectedLabels.add(newLabel);
               this.populateLabels();
             });
