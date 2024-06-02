@@ -151,6 +151,12 @@ class PopupComponent extends HTMLElement {
     });
   }
 
+  /**
+   * @method setColors
+   * @description Sets the colors for the given labels if they do not already have a color.
+   * @param {Array} labels - The list of labels to set colors for
+   * @returns {void}
+   */
   setColors(labels) {
     labels.forEach((label) => {
       if (!this.labelToColor.has(label)) {
@@ -161,14 +167,25 @@ class PopupComponent extends HTMLElement {
     });
   }
 
+  /**
+   * @method saveLabelColors
+   * @description Saves the label colors to local storage.
+   * @returns {void}
+   */
   saveLabelColors() {
     const obj = Object.fromEntries(this.labelToColor);
     localStorage.setItem("labelColors", JSON.stringify(obj));
   }
 
+  /**
+   * @method randomColor
+   * @description Returns a random color from the colors array.
+   * @returns {string} - A random color from the colors array
+   */
   randomColor() {
     return this.colors[Math.floor(Math.random() * this.colors.length)];
   }
+
   /**
    * @method populateLabelDropdown
    * @description Populates the label dropdown with stored labels.
@@ -266,6 +283,12 @@ class PopupComponent extends HTMLElement {
     this.populateLabels();
   }
 
+  /**
+   * @method deleteLabel
+   * @description Deletes a label from the local storage and the selected labels set.
+   * @param {HTMLElement} labelElement - The label element to delete
+   * @returns {void}
+   */
   deleteLabel(labelElement) {
     const labelDiv = labelElement.parentElement;
     const label = labelElement.textContent;
