@@ -78,7 +78,9 @@ describe('Database functions', () => {
 			expect(tasks.length).toBe(dbLength + 1);
 			done();
 		}
-		dbMgr.addTask(test1, trcbAddTest);
+		dbMgr.addTask(test1, () => {
+      dbMgr.getTasks(trcbAddTest);
+    });
 	});
 
   test("Testing addTasks", (done) => {
