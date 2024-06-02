@@ -1,77 +1,77 @@
-<!-- Form Header with Close Button -->
+<!-- Task Popup -->
 <nav id="formHeader" aria-label="Form Header">
-	<button
-		type="button"
-		id="closeBtn"
-		class="close-popup"
-		aria-label="Close Popup"
-	>
-		<img src="../../assets/res/exit-button.png" alt="Close Button" />
-	</button>
+  <img
+    id="closeBtn"
+    src="../../assets/res/exit-button.png"
+    alt="Close Button"
+  />
 </nav>
 <!-- Task Form -->
 <form id="taskForm" class="task-form" aria-labelledby="formHeader">
-	<!-- Title Section -->
-	<div class="title-section">
-		<input
-			type="text"
-			id="title"
-			class="form-control"
-			placeholder="Add Task Title"
-			required
-			aria-required="true"
-		/>
-	</div>
-	<!-- Main Content -->
-	<div class="main-content">
-		<div class="left-column">
-			<!-- Date and Time Section -->
-			<div class="date-time-section">
-				<input
-					type="datetime-local"
-					id="dueDate"
-					class="form-control"
-					placeholder="Due Date"
-					required
-					aria-required="true"
-				/>
-				<input
-					type="number"
-					step="0.1"
-					id="expectedTime"
-					class="form-control"
-					placeholder="Expected Time (hr)"
-					required
-				/>
-				<!-- Priority Dropdown -->
-				<select
-					id="priority"
-					class="form-control"
-					required
-					aria-required="true"
-				>
-					<option value="default" disabled selected>Priority</option>
-					<option value="P1">P1</option>
-					<option value="P2">P2</option>
-					<option value="P3">P3</option>
-					<option value="P4">P4</option>
-				</select>
-				<!-- Label Selection -->
-				<div class="dropdown">
-					<button class="dropbtn">Label</button>
-					<div id="label" class="dropdown-content">
-						<!-- labels will be added here -->
-					</div>
-				</div>
-			</div>
-			<!-- Description Section -->
-			<textarea
-				id="description"
-				class="form-control"
-				placeholder="Description"
-			></textarea>
-			<!-- Submit Button -->
-			<button type="submit" id="addBtn" class="submit-btn">Done</button>
-		</div>
-	</div>
+  <!-- Title Section -->
+  <div class="title-section">
+    <input
+      type="text"
+      id="title"
+      class="form-control"
+      placeholder="Add Task Title"
+      required
+      aria-required="true"
+    />
+  </div>
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="left-column">
+      <!-- Date and Time Section -->
+      <div class="input-section">
+        <input
+          type="datetime-local"
+          id="dueDate"
+          class="form-control"
+          placeholder="Due Date"
+          required
+          aria-required="true"
+        />
+        <input
+          type="number"
+          step="0.25"
+          id="expectedTime"
+          class="form-control"
+          placeholder="Estimated Hours"
+          required
+        />
+        <!-- Priority Dropdown -->
+        <select
+          id="priority"
+          class="form-control"
+          required
+          aria-required="true"
+        >
+          <option value="default" disabled selected>Priority</option>
+          <option value="P0">P0</option>
+          <option value="P1">P1</option>
+          <option value="P2">P2</option>
+          <option value="P3">P3</option>
+        </select>
+        <!-- Label Selection -->
+        <div class="dropdown">
+          Label
+          <div id="label" class="dropdown-content">
+            <!-- labels will be added here -->
+          </div>
+        </div>
+      </div>
+      <div class="selectedLabels">
+        <!-- selected labels will go here -->
+      </div>
+      <!-- Description Section -->
+      <textarea
+        id="description"
+        class="form-control"
+        placeholder="Description"
+      ></textarea>
+      <!-- Submit Button -->
+      <button type="submit" id="addBtn" class="submit-btn">Done</button>
+    </div>
+  </div>
 </form>
