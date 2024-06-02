@@ -103,6 +103,18 @@ function init(bcb) {
             REFERENCES labels(label)
             ON DELETE CASCADE
         );`;
+  const entry_labels_sql = `CREATE TABLE IF NOT EXISTS entry_labels (
+        entry_id TEXT,
+        label TEXT,
+        CONSTRAINT fk_entry_id
+            FOREIGN KEY (entry_id)
+            REFERENCES entries(entry_id)
+            ON DELETE CASCADE,
+        CONSTRAINT fk_label
+            FOREIGN KEY (label)
+            REFERENCES labels(label)
+            ON DELETE CASCADE
+        );`
 
   // Table creation queries are serialized to ensure key constraints are followed.
   db.serialize(() => {
@@ -116,6 +128,9 @@ function init(bcb) {
       if (err) throw err;
     });
     db.run(labels_sql, [], (err) => {
+      if (err) throw err;
+    });
+    db.run(entry_labels_sql, [], (err) => {
       if (err) throw err;
     });
     db.run(
@@ -278,7 +293,7 @@ function getTasksDisjunctLabels(labels, trcb) {
  * @property {string} startTime - The start date and time for filtering tasks, in ISO 8601 format (yyyy-mm-ddTHH:MM).
  * @property {string} endTime - The end date and time for filtering tasks, in ISO 8601 format (yyyy-mm-ddTHH:MM).
  * @property {string[]} labels - An array of labels to filter tasks by.
- * @property {string} priority - The priority level to filter tasks by.
+ * @property {string[]} priorities - An array of priorities to filter tasks by.
  * @property {boolean} exclusive - If true, perform a conjunctive (AND) search on labels, otherwise perform a disjunctive (OR) search.
  */
 
@@ -288,7 +303,7 @@ function getTasksDisjunctLabels(labels, trcb) {
  * @param {tasksRenderCallback} trcb - The tasks render callback to update the frontend.
  */
 function getFilteredTasks(filterCriteria, trcb) {
-  const { startTime, endTime, labels, priority, exclusive } = filterCriteria;
+  const { startTime, endTime, labels, priorities, exclusive } = filterCriteria;
 
   let sql = `
     SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels
@@ -305,22 +320,18 @@ function getFilteredTasks(filterCriteria, trcb) {
     params.push(startTime, endTime);
   }
 
-  // Filter by priority
-  if (priority) {
-    conditions.push(`t.priority = ?`);
-    params.push(priority);
+  // Filter by priorities
+  if (priorities.length > 0) {
+    const priorityPlaceholders = priorities.map(() => "?").join(",");
+    conditions.push(`t.priority IN (${priorityPlaceholders})`);
+    params.push(...priorities);
   }
 
   // Filter by labels
   if (labels.length > 0) {
     const labelPlaceholders = labels.map(() => "?").join(",");
-    if (exclusive) {
-      conditions.push(`l.label IN (${labelPlaceholders})`);
-      params.push(...labels);
-    } else {
-      conditions.push(`l.label IN (${labelPlaceholders})`);
-      params.push(...labels);
-    }
+    conditions.push(`l.label IN (${labelPlaceholders})`);
+    params.push(...labels);
   }
 
   if (conditions.length > 0) {
@@ -335,10 +346,8 @@ function getFilteredTasks(filterCriteria, trcb) {
       // Conjunctive (AND) filtering: Ensure the task has all specified labels
       sql += ` HAVING COUNT(DISTINCT l.label) = ?`;
       params.push(labels.length);
-    } else {
-      // Disjunctive (OR) filtering: Ensure the task has at least one of the specified labels
-      sql += ` HAVING COUNT(DISTINCT l.label) >= 1`;
-    }
+    } 
+    // Disjunctive (OR) filtering: Ensure the task has at least one of the specified labels
   }
 
   db.all(sql, params, (err, rows) => {

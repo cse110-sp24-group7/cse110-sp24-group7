@@ -153,7 +153,7 @@ describe('Database functions', () => {
       startTime: "1900-01-01T00:00",
       endTime: "1900-01-02T23:59",
       labels: [],
-      priority: "",
+      priorities: [],
       exclusive: false,
     };
 
@@ -169,18 +169,21 @@ describe('Database functions', () => {
     dbMgr.getFilteredTasks(filters, trcbFilteredTest);
   });
 
-  test("Testing getFilteredTasks with priority", (done) => {
+  test("Testing getFilteredTasks with priorities", (done) => {
     const filters = {
       startTime: "",
       endTime: "",
       labels: [],
-      priority: "P1_test",
+      priorities: ["P1_test", "P3_test"],
       exclusive: false,
     };
 
     function trcbFilteredTest(tasks) {
-      expect(tasks.length).toBe(1);
-      expect(tasks[0].task_id).toBe(test1.task_id);
+      expect(tasks.length).toBe(2);
+      let task_ids = tasks.map(task => task.task_id);
+      expect(task_ids.sort()).toEqual(
+        [test1.task_id, test3.task_id].sort(),
+      );
       done();
     }
 
@@ -192,7 +195,7 @@ describe('Database functions', () => {
       startTime: "",
       endTime: "",
       labels: ["test_label_1", "test_label_3"],
-      priority: "",
+      priorities: [],
       exclusive: false,
     };
 
@@ -213,7 +216,7 @@ describe('Database functions', () => {
       startTime: "",
       endTime: "",
       labels: ["test_label_1", "test_label_2"],
-      priority: "",
+      priorities: [],
       exclusive: true,
     };
 
@@ -229,12 +232,12 @@ describe('Database functions', () => {
     dbMgr.getFilteredTasks(filters, trcbFilteredTest);
   });
 
-  test("Testing getFilteredTasks with labels and priority", (done) => {
+  test("Testing getFilteredTasks with labels and priorities", (done) => {
     const filters = {
       startTime: "",
       endTime: "",
       labels: ["test_label_2"],
-      priority: "P2_test",
+      priorities: ["P2_test"],
       exclusive: false,
     };
 
@@ -252,7 +255,7 @@ describe('Database functions', () => {
       startTime: "1900-01-01T00:00",
       endTime: "1900-01-02T23:59",
       labels: [],
-      priority: "",
+      priorities: [],
       exclusive: false,
     };
 
