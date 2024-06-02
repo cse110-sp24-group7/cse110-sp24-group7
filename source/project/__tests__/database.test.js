@@ -191,7 +191,7 @@ describe('Database functions', () => {
     const filters = {
       startTime: "",
       endTime: "",
-      labels: ["test_label_2"],
+      labels: ["test_label_1", "test_label_3"],
       priority: "",
       exclusive: false,
     };
