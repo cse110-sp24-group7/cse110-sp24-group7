@@ -4,7 +4,7 @@ const filters = {
   startTime: "",
   endTime: "",
   labels: [],
-  priority: "",
+  priorities: [],
   exclusive: false,
 };
 
