@@ -374,25 +374,98 @@ function getFilteredTasks(filterCriteria, trcb) {
 }
 
 /**
+ * Queries and returns all entries based on the provided filter criteria.
+ * @param {entryFilters} filterCriteria - The filter criteria object.
+ * @param {entriesRenderCallback} ercb - The entries render callback to update the frontend.
+ */
+function getFilteredEntries(filterCriteria, ercb) {
+  const { startTime, endTime, labels, exclusive } = filterCriteria;
+
+  let sql = `
+    SELECT e.entry_id, e.entry_title, e.entry_content, e.creation_date, GROUP_CONCAT(l.label) as labels
+    FROM entries e
+    LEFT JOIN entry_labels l ON e.entry_id = l.entry_id
+  `;
+
+  const conditions = [];
+  const params = [];
+
+  // Filter by time range
+  if (startTime && endTime) {
+    conditions.push(`e.creation_date BETWEEN ? AND ?`);
+    params.push(startTime, endTime);
+  }
+
+  // Filter by labels
+  if (labels.length > 0) {
+    const labelPlaceholders = labels.map(() => "?").join(",");
+    conditions.push(`l.label IN (${labelPlaceholders})`);
+    params.push(...labels);
+  }
+
+  if (conditions.length > 0) {
+    sql += ` WHERE ` + conditions.join(" AND ");
+  }
+
+  sql += ` GROUP BY e.entry_id`;
+
+  // Apply the HAVING clause for label filtering
+  if (labels.length > 0) {
+    if (exclusive) {
+      // Conjunctive (AND) filtering: Ensure the entry has all specified labels
+      sql += ` HAVING COUNT(DISTINCT l.label) = ?`;
+      params.push(labels.length);
+    } 
+    // Disjunctive (OR) filtering: Ensure the entry has at least one of the specified labels
+  }
+
+  db.all(sql, params, (err, rows) => {
+    if (err) {
+      throw err;
+    }
+
+    const entries =
+      rows.length > 0
+        ? rows.map((row) => ({
+            entry_id: row.entry_id,
+            entry_title: row.entry_title,
+            entry_content: row.entry_content,
+            creation_date: row.creation_date,
+            labels: row.labels ? row.labels.split(",") : [],
+          }))
+        : [];
+
+    ercb(entries);
+  });
+}
+
+/**
  * Queries and returns all entries.
  * @param {entriesRenderCallback} ercb - the tasks render callback to update the frontend.
  */
 function getEntries(ercb) {
-	const sql = "SELECT * FROM entries";
-	const ret = [];
-	db.each(
-		sql,
-		[],
-		(err, row) => {
-			if (err) {
-				throw err;
-			}
-			ret.push(row);
-		},
-		() => {
-			ercb(ret);
-		}
-	);
+  const sql = `
+    SELECT e.entry_id, e.entry_title, e.entry_content, e.creation_date, GROUP_CONCAT(l.label) as labels
+    FROM entries e
+    LEFT JOIN entry_labels l ON e.entry_id = l.entry_id
+    GROUP BY e.entry_id;
+  `;
+
+  db.all(sql, [], (err, rows) => {
+    if (err) {
+      throw err;
+    }
+
+    const entries = rows.length > 0 ? rows.map(row => ({
+      entry_id: row.entry_id,
+      entry_title: row.entry_title,
+      entry_content: row.entry_content,
+      creation_date: row.creation_date,
+      labels: row.labels ? row.labels.split(",") : []
+    })) : [];
+
+    ercb(entries);
+  });
 }
 
 /**
@@ -496,13 +569,85 @@ function addTasks(tasks, trcb) {
  * @param {entry} entry - the entry to add
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
  */
-function addEntry(entry, ercb) {
-	const sql = `INSERT INTO entries (entry_id, entry_title, entry_content, creation_date)
-        VALUES('${entry.entry_id}', '${entry.entry_title}', '${entry.entry_content}', '${entry.creation_date}');`;
-  db.run(sql, [], (err) => {
+function addEntry(entry, callback) {
+  const entrySql = `INSERT INTO entries (entry_id, entry_title, entry_content, creation_date)
+        VALUES (?, ?, ?, ?);`;
+
+  const labelSql = `INSERT INTO entry_labels (entry_id, label) VALUES (?, ?);`;
+
+  db.run(entrySql, [entry.entry_id, entry.entry_title, entry.entry_content, entry.creation_date], (err) => {
     if (err) {
       throw err;
     }
+
+    const stmt = db.prepare(labelSql);
+    let remaining = entry.labels.length;
+
+    if (remaining === 0) {
+      stmt.finalize((finalizeErr) => {
+        if (finalizeErr) {
+          throw finalizeErr;
+        }
+        callback();
+      });
+      return;
+    }
+
+    entry.labels.forEach((label) => {
+      stmt.run([entry.entry_id, label], (err) => {
+        if (err) {
+          throw err;
+        }
+        remaining--;
+        if (remaining === 0) {
+          stmt.finalize((finalizeErr) => {
+            if (finalizeErr) {
+              throw finalizeErr;
+            }
+            callback();
+          });
+        }
+      });
+    });
+  });
+}
+
+/**
+ * Adds multiple entries to the database
+ * @param {entry[]} entries - the entries to add
+ * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
+ */
+function addEntries(entries, ercb) {
+  const entrySql = `INSERT INTO entries (entry_id, entry_title, entry_content, creation_date)
+        VALUES (?, ?, ?, ?);`;
+  const labelSql = `INSERT INTO entry_labels (entry_id, label) VALUES (?, ?);`;
+
+  db.serialize(() => {
+    const entryStmt = db.prepare(entrySql);
+    const labelStmt = db.prepare(labelSql);
+
+    entries.forEach((entry) => {
+      entryStmt.run(
+        [entry.entry_id, entry.entry_title, entry.entry_content, entry.creation_date],
+        (err) => {
+          if (err) {
+            throw err;
+          }
+        }
+      );
+
+      entry.labels.forEach((label) => {
+        labelStmt.run([entry.entry_id, label], (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      });
+    });
+
+    entryStmt.finalize();
+    labelStmt.finalize();
+
     getEntries(ercb);
   });
 }
@@ -567,21 +712,45 @@ function editTask(task, trcb) {
 
 /**
  * Edits an entry in the database
- * @param {entry} entry - the entry to add
+ * @param {entry} entry - the entry to edit. The ID must exist in the database.
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
  */
 function editEntry(entry, ercb) {
-	const sql = `UPDATE entries SET
-            entry_title = '${entry.entry_title}',
-            entry_content = '${entry.entry_content}',
-            creation_date = '${entry.creation_date}'
-        WHERE entry_id = '${entry.entry_id}';`;
-	db.run(sql, [], (err) => {
-		if (err) {
-			throw err;
-		}
-		getEntries(ercb);
-	});
+  const entrySql = `UPDATE entries SET
+            entry_title = ?,
+            entry_content = ?,
+            creation_date = ?
+        WHERE entry_id = ?;`;
+
+  const deleteLabelsSql = `DELETE FROM entry_labels WHERE entry_id = ?;`;
+
+  const insertLabelSql = `INSERT INTO entry_labels (entry_id, label) VALUES (?, ?);`;
+
+  db.serialize(() => {
+    db.run(entrySql, [entry.entry_title, entry.entry_content, entry.creation_date, entry.entry_id], (err) => {
+      if (err) {
+        throw err;
+      }
+    });
+
+    db.run(deleteLabelsSql, [entry.entry_id], (err) => {
+      if (err) {
+        throw err;
+      }
+    });
+
+    const stmt = db.prepare(insertLabelSql);
+    entry.labels.forEach((label) => {
+      stmt.run([entry.entry_id, label], (err) => {
+        if (err) {
+          throw err;
+        }
+      });
+    });
+    stmt.finalize();
+
+    getEntries(ercb);
+  });
 }
 
 /**
@@ -630,11 +799,36 @@ function deleteTasks(task_ids, trcb) {
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
  */
 function deleteEntry(entry_id, ercb) {
-  const sql = `DELETE FROM entries WHERE entry_id = '${entry_id}'`;
-  db.run(sql, [], (err) => {
+  const sql = `DELETE FROM entries WHERE entry_id = ?;`;
+  db.run(sql, [entry_id], (err) => {
     if (err) {
       throw err;
     }
+    getEntries(ercb);
+  });
+}
+
+/**
+ * Deletes multiple entries in the database
+ * @param {string[]} entry_ids - the IDs of entries to be deleted.
+ * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
+ */
+function deleteEntries(entry_ids, ercb) {
+  const deleteEntrySql = `DELETE FROM entries WHERE entry_id = ?`;
+
+  db.serialize(() => {
+    const entryStmt = db.prepare(deleteEntrySql);
+
+    entry_ids.forEach((entry_id) => {
+      entryStmt.run([entry_id], (err) => {
+        if (err) {
+          throw err;
+        }
+      });
+    });
+
+    entryStmt.finalize();
+
     getEntries(ercb);
   });
 }
@@ -681,15 +875,18 @@ module.exports = {
   getTasksConjunctLabels,
   getTasksDisjunctLabels,
   getFilteredTasks,
+  getFilteredEntries,
   getEntries,
   addTask,
   addTasks,
   addEntry,
+  addEntries,
   editTask,
   editEntry,
   deleteTask,
   deleteTasks,
   deleteEntry,
+  deleteEntries,
   getLabels,
   addLabel,
   addLabels,

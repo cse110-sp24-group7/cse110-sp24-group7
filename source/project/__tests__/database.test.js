@@ -2,38 +2,68 @@
 const dbMgr = require("../scripts/database/dbMgr");
 
 describe('Database functions', () => {
-  let dbLength = 0;
+  let taskLength = 0;
   let labelLength = 0;
+  let entryLength = 0;
 
-  let test1 = {};
-  test1.task_id = "test1_test";
-  test1.task_name = "test1_name";
-  test1.task_content = "test1_content";
-  test1.creation_date = "today";
-  test1.due_date = "1900-01-01T23:20";
-  test1.priority = "P1_test";
-  test1.expected_time = "3 hours";
-  test1.labels = ["test_label_1", "test_label_2"];
+  // Define test tasks
+  let test1 = {
+    task_id: "test1_test",
+    task_name: "test1_name",
+    task_content: "test1_content",
+    creation_date: "today",
+    due_date: "1900-01-01T23:20",
+    priority: "P1_test",
+    expected_time: "3 hours",
+    labels: ["test_label_1", "test_label_2"]
+  };
 
-  let test2 = {};
-  test2.task_id = "test2_test";
-  test2.task_name = "test2_name";
-  test2.task_content = "test2_content";
-  test2.creation_date = "today";
-  test2.due_date = "1900-01-02T23:20";
-  test2.priority = "P2_test";
-  test2.expected_time = "3 hours";
-  test2.labels = ["test_label_2", "test_label_3"];
+  let test2 = {
+    task_id: "test2_test",
+    task_name: "test2_name",
+    task_content: "test2_content",
+    creation_date: "today",
+    due_date: "1900-01-02T23:20",
+    priority: "P2_test",
+    expected_time: "3 hours",
+    labels: ["test_label_2", "test_label_3"]
+  };
 
-  let test3 = {};
-  test3.task_id = "test3_test";
-  test3.task_name = "test3_name";
-  test3.task_content = "test3_content";
-  test3.creation_date = "today";
-  test3.due_date = "1900-01-03T23:20";
-  test3.priority = "P3_test";
-  test3.expected_time = "3 hours";
-  test3.labels = ["test_label_1", "test_label_2", "test_label_3"];
+  let test3 = {
+    task_id: "test3_test",
+    task_name: "test3_name",
+    task_content: "test3_content",
+    creation_date: "today",
+    due_date: "1900-01-03T23:20",
+    priority: "P3_test",
+    expected_time: "3 hours",
+    labels: ["test_label_1", "test_label_2", "test_label_3"]
+  };
+
+  // Define test entries
+  let entry1 = {
+    entry_id: "entry1_test",
+    entry_title: "entry1_title",
+    entry_content: "entry1_content",
+    creation_date: "1900-01-01T23:20",
+    labels: ["test_label_1", "test_label_2"]
+  };
+
+  let entry2 = {
+    entry_id: "entry2_test",
+    entry_title: "entry2_title",
+    entry_content: "entry2_content",
+    creation_date: "1900-01-02T23:20",
+    labels: ["test_label_2", "test_label_3"]
+  };
+
+  let entry3 = {
+    entry_id: "entry3_test",
+    entry_title: "entry3_title",
+    entry_content: "entry3_content",
+    creation_date: "1900-01-03T23:20",
+    labels: ["test_label_1", "test_label_2", "test_label_3"]
+  };
 
   test("Initializing tables", (done) => {
     dbMgr.init(() => {
@@ -41,9 +71,9 @@ describe('Database functions', () => {
     });
   });
 
-  test('Get table length', done => {
+  test('Get tasks table length', done => {
     function trcbLengthTest(tasks) {
-      dbLength = tasks.length;
+      taskLength = tasks.length;
       done();
     }
     dbMgr.getTasks(trcbLengthTest);
@@ -55,6 +85,14 @@ describe('Database functions', () => {
       done();
     }
     dbMgr.getLabels(lrcbLengthTest);
+  });
+
+  test("Get entries table length", (done) => {
+    function ercbLengthTest(entries) {
+      entryLength = entries.length;
+      done();
+    }
+    dbMgr.getEntries(ercbLengthTest);
   });
 
   test("Testing addLabel", (done) => {
@@ -75,7 +113,7 @@ describe('Database functions', () => {
 
 	test("Testing addTask", (done) => {
 		function trcbAddTest(tasks) {
-			expect(tasks.length).toBe(dbLength + 1);
+			expect(tasks.length).toBe(taskLength + 1);
 			done();
 		}
 		dbMgr.addTask(test1, () => {
@@ -85,11 +123,30 @@ describe('Database functions', () => {
 
   test("Testing addTasks", (done) => {
     function trcbAddTests(tasks) {
-      expect(tasks.length).toBe(dbLength + 3);
+      expect(tasks.length).toBe(taskLength + 3);
       done();
     }
     dbMgr.addTasks([test2, test3], trcbAddTests);
   });
+
+  test("Testing addEntry", (done) => {
+    function ercbAddTest(entries) {
+      expect(entries.length).toBe(entryLength + 1);
+      done();
+    }
+    dbMgr.addEntry(entry1, () => {
+      dbMgr.getEntries(ercbAddTest);
+    });
+  });
+
+  test("Testing addEntries", (done) => {
+    function ercbAddTests(entries) {
+      expect(entries.length).toBe(entryLength + 3);
+      done();
+    }
+    dbMgr.addEntries([entry2, entry3], ercbAddTests);
+  });
+
 
 	test("Testing editTask", (done) => {
 		function trcbEditTest(tasks) {
@@ -103,6 +160,19 @@ describe('Database functions', () => {
 		test1.task_content = "test1_updated_content";
 		dbMgr.editTask(test1, trcbEditTest);
 	});
+
+  test("Testing editEntry", (done) => {
+    function ercbEditTest(entries) {
+      for (let i = 0; i < entries.length; i++) {
+        if (entries[i].entry_id === entry1.entry_id) {
+          expect(entries[i].entry_content).toBe(entry1.entry_content);
+        }
+      }
+      done();
+    }
+    entry1.entry_content = "entry1_updated_content";
+    dbMgr.editEntry(entry1, ercbEditTest);
+  });
 
   test('Testing conjunctive label search', done => {
     function trcbConjunctiveTest(tasks) {
@@ -271,9 +341,69 @@ describe('Database functions', () => {
     dbMgr.getFilteredTasks(filters, trcbFilteredTest);
   });
 
+  test("Testing getFilteredEntries with time range", (done) => {
+    const filters = {
+      startTime: "1900-01-01T00:00",
+      endTime: "1900-01-02T23:59",
+      labels: [],
+      exclusive: false,
+    };
+
+    function ercbFilteredTest(entries) {
+      expect(entries.length).toBe(2);
+      let entry_ids = entries.map(entry => entry.entry_id);
+      expect(entry_ids.sort()).toEqual(
+        [entry1.entry_id, entry2.entry_id].sort(),
+      );
+      done();
+    }
+
+    dbMgr.getFilteredEntries(filters, ercbFilteredTest);
+  });
+
+  test("Testing getFilteredEntries with disjunctive labels", (done) => {
+    const filters = {
+      startTime: "",
+      endTime: "",
+      labels: ["test_label_1", "test_label_3"],
+      exclusive: false,
+    };
+
+    function ercbFilteredTest(entries) {
+      expect(entries.length).toBe(3);
+      let entry_ids = entries.map(entry => entry.entry_id);
+      expect(entry_ids.sort()).toEqual(
+        [entry1.entry_id, entry2.entry_id, entry3.entry_id].sort(),
+      );
+      done();
+    }
+
+    dbMgr.getFilteredEntries(filters, ercbFilteredTest);
+  });
+
+  test("Testing getFilteredEntries with conjunctive labels", (done) => {
+    const filters = {
+      startTime: "",
+      endTime: "",
+      labels: ["test_label_1", "test_label_2"],
+      exclusive: true,
+    };
+
+    function ercbFilteredTest(entries) {
+      expect(entries.length).toBe(2);
+      let entry_ids = entries.map(entry => entry.entry_id);
+      expect(entry_ids.sort()).toEqual(
+        [entry1.entry_id, entry3.entry_id].sort(),
+      );
+      done();
+    }
+
+    dbMgr.getFilteredEntries(filters, ercbFilteredTest);
+  });
+
   test('Testing deleteTask', (done) => {
     function trcbDeleteTest(tasks) {
-      expect(tasks.length).toBe(dbLength + 2);
+      expect(tasks.length).toBe(taskLength + 2);
       done();
     }
     dbMgr.deleteTask(test1.task_id, trcbDeleteTest);
@@ -281,7 +411,7 @@ describe('Database functions', () => {
 
   test('Testing deleteTasks', (done) => {
     function trcbDeleteTests(tasks) {
-      expect(tasks.length).toBe(dbLength);
+      expect(tasks.length).toBe(taskLength);
       done();
     }
     dbMgr.deleteTasks([test2.task_id, test3.task_id], trcbDeleteTests);
@@ -301,5 +431,21 @@ describe('Database functions', () => {
       done();
     }
     dbMgr.deleteLabels(["test_label_2", "test_label_3"], lrcbDeleteLabels);
+  });
+
+  test("Testing deleteEntry", (done) => {
+    function ercbDeleteTest(entries) {
+      expect(entries.length).toBe(entryLength + 2);
+      done();
+    }
+    dbMgr.deleteEntry(entry1.entry_id, ercbDeleteTest);
+  });
+
+  test("Testing deleteEntries", (done) => {
+    function ercbDeleteTests(entries) {
+      expect(entries.length).toBe(entryLength);
+      done();
+    }
+    dbMgr.deleteEntries([entry2.entry_id, entry3.entry_id], ercbDeleteTests);
   });
 });
