@@ -1,3 +1,6 @@
+/* Roboto Mono Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
 /* Resetting default margin and padding */
 * {
   margin: 0;
@@ -5,7 +8,7 @@
   box-sizing: border-box;
 }
 
-/* Styling the header */
+/* Styling the header container */
 .header {
   background-color: #fff;
   color: #000;
@@ -16,6 +19,7 @@
   border-bottom: 1px solid #ccc; /* Add border bottom to header */
 }
 
+/* Styling the header bar components (logo, title, menu, today button) */
 .logo img {
   width: 30px;
   height: 30px;
@@ -23,9 +27,9 @@
 }
 
 .logo span {
-  font-weight: bold;
   font-size: 35px;
-  font-family: "Courier New";
+  font-family: "Roboto Mono";
+  padding-right: 20px;
 }
 
 .menu-icon img {
@@ -33,12 +37,66 @@
   height: 35px;
 }
 
+#today-button {
+  background-color: #EEE;
+  padding: 5px;  
+  padding-left: 20px;
+  padding-right: 20px;
+  border: 1px solid #EEE;
+  border-spacing: 100px;
+  border-radius: 7px;
+  cursor: pointer; 
+  font-family: "Roboto Mono";
+  font-size: 15px;
+  font-weight: bold; 
+}
+
+#today-button:hover {
+  background-color: #d4d4d4;
+  cursor: pointer;
+}
+
+/* Styling the current month text in header bar */
+#current-month {
+  flex: 1;
+  text-align: center;
+  font-size: 38px;
+  font-family: "Roboto Mono";
+  margin: 0;
+}
+
+/* Styling the prev/next week arrows*/
+.nav-button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.nav-button {
+  background-color: #ffffff; /*#BF6F6F;*/
+  color: #000;
+  border: none;
+  padding: 0px 15px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 20px;
+  font-family: "Monaco";
+  font-style: bold;
+}
+
+.nav-button:hover {
+  color: #FBC6C4;
+  background-color: #BF6F6F;;
+  border-radius: 50px;
+}
+
 /* Styling the calendar */
 .calendar {
   display: flex;
   flex-direction: column;
   height: calc(100vh - 50px); /* Adjust height to leave space for header */
-  font-family: "Courier New";
+  font-family: "Roboto Mono";
 }
 
 .day {
@@ -52,8 +110,8 @@
   flex-direction: column;
   text-align: center;
   padding: 10px 0;
-  font-weight: bold;
-  font-family: "Lucida Sans Unicode";
+  font-size: 10px;
+  font-family: "Roboto Mono";
 }
 
 /* Ensure the vertical lines reach all the way down */
@@ -61,7 +119,27 @@
   border-right: 1px solid #ccc;
 }
 
-/* Adjust button styles */
+/* Styling the Date number display */
+.day-date {
+  font-size: 20px;
+  font-family: "Roboto Mono";
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
+  
+}
+
+/* Red Indicator of today's date */
+.today {
+  background-color: #ffd1d1;
+  width: 45px;
+  border-radius: 50%;
+  
+}
+
+/* Add Task and Journal Buttons */
 .add-task,
 .add-journal {
   margin: 5px; /* Adjust as needed */
@@ -75,18 +153,14 @@
   background-color: #f8f8f8; /* Background color */
   color: #000; /* Text color */
   font-weight: bold; /* Bold text */
+  font-family: "Roboto Mono"; /* Text font */
+
 }
 
-/* Popup modals */
-.modal {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.add-journal:hover,
+.add-task:hover{
+  background-color: #ddd;
+  cursor: pointer;
 }
 
 /*Journal and Task Previews*/
@@ -96,7 +170,7 @@
   padding: 10px; /* Adjust as needed */
   width: calc(100% - 10px); /* Adjusted to add-journal width */
   flex: none;
-  border: 1px solid black; /* Outline */
+  border: 1px solid #000; /* Outline */
   border-radius: 7px; /* Rounded corners */
   justify-content: flex-start;
   text-align: left; /* Text alignment */
@@ -106,41 +180,8 @@
   font-size: 10px; /* Size of text */
 }
 
-.journal-pv h2 {
-  font-style: bold;
-  margin: 0;
-  font-size: auto;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1; /* Adjust the number of lines to show before truncating */
-  flex: auto;
-  text-overflow: clip;
-  overflow: hidden;
-  overflow: ellipsis;
-}
-.journal-pv p {
-  margin: 0;
-  font-size: 10px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; /* Adjust the number of lines to show before truncating */
-  flex: auto;
-  text-overflow: clip;
-  overflow: hidden;
-  overflow: ellipsis;
-}
-.journal-pv label-box {
-  background-color: #bdf6ff;
-  color: #000000;
-  padding: 5px 10px;
-  border-radius: 4px;
-  font-size: 14px;
-  position: absolute;
-  top: 10px;
-  left: 10px;
-}
-
 /* TODO: task formatting needs to be confirmed! */
+.journal-pv h2, 
 .task-pv h2 {
   font-style: bold;
   margin: 0;
@@ -153,6 +194,8 @@
   overflow: hidden;
   overflow: ellipsis;
 }
+
+.journal-pv p,
 .task-pv p {
   margin: 0;
   font-size: 10px;
@@ -163,15 +206,4 @@
   text-overflow: clip;
   overflow: hidden;
   overflow: ellipsis;
-}
-
-.task-pv label-box {
-  background-color: #bdf6ff;
-  color: #000000;
-  padding: 5px 10px;
-  border-radius: 4px;
-  font-size: 14px;
-  position: absolute;
-  top: 10px;
-  left: 10px;
 }

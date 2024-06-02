@@ -84,7 +84,41 @@ function entriesRendererCallback(entries) {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+/**
+ * Loads the dates on the weekly view
+ * @param {number} weekOffset = index value relative to today's current week
+ */
+function setWeeklyView(weekOffset) {
+  const daysOfWeek = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+  const today = new Date();
+  today.setDate(today.getDate() + weekOffset * 7);
+
+  const currentDay = today.getDay();
+  const currentDate = today.getDate();
+  const startDate = new Date(today);
+  startDate.setDate(startDate.getDate() - currentDay);
+
+  const monthNames = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+  const currentMonthElement = document.getElementById('current-month');
+  currentMonthElement.textContent = monthNames[today.getMonth()];
+
+  daysOfWeek.forEach((day, index) => {
+      const dayColumn = document.querySelector(`.day${index + 1}`);
+      const dateElement = dayColumn.querySelector('.day-date');
+      const dayDate = new Date(startDate);
+      dayDate.setDate(startDate.getDate() + index);
+      const dayNumber = dayDate.getDate();
+      dateElement.textContent = dayNumber;
+
+      if (dayNumber === currentDate && weekOffset === 0) {
+          dateElement.classList.add('today');
+      } else {
+          dateElement.classList.remove('today');
+      }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("storageUpdate", () => {
     let storedEntries = JSON.parse(localStorage.getItem("journalData"));
     storedEntries = Array.isArray(storedEntries) ? storedEntries : [];
@@ -117,5 +151,26 @@ document.addEventListener("DOMContentLoaded", () => {
       const popup = document.createElement("journal-popup");
       document.body.appendChild(popup);
     });
+  });
+
+  // Weekly View Additions
+  let currentWeekOffset = 0;
+  setWeeklyView(currentWeekOffset); // Load this week's dates
+
+  // Display correct week when clicking arrows
+  document.getElementById('prev-week').addEventListener('click', () => {
+    currentWeekOffset -= 1;
+    setWeeklyView(currentWeekOffset);
+  });
+
+  document.getElementById('next-week').addEventListener('click', () => {
+    currentWeekOffset += 1;
+    setWeeklyView(currentWeekOffset);
+  });
+
+  // Display the current week when clicking "Today" Button
+  document.getElementById('today-button').addEventListener('click', () => {
+    currentWeekOffset = 0;
+    setWeeklyView(currentWeekOffset);
   });
 });
