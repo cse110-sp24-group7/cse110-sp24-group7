@@ -70,7 +70,9 @@ function tasksRendererCallback(tasks) {
 function openTaskPopupForEdit(taskDetails) {
     const popup = document.createElement("task-popup");
     document.body.appendChild(popup);
-    popup.openForEdit(taskDetails);
+    popup.addEventListener('popupReady', () => {
+      popup.openForEdit(taskDetails);
+  });
 }
 
 /**

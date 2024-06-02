@@ -51,6 +51,8 @@ class PopupComponent extends HTMLElement {
 
       // populate the labels from local storage
       this.populateLabels();
+
+      this.dispatchEvent(new CustomEvent('popupReady'));
     };
   }
 
@@ -62,12 +64,15 @@ class PopupComponent extends HTMLElement {
     const prioritySelect = this.shadowRoot.getElementById("priority");
     const expectedTimeInput = this.shadowRoot.getElementById("expectedTime");
 
-    titleInput.value = taskDetails.task_name;
-    descriptionTextarea.value = taskDetails.task_content;
-    dueDateInput.value = taskDetails.due_date;
-    prioritySelect.value = taskDetails.priority;
-    expectedTimeInput.value = taskDetails.expected_time;
+    if (titleInput && descriptionTextarea && dueDateInput && prioritySelect && expectedTimeInput) {
+      titleInput.value = taskDetails.task_name;
+      descriptionTextarea.value = taskDetails.task_content;
 
+      // Assuming taskDetails.due_date is in 'YYYY-MM-DD' format
+      dueDateInput.value = taskDetails.due_date;
+      prioritySelect.value = taskDetails.priority;
+      expectedTimeInput.value = taskDetails.expected_time;
+    }
     // Show the popup for editing
     this.style.display = "block";
 }
