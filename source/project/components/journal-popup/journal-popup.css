@@ -1,8 +1,4 @@
-/* import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap');
-
-html {
-  font-family: 'Roboto Mono', monospace;
-} */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap');
 
 .overlay {
   position: fixed;
@@ -29,6 +25,9 @@ html {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11.5px;
+  letter-spacing: -0.5px;
 }
 
 .journal-form {
@@ -40,6 +39,7 @@ html {
   flex: 0 0 100%;
   padding-bottom: none;
   padding-top: 15px;
+  letter-spacing: -0.5px;
 }
 
 .main-content {
@@ -58,6 +58,9 @@ html {
   box-sizing: border-box;
   border: 1px solid #ccc;
   transition: border-color 0.3s;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11.5px;
+  letter-spacing: -0.5px;
 }
 
 .form-control:focus {
@@ -72,14 +75,19 @@ textarea.form-control {
   padding: 5px 5px 0 5px;
   margin-bottom: 20px;
   width: 100%;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11.5px;
+  letter-spacing: -0.5px;
 }
 
 #title {
   border: none;
   border-bottom: black 1px solid;
-  font-size: 24px;
+  font-size: 22px;
   margin-bottom: 10px;
   padding: 0;
+  font-family: 'Roboto Mono', monospace;
+  letter-spacing: -0.5px;
 }
 
 #addBtn {
@@ -93,6 +101,9 @@ textarea.form-control {
   position: absolute;
   bottom: 10px;
   right: 20px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11.5px;
+  letter-spacing: -0.5px;
 }
 
 #addBtn:hover {
@@ -127,6 +138,9 @@ img {
   border-radius: 8px;
   width: 215px;
   cursor: pointer;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11.5px;
+  letter-spacing: -0.5px;
 }
 
 /* div for labels that get selected */
@@ -168,7 +182,7 @@ img {
 /* label dropdown div */
 .dropdown {
   border-radius: 8px;
-  padding-top: 5px;
+  padding-top: 7px;
   width: 105px;
   height: 30px;
   box-sizing: border-box;
@@ -176,6 +190,9 @@ img {
   transition: border-color 0.3s;
   text-align: center;
   font-size: 11pt;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 11.5px;
+  letter-spacing: -0.5px;
 }
 
 .dropdown:hover {
@@ -200,11 +217,17 @@ img {
   left: 240px;
   text-align: left;
   scrollbar-width: none;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10x;
+  letter-spacing: -0.5px;
 }
 
 .dropdown-content div {
   color: black;
   text-decoration: none;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  letter-spacing: -0.5px;
 }
 
 .dropdown:hover .dropdown-content {
@@ -217,8 +240,10 @@ img {
   align-items: center;
   border-radius: 5px;
   padding: 1px 7px 1px 7px;
-  font-size: x-small;
   color: black;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  letter-spacing: -0.5px;
 }
 
 .unselected-label-item {
@@ -226,14 +251,19 @@ img {
   width: 100%;
   margin-bottom: 5px;
   padding-left: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  letter-spacing: -0.5px;
 }
 
 .unselected-label-content {
   display: inline-block;
   padding: 1px 7px 1px 7px;
   border-radius: 5px;
-  font-size: x-small;
   color: black;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  letter-spacing: -0.5px;
 }
 
 
@@ -242,7 +272,9 @@ img {
   display: flex;
   align-items: center;
   border-bottom: 1px solid #ddd;
-  font-size: x-small;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  letter-spacing: -0.5px;
 }
 
 .new-label-item span {
@@ -253,12 +285,16 @@ img {
   border: none;
   outline: none;
   background-color: transparent;
-  font-size: x-small;
   width: 50%;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  letter-spacing: -0.5px;
 }
 
 .new-label-item input::placeholder {
-  font-size: xx-small;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 8px;
+  letter-spacing: -0.5px;
 }
 
 .removeBtn,
