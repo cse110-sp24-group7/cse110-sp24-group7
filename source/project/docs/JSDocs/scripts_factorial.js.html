@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: scripts/factorial.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,47 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: scripts/factorial.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Calculates the factorial of a non-negative integer.
+ *
+ * @param {number} n - The non-negative integer to calculate the factorial for.
+ * @returns {number} The factorial of the given integer.
+ * @throws {Error} If the input is not a non-negative integer.
+ * @example
+ * // returns 1
+ * factorial(0);
+ * // returns 6
+ * factorial(3);
+ */
+function factorial(n) {
+  if (typeof n !== "number" || n &lt; 0 || !Number.isInteger(n)) {
+    throw new Error("Input must be a non-negative integer");
+  }
 
+  if (n === 0 || n === 1) {
+    return 1;
+  }
 
-    <h3> </h3>
+  let result = 1;
+  for (let i = 2; i &lt;= n; i++) {
+    result *= i;
+  }
+  return result;
+}
 
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+module.exports = { factorial };
+</code></pre>
+        </article>
+    </section>
 
 
 
