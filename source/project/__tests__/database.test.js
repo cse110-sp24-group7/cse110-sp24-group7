@@ -1,5 +1,5 @@
 //import * as dbMgr from '../scripts/database/dbMgr';
-const dbMgr = require('../scripts/database/dbMgr');
+const dbMgr = require("../scripts/database/dbMgr");
 
 describe('Database functions', () => {
   let dbLength = 0;
@@ -73,13 +73,13 @@ describe('Database functions', () => {
     dbMgr.addLabels(["test_label_2", "test_label_3"], lrcbAddLabels);
   });
 
-  test('Testing addTask', done => {
-    function trcbAddTest(tasks) {
-      expect(tasks.length).toBe(dbLength + 1);
-      done();
-    }
-    dbMgr.addTask(test1, trcbAddTest);
-  });
+	test("Testing addTask", (done) => {
+		function trcbAddTest(tasks) {
+			expect(tasks.length).toBe(dbLength + 1);
+			done();
+		}
+		dbMgr.addTask(test1, trcbAddTest);
+	});
 
   test("Testing addTasks", (done) => {
     function trcbAddTests(tasks) {
@@ -89,58 +89,62 @@ describe('Database functions', () => {
     dbMgr.addTasks([test2, test3], trcbAddTests);
   });
 
-  test('Testing editTask', done => {
-    function trcbEditTest(tasks) {
-      for (let i = 0; i < tasks.length; i++) {
-        if (tasks[i].task_id == test1.task_id) {
-          expect(tasks[i].task_content).toBe(test1.task_content);
-        }
-      }
-      done();
-    }
-    test1.task_content = 'test1_updated_content';
-    dbMgr.editTask(test1, trcbEditTest);
-  });
+	test("Testing editTask", (done) => {
+		function trcbEditTest(tasks) {
+			for (let i = 0; i < tasks.length; i++) {
+				if (tasks[i].task_id == test1.task_id) {
+					expect(tasks[i].task_content).toBe(test1.task_content);
+				}
+			}
+			done();
+		}
+		test1.task_content = "test1_updated_content";
+		dbMgr.editTask(test1, trcbEditTest);
+	});
 
   test('Testing conjunctive label search', done => {
     function trcbConjunctiveTest(tasks) {
       expect(tasks.length).toBe(2);
 
-      let idMatch = false;
-      if (
-        tasks[0].task_id == test1.task_id &&
-        tasks[1].task_id == test3.task_id
-      ) {
-        idMatch = true;
-      }
-      if (
-        tasks[0].task_id == test3.task_id &&
-        tasks[1].task_id == test1.task_id
-      ) {
-        idMatch = true;
-      }
-      expect(idMatch).toBe(true);
-      done();
-    }
-    dbMgr.getTasksConjunctLabels(
-      ['test_label_1', 'test_label_2'],
-      trcbConjunctiveTest,
-    );
-  });
+			let idMatch = false;
+			if (
+				tasks[0].task_id == test1.task_id &&
+				tasks[1].task_id == test3.task_id
+			) {
+				idMatch = true;
+			}
+			if (
+				tasks[0].task_id == test3.task_id &&
+				tasks[1].task_id == test1.task_id
+			) {
+				idMatch = true;
+			}
+			expect(idMatch).toBe(true);
+			done();
+		}
+		dbMgr.getTasksConjunctLabels(
+			["test_label_1", "test_label_2"],
+			trcbConjunctiveTest
+		);
+	});
 
   test('Testing disjunctive label search', done => {
     function trcbDisjunctiveTest(tasks) {
       expect(tasks.length).toBe(3);
 
-      let task_ids = [tasks[0].task_id, tasks[1].task_id, tasks[2].task_id];
-      expect(task_ids.sort()).toEqual(
-        [test1.task_id, test2.task_id, test3.task_id].sort(),
-      );
+			let task_ids = [
+				tasks[0].task_id,
+				tasks[1].task_id,
+				tasks[2].task_id
+			];
+			expect(task_ids.sort()).toEqual(
+				[test1.task_id, test2.task_id, test3.task_id].sort()
+			);
 
-      done();
-    }
-    dbMgr.getTasksDisjunctLabels(['test_label_2'], trcbDisjunctiveTest);
-  });
+			done();
+		}
+		dbMgr.getTasksDisjunctLabels(["test_label_2"], trcbDisjunctiveTest);
+	});
 
   test("Testing getFilteredTasks with time range", (done) => {
     const filters = {

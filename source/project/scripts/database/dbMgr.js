@@ -74,9 +74,9 @@ const db = new sqlite.Database(dbPath);
  * @param {beginCallback} bcb - beginCallback to load main window.
  */
 function init(bcb) {
-  const fk_sql = `PRAGMA foreign_keys=ON`;
-  // SQL queries for each table
-  const tasks_sql = `CREATE TABLE IF NOT EXISTS tasks (
+	const fk_sql = `PRAGMA foreign_keys=ON`;
+	// SQL queries for each table
+	const tasks_sql = `CREATE TABLE IF NOT EXISTS tasks (
         task_id TEXT PRIMARY KEY,
         task_name TEXT,
         task_content TEXT,
@@ -84,7 +84,7 @@ function init(bcb) {
         due_date TEXT,
         priority TEXT,
         expected_time TEXT);`;
-  const entries_sql = `CREATE TABLE IF NOT EXISTS entries (
+	const entries_sql = `CREATE TABLE IF NOT EXISTS entries (
         entry_id TEXT PRIMARY KEY,
         entry_title TEXT,
         entry_content TEXT,
@@ -154,34 +154,34 @@ function getLabels(lrcb) {
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
 function getTasks(trcb) {
-  const sql = `
+	const sql = `
     SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels
     FROM tasks t
     LEFT JOIN task_labels l ON t.task_id = l.task_id
     GROUP BY t.task_id;
     `;
 
-  db.all(sql, [], (err, rows) => {
-    if (err) {
-      throw err;
-    }
+	db.all(sql, [], (err, rows) => {
+		if (err) {
+			throw err;
+		}
 
-    const tasks =
-      rows.length > 0
-        ? rows.map((row) => ({
-            task_id: row.task_id,
-            task_name: row.task_name,
-            task_content: row.task_content,
-            creation_date: row.creation_date,
-            due_date: row.due_date,
-            priority: row.priority,
-            expected_time: row.expected_time,
-            labels: row.labels ? row.labels.split(",") : [],
-          }))
-        : [];
+		const tasks =
+			rows.length > 0
+				? rows.map((row) => ({
+						task_id: row.task_id,
+						task_name: row.task_name,
+						task_content: row.task_content,
+						creation_date: row.creation_date,
+						due_date: row.due_date,
+						priority: row.priority,
+						expected_time: row.expected_time,
+						labels: row.labels ? row.labels.split(",") : []
+					}))
+				: [];
 
-    trcb(tasks);
-  });
+		trcb(tasks);
+	});
 }
 
 /**
@@ -190,12 +190,12 @@ function getTasks(trcb) {
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
 function getTasksConjunctLabels(labels, trcb) {
-  if (labels.length === 0) {
-    return trcb([]);
-  }
+	if (labels.length === 0) {
+		return trcb([]);
+	}
 
-  const placeholders = labels.map(() => "?").join(",");
-  const sql = `
+	const placeholders = labels.map(() => "?").join(",");
+	const sql = `
         SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels
         FROM tasks t
         JOIN task_labels l ON t.task_id = l.task_id
@@ -204,27 +204,27 @@ function getTasksConjunctLabels(labels, trcb) {
         HAVING COUNT(DISTINCT l.label) = ?
     `;
 
-  db.all(sql, [...labels, labels.length], (err, rows) => {
-    if (err) {
-      throw err;
-    }
+	db.all(sql, [...labels, labels.length], (err, rows) => {
+		if (err) {
+			throw err;
+		}
 
-    const tasks =
-      rows.length > 0
-        ? rows.map((row) => ({
-            task_id: row.task_id,
-            task_name: row.task_name,
-            task_content: row.task_content,
-            creation_date: row.creation_date,
-            due_date: row.due_date,
-            priority: row.priority,
-            expected_time: row.expected_time,
-            labels: row.labels ? row.labels.split(",") : [],
-          }))
-        : [];
+		const tasks =
+			rows.length > 0
+				? rows.map((row) => ({
+						task_id: row.task_id,
+						task_name: row.task_name,
+						task_content: row.task_content,
+						creation_date: row.creation_date,
+						due_date: row.due_date,
+						priority: row.priority,
+						expected_time: row.expected_time,
+						labels: row.labels ? row.labels.split(",") : []
+					}))
+				: [];
 
-    trcb(tasks);
-  });
+		trcb(tasks);
+	});
 }
 
 /**
@@ -233,13 +233,13 @@ function getTasksConjunctLabels(labels, trcb) {
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
 function getTasksDisjunctLabels(labels, trcb) {
-  let sql = `
+	let sql = `
     SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels
     FROM tasks t
     LEFT JOIN task_labels l ON t.task_id = l.task_id
     `;
 
-  const params = [];
+	const params = [];
 
   if (labels.length > 0) {
     const labelPlaceholders = labels.map(() => "?").join(",");
@@ -369,21 +369,21 @@ function getFilteredTasks(filterCriteria, trcb) {
  * @param {entriesRenderCallback} ercb - the tasks render callback to update the frontend.
  */
 function getEntries(ercb) {
-  const sql = "SELECT * FROM entries";
-  const ret = [];
-  db.each(
-    sql,
-    [],
-    (err, row) => {
-      if (err) {
-        throw err;
-      }
-      ret.push(row);
-    },
-    () => {
-      ercb(ret);
-    }
-  );
+	const sql = "SELECT * FROM entries";
+	const ret = [];
+	db.each(
+		sql,
+		[],
+		(err, row) => {
+			if (err) {
+				throw err;
+			}
+			ret.push(row);
+		},
+		() => {
+			ercb(ret);
+		}
+	);
 }
 
 /**
@@ -395,7 +395,7 @@ function addTask(task, callback) {
   const taskSql = `INSERT INTO tasks (task_id, task_name, task_content, creation_date, due_date, priority, expected_time)
         VALUES (?, ?, ?, ?, ?, ?, ?);`;
 
-  const labelSql = `INSERT INTO task_labels (task_id, label) VALUES (?, ?);`;
+	const labelSql = `INSERT INTO task_labels (task_id, label) VALUES (?, ?);`;
 
   db.run(taskSql, [task.task_id, task.task_name, task.task_content, task.creation_date, task.due_date, task.priority, task.expected_time], (err) => {
     if (err) {
@@ -440,46 +440,46 @@ function addTask(task, callback) {
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
 function addTasks(tasks, trcb) {
-  const taskSql = `INSERT INTO tasks (task_id, task_name, task_content, creation_date, due_date, priority, expected_time)
+	const taskSql = `INSERT INTO tasks (task_id, task_name, task_content, creation_date, due_date, priority, expected_time)
         VALUES (?, ?, ?, ?, ?, ?, ?);`;
-  const labelSql = `INSERT INTO task_labels (task_id, label) VALUES (?, ?);`;
+	const labelSql = `INSERT INTO task_labels (task_id, label) VALUES (?, ?);`;
 
-  db.serialize(() => {
-    const taskStmt = db.prepare(taskSql);
-    const labelStmt = db.prepare(labelSql);
+	db.serialize(() => {
+		const taskStmt = db.prepare(taskSql);
+		const labelStmt = db.prepare(labelSql);
 
-    tasks.forEach((task) => {
-      taskStmt.run(
-        [
-          task.task_id,
-          task.task_name,
-          task.task_content,
-          task.creation_date,
-          task.due_date,
-          task.priority,
-          task.expected_time,
-        ],
-        (err) => {
-          if (err) {
-            throw err;
-          }
-        }
-      );
+		tasks.forEach((task) => {
+			taskStmt.run(
+				[
+					task.task_id,
+					task.task_name,
+					task.task_content,
+					task.creation_date,
+					task.due_date,
+					task.priority,
+					task.expected_time
+				],
+				(err) => {
+					if (err) {
+						throw err;
+					}
+				}
+			);
 
-      task.labels.forEach((label) => {
-        labelStmt.run([task.task_id, label], (err) => {
-          if (err) {
-            throw err;
-          }
-        });
-      });
-    });
+			task.labels.forEach((label) => {
+				labelStmt.run([task.task_id, label], (err) => {
+					if (err) {
+						throw err;
+					}
+				});
+			});
+		});
 
-    taskStmt.finalize();
-    labelStmt.finalize();
+		taskStmt.finalize();
+		labelStmt.finalize();
 
-    getTasks(trcb);
-  });
+		getTasks(trcb);
+	});
 }
 
 /**
@@ -488,7 +488,7 @@ function addTasks(tasks, trcb) {
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
  */
 function addEntry(entry, ercb) {
-  const sql = `INSERT INTO entries (entry_id, entry_title, entry_content, creation_date)
+	const sql = `INSERT INTO entries (entry_id, entry_title, entry_content, creation_date)
         VALUES('${entry.entry_id}', '${entry.entry_title}', '${entry.entry_content}', '${entry.creation_date}');`;
   db.run(sql, [], (err) => {
     if (err) {
@@ -540,7 +540,7 @@ function addLabels(labels, lrcb) {
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
 function editTask(task, trcb) {
-  const sql = `UPDATE tasks SET
+	const sql = `UPDATE tasks SET
             task_name = '${task.task_name}',
             task_content = '${task.task_content}',
             creation_date = '${task.creation_date}',
@@ -548,12 +548,12 @@ function editTask(task, trcb) {
             priority = '${task.priority}',
             expected_time = '${task.expected_time}'
         WHERE task_id = '${task.task_id}';`;
-  db.run(sql, [], (err) => {
-    if (err) {
-      throw err;
-    }
-    getTasks(trcb);
-  });
+	db.run(sql, [], (err) => {
+		if (err) {
+			throw err;
+		}
+		getTasks(trcb);
+	});
 }
 
 /**
@@ -562,17 +562,17 @@ function editTask(task, trcb) {
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
  */
 function editEntry(entry, ercb) {
-  const sql = `UPDATE entries SET
+	const sql = `UPDATE entries SET
             entry_title = '${entry.entry_title}',
             entry_content = '${entry.entry_content}',
             creation_date = '${entry.creation_date}'
         WHERE entry_id = '${entry.entry_id}';`;
-  db.run(sql, [], (err) => {
-    if (err) {
-      throw err;
-    }
-    getEntries(ercb);
-  });
+	db.run(sql, [], (err) => {
+		if (err) {
+			throw err;
+		}
+		getEntries(ercb);
+	});
 }
 
 /**
@@ -581,13 +581,13 @@ function editEntry(entry, ercb) {
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
 function deleteTask(task_id, trcb) {
-  const sql = `DELETE FROM tasks WHERE task_id = '${task_id}'`;
-  db.run(sql, [], (err) => {
-    if (err) {
-      throw err;
-    }
-    getTasks(trcb);
-  });
+	const sql = `DELETE FROM tasks WHERE task_id = '${task_id}'`;
+	db.run(sql, [], (err) => {
+		if (err) {
+			throw err;
+		}
+		getTasks(trcb);
+	});
 }
 
 /**
@@ -596,23 +596,23 @@ function deleteTask(task_id, trcb) {
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
 function deleteTasks(task_ids, trcb) {
-  const deleteTaskSql = `DELETE FROM tasks WHERE task_id = ?`;
+	const deleteTaskSql = `DELETE FROM tasks WHERE task_id = ?`;
 
-  db.serialize(() => {
-    const taskStmt = db.prepare(deleteTaskSql);
+	db.serialize(() => {
+		const taskStmt = db.prepare(deleteTaskSql);
 
-    task_ids.forEach((task_id) => {
-      taskStmt.run([task_id], (err) => {
-        if (err) {
-          throw err;
-        }
-      });
-    });
+		task_ids.forEach((task_id) => {
+			taskStmt.run([task_id], (err) => {
+				if (err) {
+					throw err;
+				}
+			});
+		});
 
-    taskStmt.finalize();
+		taskStmt.finalize();
 
-    getTasks(trcb);
-  });
+		getTasks(trcb);
+	});
 }
 
 /**

@@ -1,9 +1,11 @@
 # Journal Popup
 
 ## Purpose
+
 This is the Journal popup that will be shown when the user clicks on any Add Journal button. This will be used to input the necessary information required for a user to create and save a journal.
 
 ## Features
+
 **X Button**
 This button serves as a way for the user to close the task popup.
 
