@@ -54,17 +54,19 @@ class JournalPopup extends HTMLElement {
     
   }
 
-  journalEdit(entryDeatails){
+  journalEdit(entryDetails){
     this.editMode = true; 
-    this.editJournalId = entryDeatails.entry_id;
+    this.editJournalId = entryDetails.entry_id;
 
     // Selects the ids from the shadow DOM of the current componenet
     const titleInput = this.shadowRoot.getElementById("title");
     const descriptionText = this.shadowRoot.getElementById("description");
+	const creationDateInput = this.shadowRoot.getElementById("currDate");
     
     // Populate the journal popup with the entryDetails
-    titleInput.value = entryDeatails.entry_name;
-    descriptionText.value = entryDeatails.entry_content;
+    titleInput.value = entryDetails.entry_title;
+    descriptionText.value = entryDetails.entry_content;
+	creationDateInput.value = entryDetails.creation_date;
 
     this.style.display = "block";
   }
@@ -220,7 +222,7 @@ class JournalPopup extends HTMLElement {
         const journalPv = document.querySelector(`.journal-pv[data-entry-id="${this.editJournalId}"]`);
         if (journalPv) {
           journalPv.querySelector('h2').textContent = journalData.entry_title;
-          journalPv.querySelector('p').textContent = journalData.entry_content;
+          journalPv.querySelector('p').textContent = journalData.entry_content;		  
         }
       }
       this.saveJournalsToStorage(journals);

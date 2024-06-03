@@ -209,14 +209,13 @@ document.addEventListener("DOMContentLoaded", () => {
       // Extract task details from the task preview element
       const journalPv = event.target.closest(".journal-pv");
       if (journalPv) {
-        const journalDetails = {
-          entry_id: journalPv.getAttribute('data-entry-id'),
-          entry_name: journalPv.querySelector('h2').textContent,
-          entry_content: journalPv.querySelector('p').textContent,
-        };
+        const entryId = journalPv.getAttribute('data-entry-id');
+        const storedEntries = JSON.parse(localStorage.getItem("journalData")) || [];
+        const journalDetails = storedEntries.find(entry => entry.entry_id === entryId);
 
-        // Open task popup for editing with task details
-        openJournalPopupForEdit(journalDetails);
+        if (journalDetails) {
+          openJournalPopupForEdit(journalDetails);
+        }
       }
     }
   });
