@@ -1,3 +1,102 @@
+:root {
+  --font-family: "Courier New", monospace;
+  --font-size-small: 14px;
+  --font-size-medium: 16px;
+  --font-size-large: 35px;
+  --border-color: #ccc;
+  --background-color: white;
+  --hover-background-color: #ddd;
+  --search-bg-color: #d9d6d66e;
+}
+
+body, :host {
+  font-family: var(--font-family);
+  font-size: var(--font-size-small);
+}
+
+.filter-container {
+  display: flex;
+  gap: 5px;
+}
+
+.holder {
+  position: relative;
+  width: 130px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background-color: var(--background-color);
+  cursor: pointer;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#resetBtn {
+  position: relative;
+  width: 80px; /* Set the smaller width for the Clear button */
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background-color: var(--background-color);
+  cursor: pointer;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px; /* Space after the clear button */
+}
+
+.mainText {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  width: 100%;
+  top: 100%;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 0 0 5px 5px;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+.dropdown-content div {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dropdown-content div:hover {
+  background-color: var(--hover-background-color);
+}
+
+.priority-item {
+  cursor: pointer;
+  text-align: center;
+}
+
+.checkbox {
+  margin-right: 10px;
+}
+
+.holder:hover .dropdown-content {
+  display: block;
+}
+
+.holder:hover {
+  border-radius: 5px 5px 0 0;
+}
+
 /* Resetting default margin and padding */
 * {
   margin: 0;
@@ -7,13 +106,13 @@
 
 /* Styling the header */
 .header {
-  background-color: #fff;
+  background-color: var(--background-color);
   color: #000;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px 20px;
-  border-bottom: 1px solid #ccc; /* Add border bottom to header */
+  border-bottom: 1px solid var(--border-color);
 }
 
 .logo img {
@@ -24,8 +123,8 @@
 
 .logo span {
   font-weight: bold;
-  font-size: 35px;
-  font-family: "Courier New";
+  font-size: var(--font-size-large);
+  font-family: var(--font-family);
 }
 
 .menu-icon img {
@@ -34,104 +133,91 @@
 }
 
 .search-filter-bar {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
 }
 
 .search-bar {
-display: flex;
-align-items: center;
+  display: flex;
+  align-items: center;
+  margin-left: 200px; /* Space before the search bar */
 }
 
 .search-container {
-position: relative;
-display: flex;
-align-items: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-container img {
+  width: 24px;
+  height: 24px;
 }
 
 #searchInput {
-padding: 5px 5px 5px 30px; /* Adjusted padding for smaller size */
-width: 200px; /* Adjust the width to make the search bar smaller */
-border: none;
-border-radius: 5px; /* Less rounded corners */
-background-color: #eee;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-font-size: 14px; /* Adjusted font size for smaller input */
+  padding: 5px 5px 5px 30px;
+  width: 200px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--search-bg-color);
+  font-size: var(--font-size-small);
+}
+
+.filter-buttons {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: auto;
+  margin-right: 200px;
 }
 
 hr {
-  margin-top: 20px; /* Adjust the value as needed */
+  margin-top: 20px;
 }
 
-.filter-bar {
-display: flex;
-align-items: center;
+/* Adding styles for the filter icon */
+.filter-icon {
+  height: 30px; /* Same height as the label button */
+  width: 30px; /* Same width as the height to keep it square */
+  margin-right: 5px; /* Space between the icon and the text */
 }
 
-.filter-bar select,
-.filter-bar .dropdown,
-#clearButton {
-margin-left: 10px;
+#labelDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-#priority {
-padding: 5px;
-font-size: 14px;
-border-radius: 5px;
+#labelText {
+  margin-left: 5px; /* Adjust if needed to ensure proper alignment */
 }
 
-.dropdown {
-position: relative;
-}
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .search-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-.dropbtn {
-padding: 5px 10px;
-font-size: 14px;
-border-radius: 5px;
-border: none;
-cursor: pointer;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+  .search-bar {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 
-.dropdown-content {
-display: none;
-position: absolute;
-background-color: #f9f9f9;
-min-width: 160px;
-box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-z-index: 1;
-}
+  .filter-buttons {
+    justify-content: flex-end;
+  }
 
-.dropdown:hover .dropdown-content {
-display: block;
-}
+  .holder, #resetBtn {
+    width: auto;
+    flex: 1;
+  }
 
-.dropdown-content a {
-color: black;
-padding: 12px 16px;
-text-decoration: none;
-display: block;
-}
-
-.dropdown-content a:hover {
-background-color: #f1f1f1;
-}
-
-#clearButton {
-padding: 5px 10px; /* Adjusted padding for smaller button */
-border: none;
-border-radius: 5px; /* Less rounded corners */
-background-color: #f9f9f9;
-color: black;
-font-size: 14px; /* Adjusted font size for smaller button */
-cursor: pointer;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#clearButton:hover {
-background-color: #f9f9f9;
+  #searchInput {
+    width: 100%;
+  }
 }
 
   
