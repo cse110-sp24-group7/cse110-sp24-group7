@@ -220,21 +220,23 @@ img {
 }
 
 .dropdown-content {
-	display: none;
-	position: absolute;
-	background-color: white;
-	width: 103.5px;
-	border: 1px solid #0056b3;
-	border-radius: 0 0 8px 8px;
-	z-index: 1;
-	overflow: scroll;
-	max-height: 100px;
-	left: 78.8%;
-	text-align: left;
-	margin-top: 5px;
-	font-family: "Roboto Mono", monospace;
-	font-size: 10px;
-	letter-spacing: -0.5px;
+  display: none;
+  position: absolute;
+  background-color: white;
+  width: 103.5px;
+  border: 1px solid #0056b3;
+  border-radius: 0 0 8px 8px;
+  z-index: 1;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  max-height: 100px;
+  left: 78.8%;
+  text-align: left;
+  margin-top: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  letter-spacing: -0.5px; 
 }
 
 .dropdown-content div {

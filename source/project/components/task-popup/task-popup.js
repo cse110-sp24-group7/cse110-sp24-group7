@@ -3,15 +3,15 @@
  * @description Represents a popup component that can be dynamically added to the DOM. This component
  * supports custom styling and behavior through a Shadow DOM, and handles form submissions to save task data.
  */
-class PopupComponent extends HTMLElement {
-	/**
-	 * @constructor
-	 * @description Creates an instance of PopupComponent, sets up the shadow DOM, and initializes
-	 * the component with CSS and HTML content loaded asynchronously.
-	 */
-	constructor() {
-		super();
-		this.attachShadow({ mode: "open" });
+class TaskPopup extends HTMLElement {
+  /**
+   * @constructor
+   * @description Creates an instance of TaskPopup, sets up the shadow DOM, and initializes
+   * the component with CSS and HTML content loaded asynchronously.
+   */
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
 
 		// set to store selected labels
 		this.selectedLabels = new Set();
@@ -88,28 +88,28 @@ class PopupComponent extends HTMLElement {
 		}, 3000);
 	}
 
-	/**
-	 * @method populateLabels
-	 * @description Populates the label selector with labels from local storage.
-	 */
-	populateLabels() {
-		const labelContainer = this.shadowRoot.getElementById("label");
-		const selectedLabelsContainer =
-			this.shadowRoot.querySelector(".selectedLabels");
-		const labels = JSON.parse(window.localStorage.getItem("labels")) || [];
+  /**
+   * @method populateLabels
+   * @description Populates the label selector with labels from local storage.
+   */
+  populateLabels() {
+    const labelContainer = this.shadowRoot.getElementById("label");
+    const selectedLabelsContainer = this.shadowRoot.querySelector(".selectedLabels");
 
-		// Clear the label container
-		labelContainer.innerHTML = "";
+    window.api.getLabels((labels) => {
+      // Clear the label container
+      labelContainer.innerHTML = "";
 
-		// Add new label input
-		this.addNewLabelInput(labelContainer);
+      // Add new label input
+      this.addNewLabelInput(labelContainer);
 
-		// Populate the dropdown with stored labels
-		this.populateLabelDropdown(labelContainer, labels);
+      // Populate the dropdown with stored labels
+      this.populateLabelDropdown(labelContainer, labels);
 
-		// Populate the selected labels
-		this.populateSelectedLabels(selectedLabelsContainer);
-	}
+      // Populate the selected labels
+      this.populateSelectedLabels(selectedLabelsContainer);
+    });
+  }
 
 	/**
 	 * @method addNewLabelInput
@@ -131,27 +131,28 @@ class PopupComponent extends HTMLElement {
 		newLabelDiv.appendChild(input);
 		container.appendChild(newLabelDiv);
 
-		// Add event listener for input to save new label
-		input.addEventListener("keydown", (e) => {
-			if (e.key === "Enter") {
-				e.preventDefault();
-				const newLabel = input.value.trim();
-				if (newLabel) {
-					let labels =
-						JSON.parse(localStorage.getItem("labels")) || [];
-					if (!labels.includes(newLabel)) {
-						labels.push(newLabel);
-						localStorage.setItem("labels", JSON.stringify(labels));
-						const newColor = this.randomColor();
-						this.labelToColor.set(newLabel, newColor);
-						this.saveLabelColors();
-					}
-					this.selectedLabels.add(newLabel);
-					this.populateLabels();
-				}
-			}
-		});
-	}
+    // Add event listener for input to save new label
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const newLabel = input.value.trim();
+        if (newLabel) {
+          window.api.getLabels((labels) => {
+						if (!labels.includes(newLabel)) {
+							window.api.addLabel(newLabel, (labels_added) => {
+								localStorage.setItem("labels", JSON.stringify(labels_added));
+								const newColor = this.randomColor();
+								this.labelToColor.set(newLabel, newColor);
+								this.saveLabelColors();
+							});
+						}
+						this.selectedLabels.add(newLabel);
+						this.populateLabels();
+					});
+        }
+      }
+    });
+  }
 
 	/**
 	 * @method setColors
@@ -368,4 +369,4 @@ class PopupComponent extends HTMLElement {
 }
 
 // define the custom element
-customElements.define("task-popup", PopupComponent);
+customElements.define("task-popup", TaskPopup);
