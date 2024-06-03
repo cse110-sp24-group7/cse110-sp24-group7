@@ -85,7 +85,7 @@ function entriesRendererCallback(entries) {
   });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
   document.addEventListener("storageUpdate", () => {
     let storedEntries = JSON.parse(localStorage.getItem("journalData"));
     storedEntries = Array.isArray(storedEntries) ? storedEntries : [];
@@ -95,11 +95,20 @@ document.addEventListener("DOMContentLoaded", function () {
     entriesRendererCallback(storedEntries);
   });
 
-  window.api.getTasks((tasks) => {
+  //CHANGE
+  let db = await window.path.getPath()
+  .then((appDataPath) => {
+    console.log("RENDER PROCESS: " + appDataPath);
+    let manager = window.api.dbManager(appDataPath, () => {});
+    return manager;
+  })
+
+  db.getTasks((tasks) => {
+    console.log('client side tasks: ' + tasks)
     localStorage.setItem("tasks", JSON.stringify(tasks));
     tasksRendererCallback(tasks);
   });
-  window.api.getEntries((entries) => {
+  db.getEntries((entries) => {
     localStorage.setItem("journalData", JSON.stringify(entries));
     entriesRendererCallback(entries);
   });

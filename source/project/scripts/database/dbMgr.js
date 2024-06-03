@@ -6,13 +6,26 @@
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = dirname(__filename);
 
+/* const sqlite = require("sqlite3");
+const path = require("path");
+const dbPath = path.resolve(__dirname, '..', '..', 'data', 'data.db');
+const db = new sqlite.Database(dbPath, 
+  sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE, 
+  (err) => { 
+      if(err) console.error(err);
+}); */
+
 const sqlite = require("sqlite3");
 const path = require("path");
 
-const dbPath = path.resolve(__dirname, '..', '..', 'data', 'data.db');
-const db = new sqlite.Database(dbPath);
-
-/**
+const DatabaseManager = pathToDB => {
+  const dbPath = path.resolve(pathToDB, 'data.db');
+  const db = new sqlite.Database(dbPath, 
+    sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE, 
+    (err) => { 
+        if(err) console.error(err);
+  });
+  /**
  * An object representing a task
  * @typedef {Object} task
  * @property {string} task_id - the task's unique id.
@@ -60,7 +73,8 @@ const db = new sqlite.Database(dbPath);
  *
  * @param {beginCallback} bcb - beginCallback to load main window.
  */
-function init(bcb) {
+
+const init = (bcb) => {
   const fk_sql = `PRAGMA foreign_keys=ON`;
   // SQL queries for each table
   const tasks_sql = `CREATE TABLE IF NOT EXISTS tasks (
@@ -86,7 +100,7 @@ function init(bcb) {
         );`;
 
   // Table creation queries are serialized to ensure key constraints are followed.
-  db.serialize(function () {
+  db.serialize(() => {
     db.run(fk_sql, [], (err) => {
       if (err) throw err;
     });
@@ -111,7 +125,7 @@ function init(bcb) {
  * Queries and returns all tasks.
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
-function getTasks(trcb) {
+const getTasks = (trcb) => {
   const sql = `
     SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels
     FROM tasks t
@@ -119,7 +133,7 @@ function getTasks(trcb) {
     GROUP BY t.task_id;
     `;
 
-  db.all(sql, [], (err, rows) => {
+    db.all(sql, [], (err, rows) => {
     if (err) {
       throw err;
     }
@@ -137,7 +151,6 @@ function getTasks(trcb) {
             labels: row.labels ? row.labels.split(",") : [],
           }))
         : [];
-
     trcb(tasks);
   });
 }
@@ -147,7 +160,7 @@ function getTasks(trcb) {
  * @param {string[]} labels - an array of labels that each task must contain
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
-function getTasksConjunctLabels(labels, trcb) {
+const getTasksConjunctLabels = (labels, trcb) => {
   if (labels.length === 0) {
     return trcb([]);
   }
@@ -162,7 +175,7 @@ function getTasksConjunctLabels(labels, trcb) {
         HAVING COUNT(DISTINCT l.label) = ?
     `;
 
-  db.all(sql, [...labels, labels.length], (err, rows) => {
+    db.all(sql, [...labels, labels.length], (err, rows) => {
     if (err) {
       throw err;
     }
@@ -190,7 +203,7 @@ function getTasksConjunctLabels(labels, trcb) {
  * @param {string[]} labels - an array of labels; each task must contain AT LEAST one
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
-function getTasksDisjunctLabels(labels, trcb) {
+const getTasksDisjunctLabels = (labels, trcb) => {
   let sql = `
     SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels
     FROM tasks t
@@ -234,7 +247,7 @@ function getTasksDisjunctLabels(labels, trcb) {
  * Queries and returns all entries.
  * @param {entriesRenderCallback} ercb - the tasks render callback to update the frontend.
  */
-function getEntries(ercb) {
+const getEntries = (ercb) => {
   const sql = "SELECT * FROM entries";
   const ret = [];
   db.each(
@@ -257,7 +270,7 @@ function getEntries(ercb) {
  * @param {task} task - the task to add
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
-function addTask(task, trcb) {
+const addTask = (task, trcb) => {
   const taskSql = `INSERT INTO tasks (task_id, task_name, task_content, creation_date, due_date, priority, expected_time)
         VALUES('${task.task_id}', '${task.task_name}', '${task.task_content}', '${task.creation_date}', '${task.due_date}', '${task.priority}', '${task.expected_time}');`;
 
@@ -278,7 +291,7 @@ function addTask(task, trcb) {
     });
     stmt.finalize();
 
-    this.getTasks(trcb);
+    getTasks(trcb);
   });
 }
 
@@ -287,7 +300,7 @@ function addTask(task, trcb) {
  * @param {task[]} tasks - the tasks to add
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
-function addTasks(tasks, trcb) {
+ const addTasks = (tasks, trcb) => {
   const taskSql = `INSERT INTO tasks (task_id, task_name, task_content, creation_date, due_date, priority, expected_time)
         VALUES (?, ?, ?, ?, ?, ?, ?);`;
   const labelSql = `INSERT INTO task_labels (task_id, label) VALUES (?, ?);`;
@@ -335,7 +348,7 @@ function addTasks(tasks, trcb) {
  * @param {entry} entry - the entry to add
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
  */
-function addEntry(entry, ercb) {
+ const addEntry = (entry, ercb) => {
   const sql = `INSERT INTO entries (entry_id, entry_title, entry_content, creation_date)
         VALUES('${entry.entry_id}', '${entry.entry_title}', '${entry.entry_content}', '${entry.creation_date}');`;
   db.run(sql, [], (err) => {
@@ -351,7 +364,7 @@ function addEntry(entry, ercb) {
  * @param {task} task - the task to edit. The ID must exist in the database.
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
-function editTask(task, trcb) {
+ const editTask = (task, trcb) => {
   const sql = `UPDATE tasks SET
             task_name = '${task.task_name}',
             task_content = '${task.task_content}',
@@ -373,7 +386,7 @@ function editTask(task, trcb) {
  * @param {entry} entry - the entry to add
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
  */
-function editEntry(entry, ercb) {
+ const editEntry = (entry, ercb) => {
   const sql = `UPDATE entries SET
             entry_title = '${entry.entry_title}',
             entry_content = '${entry.entry_content}',
@@ -392,7 +405,7 @@ function editEntry(entry, ercb) {
  * @param {string} task_id - the ID of the task to be deleted.
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
-function deleteTask(task_id, trcb) {
+ const deleteTask = (task_id, trcb) => {
   const sql = `DELETE FROM tasks WHERE task_id = '${task_id}'`;
   db.run(sql, [], (err) => {
     if (err) {
@@ -407,12 +420,11 @@ function deleteTask(task_id, trcb) {
  * @param {string[]} task_ids - the IDs of tasks to be deleted.
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
-function deleteTasks(task_ids, trcb) {
+ const deleteTasks = (task_ids, trcb) => {
   const deleteTaskSql = `DELETE FROM tasks WHERE task_id = ?`;
 
   db.serialize(() => {
     const taskStmt = db.prepare(deleteTaskSql);
-
     task_ids.forEach((task_id) => {
       taskStmt.run([task_id], (err) => {
         if (err) {
@@ -432,7 +444,7 @@ function deleteTasks(task_ids, trcb) {
  * @param {string} entry_id - the ID of the entry to be deleted.
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
  */
-function deleteEntry(entry_id, ercb) {
+ const deleteEntry = (entry_id, ercb) => {
   const sql = `DELETE FROM entries WHERE entry_id = '${entry_id}'`;
   db.run(sql, [], (err) => {
     if (err) {
@@ -441,19 +453,9 @@ function deleteEntry(entry_id, ercb) {
     getEntries(ercb);
   });
 }
+  return {init, getTasks, getTasksConjunctLabels, getTasksDisjunctLabels, getEntries, addTask, addTasks, addEntry, editTask, editEntry, deleteTask, deleteTasks, deleteEntry}
+}
 
 module.exports = {
-  init,
-  getTasks,
-  getTasksConjunctLabels,
-  getTasksDisjunctLabels,
-  getEntries,
-  addTask,
-  addTasks,
-  addEntry,
-  editTask,
-  editEntry,
-  deleteTask,
-  deleteTasks,
-  deleteEntry,
-};
+  DatabaseManager
+}

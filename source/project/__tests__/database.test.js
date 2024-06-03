@@ -1,5 +1,6 @@
 //import * as dbMgr from '../scripts/database/dbMgr';
 const dbMgr = require("../scripts/database/dbMgr");
+const path = require('path');
 
 describe("Database functions", () => {
   let dbLength = 0;
@@ -34,8 +35,10 @@ describe("Database functions", () => {
   test3.expected_time = "3 hours";
   test3.labels = ["test_label_1", "test_label_2", "test_label_3"];
 
+  let manager = dbMgr.DatabaseManager(path.resolve(__dirname, '..', 'data'));
+
   test("Initializing tables", async () => {
-    dbMgr.init();
+    manager.init();
     // This is a hack to ensure that tables are initialized properly as there's no callbacks for initialization.
     await new Promise((r) => setTimeout(r, 4000));
   });
@@ -45,7 +48,7 @@ describe("Database functions", () => {
       dbLength = tasks.length;
       done();
     }
-    dbMgr.getTasks(trcbLengthTest);
+    manager.getTasks(trcbLengthTest);
   });
 
   test("Testing addTask", (done) => {
@@ -53,7 +56,7 @@ describe("Database functions", () => {
       expect(tasks.length).toBe(dbLength + 1);
       done();
     }
-    dbMgr.addTask(test1, trcbAddTest);
+    manager.addTask(test1, trcbAddTest);
   });
 
   test("Testing addTasks", (done) => {
@@ -61,7 +64,7 @@ describe("Database functions", () => {
       expect(tasks.length).toBe(dbLength + 3);
       done();
     }
-    dbMgr.addTasks([test2, test3], trcbAddsTest);
+    manager.addTasks([test2, test3], trcbAddsTest);
   });
 
   test("Testing editTask", (done) => {
@@ -74,7 +77,7 @@ describe("Database functions", () => {
       done();
     }
     test1.task_content = "test1_updated_content";
-    dbMgr.editTask(test1, trcbEditTest);
+    manager.editTask(test1, trcbEditTest);
   });
 
   test("Testing conjunctive label search", (done) => {
@@ -97,7 +100,7 @@ describe("Database functions", () => {
       expect(idMatch).toBe(true);
       done();
     }
-    dbMgr.getTasksConjunctLabels(
+    manager.getTasksConjunctLabels(
       ["test_label_1", "test_label_2"],
       trcbConjunctiveTest,
     );
@@ -114,7 +117,7 @@ describe("Database functions", () => {
 
       done();
     }
-    dbMgr.getTasksDisjunctLabels(["test_label_2"], trcbDisjunctiveTest);
+    manager.getTasksDisjunctLabels(["test_label_2"], trcbDisjunctiveTest);
   });
 
   test("Testing deleteTask", (done) => {
@@ -122,7 +125,7 @@ describe("Database functions", () => {
       expect(tasks.length).toBe(dbLength + 2);
       done();
     }
-    dbMgr.deleteTask(test1.task_id, trcbDeleteTest);
+    manager.deleteTask(test1.task_id, trcbDeleteTest);
   });
 
   test("Testing deleteTasks", (done) => {
@@ -130,6 +133,6 @@ describe("Database functions", () => {
       expect(tasks.length).toBe(dbLength);
       done();
     }
-    dbMgr.deleteTasks([test2.task_id, test3.task_id], trcbDeletesTest);
+    manager.deleteTasks([test2.task_id, test3.task_id], trcbDeletesTest);
   });
 });

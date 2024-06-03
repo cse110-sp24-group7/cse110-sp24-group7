@@ -1,62 +1,120 @@
 // import { contextBridge } from 'electron';
 // import * as dbMgr from './database/dbMgr.js';
 
-const { contextBridge } = require("electron");
-const dbMgr = require("./database/dbMgr");
+const {contextBridge, ipcRenderer } = require("electron");
+const { DatabaseManager } = require("./database/dbMgr.js");
+const fs = require("fs");
+const path = require("path");
 
-const init = (bcb) => {
-  dbMgr.init(bcb);
+const getPath = () => ipcRenderer.invoke('getPath');
+
+contextBridge.exposeInMainWorld("path", {
+  getPath: getPath,
+});
+
+/* let db = await window.path.getPath()
+.then((appDataPath) => {
+  let manager = window.api.dbManager(appDataPath, () => {});
+  return manager;
+})
+
+  window.api.getTasks((tasks) => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    tasksRendererCallback(tasks);
+  }); */
+
+/*   console.log(path.resolve(__dirname, '..', 'data', 'data.db'));
+  if (fs.existsSync(path.resolve(__dirname, '..', 'data', 'data.db'))) {
+    console.log("file exists!");
+
+    fs.readFile(path.resolve(__dirname, '..', 'data', 'data.db'), 'utf8', (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      console.log(data);
+    });
+  } else {
+    console.log("file does not exist!");
+  } */
+
+const dbManager = (pathToDB, bcb) => {
+  let manager = DatabaseManager(pathToDB);
+  manager.init(bcb);
+
+  if (fs.existsSync(path.resolve(pathToDB, 'data.db'))) {
+    console.log("file exists!");
+
+    fs.readFile(path.resolve(pathToDB, 'data.db'), 'utf8', (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      console.log(data);
+    });
+  } else {
+    console.log("file does not exist!");
+  }
+  
+  return manager;
+}
+
+function init(bcb) {
+  console.log("INITIALIZE")
+  this.init(bcb);
 };
 
-const getTasks = (trcb) => {
-  return dbMgr.getTasks(trcb);
+function getTasks(trcb) {
+  console.log("GET TASKS")
+  return this.getTasks(trcb);
 };
 
-const getTasksConjunctLabels = (labels, trcb) => {
-  return dbMgr.getTasksConjunctLabels(labels, trcb);
+function getTasksConjunctLabels(labels, trcb) {
+  return this.getTasksConjunctLabels(labels, trcb);
 };
 
-const getTasksDisjunctLabels = (labels, trcb) => {
-  return dbMgr.getTasksDisjunctLabels(labels, trcb);
+function getTasksDisjunctLabels(labels, trcb) {
+  return this.getTasksDisjunctLabels(labels, trcb);
 };
 
-const getEntries = (ercb) => {
-  return dbMgr.getEntries(ercb);
+function getEntries(ercb) {
+  return this.getEntries(ercb);
 };
 
-const addTask = (task, trcb) => {
-  return dbMgr.addTask(task, trcb);
+function addTask(task, trcb) {
+  return this.addTask(task, trcb);
 };
 
-const addTasks = (tasks, trcb) => {
-  return dbMgr.addTasks(tasks, trcb);
+function addTasks(tasks, trcb) {
+  return this.addTasks(tasks, trcb);
 };
 
-const addEntry = (entry, ercb) => {
-  return dbMgr.addEntry(entry, ercb);
+function addEntry(entry, ercb) {
+  return this.addEntry(entry, ercb);
 };
 
-const editTask = (task, trcb) => {
-  return dbMgr.editTask(task, trcb);
+function editTask(task, trcb) {
+  return this.editTask(task, trcb);
 };
 
-const editEntry = (entry, ercb) => {
-  return dbMgr.editEntry(entry, ercb);
+function editEntry(entry, ercb) {
+  return this.editEntry(entry, ercb);
 };
 
-const deleteTask = (task_id, trcb) => {
-  return dbMgr.deleteTask(task_id, trcb);
+function deleteTask(task_id, trcb) {
+  return this.deleteTask(task_id, trcb);
 };
 
-const deleteTasks = (task_ids, trcb) => {
-  return dbMgr.deleteTasks(task_ids, trcb);
+function deleteTasks(task_ids, trcb) {
+  return this.deleteTasks(task_ids, trcb);
 };
 
-const deleteEntry = (entry_id, ercb) => {
-  return dbMgr.deleteEntry(entry_id, ercb);
+function deleteEntry(entry_id, ercb) {
+  return this.deleteEntry(entry_id, ercb);
 };
 
 contextBridge.exposeInMainWorld("api", {
+  dbManager: dbManager,
   init: init,
   getTasks: getTasks,
   getTasksConjunctLabels: getTasksConjunctLabels,
