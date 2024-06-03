@@ -23,8 +23,8 @@ const createWindow = () => {
     },
   });
 
-  win.loadFile("./source/project/components/mainview/mainview.html");
-  win.webContents.openDevTools();
+	win.loadFile("./source/project/components/mainview/mainview.html");
+	win.webContents.openDevTools();
 };
 
 const {DatabaseManager} = require("./database/dbMgr.js");
@@ -48,5 +48,5 @@ app.whenReady().then(() => {
 });
 
 app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") app.quit();
+	if (process.platform !== "darwin") app.quit();
 });

@@ -1,10 +1,12 @@
 # Calendar View
 
 ## Purpose
+
 This is the calendar view of the Akatsuki 7 Developer Journal. The main page is meant to be a calendar view of the current week with a "Tasks" and "Journal" section. Each column displays a different day of the week that shows the user's tasks and journal entries they have filled out for that day.
 
 ## Features
-**Green "+" Button:** 
+
+**Green "+" Button:**
 Within each Journal and Task section in each day, there is a green "+" button where the user can input a new journal entry or task. By clicking the button, it sends the user to a pop up where they can input a new entry, which will save a new entry in the main view.
 
 **Task Boxes and Journal Boxes**
