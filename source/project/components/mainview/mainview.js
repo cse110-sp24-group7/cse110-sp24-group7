@@ -151,7 +151,18 @@ function updateMainview() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
+  let currentWeekOffset = 0;
+  await window.path.getPath().then((userDataPath) => {
+    console.log("Renderer access userdata: " + userDataPath);
+    window.api.connect("", () => {
+      window.api.init(() => {
+        console.log("Renderer init table.");
+        setWeeklyView(currentWeekOffset); // Load this week's dates
+      });
+    });
+  })
+
   document.addEventListener("storageUpdate", () => {
     updateMainview();
   });
@@ -172,10 +183,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Weekly View Additions
-  let currentWeekOffset = 0;
-  setWeeklyView(currentWeekOffset); // Load this week's dates
-
   // Display correct week when clicking arrows
   document.getElementById('prev-week').addEventListener('click', () => {
     currentWeekOffset -= 1;
@@ -193,5 +200,5 @@ document.addEventListener("DOMContentLoaded", function () {
     setWeeklyView(currentWeekOffset);
   });
 
-  updateMainview();
+  // updateMainview();
 });

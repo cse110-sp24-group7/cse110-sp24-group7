@@ -9,8 +9,23 @@
 const sqlite = require("sqlite3");
 const path = require("path");
 
-const dbPath = path.resolve(__dirname, "../../data/data.db");
-const db = new sqlite.Database(dbPath);
+const defaultPath = path.resolve(__dirname, "../../data/data.db");
+let db = {};
+
+function connect(pathToDB, callback){
+  if(pathToDB != ""){
+    db = new sqlite.Database(path.resolve(pathToDB, "data.db"), (err) => {
+      if (err) throw err;
+      callback();
+    });
+  }
+  else{
+    db = new sqlite.Database(defaultPath, (err) => {
+      if (err) throw err;
+      callback();
+    });
+  }
+}
 
 /**
  * An object representing a task
@@ -871,6 +886,7 @@ function deleteLabels(labels, lrcb) {
 
 module.exports = {
   init,
+  connect,
   getTasks,
   getTasksConjunctLabels,
   getTasksDisjunctLabels,

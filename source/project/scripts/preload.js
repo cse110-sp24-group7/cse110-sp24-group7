@@ -1,8 +1,18 @@
-const { contextBridge } = require('electron');
+const { contextBridge, ipcRenderer } = require("electron");
 const dbMgr = require('./database/dbMgr');
+
+const getPath = () => ipcRenderer.invoke('getPath');
+
+contextBridge.exposeInMainWorld("path", {
+  getPath: getPath,
+});
 
 const init = (bcb) => {
 	dbMgr.init(bcb);
+};
+
+const connect = (pathToDB, callback) => {
+  dbMgr.connect(pathToDB, callback);
 };
 
 const getTasks = (trcb) => {
@@ -91,6 +101,7 @@ const getFilteredEntries = (filterCriteria, ercb) => {
 
 contextBridge.exposeInMainWorld('api', {
 	init,
+  connect,
 	getTasks,
 	getTasksConjunctLabels,
 	getTasksDisjunctLabels,

@@ -6,9 +6,12 @@
 // const __dirname = dirname(__filename);
 // import * as dbMgr from './database/dbMgr.js';
 
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("node:path");
 const dbMgr = require("./database/dbMgr.js");
+const fs = require("fs");
+
+ipcMain.handle('getPath', () => app.getPath("userData"));
 
 const createWindow = () => {
 	const win = new BrowserWindow({
@@ -25,7 +28,13 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
-	dbMgr.init(createWindow);
+  let userData = app.getPath("userData");
+  console.log("Path to userdata: " + userData);
+  // TODO: touch .db in userData here
+  createWindow();
+  // dbMgr.connect("", () => {
+  //   dbMgr.init(createWindow);
+  // });
 });
 
 app.on("window-all-closed", () => {

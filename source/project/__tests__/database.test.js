@@ -65,6 +65,12 @@ describe('Database functions', () => {
     labels: ["test_label_1", "test_label_2", "test_label_3"]
   };
 
+  test("Connecting to database", (done) => {
+    dbMgr.connect("", () => {
+      done();
+    })
+  });
+
   test("Initializing tables", (done) => {
     dbMgr.init(() => {
       done();
