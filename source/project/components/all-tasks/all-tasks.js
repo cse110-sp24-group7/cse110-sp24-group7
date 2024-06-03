@@ -44,12 +44,36 @@ function tasksRendererCallback(tasks) {
       const msDay = 60*60*24*1000;
   
       if (dayContainer) {
-        dayContainer.appendChild(taskPv);
+        const taskContainer = dayContainer.querySelector('.task-container');
+        taskContainer.appendChild(taskPv);   
       }
 
       // TODO: Calculate number of squares to shade and populate the squares into the view
       const totalDays = (dueDate - creationDate) / msDay;      // gives total number of days task can be done within
       const daysLeft = (dueDate - creationDate) / msDay;      // days left
+      const daysPast = totalDays - daysLeft;
+      const graySquares = Math.round((daysPast / totalDays) * 10); // # of gray squares for days past
+      const greenSquares = 10 - graySquares; // # of gray squares for days past
+      
+      // Populate the gray squares
+      for (let i = 0; i < graySquares; i++) {
+        const square = document.createElement('div');
+        square.classList.add('day-left-square');
+        square.style.backgroundColor = '#bdbdbd';
+        daysLeftContainer.appendChild(square);
+      }
+      
+      // Populate the green squares
+      for (let i = 0; i < greenSquares; i++) {
+        const square = document.createElement('div');
+        square.classList.add('day-left-square');
+        square.style.backgroundColor = '#4caf50';
+        daysLeftContainer.appendChild(square);
+      }
+
+      // Display amount of time left
+      const daysLeftText = dayContainer.querySelector('.days-left-text h3');
+      daysLeftText.textContent = `${Math.round(daysLeft)} days left`;
 
     });
   }
