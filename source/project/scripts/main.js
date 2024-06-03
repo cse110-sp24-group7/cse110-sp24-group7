@@ -31,20 +31,6 @@ const {DatabaseManager} = require("./database/dbMgr.js");
 const dbManager = DatabaseManager(app.getPath("userData"));
 app.whenReady().then(() => {
   dbManager.init(createWindow);
-  console.log("MAIN PROCESS: " + app.getPath("userData"));
-  if (fs.existsSync(path2.resolve(app.getPath("userData"), 'data.db'))) {
-    console.log("file exists!");
-
-    fs.readFile(path2.resolve(app.getPath("userData"), 'data.db'), 'utf8', (err, data) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      console.log(data);
-    });
-  } else {
-    console.log("file does not exist!");
-  }
 });
 
 app.on("window-all-closed", () => {

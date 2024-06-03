@@ -3,8 +3,6 @@
 
 const {contextBridge, ipcRenderer } = require("electron");
 const { DatabaseManager } = require("./database/dbMgr.js");
-const fs = require("fs");
-const path = require("path");
 
 const getPath = () => ipcRenderer.invoke('getPath');
 
@@ -12,50 +10,9 @@ contextBridge.exposeInMainWorld("path", {
   getPath: getPath,
 });
 
-/* let db = await window.path.getPath()
-.then((appDataPath) => {
-  let manager = window.api.dbManager(appDataPath, () => {});
-  return manager;
-})
-
-  window.api.getTasks((tasks) => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    tasksRendererCallback(tasks);
-  }); */
-
-/*   console.log(path.resolve(__dirname, '..', 'data', 'data.db'));
-  if (fs.existsSync(path.resolve(__dirname, '..', 'data', 'data.db'))) {
-    console.log("file exists!");
-
-    fs.readFile(path.resolve(__dirname, '..', 'data', 'data.db'), 'utf8', (err, data) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      console.log(data);
-    });
-  } else {
-    console.log("file does not exist!");
-  } */
-
 const dbManager = (pathToDB, bcb) => {
   let manager = DatabaseManager(pathToDB);
   manager.init(bcb);
-
-  if (fs.existsSync(path.resolve(pathToDB, 'data.db'))) {
-    console.log("file exists!");
-
-    fs.readFile(path.resolve(pathToDB, 'data.db'), 'utf8', (err, data) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      console.log(data);
-    });
-  } else {
-    console.log("file does not exist!");
-  }
-  
   return manager;
 }
 

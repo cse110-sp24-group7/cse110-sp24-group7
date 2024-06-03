@@ -20,7 +20,6 @@
     "@electron/fuses": "^1.8.0",
     "@playwright/test": "^1.44.1",
     "@types/node": "^20.12.12",
-		"@playwright/test": "^1.44.1",
     "babel-jest": "^29.7.0",
     "electron": "^30.0.9",
 		"eslint": "^8.57.0",
