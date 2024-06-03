@@ -1,11 +1,11 @@
 /* eslint-disable no-undef */
 
 const filters = {
-  startTime: "",
-  endTime: "",
-  labels: [],
-  priorities: [],
-  exclusive: false,
+	startTime: "",
+	endTime: "",
+	labels: [],
+	priorities: [],
+	exclusive: false
 };
 
 /**
@@ -46,19 +46,19 @@ function tasksRendererCallback(tasks) {
 
 		// for each label, create a small colored box representing that label
 		if (task.labels.length > 0) {
-			taskPv.classList.add("has-labels");
+			const taskLabels = document.createElement("div");
+			taskLabels.classList.add("label-container");
+			task.labels.forEach((label) => {
+				const labelDiv = document.createElement("div");
+				labelDiv.classList.add("label");
+				const labelColors = JSON.parse(
+					localStorage.getItem("labelColors")
+				);
+				labelDiv.style.backgroundColor = labelColors[label];
+				taskLabels.appendChild(labelDiv);
+			});
+			taskPv.appendChild(taskLabels);
 		}
-
-		const taskLabels = document.createElement("div");
-		taskLabels.classList.add("label-container");
-		task.labels.forEach((label) => {
-			const labelDiv = document.createElement("div");
-			labelDiv.classList.add("label");
-			const labelColors = JSON.parse(localStorage.getItem("labelColors"));
-			labelDiv.style.backgroundColor = labelColors[label];
-			taskLabels.appendChild(labelDiv);
-		});
-		taskPv.appendChild(taskLabels);
 
 		// Find the appropriate day container based on the task's due date
 		// Assuming due_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
@@ -97,20 +97,25 @@ function entriesRendererCallback(entries) {
 		journalDesc.textContent = entry.entry_content;
 		journalPv.appendChild(journalDesc);
 
+		
+
 		if (entry.labels.length > 0) {
-			journalPv.classList.add("has-labels");
+			const journalLabels = document.createElement("div");
+			journalLabels.classList.add("label-container");
+
+			entry.labels.forEach((label) => {
+				const journalDiv = document.createElement("div");
+				journalDiv.classList.add("label");
+				const labelColors = JSON.parse(
+					localStorage.getItem("labelColors")
+				);
+				journalDiv.style.backgroundColor = labelColors[label];
+				journalLabels.appendChild(journalDiv);
+			});
+			journalPv.appendChild(journalLabels);
 		}
 
-		const journalLabels = document.createElement("div");
-		journalLabels.classList.add("label-container");
-		entry.labels.forEach((label) => {
-			const journalDiv = document.createElement("div");
-			journalDiv.classList.add("label");
-			const labelColors = JSON.parse(localStorage.getItem("labelColors"));
-			journalDiv.style.backgroundColor = labelColors[label];
-			journalLabels.appendChild(journalDiv);
-		});
-		journalPv.appendChild(journalLabels);
+		
 
 		// Find the appropriate day container based on the entry's creation date
 		// Assuming creation_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
@@ -131,72 +136,99 @@ function entriesRendererCallback(entries) {
  * @param {number} weekOffset = index value relative to today's current week
  */
 function setWeeklyView(weekOffset) {
-  const daysOfWeek = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
-  const today = new Date();
-  today.setDate(today.getDate() + weekOffset * 7);
+	const daysOfWeek = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+	const today = new Date();
+	today.setDate(today.getDate() + weekOffset * 7);
 
-  const currentDay = today.getDay();
-  const currentDate = today.getDate();
+	const currentDay = today.getDay();
+	const currentDate = today.getDate();
 
-  const startDate = new Date(today);
-  startDate.setDate(startDate.getDate() - currentDay);
-  startDate.setHours(0, 0, 0, 0);
+	const startDate = new Date(today);
+	startDate.setDate(startDate.getDate() - currentDay);
+	startDate.setHours(0, 0, 0, 0);
 
-  const endDate = new Date(startDate);
-  endDate.setDate(endDate.getDate() + 6); // Move to Saturday
-  endDate.setHours(23, 59, 59, 999); // Set to Saturday 23:59
+	const endDate = new Date(startDate);
+	endDate.setDate(endDate.getDate() + 6); // Move to Saturday
+	endDate.setHours(23, 59, 59, 999); // Set to Saturday 23:59
 
-  filters.startTime = startDate.toISOString().substring(0, startDate.toISOString().indexOf(':', startDate.toISOString().indexOf(':') + 1));
-  filters.endTime = endDate.toISOString().substring(0, endDate.toISOString().indexOf(':', endDate.toISOString().indexOf(':') + 1));
+	filters.startTime = startDate
+		.toISOString()
+		.substring(
+			0,
+			startDate
+				.toISOString()
+				.indexOf(":", startDate.toISOString().indexOf(":") + 1)
+		);
+	filters.endTime = endDate
+		.toISOString()
+		.substring(
+			0,
+			endDate
+				.toISOString()
+				.indexOf(":", endDate.toISOString().indexOf(":") + 1)
+		);
 
-  const monthNames = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
-  const currentMonthElement = document.getElementById('current-month');
-  currentMonthElement.textContent = monthNames[today.getMonth()];
+	const monthNames = [
+		"JANUARY",
+		"FEBRUARY",
+		"MARCH",
+		"APRIL",
+		"MAY",
+		"JUNE",
+		"JULY",
+		"AUGUST",
+		"SEPTEMBER",
+		"OCTOBER",
+		"NOVEMBER",
+		"DECEMBER"
+	];
+	const currentMonthElement = document.getElementById("current-month");
+	currentMonthElement.textContent = monthNames[today.getMonth()];
 
-  daysOfWeek.forEach((day, index) => {
-      const dayColumn = document.querySelector(`.day${index + 1}`);
-      const dateElement = dayColumn.querySelector('.day-date');
-      const dayDate = new Date(startDate);
-      dayDate.setDate(startDate.getDate() + index);
-      const dayNumber = dayDate.getDate();
-      dateElement.textContent = dayNumber;
+	daysOfWeek.forEach((day, index) => {
+		const dayColumn = document.querySelector(`.day${index + 1}`);
+		const dateElement = dayColumn.querySelector(".day-date");
+		const dayDate = new Date(startDate);
+		dayDate.setDate(startDate.getDate() + index);
+		const dayNumber = dayDate.getDate();
+		dateElement.textContent = dayNumber;
 
-      if (dayNumber === currentDate && weekOffset === 0) {
-          dateElement.classList.add('today');
-      } else {
-          dateElement.classList.remove('today');
-      }
-  });
+		if (dayNumber === currentDate && weekOffset === 0) {
+			dateElement.classList.add("today");
+		} else {
+			dateElement.classList.remove("today");
+		}
+	});
 
-  updateMainview();
+	updateMainview();
 }
 
 function updateMainview() {
-  window.api.getFilteredTasks(filters, (tasks) => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    tasksRendererCallback(tasks);
-  });
-  window.api.getFilteredEntries(filters, (entries) => {
-    localStorage.setItem("journalData", JSON.stringify(entries));
-    entriesRendererCallback(entries);
-  });
+	window.api.getFilteredTasks(filters, (tasks) => {
+		localStorage.setItem("tasks", JSON.stringify(tasks));
+		tasksRendererCallback(tasks);
+	});
+	window.api.getFilteredEntries(filters, (entries) => {
+		localStorage.setItem("journalData", JSON.stringify(entries));
+		entriesRendererCallback(entries);
+	});
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
-  let currentWeekOffset = 0;
-  await window.path.getPath().then((userDataPath) => {
-    console.log("Renderer access userdata: " + userDataPath);
-    window.api.connect("", () => {
-      window.api.init(() => {
-        console.log("Renderer init table.");
-        setWeeklyView(currentWeekOffset); // Load this week's dates
-      });
-    });
-  })
+	let currentWeekOffset = 0;
+	await window.path.getPath().then((userDataPath) => {
+		console.log("Renderer access userdata: " + userDataPath);
+		window.api.connect("", () => {
+			window.api.init(() => {
+				console.log("Renderer init table.");
+				setWeeklyView(currentWeekOffset); // Load this week's dates
+			});
+		});
+	});
 
-  document.addEventListener("storageUpdate", () => {
-    updateMainview();
-  });
+	document.addEventListener("storageUpdate", () => {
+		updateMainview();
+	});
 
 	// creates the popup when the add task button is clicked
 	document.querySelectorAll(".add-task").forEach((button) => {
@@ -206,30 +238,30 @@ document.addEventListener("DOMContentLoaded", async function () {
 		});
 	});
 
-  // creates the popup when the add journal entry button is clicked
-  document.querySelectorAll(".add-journal").forEach((button) => {
-    button.addEventListener("click", () => {
-      const popup = document.createElement("journal-popup");
-      document.body.appendChild(popup);
-    });
-  });
+	// creates the popup when the add journal entry button is clicked
+	document.querySelectorAll(".add-journal").forEach((button) => {
+		button.addEventListener("click", () => {
+			const popup = document.createElement("journal-popup");
+			document.body.appendChild(popup);
+		});
+	});
 
-  // Display correct week when clicking arrows
-  document.getElementById('prev-week').addEventListener('click', () => {
-    currentWeekOffset -= 1;
-    setWeeklyView(currentWeekOffset);
-  });
+	// Display correct week when clicking arrows
+	document.getElementById("prev-week").addEventListener("click", () => {
+		currentWeekOffset -= 1;
+		setWeeklyView(currentWeekOffset);
+	});
 
-  document.getElementById('next-week').addEventListener('click', () => {
-    currentWeekOffset += 1;
-    setWeeklyView(currentWeekOffset);
-  });
+	document.getElementById("next-week").addEventListener("click", () => {
+		currentWeekOffset += 1;
+		setWeeklyView(currentWeekOffset);
+	});
 
-  // Display the current week when clicking "Today" Button
-  document.getElementById('today-button').addEventListener('click', () => {
-    currentWeekOffset = 0;
-    setWeeklyView(currentWeekOffset);
-  });
+	// Display the current week when clicking "Today" Button
+	document.getElementById("today-button").addEventListener("click", () => {
+		currentWeekOffset = 0;
+		setWeeklyView(currentWeekOffset);
+	});
 
-  // updateMainview();
+	// updateMainview();
 });

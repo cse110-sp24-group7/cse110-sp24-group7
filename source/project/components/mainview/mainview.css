@@ -184,18 +184,14 @@
 .label-container {
   display: inline-flex;
   flex-wrap: wrap;
+  margin-top: 5px;
   gap: 5px;
-  margin-top: 2px;
-}
 
-.journal-pv.has-labels, .task-pv.has-labels {
-  padding-bottom: 2px;
 }
 
 .label {
 	border: 1px solid #282828ac;
 	border-radius: 50%;
-	margin-bottom: 5px;
 	padding: 5px;
 }
 
