@@ -105,7 +105,8 @@ function init(bcb) {
         entry_content TEXT,
         creation_date TEXT);`;
   const labels_sql = `CREATE TABLE IF NOT EXISTS labels(
-        label TEXT PRIMARY KEY);`;
+        label TEXT PRIMARY KEY,
+        color TEXT);`;
   const task_labels_sql = `CREATE TABLE IF NOT EXISTS task_labels (
         task_id TEXT,
         label TEXT,
@@ -177,6 +178,29 @@ function getLabels(lrcb) {
 
     lrcb(labels);
   });
+}
+
+/**
+ * Queries and returns a map of labels to their corresponding colors.
+ * @param {function} callback - the callback function to handle the resulting map.
+ */
+function getLabelColorMap(callback) {
+  const sql = `
+    SELECT label, color
+    FROM labels;
+  `;
+  let labelColorMap = new Map();
+  db.each(sql,
+    [],
+    (err, row) => {
+      if (err) {
+        throw err;
+      }
+      labelColorMap.set(row.label, row.color);
+    },
+    () => {
+      callback(labelColorMap);
+    });
 }
 
 /**
@@ -670,11 +694,12 @@ function addEntries(entries, ercb) {
 /**
  * Adds a label to the database
  * @param {string} label - the label to add
+ * @param {string} color - the color of the label
  * @param {labelRendererCallback} lrcb - the labels render callback to update the frontend.
  */
-function addLabel(label, lrcb) {
-  const sql = `INSERT INTO labels (label) VALUES (?);`;
-  db.run(sql, [label], (err) => {
+function addLabel(label, color, lrcb) {
+  const sql = `INSERT INTO labels (label, color) VALUES (?, ?);`;
+  db.run(sql, [label, color], (err) => {
     if (err) {
       throw err;
     }
@@ -685,19 +710,20 @@ function addLabel(label, lrcb) {
 /**
  * Adds multiple labels to the database
  * @param {string[]} labels - the labels to add
+ * @param {string[]} colors - the colors of labels to add
  * @param {labelRendererCallback} lrcb - the labels render callback to update the frontend.
  */
-function addLabels(labels, lrcb) {
-  const sql = `INSERT INTO labels (label) VALUES (?);`;
+function addLabels(labels, colors, lrcb) {
+  const sql = `INSERT INTO labels (label, color) VALUES (?, ?);`;
   db.serialize(() => {
     const stmt = db.prepare(sql);
-    labels.forEach((label) => {
-      stmt.run([label], (err) => {
+    for(let i = 0; i<labels.length; i++){
+      stmt.run([labels[i], colors[i]], (err) => {
         if (err) {
           throw err;
         }
       });
-    });
+    }
     stmt.finalize();
     getLabels(lrcb);
   });
@@ -904,6 +930,7 @@ module.exports = {
   deleteEntry,
   deleteEntries,
   getLabels,
+  getLabelColorMap,
   addLabel,
   addLabels,
   deleteLabel,

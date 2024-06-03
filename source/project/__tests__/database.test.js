@@ -106,7 +106,7 @@ describe('Database functions', () => {
       expect(labels.length).toBe(labelLength + 1);
       done();
     }
-    dbMgr.addLabel("test_label_1", lrcbAddLabel);
+    dbMgr.addLabel("test_label_1", "#ff0000", lrcbAddLabel);
   });
 
   test("Testing addLabels", (done) => {
@@ -114,7 +114,17 @@ describe('Database functions', () => {
       expect(labels.length).toBe(labelLength + 3);
       done();
     }
-    dbMgr.addLabels(["test_label_2", "test_label_3"], lrcbAddLabels);
+    dbMgr.addLabels(["test_label_2", "test_label_3"], ["#00ff00", "#0000ff"], lrcbAddLabels);
+  });
+
+  test("Testing getLabelColorMap", (done) => {
+    function callback(labelColorMap) {
+      expect(labelColorMap.get("test_label_1")).toBe("#ff0000");
+      expect(labelColorMap.get("test_label_2")).toBe("#00ff00");
+      expect(labelColorMap.get("test_label_3")).toBe("#0000ff");
+      done();
+    }
+    dbMgr.getLabelColorMap(callback);
   });
 
 	test("Testing addTask", (done) => {

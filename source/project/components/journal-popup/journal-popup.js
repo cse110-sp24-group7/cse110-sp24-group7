@@ -17,11 +17,11 @@ class JournalPopup extends HTMLElement {
 		this.selectedLabels = new Set();
 
 		// map to store label colors with labels
-		this.labelToColor = new Map(
-			Object.entries(
-				JSON.parse(window.localStorage.getItem("labelColors") || "{}")
-			)
-		);
+		// this.labelToColor = new Map(
+		// 	Object.entries(
+		// 		JSON.parse(window.localStorage.getItem("labelColors") || "{}")
+		// 	)
+		// );
 
 		this.colors = [
 			"#ffd0f7",
@@ -68,9 +68,11 @@ class JournalPopup extends HTMLElement {
 				.addEventListener("click", () => {
 					this.remove();
 				});
-
-			// populate the labels from local storage
-			this.populateLabels();
+			window.api.getLabelColorMap((map) => {
+				this.labelToColor = map;
+				// populate the labels from database
+				this.populateLabels();
+			});
 		};
 	}
 
@@ -140,15 +142,16 @@ class JournalPopup extends HTMLElement {
 				if (newLabel) {
 					window.api.getLabels((labels) => {
 						if (!labels.includes(newLabel)) {
-							window.api.addLabel(newLabel, (labels_added) => {
-								localStorage.setItem("labels", JSON.stringify(labels_added));
-								const newColor = this.randomColor();
-								this.labelToColor.set(newLabel, newColor);
-								this.saveLabelColors();
+							const newColor = this.randomColor();
+							window.api.addLabel(newLabel, newColor, (newLabels) => {
+								localStorage.setItem("labels", JSON.stringify(newLabels));
+								window.api.getLabelColorMap((map) => {
+									this.labelToColor = map;
+									this.selectedLabels.add(newLabel);
+									this.populateLabels();
+								});
 							});
 						}
-						this.selectedLabels.add(newLabel);
-						this.populateLabels();
 					});
 				}
 			}
@@ -161,25 +164,25 @@ class JournalPopup extends HTMLElement {
 	 * @param {Array} labels - The list of labels to set colors for
 	 * @returns {void}
 	 */
-	setColors(labels) {
-		labels.forEach((label) => {
-			if (!this.labelToColor.has(label)) {
-				const newColor = this.randomColor();
-				this.labelToColor.set(label, newColor);
-				this.saveLabelColors();
-			}
-		});
-	}
+	// setColors(labels) {
+	// 	labels.forEach((label) => {
+	// 		if (!this.labelToColor.has(label)) {
+	// 			const newColor = this.randomColor();
+	// 			this.labelToColor.set(label, newColor);
+	// 			this.saveLabelColors();
+	// 		}
+	// 	});
+	// }
 
 	/**
 	 * @method saveLabelColors
 	 * @description Saves the label colors to local storage.
 	 * @returns {void}
 	 */
-	saveLabelColors() {
-		const obj = Object.fromEntries(this.labelToColor);
-		localStorage.setItem("labelColors", JSON.stringify(obj));
-	}
+	// saveLabelColors() {
+	// 	const obj = Object.fromEntries(this.labelToColor);
+	// 	localStorage.setItem("labelColors", JSON.stringify(obj));
+	// }
 
 	/**
 	 * @method randomColor
@@ -197,7 +200,7 @@ class JournalPopup extends HTMLElement {
 	 * @param {Array} labels - The list of labels to populate
 	 */
 	populateLabelDropdown(container, labels) {
-		this.setColors(labels);
+		// this.setColors(labels);
 		labels.forEach((label) => {
 			if (!this.selectedLabels.has(label)) {
 				const labelDiv = document.createElement("div");
@@ -303,6 +306,13 @@ class JournalPopup extends HTMLElement {
 		// Remove the label from the local storage array
 		labels = labels.filter((item) => item !== label);
 		window.localStorage.setItem("labels", JSON.stringify(labels));
+		this.labelToColor.delete(label);
+
+		window.api.deleteLabel(label, (labels) => {
+			// Update localStorage in sync with database
+			window.localStorage.setItem("labels", JSON.stringify(labels));
+			window.api.getLabelColorMap((map) => {this.labelToColor = map});
+		});
 
 		// Remove the label from the selected labels set
 		this.selectedLabels.delete(label);
@@ -311,7 +321,7 @@ class JournalPopup extends HTMLElement {
 		labelDiv.remove();
 
 		this.labelToColor.delete(label);
-		this.saveLabelColors();
+		// this.saveLabelColors();
 	}
 
 	/**

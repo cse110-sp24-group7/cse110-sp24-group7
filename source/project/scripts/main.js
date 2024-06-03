@@ -22,9 +22,9 @@ const createWindow = () => {
 			nodeIntegration: true
 		}
 	});
-
+	win.webContents.openDevTools();
 	win.loadFile("./source/project/components/mainview/mainview.html");
-	// win.webContents.openDevTools();
+
 };
 
 app.whenReady().then(() => {

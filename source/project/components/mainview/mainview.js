@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-const filters = {
+let filters = {
 	startTime: "",
 	endTime: "",
 	labels: [],
@@ -8,9 +8,11 @@ const filters = {
 	exclusive: false
 };
 
+let labelColorMap = new Map();
+
 /**
  * Adds tasks to the task containers.
- * @param {Task[]} tasks - an array of task objects.
+ * @param {import("../../scripts/database/dbMgr").task[]} tasks - an array of task objects.
  */
 function tasksRendererCallback(tasks) {
 	// Clear all existing task entries first
@@ -51,10 +53,7 @@ function tasksRendererCallback(tasks) {
 			task.labels.forEach((label) => {
 				const labelDiv = document.createElement("div");
 				labelDiv.classList.add("label");
-				const labelColors = JSON.parse(
-					localStorage.getItem("labelColors")
-				);
-				labelDiv.style.backgroundColor = labelColors[label];
+				labelDiv.style.backgroundColor = labelColorMap.get(label);
 				taskLabels.appendChild(labelDiv);
 			});
 			taskPv.appendChild(taskLabels);
@@ -97,8 +96,6 @@ function entriesRendererCallback(entries) {
 		journalDesc.textContent = entry.entry_content;
 		journalPv.appendChild(journalDesc);
 
-		
-
 		if (entry.labels.length > 0) {
 			const journalLabels = document.createElement("div");
 			journalLabels.classList.add("label-container");
@@ -106,16 +103,11 @@ function entriesRendererCallback(entries) {
 			entry.labels.forEach((label) => {
 				const journalDiv = document.createElement("div");
 				journalDiv.classList.add("label");
-				const labelColors = JSON.parse(
-					localStorage.getItem("labelColors")
-				);
-				journalDiv.style.backgroundColor = labelColors[label];
+				journalDiv.style.backgroundColor = labelColorMap.get(label);
 				journalLabels.appendChild(journalDiv);
 			});
 			journalPv.appendChild(journalLabels);
 		}
-
-		
 
 		// Find the appropriate day container based on the entry's creation date
 		// Assuming creation_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
@@ -204,14 +196,19 @@ function setWeeklyView(weekOffset) {
 }
 
 function updateMainview() {
-	window.api.getFilteredTasks(filters, (tasks) => {
-		localStorage.setItem("tasks", JSON.stringify(tasks));
-		tasksRendererCallback(tasks);
-	});
-	window.api.getFilteredEntries(filters, (entries) => {
-		localStorage.setItem("journalData", JSON.stringify(entries));
-		entriesRendererCallback(entries);
-	});
+  // First update color map, then update tasks and entries.
+  window.api.getLabelColorMap((map) => {
+    labelColorMap = map;
+    window.api.getFilteredTasks(filters, (tasks) => {
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      tasksRendererCallback(tasks);
+    });
+    window.api.getFilteredEntries(filters, (entries) => {
+      localStorage.setItem("journalData", JSON.stringify(entries));
+      entriesRendererCallback(entries);
+    });
+  });
+	
 }
 
 document.addEventListener("DOMContentLoaded", async function () {

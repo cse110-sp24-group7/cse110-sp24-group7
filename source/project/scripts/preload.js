@@ -75,12 +75,16 @@ const getLabels = (lrcb) => {
 	return dbMgr.getLabels(lrcb);
 };
 
-const addLabel = (label, lrcb) => {
-	return dbMgr.addLabel(label, lrcb);
+const getLabelColorMap = (callback) => {
+  return dbMgr.getLabelColorMap(callback);
 };
 
-const addLabels = (labels, lrcb) => {
-	return dbMgr.addLabels(labels, lrcb);
+const addLabel = (label, color, lrcb) => {
+	return dbMgr.addLabel(label, color, lrcb);
+};
+
+const addLabels = (labels, colors, lrcb) => {
+	return dbMgr.addLabels(labels, colors, lrcb);
 };
 
 const deleteLabel = (label, lrcb) => {
@@ -117,6 +121,7 @@ contextBridge.exposeInMainWorld('api', {
 	deleteEntry,
 	deleteEntries,
 	getLabels,
+	getLabelColorMap,
 	addLabel,
 	addLabels,
 	deleteLabel,
