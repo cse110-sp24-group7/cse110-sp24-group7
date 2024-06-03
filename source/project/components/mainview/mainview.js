@@ -153,9 +153,9 @@ function updateMainview() {
 
 document.addEventListener("DOMContentLoaded", async function () {
   let currentWeekOffset = 0;
-  await window.path.getPath().then((userDataPath) => {
-    console.log("Renderer access userdata: " + userDataPath);
-    window.api.connect("", () => {
+  await window.path.getUserData().then((userData) => {
+    console.log("Renderer access userdata: " + userData);
+    window.api.connect(userData, () => {
       window.api.init(() => {
         console.log("Renderer init table.");
         setWeeklyView(currentWeekOffset); // Load this week's dates

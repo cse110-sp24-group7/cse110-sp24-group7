@@ -1,10 +1,10 @@
 const { contextBridge, ipcRenderer } = require("electron");
 const dbMgr = require('./database/dbMgr');
 
-const getPath = () => ipcRenderer.invoke('getPath');
+const getUserData = () => ipcRenderer.invoke('getUserData');
 
 contextBridge.exposeInMainWorld("path", {
-  getPath: getPath,
+  getUserData: getUserData,
 });
 
 const init = (bcb) => {
