@@ -180,6 +180,22 @@
   font-size: 10px; /* Size of text */
 }
 
+/* for the circle label colors */
+.label-container {
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin-top: 5px;
+  gap: 5px;
+
+}
+
+.label {
+	border: 1px solid #282828ac;
+	border-radius: 50%;
+	padding: 5px;
+}
+
+
 /* TODO: task formatting needs to be confirmed! */
 .journal-pv h2, 
 .task-pv h2 {
