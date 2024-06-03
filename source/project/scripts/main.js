@@ -24,22 +24,19 @@ const createWindow = () => {
 	});
 
 	win.loadFile("./source/project/components/mainview/mainview.html");
-	win.webContents.openDevTools();
+	// win.webContents.openDevTools();
 };
 
 app.whenReady().then(() => {
   let userDataDB = path.resolve(app.getPath("userData"), "data.db");
   console.log("Path to userdata DB: " + userDataDB);
   if(!fs.existsSync(userDataDB)){
-    // TODO: touch .db in userData here
+    // touch .db in userData
     console.log("Did not find " + userDataDB);
     let file = fs.openSync(userDataDB, 'a');
     fs.closeSync(file);
   }
   createWindow();
-  // dbMgr.connect("", () => {
-  //   dbMgr.init(createWindow);
-  // });
 });
 
 app.on("window-all-closed", () => {
