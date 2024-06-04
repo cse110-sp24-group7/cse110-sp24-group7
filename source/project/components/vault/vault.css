@@ -1,3 +1,157 @@
+/* roboto mono theme */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
 .file-input{
     background-image: url(../../assets/res/file-img.png);
 }
+
+body {
+    box-sizing: border-box;
+    font-family: 'Roboto Mono', monospace;
+    margin: 0;
+    background-color: lightgrey;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    background-color: white;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 100;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    margin-left: 7px;
+    margin-bottom: 5px;
+    font-family: 'Roboto Mono', monospace;
+    
+}
+
+.logo {
+    width: 50px;
+    height: auto;
+    left: 0;
+    top: 0;
+    padding: 5px;
+}
+
+.menu {
+    width: 30px;
+    height: auto;
+    cursor: pointer;
+    margin-right: 7px;
+    margin-left: auto;
+}
+
+.header h1 {
+    
+    margin: 0;
+    font-size: 1.7rem;
+    font-family: 'Roboto Mono', monospace;
+    color: gray;
+    align-self: flex-end;
+    justify-content: flex-start;
+
+    
+}
+
+.search-filter-upload {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: lightgray;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.search-filter {
+    display: flex;
+    align-items: center;
+    width: 60%;
+}
+
+.search-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    margin-left: 15%;
+    
+}
+
+.search-bar {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    width: 50%;
+    border-radius: 4px;
+    margin-right: 4px;
+}
+
+.filter-icon {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.filter {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 40%; 
+}
+
+.upload {
+    display: flex;
+    margin-right: auto;
+    margin-left: 35%;
+    align-items: flex-end;
+}
+
+.file-input {
+    
+}
+
+
+.upload button {
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.file-upload>input {
+    display: none;
+  }
+.upload button:hover {
+    
+}
+.file-upload img {
+    height: auto;
+    width: 20px;
+}
+.main-section {
+    padding-top: 10px;
+    display: flex;
+    background-color: lightgray;
+    padding-bottom: 10px;
+}
+
+.sub-section {
+    
+    width: 93%; /* Set a percentage width */
+    min-height: 78vh;
+    background-color: white;
+    margin: 0 auto; /* Center the section horizontally */
+    padding: 20px; /* Adjust padding for inner spacing */
+  
+}
+
+.sub-section h2 {
+    margin: 0 0 10px 0;
+    font-family: 'Roboto Mono', monospace;
+}
+
+

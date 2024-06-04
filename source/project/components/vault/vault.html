@@ -4,20 +4,88 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Task Form</title>
-		<script src="./vault.js" defer></script>
-    <link rel="stylesheet" href="../vault/vault.css" />
-        
+		<script src="../vault/vault.js" defer></script>
+		<link rel="stylesheet" href="../vault/vault.css" />
 	</head>
 	<body>
-        <form id="uploadForm" method="post" enctype="multipart/form-data">
-            <div>
-              <input type="file" class ="file-input" id="file" name="file" multiple />
+		<div class="container">
+			<div class="header">
+				<img
+					src="../../assets/res/logo.png"
+					alt="Team Logo"
+					class="logo"
+				/>
+				<h1>vault</h1>
+				<img
+					src="../../assets/res/menuBtn.png"
+					alt="Menu"
+					class="menu"
+				/>
+			</div>
+			<div class="main-section">
+				<div class="search-filter">
+					<img
+						src="../../assets/res/search-icon2.png"
+						alt="Search"
+						class="search-icon"
+					/>
+					<input
+						type="text"
+						placeholder="Search"
+						class="search-bar"
+					/>
+					<img
+						src="../../assets/res/filter-icon.webp"
+						alt="Search"
+						class="search-icon"
+					/>
+					<select name="filter" id="filter" class="filter">
+						<option value="all">All</option>
+						<option value="files">Files</option>
+						<option value="images">Images</option>
+					</select>
+				</div>
+				<div class="upload">
+					<form
+						id="uploadForm"
+						method="post"
+						enctype="multipart/form-data"
+					>
+						<div class="file-upload">
+                            <label for="file">
+                                <img src="../../assets/res/upload-icon.png">
+                            </label>
+							<input
+								type="file"
+								class="file-input"
+								id="file"
+								name="file"
+								multiple
+							/>
+						</div>
+						<div>
+							<!-- Upload Files (turn into the little image later) -->
+							<!-- <button type="submit">Add Files</button> -->
+						</div>
+					</form>
+				</div>
             </div>
-            <div>
-              <button type="submit">Add Files</button>
+        </div>
+            <div class="sub-section">
+                <div class="files">
+                    <h2>Files</h2>
+                    <div class="grid">
+                        <!-- Files will go here -->
+                    </div>
+                </div>
+                <div class="images">
+                    <h2>Images</h2>
+                    <div class="grid">
+                        <!-- Images will go here -->
+                    </div>
+                </div>
             </div>
-          </form>
-         
-      
-    </body>
+			
+		
+	</body>
 </html>
