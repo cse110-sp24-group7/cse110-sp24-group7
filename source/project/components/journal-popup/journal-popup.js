@@ -1,4 +1,8 @@
-/* eslint-disable */
+/**
+ * @class
+ * @description Represents a popup component that can be dynamically added to the DOM. This component
+ * supports custom styling and behavior through a Shadow DOM, and handles form submissions to save task data.
+ */
 class JournalPopup extends HTMLElement {
 	/**
 	 * @constructor
@@ -13,6 +17,33 @@ class JournalPopup extends HTMLElement {
     this.selectedLabels = new Set();
     this.editMode = false; // Track whether we're editing an existing journal
     this.editJournalId = null; // Track the ID of the journal being edited
+
+		// map to store label colors with labels
+		// this.labelToColor = new Map(
+		// 	Object.entries(
+		// 		JSON.parse(window.localStorage.getItem("labelColors") || "{}")
+		// 	)
+		// );
+
+		this.colors = [
+			"#e1c6b1",
+			"#e3a896",
+			"#d15f3a",
+			"#e5ac29",
+			"#b5af61",
+			"#9dc0ba",
+			"#769cc0",
+			"#ccb89f",
+			"#de9f74",
+			"#4e7c57",
+			"#0b4d4b",
+			"#667f86",
+			"#aa7529",
+			"#c1685a",
+			"#c4c9e9",
+			"#99779e",
+			"#ccbdcf"
+		];
 
 		// get the css file and append it to the shadow root
 		const style = document.createElement("link");
@@ -36,40 +67,24 @@ class JournalPopup extends HTMLElement {
 			const html = await response.text();
 			div.innerHTML = html;
 
-			// close the popup when user presses x
-			const closeButton = div.querySelector("#closeBtn");
-			closeButton.addEventListener("click", () => {
-				this.remove();
+			// append everything to the shadow root
+			this.shadowRoot.append(div, overlay);
+
+			// add the close button event listener to the close button
+			this.shadowRoot
+				.querySelector("#closeBtn")
+				.addEventListener("click", () => {
+					this.remove();
+				});
+			window.api.getLabelColorMap((map) => {
+				this.labelToColor = map;
+				// populate the labels from database
+				this.populateLabels();
 			});
 
-      // populate the labels from local storage
-      this.populateLabels();
-
-      this.dispatchEvent(new CustomEvent('entryReady'));
-    };
-
-    // append everything to the shadow root
-    shadowRoot.append(div, overlay);
-
-    
-  }
-
-  journalEdit(entryDetails){
-    this.editMode = true; 
-    this.editJournalId = entryDetails.entry_id;
-
-    // Selects the ids from the shadow DOM of the current componenet
-    const titleInput = this.shadowRoot.getElementById("title");
-    const descriptionText = this.shadowRoot.getElementById("description");
-	const creationDateInput = this.shadowRoot.getElementById("currDate");
-    
-    // Populate the journal popup with the entryDetails
-    titleInput.value = entryDetails.entry_title;
-    descriptionText.value = entryDetails.entry_content;
-	creationDateInput.value = entryDetails.creation_date;
-
-    this.style.display = "block";
-  }
+			this.dispatchEvent(new CustomEvent('entryReady'));
+		};
+	}
 
 	/**
 	 * @method connectedCallback
@@ -82,93 +97,251 @@ class JournalPopup extends HTMLElement {
 			this.shadowRoot
 				.querySelector("#journalForm")
 				.addEventListener("submit", this.onSubmit.bind(this));
-		}, 500);
+		}, 3000);
 	}
 
 	/**
-	 * @method populateLabelSelector
+	 * @method populateLabels
 	 * @description Populates the label selector with labels from local storage.
 	 */
 	populateLabels() {
 		const labelContainer = this.shadowRoot.getElementById("label");
-		const labels = JSON.parse(localStorage.getItem("labels")) || [];
+		const selectedLabelsContainer =
+			this.shadowRoot.querySelector(".selectedLabels");
+		const labels = JSON.parse(window.localStorage.getItem("labels")) || [];
 
-		// clear the label container
-		labelContainer.innerHTML = "";
+		window.api.getLabels((labels) => {
+			// Clear the label container
+			labelContainer.innerHTML = "";
 
-		// add "New Label" option
+			// Add new label input
+			this.addNewLabelInput(labelContainer);
+
+			// Populate the dropdown with stored labels
+			this.populateLabelDropdown(labelContainer, labels);
+
+			// Populate the selected labels
+			this.populateSelectedLabels(selectedLabelsContainer);
+		});
+	}
+
+	/**
+	 * @method addNewLabelInput
+	 * @description Adds an input field for creating new labels.
+	 * @param {HTMLElement} container - The container to add the input field to
+	 */
+	addNewLabelInput(container) {
+		const newLabelDiv = document.createElement("div");
+		newLabelDiv.classList.add("new-label-item");
+
+		const create = document.createElement("span");
+		create.textContent = "create: ";
+
 		const input = document.createElement("input");
 		input.type = "text";
-		input.classList.add("label-input");
-		input.placeholder = "New Label";
-		labelContainer.appendChild(input);
-		labelContainer.appendChild(document.createElement("hr"));
+		input.placeholder = "new label";
 
-		// add event listener for input to save new label
+		newLabelDiv.appendChild(create);
+		newLabelDiv.appendChild(input);
+		container.appendChild(newLabelDiv);
+
+		// Add event listener for input to save new label
 		input.addEventListener("keydown", (e) => {
 			if (e.key === "Enter") {
+				e.preventDefault();
 				const newLabel = input.value.trim();
 				if (newLabel) {
-					const labels =
-						JSON.parse(localStorage.getItem("labels")) || [];
-					if (!labels.includes(newLabel)) {
-						labels.push(newLabel);
-						localStorage.setItem("labels", JSON.stringify(labels));
-					}
-					this.selectedLabels.add(newLabel);
-					this.populateLabels();
+					window.api.getLabels((labels) => {
+						if (!labels.includes(newLabel)) {
+							const newColor = this.randomColor();
+							window.api.addLabel(
+								newLabel,
+								newColor,
+								(newLabels) => {
+									localStorage.setItem(
+										"labels",
+										JSON.stringify(newLabels)
+									);
+									window.api.getLabelColorMap((map) => {
+										this.labelToColor = map;
+										this.selectedLabels.add(newLabel);
+										this.populateLabels();
+									});
+								}
+							);
+						}
+					});
 				}
 			}
 		});
+	}
 
-		// populate the dropdown with stored labels
+	/**
+	 * @method setColors
+	 * @description Sets the colors for the given labels if they do not already have a color.
+	 * @param {Array} labels - The list of labels to set colors for
+	 * @returns {void}
+	 */
+	// setColors(labels) {
+	// 	labels.forEach((label) => {
+	// 		if (!this.labelToColor.has(label)) {
+	// 			const newColor = this.randomColor();
+	// 			this.labelToColor.set(label, newColor);
+	// 			this.saveLabelColors();
+	// 		}
+	// 	});
+	// }
+
+	/**
+	 * @method saveLabelColors
+	 * @description Saves the label colors to local storage.
+	 * @returns {void}
+	 */
+	// saveLabelColors() {
+	// 	const obj = Object.fromEntries(this.labelToColor);
+	// 	localStorage.setItem("labelColors", JSON.stringify(obj));
+	// }
+
+	/**
+	 * @method randomColor
+	 * @description Returns a random color from the colors array.
+	 * @returns {string} - A random color from the colors array
+	 */
+	randomColor() {
+		return this.colors[Math.floor(Math.random() * this.colors.length)];
+	}
+
+	/**
+	 * @method populateLabelDropdown
+	 * @description Populates the label dropdown with stored labels.
+	 * @param {HTMLElement} container - The container to add the labels to
+	 * @param {Array} labels - The list of labels to populate
+	 */
+	populateLabelDropdown(container, labels) {
+		// this.setColors(labels);
 		labels.forEach((label) => {
-			const div = document.createElement("div");
-			div.textContent = label;
-			div.classList.add("label-item");
-			if (this.selectedLabels.has(label)) {
-				div.classList.add("selected");
+			if (!this.selectedLabels.has(label)) {
+				const labelDiv = document.createElement("div");
+				labelDiv.classList.add("unselected-label-item");
+
+				const labelContent = document.createElement("div");
+				labelContent.classList.add("unselected-label-content");
+				labelContent.style.backgroundColor =
+					this.labelToColor.get(label);
+
+				const addSpan = document.createElement("span");
+				addSpan.textContent = "+";
+				addSpan.classList.add("addBtn");
+				addSpan.addEventListener("click", () =>
+					this.selectLabel(label, labelDiv)
+				);
+
+				const labelText = document.createElement("span");
+				labelText.textContent = label;
+				labelText.addEventListener("dblclick", () =>
+					this.deleteLabel(labelText)
+				);
+
+				labelContent.appendChild(addSpan);
+				labelContent.appendChild(labelText);
+				labelDiv.appendChild(labelContent);
+				container.appendChild(labelDiv);
 			}
-			div.addEventListener("click", () => this.selectLabel(div));
-			div.addEventListener("dblclick", () => this.deleteLabel(div));
-			labelContainer.appendChild(div);
+		});
+	}
+
+	/**
+	 * @method populateSelectedLabels
+	 * @description Populates the container with the selected labels.
+	 * @param {HTMLElement} container - The container to add the selected labels to
+	 */
+	populateSelectedLabels(container) {
+		container.innerHTML = "";
+
+		if (this.selectedLabels.size === 0) {
+			container.classList.add("no-labels");
+		} else {
+			container.classList.remove("no-labels");
+		}
+
+		this.selectedLabels.forEach((label) => {
+			const selectedLabelDiv = document.createElement("div");
+			selectedLabelDiv.classList.add("selected-label-item");
+			selectedLabelDiv.style.backgroundColor =
+				this.labelToColor.get(label);
+
+			const removeSpan = document.createElement("span");
+			removeSpan.textContent = "x";
+			removeSpan.classList.add("removeBtn");
+			removeSpan.addEventListener("click", () =>
+				this.removeLabel(label, selectedLabelDiv)
+			);
+
+			const labelText = document.createElement("span");
+			labelText.textContent = label;
+
+			selectedLabelDiv.appendChild(removeSpan);
+			selectedLabelDiv.appendChild(labelText);
+			container.appendChild(selectedLabelDiv);
 		});
 	}
 
 	/**
 	 * @method selectLabel
-	 * @description Toggles the selection state of a label.
-	 * @param {HTMLElement} labelElement - The label element to toggle
+	 * @description Handles the selection of a label, moving it to the selected labels container.
+	 * @param {string} label - The label to select
+	 * @param {HTMLElement} labelElement - The label element to remove from the dropdown
 	 */
-	selectLabel(labelElement) {
-		const label = labelElement.textContent;
-		if (this.selectedLabels.has(label)) {
-			this.selectedLabels.delete(label);
-			labelElement.classList.remove("selected");
-		} else {
-			this.selectedLabels.add(label);
-			labelElement.classList.add("selected");
-		}
+	selectLabel(label, labelElement) {
+		this.selectedLabels.add(label);
+		labelElement.remove();
+		this.populateLabels();
+	}
+
+	/**
+	 * @method removeLabel
+	 * @description Handles the removal of a selected label, moving it back to the dropdown.
+	 * @param {string} label - The label to remove
+	 * @param {HTMLElement} selectedLabelDiv - The selected label element to remove
+	 */
+	removeLabel(label, selectedLabelDiv) {
+		this.selectedLabels.delete(label);
+		selectedLabelDiv.remove();
+		this.populateLabels();
 	}
 
 	/**
 	 * @method deleteLabel
-	 * @description Deletes a label from the list and updates local storage.
+	 * @description Deletes a label from the local storage and the selected labels set.
 	 * @param {HTMLElement} labelElement - The label element to delete
+	 * @returns {void}
 	 */
 	deleteLabel(labelElement) {
+		const labelDiv = labelElement.parentElement;
 		const label = labelElement.textContent;
-		let labels = JSON.parse(localStorage.getItem("labels")) || [];
+		let labels = JSON.parse(window.localStorage.getItem("labels")) || [];
 
-		// remove the label from the local storage array
+		// Remove the label from the local storage array
 		labels = labels.filter((item) => item !== label);
-		localStorage.setItem("labels", JSON.stringify(labels));
+		window.localStorage.setItem("labels", JSON.stringify(labels));
+		this.labelToColor.delete(label);
 
-		// remove the label from the selected labels set
+		window.api.deleteLabel(label, (labels) => {
+			// Update localStorage in sync with database
+			window.localStorage.setItem("labels", JSON.stringify(labels));
+			window.api.getLabelColorMap((map) => {
+				this.labelToColor = map;
+			});
+		});
+
+		// Remove the label from the selected labels set
 		this.selectedLabels.delete(label);
 
-		// remove the label element from the DOM
-		labelElement.remove();
+		// Remove the entire label div from the DOM
+		labelDiv.remove();
+
+		this.labelToColor.delete(label);
+		// this.saveLabelColors();
 	}
 
 	/**
@@ -209,7 +382,7 @@ class JournalPopup extends HTMLElement {
       entry_id: this.editMode ? this.editJournalId :Math.random().toString(36).substr(2, 9),
       entry_title: this.shadowRoot.querySelector("#title").value,
       entry_content: this.shadowRoot.querySelector("#description").value,
-      creation_date: this.shadowRoot.querySelector("#currDate").value,
+      creation_date: this.shadowRoot.querySelector("#dueDate").value,
       labels: Array.from(this.selectedLabels),
     };
     if (this.editMode) {

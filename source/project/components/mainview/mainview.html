@@ -27,17 +27,29 @@
 				<img src="../../assets/res/logo.png" alt="Logo" />
 				<span>calendar</span>
 			</div>
+
+			<!-- Weekly View buttons and month -->
+			<div class="nav-button-container">
+				<button id="today-button">TODAY</button>
+				<button class="nav-button" id="prev-week">&lt;</button>
+				<button class="nav-button" id="next-week">&gt;</button>
+			</div>
+			<h1 id="current-month"></h1>
+
+			<!-- Menu Icon Button -->
 			<div class="menu-icon">
 				<img src="../../assets/res/menuBtn.png" alt="Menu" />
 			</div>
 		</div>
+
 		<!--Calendar Container-->
 		<div class="calendar">
 			<!--Day Container (for css)-->
 			<div class="day">
 				<!--Sunday Container-->
-				<div class="day1">
+				<div class="day1" id="sun">
 					<h2>SUN</h2>
+					<div class="day-date"></div>
 					<ul id="UL1"></ul>
 					<hr />
 					<div class="task-container">
@@ -55,8 +67,9 @@
 				</div>
 
 				<!--Monday Container-->
-				<div class="day2">
+				<div class="day2" id="mon">
 					<h2>MON</h2>
+					<div class="day-date"></div>
 					<hr />
 					<div class="task-container">
 						<div class="label-box"></div>
@@ -73,8 +86,9 @@
 				</div>
 
 				<!--Tuesday Container-->
-				<div class="day3">
+				<div class="day3" id="tues">
 					<h2>TUES</h2>
+					<div class="day-date"></div>
 					<hr />
 					<div class="task-container">
 						<div class="label-box"></div>
@@ -91,8 +105,9 @@
 				</div>
 
 				<!--Wednesday Container-->
-				<div class="day4">
+				<div class="day4" id="wed">
 					<h2>WED</h2>
+					<div class="day-date"></div>
 					<hr />
 					<div class="task-container">
 						<div class="label-box"></div>
@@ -109,8 +124,9 @@
 				</div>
 
 				<!--Thursday Container-->
-				<div class="day5">
+				<div class="day5" id="thurs">
 					<h2>THURS</h2>
+					<div class="day-date"></div>
 					<hr />
 					<div class="task-container">
 						<div class="label-box"></div>
@@ -127,8 +143,9 @@
 				</div>
 
 				<!--Friday Container-->
-				<div class="day6">
+				<div class="day6" id="fri">
 					<h2>FRI</h2>
+					<div class="day-date"></div>
 					<hr />
 					<div class="task-container">
 						<div class="label-box"></div>
@@ -145,8 +162,9 @@
 				</div>
 
 				<!--Saturday Container-->
-				<div class="day7">
+				<div class="day7" id="sat">
 					<h2>SAT</h2>
+					<div class="day-date"></div>
 					<hr />
 					<div class="task-container">
 						<div class="label-box"></div>
@@ -161,9 +179,10 @@
 						Add Journal
 					</button>
 				</div>
+				<!--Day7-->
 			</div>
-			<!--Day-->
+			<!--Day (container)-->
 		</div>
-		<!--Calendar-->
+		<!--Calendar (container)-->
 	</body>
 </html>
