@@ -10,8 +10,6 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("node:path");
 
 ipcMain.handle('getPath', () => app.getPath("userData"));
-const fs = require("fs");
-const path2 = require("path")
 
 const createWindow = () => {
   const win = new BrowserWindow({

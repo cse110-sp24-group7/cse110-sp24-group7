@@ -3,13 +3,16 @@
 
 const {contextBridge, ipcRenderer } = require("electron");
 const { DatabaseManager } = require("./database/dbMgr.js");
+const { FileManager } = require('./fileMgr.js');
 
+//API for getting user data path
 const getPath = () => ipcRenderer.invoke('getPath');
 
 contextBridge.exposeInMainWorld("path", {
   getPath: getPath,
 });
 
+//API for interacting with database
 const dbManager = (pathToDB, bcb) => {
   let manager = DatabaseManager(pathToDB);
   manager.init(bcb);
@@ -85,4 +88,33 @@ contextBridge.exposeInMainWorld("api", {
   deleteTask: deleteTask,
   deleteTasks: deleteTasks,
   deleteEntry: deleteEntry,
+});
+
+//API for uploading or retrieving files
+const fileManager = (data_location) => {
+  return FileManager(data_location);
+}
+
+/* const getFiles = cb => {
+  return fileManager.getFiles(cb);
+}
+
+const getFile = (file_name, cb) => {
+  return fileManager.getFile(file_name, cb);
+}
+
+const addFile = (file, cb) => {
+  return fileManager.addFile(file, cb);
+}
+
+const deleteFile = (file_name, cb) => {
+  return fileManager.deleteFile(file_name, cb);
+} */
+
+contextBridge.exposeInMainWorld("file", {
+  fileManager: fileManager,
+/*   getFiles: getFiles,
+  getFile: getFile,
+  addFile: addFile,
+  deleteFile: deleteFile, */
 });
