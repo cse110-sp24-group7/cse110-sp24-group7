@@ -1,24 +1,4 @@
-.popup-container {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background-color: white;
-	padding: 20px;
-	border-radius: 12px;
-	border: 1px solid #ccc;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	width: 550px;
-	z-index: 10000;
-	display: flex;
-	flex-direction: column;
-	align-items: stretch;
-}
-.journal-form {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-}
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap");
 
 .overlay {
 	position: fixed;
@@ -30,34 +10,57 @@
 	z-index: 9999;
 	backdrop-filter: blur(5px);
 }
-.left-column {
-	flex: 0 0 80%;
-	margin-right: 20px;
+
+.popup-container {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: white;
+	padding: 20px;
+	border: 1px solid #ccc;
+	border-radius: 12px;
+	width: 550px;
+	z-index: 10000;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	font-family: "Roboto Mono", monospace;
+	font-size: 11.5px;
+	letter-spacing: -0.5px;
 }
 
-.right-column {
-	flex: 0 0 20%;
+.journal-form {
+	display: flex;
+	flex-direction: column;
 }
 
-.date-time-section {
+.title-section {
+	flex: 0 0 100%;
+	padding-bottom: none;
+	padding-top: 15px;
+	letter-spacing: -0.5px;
+}
+
+.main-content {
+	justify-content: space-between;
+}
+
+.input-section {
 	display: flex;
 	gap: 5px;
-	width: auto;
 }
 
 .form-control {
-	margin-bottom: 16px;
-	padding: 8px 10px;
+	padding: 0px 7px;
 	width: 100%;
+	height: 30px;
 	box-sizing: border-box;
-	border: 2px solid #ccc;
-	border-radius: 8px;
+	border: 1px solid #ccc;
 	transition: border-color 0.3s;
-}
-textarea.form-control {
-	height: 200px;
-	border-radius: 8px;
-	resize: none;
+	font-family: "Roboto Mono", monospace;
+	font-size: 11.5px;
+	letter-spacing: -0.5px;
 }
 
 .form-control:focus {
@@ -65,8 +68,30 @@ textarea.form-control {
 	outline: none;
 }
 
+textarea.form-control {
+	height: 170px;
+	border-radius: 8px;
+	resize: none;
+	padding: 5px 5px 0 5px;
+	margin-bottom: 20px;
+	width: 100%;
+	font-family: "Roboto Mono", monospace;
+	font-size: 11.5px;
+	letter-spacing: -0.5px;
+}
+
+#title {
+	border: none;
+	border-bottom: black 1px solid;
+	font-size: 22px;
+	margin-bottom: 10px;
+	padding: 0;
+	font-family: "Roboto Mono", monospace;
+	letter-spacing: -0.5px;
+}
+
 #addBtn {
-	padding: 4px 20px;
+	padding: 5px 22px;
 	background-color: lightgreen;
 	color: black;
 	border: none;
@@ -76,18 +101,30 @@ textarea.form-control {
 	position: absolute;
 	bottom: 10px;
 	right: 20px;
+	font-family: "Roboto Mono", monospace;
+	font-size: 11.5px;
+	letter-spacing: -0.5px;
 }
 
 #addBtn:hover {
 	background-color: green;
 }
 
-#closeBtn {
-	background-color: transparent;
-	border: none;
+nav {
+	background-color: rgba(0, 0, 0, 0.2);
+	position: fixed;
+	width: 100%;
+	top: 0;
+	z-index: 10000;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 30px;
+	left: 0;
+	border-radius: 8px 8px 0 0;
 }
 
-#closeBtn img {
+img {
 	width: 20px;
 	height: 20px;
 	position: absolute;
@@ -97,127 +134,176 @@ textarea.form-control {
 	border: none;
 }
 
-textarea.form-control {
-	height: 150px;
-	width: 125%;
+#dueDate {
+	border-radius: 8px;
+	width: 215px;
+	cursor: pointer;
+	font-family: "Roboto Mono", monospace;
+	font-size: 11.5px;
+	letter-spacing: -0.5px;
 }
 
-#title {
-	border: none;
-	padding-top: 20px;
-	border-bottom: black 1px solid;
-	font-size: 22px;
-	border-radius: 0px;
-	width: 125%;
-	padding-bottom: 0px;
-	padding-left: 0px;
-}
-
-.nav-bar {
-	background-color: rgba(0, 0, 0, 0.2);
-	position: fixed;
-	width: 100%;
-	top: 0;
-	z-index: 1000;
+/* div for labels that get selected */
+.selectedLabels {
 	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	height: 9%;
-	left: 0;
-	border-radius: 8px 8px 0 0;
+	flex-wrap: nowrap;
+	gap: 5px;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	overflow-x: auto;
+	overflow-y: hidden;
+	white-space: nowrap;
+	max-height: 15px;
+	max-width: 550px;
 }
 
-.dropbtn {
-	width: 100%;
-	box-sizing: border-box;
-	border: none;
-	border-radius: 8px;
-	width: 90px;
-	cursor: pointer;
-	background-color: transparent;
-	padding-left: 0px;
-	padding-right: 25px;
+.selectedLabels::-webkit-scrollbar {
+	height: 3px;
 }
 
+.selectedLabels::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+.selectedLabels::-webkit-scrollbar-thumb {
+	background: #cbcbcb;
+	border-radius: 10px;
+}
+
+.selectedLabels::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+.selectedLabels.no-labels {
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
+
+/* label dropdown div */
 .dropdown {
-	margin-bottom: 16px;
-	margin-top: 16px;
-	padding: 8px 10px;
-	width: 100%;
-	box-sizing: border-box;
-	border: 2px solid #ccc;
-	transition: border-color 0.3s;
 	border-radius: 8px;
-	width: 90px;
-	cursor: pointer;
-	overflow-y: auto;
+	padding-top: 7px;
+	width: 105px;
+	height: 30px;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	transition: border-color 0.3s;
+	text-align: center;
+	font-size: 11pt;
+	font-family: "Roboto Mono", monospace;
+	font-size: 11.5px;
+	letter-spacing: -0.5px;
 }
 
 .dropdown:hover {
 	border-color: #0056b3;
+	border-bottom: none;
 	outline: none;
+	border-radius: 8px 8px 0 0;
 }
 
+/* this is what shows when hovering */
 .dropdown-content {
 	display: none;
 	position: absolute;
-	background-color: #f1f1f1;
-	width: auto;
-	border-radius: 8px;
+	background-color: white;
+	width: 103.5px;
+	border: 1px solid #0056b3;
+	border-radius: 0 0 8px 8px;
 	z-index: 1;
-	overflow: scroll;
-	max-height: 150px;
-	left: 41%;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	max-height: 100px;
+	left: 240px;
+	text-align: left;
+	scrollbar-width: none;
+	font-family: "Roboto Mono", monospace;
+	font-size: 10x;
+	letter-spacing: -0.5px;
 }
 
 .dropdown-content div {
 	color: black;
-	padding: 12px 16px;
-	padding-bottom: 8px;
-	padding-top: 8px;
 	text-decoration: none;
-	display: block;
-}
-
-.dropdown-content div:hover {
-	background-color: #ddd;
+	font-family: "Roboto Mono", monospace;
+	font-size: 10px;
+	letter-spacing: -0.5px;
 }
 
 .dropdown:hover .dropdown-content {
-	display: block;
+	display: inline-block;
+	margin-top: 20px;
 }
 
-.label-item {
-	cursor: pointer;
-}
-
-.label-item.selected {
-	background-color: #87c1ff;
-}
-
-#currDate {
-	border-radius: 8px;
-	width: 220px;
-	cursor: pointer;
-}
-
-.label-input {
-	background-color: transparent;
-	padding-bottom: 5px;
-	padding-top: 10px;
-	border-color: none;
-	border: none;
-	border-radius: 8px;
-	text-align: center;
-	width: 90px;
-	font-family: inherit;
-	font-size: inherit;
-	color: inherit;
-	cursor: pointer;
-}
-
-.label-input::placeholder {
+.selected-label-item {
+	display: flex;
+	align-items: center;
+	border-radius: 5px;
+	padding: 1px 7px 1px 7px;
 	color: black;
-	font-family: inherit;
-	font-size: inherit;
+	font-family: "Roboto Mono", monospace;
+	font-size: 10px;
+	letter-spacing: -0.5px;
+}
+
+.unselected-label-item {
+	display: block;
+	width: 100%;
+	margin-bottom: 5px;
+	padding-left: 5px;
+	font-family: "Roboto Mono", monospace;
+	font-size: 10px;
+	letter-spacing: -0.5px;
+}
+
+.unselected-label-content {
+	display: inline-block;
+	padding: 1px 7px 1px 7px;
+	border-radius: 5px;
+	color: black;
+	font-family: "Roboto Mono", monospace;
+	font-size: 10px;
+	letter-spacing: -0.5px;
+}
+
+.new-label-item {
+	margin: 5px 10px 5px 10px;
+	display: flex;
+	align-items: center;
+	border-bottom: 1px solid #ddd;
+	font-family: "Roboto Mono", monospace;
+	font-size: 10px;
+	letter-spacing: -0.5px;
+}
+
+.new-label-item span {
+	margin-right: 3px;
+}
+
+.new-label-item input {
+	border: none;
+	outline: none;
+	background-color: transparent;
+	width: 50%;
+	font-family: "Roboto Mono", monospace;
+	font-size: 10px;
+	letter-spacing: -0.5px;
+}
+
+.new-label-item input::placeholder {
+	font-family: "Roboto Mono", monospace;
+	font-size: 8px;
+	letter-spacing: -0.5px;
+}
+
+.removeBtn,
+.addBtn {
+	margin-right: 5px;
+	color: #4a4a4a;
+	cursor: pointer;
+}
+
+.removeBtn:hover,
+.addBtn:hover {
+	color: #000;
 }

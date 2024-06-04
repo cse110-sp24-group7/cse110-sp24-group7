@@ -7,28 +7,38 @@
 // import * as dbMgr from './database/dbMgr.js';
 
 const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("node:path");
+const dbMgr = require("./database/dbMgr.js");
+const fs = require("fs");
 
-ipcMain.handle('getPath', () => app.getPath("userData"));
+ipcMain.handle("getUserData", () => app.getPath("userData"));
 
 const createWindow = () => {
-  const win = new BrowserWindow({
-    width: 2560,
-    height: 1440,
-    webPreferences: {
-      preload: path.resolve(__dirname, "preload.js"),
-      nodeIntegration: true,
-    },
-  });
-
+	const win = new BrowserWindow({
+		width: 2560,
+		height: 1440,
+		webPreferences: {
+			preload: path.join(__dirname, "preload.js"),
+			nodeIntegration: true
+		}
+	});
+	// win.webContents.openDevTools();
 	win.loadFile("./source/project/components/mainview/mainview.html");
-	win.webContents.openDevTools();
 };
 
 const {DatabaseManager} = require("./database/dbMgr.js");
 const dbManager = DatabaseManager(app.getPath("userData"));
 app.whenReady().then(() => {
-  dbManager.init(createWindow);
+	const userDataDB = path.resolve(app.getPath("userData"), "data.db");
+	console.log("Path to userdata DB: " + userDataDB);
+	if (!fs.existsSync(userDataDB)) {
+		// touch .db in userData
+		console.log("Did not find " + userDataDB);
+		const file = fs.openSync(userDataDB, "a");
+		fs.closeSync(file);
+	}
+	createWindow();
 });
 
 app.on("window-all-closed", () => {

@@ -1,32 +1,22 @@
-// import { contextBridge } from 'electron';
-// import * as dbMgr from './database/dbMgr.js';
+const { contextBridge, ipcRenderer } = require("electron");
+const dbMgr = require("./database/dbMgr");
 
-const {contextBridge, ipcRenderer } = require("electron");
-const { DatabaseManager } = require("./database/dbMgr.js");
-const { FileManager } = require('./fileMgr.js');
-
-//API for getting user data path
-const getPath = () => ipcRenderer.invoke('getPath');
+const getUserData = () => ipcRenderer.invoke("getUserData");
 
 contextBridge.exposeInMainWorld("path", {
-  getPath: getPath,
+	getUserData: getUserData
 });
 
-//API for interacting with database
-const dbManager = (pathToDB, bcb) => {
-  let manager = DatabaseManager(pathToDB);
-  manager.init(bcb);
-  return manager;
-}
-
-function init(bcb) {
-  console.log("INITIALIZE")
-  this.init(bcb);
+const init = (bcb) => {
+	dbMgr.init(bcb);
 };
 
-function getTasks(trcb) {
-  console.log("GET TASKS")
-  return this.getTasks(trcb);
+const connect = (pathToDB, callback) => {
+	dbMgr.connect(pathToDB, callback);
+};
+
+const getTasks = (trcb) => {
+	return dbMgr.getTasks(trcb);
 };
 
 function getTasksConjunctLabels(labels, trcb) {
@@ -41,53 +31,103 @@ function getEntries(ercb) {
   return this.getEntries(ercb);
 };
 
-function addTask(task, trcb) {
-  return this.addTask(task, trcb);
+const addTask = (task, callback) => {
+	return dbMgr.addTask(task, callback);
 };
 
 function addTasks(tasks, trcb) {
   return this.addTasks(tasks, trcb);
 };
 
-function addEntry(entry, ercb) {
-  return this.addEntry(entry, ercb);
+const addEntry = (entry, callback) => {
+	return dbMgr.addEntry(entry, callback);
 };
 
-function editTask(task, trcb) {
-  return this.editTask(task, trcb);
+const addEntries = (entries, ercb) => {
+	return dbMgr.addEntries(entries, ercb);
 };
 
-function editEntry(entry, ercb) {
-  return this.editEntry(entry, ercb);
+const editTask = (task, trcb) => {
+	return dbMgr.editTask(task, trcb);
 };
 
-function deleteTask(task_id, trcb) {
-  return this.deleteTask(task_id, trcb);
+const editEntry = (entry, ercb) => {
+	return dbMgr.editEntry(entry, ercb);
 };
 
-function deleteTasks(task_ids, trcb) {
-  return this.deleteTasks(task_ids, trcb);
+const deleteTask = (task_id, trcb) => {
+	return dbMgr.deleteTask(task_id, trcb);
 };
 
-function deleteEntry(entry_id, ercb) {
-  return this.deleteEntry(entry_id, ercb);
+const deleteTasks = (task_ids, trcb) => {
+	return dbMgr.deleteTasks(task_ids, trcb);
+};
+
+const deleteEntry = (entry_id, ercb) => {
+	return dbMgr.deleteEntry(entry_id, ercb);
+};
+
+const deleteEntries = (entry_ids, ercb) => {
+	return dbMgr.deleteEntries(entry_ids, ercb);
+};
+
+const getLabels = (lrcb) => {
+	return dbMgr.getLabels(lrcb);
+};
+
+const getLabelColorMap = (callback) => {
+	return dbMgr.getLabelColorMap(callback);
+};
+
+const addLabel = (label, color, lrcb) => {
+	return dbMgr.addLabel(label, color, lrcb);
+};
+
+const addLabels = (labels, colors, lrcb) => {
+	return dbMgr.addLabels(labels, colors, lrcb);
+};
+
+const deleteLabel = (label, lrcb) => {
+	return dbMgr.deleteLabel(label, lrcb);
+};
+
+const deleteLabels = (labels, lrcb) => {
+	return dbMgr.deleteLabels(labels, lrcb);
+};
+
+const getFilteredTasks = (filterCriteria, trcb) => {
+	return dbMgr.getFilteredTasks(filterCriteria, trcb);
+};
+
+const getFilteredEntries = (filterCriteria, ercb) => {
+	return dbMgr.getFilteredEntries(filterCriteria, ercb);
 };
 
 contextBridge.exposeInMainWorld("api", {
-  dbManager: dbManager,
-  init: init,
-  getTasks: getTasks,
-  getTasksConjunctLabels: getTasksConjunctLabels,
-  getTasksDisjunctLabels: getTasksDisjunctLabels,
-  getEntries: getEntries,
-  addTask: addTask,
-  addTasks: addTasks,
-  addEntry: addEntry,
-  editTask: editTask,
-  editEntry: editEntry,
-  deleteTask: deleteTask,
-  deleteTasks: deleteTasks,
-  deleteEntry: deleteEntry,
+	init,
+	connect,
+	getTasks,
+	getTasksConjunctLabels,
+	getTasksDisjunctLabels,
+	getEntries,
+	addTask,
+	addTasks,
+	addEntry,
+	addEntries,
+	editTask,
+	editEntry,
+	deleteTask,
+	deleteTasks,
+	deleteEntry,
+	deleteEntries,
+	getLabels,
+	getLabelColorMap,
+	addLabel,
+	addLabels,
+	deleteLabel,
+	deleteLabels,
+	getFilteredTasks,
+	getFilteredEntries
 });
 
 //API for uploading or retrieving files

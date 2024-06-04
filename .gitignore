@@ -9,3 +9,4 @@ out/
 /playwright/.cache/
 
 test-results
+out/
