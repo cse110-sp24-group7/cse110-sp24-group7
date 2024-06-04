@@ -70,6 +70,9 @@ class TaskPopup extends HTMLElement {
 				.addEventListener("click", () => {
 					this.remove();
 				});
+			this.shadowRoot
+				.querySelector("#taskForm")
+				.addEventListener("submit", this.onSubmit.bind(this));
 			window.api.getLabelColorMap((map) => {
 				this.labelToColor = map;
 				// populate the labels from database
@@ -84,7 +87,7 @@ class TaskPopup extends HTMLElement {
 
 	/** 
    	 * @method taskEdit
-	 * @param {import("../../scripts/database/dbMgr").task} - task
+	 * @param {import("../../scripts/database/dbMgr").task} task - the task to edit
    	 * @description Populates the popup component with data from taskpv when edit button is 
    	 * clicked.
   	 */
@@ -98,11 +101,6 @@ class TaskPopup extends HTMLElement {
 		const dueDateInput = this.shadowRoot.getElementById("dueDate");
 		const prioritySelect = this.shadowRoot.getElementById("priority");
 		const expectedTimeInput = this.shadowRoot.getElementById("expectedTime");
-		
-		// Trims the information so that it is able to be passed through the popup
-		// const dueDate = taskDetails.due_date.replace("Due: ", "").trim();
-		// const expectedTime = taskDetails.expected_time.replace("Expected Time: ", "").trim();
-		// const priority1 = taskDetails.priority.replace("Priority: ", "").trim();
 	
 		// Populate the task with the information from taskDetails into a popup
 		titleInput.value = task.task_name;
@@ -127,14 +125,14 @@ class TaskPopup extends HTMLElement {
 	 * @description Lifecycle method that is called when the component is inserted into the DOM.
 	 * It sets up event listeners for form submission within the shadow DOM.
 	 */
-	connectedCallback() {
-		// event listener to form submission
-		setTimeout(() => {
-			this.shadowRoot
-				.querySelector("#taskForm")
-				.addEventListener("submit", this.onSubmit.bind(this));
-		}, 3000);
-	}
+	// connectedCallback() {
+	// 	// event listener to form submission
+	// 	setTimeout(() => {
+	// 		this.shadowRoot
+	// 			.querySelector("#taskForm")
+	// 			.addEventListener("submit", this.onSubmit.bind(this));
+	// 	}, 3000);
+	// }
 
 	/**
 	 * @method populateLabels
@@ -210,32 +208,6 @@ class TaskPopup extends HTMLElement {
 			}
 		});
 	}
-
-	/**
-	 * @method setColors
-	 * @description Sets the colors for the given labels if they do not already have a color.
-	 * @param {Array} labels - The list of labels to set colors for
-	 * @returns {void}
-	 */
-	// setColors(labels) {
-	// 	labels.forEach((label) => {
-	// 		if (!this.labelToColor.has(label)) {
-	// 			const newColor = this.randomColor();
-	// 			this.labelToColor.set(label, newColor);
-	// 			this.saveLabelColors();
-	// 		}
-	// 	});
-	// }
-
-	/**
-	 * @method saveLabelColors
-	 * @description Saves the label colors to local storage.
-	 * @returns {void}
-	 */
-	// saveLabelColors() {
-	// 	const obj = Object.fromEntries(this.labelToColor);
-	// 	localStorage.setItem("labelColors", JSON.stringify(obj));
-	// }
 
 	/**
 	 * @method randomColor
@@ -375,7 +347,6 @@ class TaskPopup extends HTMLElement {
 		// Remove the entire label div from the DOM
 		labelDiv.remove();
 
-		// this.saveLabelColors();
 	}
 
 	/**

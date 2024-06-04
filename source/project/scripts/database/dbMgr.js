@@ -46,6 +46,7 @@ function connect(pathToDB, callback) {
  * @property {string} entry_title - the entry's title.
  * @property {string} entry_content - the entry's content.
  * @property {string} creation_date - the entry's creation date, in string format.
+ * @property {string[]} labels - the entry's labels
  */
 
 /**
