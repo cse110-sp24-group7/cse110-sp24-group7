@@ -12,19 +12,18 @@ const path = require("path");
 const defaultPath = path.resolve(__dirname, "../../data/data.db");
 let db = {};
 
-function connect(pathToDB, callback){
-  if(pathToDB != ""){
-    db = new sqlite.Database(path.resolve(pathToDB, "data.db"), (err) => {
-      if (err) throw err;
-      callback();
-    });
-  }
-  else{
-    db = new sqlite.Database(defaultPath, (err) => {
-      if (err) throw err;
-      callback();
-    });
-  }
+function connect(pathToDB, callback) {
+	if (pathToDB != "") {
+		db = new sqlite.Database(path.resolve(pathToDB, "data.db"), (err) => {
+			if (err) throw err;
+			callback();
+		});
+	} else {
+		db = new sqlite.Database(defaultPath, (err) => {
+			if (err) throw err;
+			callback();
+		});
+	}
 }
 
 /**
@@ -78,7 +77,7 @@ function connect(pathToDB, callback){
 
 /**
  * callback functions are used for general functions to notify the front-end that the query has been executed.
- * 
+ *
  * @callback callback
  */
 
@@ -104,10 +103,10 @@ function init(bcb) {
         entry_title TEXT,
         entry_content TEXT,
         creation_date TEXT);`;
-  const labels_sql = `CREATE TABLE IF NOT EXISTS labels(
+	const labels_sql = `CREATE TABLE IF NOT EXISTS labels(
         label TEXT PRIMARY KEY,
         color TEXT);`;
-  const task_labels_sql = `CREATE TABLE IF NOT EXISTS task_labels (
+	const task_labels_sql = `CREATE TABLE IF NOT EXISTS task_labels (
         task_id TEXT,
         label TEXT,
         CONSTRAINT fk_task_id
@@ -119,7 +118,7 @@ function init(bcb) {
             REFERENCES labels(label)
             ON DELETE CASCADE
         );`;
-  const entry_labels_sql = `CREATE TABLE IF NOT EXISTS entry_labels (
+	const entry_labels_sql = `CREATE TABLE IF NOT EXISTS entry_labels (
         entry_id TEXT,
         label TEXT,
         CONSTRAINT fk_entry_id
@@ -130,33 +129,34 @@ function init(bcb) {
             FOREIGN KEY (label)
             REFERENCES labels(label)
             ON DELETE CASCADE
-        );`
+        );`;
 
-  // Table creation queries are serialized to ensure key constraints are followed.
-  db.serialize(() => {
-    db.run(fk_sql, [], (err) => {
-      if (err) throw err;
-    });
-    db.run(tasks_sql, [], (err) => {
-      if (err) throw err;
-    });
-    db.run(entries_sql, [], (err) => {
-      if (err) throw err;
-    });
-    db.run(labels_sql, [], (err) => {
-      if (err) throw err;
-    });
-    db.run(entry_labels_sql, [], (err) => {
-      if (err) throw err;
-    });
-    db.run(
-      task_labels_sql,
-      [],
-      (err) => {
-        if (err) throw err;
-      },
-      bcb);
-  });
+	// Table creation queries are serialized to ensure key constraints are followed.
+	db.serialize(() => {
+		db.run(fk_sql, [], (err) => {
+			if (err) throw err;
+		});
+		db.run(tasks_sql, [], (err) => {
+			if (err) throw err;
+		});
+		db.run(entries_sql, [], (err) => {
+			if (err) throw err;
+		});
+		db.run(labels_sql, [], (err) => {
+			if (err) throw err;
+		});
+		db.run(entry_labels_sql, [], (err) => {
+			if (err) throw err;
+		});
+		db.run(
+			task_labels_sql,
+			[],
+			(err) => {
+				if (err) throw err;
+			},
+			bcb
+		);
+	});
 }
 
 /**
@@ -164,20 +164,20 @@ function init(bcb) {
  * @param {labelRendererCallback} lrcb - the label render callback to update the frontend.
  */
 function getLabels(lrcb) {
-  const sql = `
+	const sql = `
     SELECT label
     FROM labels;
   `;
 
-  db.all(sql, [], (err, rows) => {
-    if (err) {
-      throw err;
-    }
+	db.all(sql, [], (err, rows) => {
+		if (err) {
+			throw err;
+		}
 
-    const labels = rows.map((row) => row.label);
+		const labels = rows.map((row) => row.label);
 
-    lrcb(labels);
-  });
+		lrcb(labels);
+	});
 }
 
 /**
@@ -185,22 +185,24 @@ function getLabels(lrcb) {
  * @param {function} callback - the callback function to handle the resulting map.
  */
 function getLabelColorMap(callback) {
-  const sql = `
+	const sql = `
     SELECT label, color
     FROM labels;
   `;
-  let labelColorMap = new Map();
-  db.each(sql,
-    [],
-    (err, row) => {
-      if (err) {
-        throw err;
-      }
-      labelColorMap.set(row.label, row.color);
-    },
-    () => {
-      callback(labelColorMap);
-    });
+	const labelColorMap = new Map();
+	db.each(
+		sql,
+		[],
+		(err, row) => {
+			if (err) {
+				throw err;
+			}
+			labelColorMap.set(row.label, row.color);
+		},
+		() => {
+			callback(labelColorMap);
+		}
+	);
 }
 
 /**
@@ -295,35 +297,35 @@ function getTasksDisjunctLabels(labels, trcb) {
 
 	const params = [];
 
-  if (labels.length > 0) {
-    const labelPlaceholders = labels.map(() => "?").join(",");
-    sql += ` WHERE l.label IN (${labelPlaceholders}) GROUP BY t.task_id HAVING COUNT(DISTINCT l.label) >= 1`;
-    params.push(...labels);
-  } else {
-    sql += ` GROUP BY t.task_id`;
-  }
+	if (labels.length > 0) {
+		const labelPlaceholders = labels.map(() => "?").join(",");
+		sql += ` WHERE l.label IN (${labelPlaceholders}) GROUP BY t.task_id HAVING COUNT(DISTINCT l.label) >= 1`;
+		params.push(...labels);
+	} else {
+		sql += ` GROUP BY t.task_id`;
+	}
 
-  db.all(sql, params, (err, rows) => {
-    if (err) {
-      throw err;
-    }
+	db.all(sql, params, (err, rows) => {
+		if (err) {
+			throw err;
+		}
 
-    const tasks =
-      rows.length > 0
-        ? rows.map((row) => ({
-            task_id: row.task_id,
-            task_name: row.task_name,
-            task_content: row.task_content,
-            creation_date: row.creation_date,
-            due_date: row.due_date,
-            priority: row.priority,
-            expected_time: row.expected_time,
-            labels: row.labels ? row.labels.split(",") : [],
-          }))
-        : [];
+		const tasks =
+			rows.length > 0
+				? rows.map((row) => ({
+						task_id: row.task_id,
+						task_name: row.task_name,
+						task_content: row.task_content,
+						creation_date: row.creation_date,
+						due_date: row.due_date,
+						priority: row.priority,
+						expected_time: row.expected_time,
+						labels: row.labels ? row.labels.split(",") : []
+					}))
+				: [];
 
-    trcb(tasks);
-  });
+		trcb(tasks);
+	});
 }
 
 /**
@@ -342,74 +344,75 @@ function getTasksDisjunctLabels(labels, trcb) {
  * @param {tasksRenderCallback} trcb - The tasks render callback to update the frontend.
  */
 function getFilteredTasks(filterCriteria, trcb) {
-  const { startTime, endTime, labels, priorities, exclusive } = filterCriteria;
+	const { startTime, endTime, labels, priorities, exclusive } =
+		filterCriteria;
 
-  let sql = `
+	let sql = `
     SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels
     FROM tasks t
     LEFT JOIN task_labels l ON t.task_id = l.task_id
   `;
-  
-  const conditions = [];
-  const params = [];
 
-  // Filter by time range
-  if (startTime && endTime) {
-    conditions.push(`t.due_date BETWEEN ? AND ?`);
-    params.push(startTime, endTime);
-  }
+	const conditions = [];
+	const params = [];
 
-  // Filter by priorities
-  if (priorities.length > 0) {
-    const priorityPlaceholders = priorities.map(() => "?").join(",");
-    conditions.push(`t.priority IN (${priorityPlaceholders})`);
-    params.push(...priorities);
-  }
+	// Filter by time range
+	if (startTime && endTime) {
+		conditions.push(`t.due_date BETWEEN ? AND ?`);
+		params.push(startTime, endTime);
+	}
 
-  // Filter by labels
-  if (labels.length > 0) {
-    const labelPlaceholders = labels.map(() => "?").join(",");
-    conditions.push(`l.label IN (${labelPlaceholders})`);
-    params.push(...labels);
-  }
+	// Filter by priorities
+	if (priorities.length > 0) {
+		const priorityPlaceholders = priorities.map(() => "?").join(",");
+		conditions.push(`t.priority IN (${priorityPlaceholders})`);
+		params.push(...priorities);
+	}
 
-  if (conditions.length > 0) {
-    sql += ` WHERE ` + conditions.join(" AND ");
-  }
-  
-  sql += ` GROUP BY t.task_id`;
+	// Filter by labels
+	if (labels.length > 0) {
+		const labelPlaceholders = labels.map(() => "?").join(",");
+		conditions.push(`l.label IN (${labelPlaceholders})`);
+		params.push(...labels);
+	}
 
-  // Apply the HAVING clause for label filtering
-  if (labels.length > 0) {
-    if (exclusive) {
-      // Conjunctive (AND) filtering: Ensure the task has all specified labels
-      sql += ` HAVING COUNT(DISTINCT l.label) = ?`;
-      params.push(labels.length);
-    } 
-    // Disjunctive (OR) filtering: Ensure the task has at least one of the specified labels
-  }
+	if (conditions.length > 0) {
+		sql += ` WHERE ` + conditions.join(" AND ");
+	}
 
-  db.all(sql, params, (err, rows) => {
-    if (err) {
-      throw err;
-    }
+	sql += ` GROUP BY t.task_id`;
 
-    const tasks =
-      rows.length > 0
-        ? rows.map((row) => ({
-            task_id: row.task_id,
-            task_name: row.task_name,
-            task_content: row.task_content,
-            creation_date: row.creation_date,
-            due_date: row.due_date,
-            priority: row.priority,
-            expected_time: row.expected_time,
-            labels: row.labels ? row.labels.split(",") : [],
-          }))
-        : [];
+	// Apply the HAVING clause for label filtering
+	if (labels.length > 0) {
+		if (exclusive) {
+			// Conjunctive (AND) filtering: Ensure the task has all specified labels
+			sql += ` HAVING COUNT(DISTINCT l.label) = ?`;
+			params.push(labels.length);
+		}
+		// Disjunctive (OR) filtering: Ensure the task has at least one of the specified labels
+	}
 
-    trcb(tasks);
-  });
+	db.all(sql, params, (err, rows) => {
+		if (err) {
+			throw err;
+		}
+
+		const tasks =
+			rows.length > 0
+				? rows.map((row) => ({
+						task_id: row.task_id,
+						task_name: row.task_name,
+						task_content: row.task_content,
+						creation_date: row.creation_date,
+						due_date: row.due_date,
+						priority: row.priority,
+						expected_time: row.expected_time,
+						labels: row.labels ? row.labels.split(",") : []
+					}))
+				: [];
+
+		trcb(tasks);
+	});
 }
 
 /**
@@ -418,64 +421,64 @@ function getFilteredTasks(filterCriteria, trcb) {
  * @param {entriesRenderCallback} ercb - The entries render callback to update the frontend.
  */
 function getFilteredEntries(filterCriteria, ercb) {
-  const { startTime, endTime, labels, exclusive } = filterCriteria;
+	const { startTime, endTime, labels, exclusive } = filterCriteria;
 
-  let sql = `
+	let sql = `
     SELECT e.entry_id, e.entry_title, e.entry_content, e.creation_date, GROUP_CONCAT(l.label) as labels
     FROM entries e
     LEFT JOIN entry_labels l ON e.entry_id = l.entry_id
   `;
 
-  const conditions = [];
-  const params = [];
+	const conditions = [];
+	const params = [];
 
-  // Filter by time range
-  if (startTime && endTime) {
-    conditions.push(`e.creation_date BETWEEN ? AND ?`);
-    params.push(startTime, endTime);
-  }
+	// Filter by time range
+	if (startTime && endTime) {
+		conditions.push(`e.creation_date BETWEEN ? AND ?`);
+		params.push(startTime, endTime);
+	}
 
-  // Filter by labels
-  if (labels.length > 0) {
-    const labelPlaceholders = labels.map(() => "?").join(",");
-    conditions.push(`l.label IN (${labelPlaceholders})`);
-    params.push(...labels);
-  }
+	// Filter by labels
+	if (labels.length > 0) {
+		const labelPlaceholders = labels.map(() => "?").join(",");
+		conditions.push(`l.label IN (${labelPlaceholders})`);
+		params.push(...labels);
+	}
 
-  if (conditions.length > 0) {
-    sql += ` WHERE ` + conditions.join(" AND ");
-  }
+	if (conditions.length > 0) {
+		sql += ` WHERE ` + conditions.join(" AND ");
+	}
 
-  sql += ` GROUP BY e.entry_id`;
+	sql += ` GROUP BY e.entry_id`;
 
-  // Apply the HAVING clause for label filtering
-  if (labels.length > 0) {
-    if (exclusive) {
-      // Conjunctive (AND) filtering: Ensure the entry has all specified labels
-      sql += ` HAVING COUNT(DISTINCT l.label) = ?`;
-      params.push(labels.length);
-    } 
-    // Disjunctive (OR) filtering: Ensure the entry has at least one of the specified labels
-  }
+	// Apply the HAVING clause for label filtering
+	if (labels.length > 0) {
+		if (exclusive) {
+			// Conjunctive (AND) filtering: Ensure the entry has all specified labels
+			sql += ` HAVING COUNT(DISTINCT l.label) = ?`;
+			params.push(labels.length);
+		}
+		// Disjunctive (OR) filtering: Ensure the entry has at least one of the specified labels
+	}
 
-  db.all(sql, params, (err, rows) => {
-    if (err) {
-      throw err;
-    }
+	db.all(sql, params, (err, rows) => {
+		if (err) {
+			throw err;
+		}
 
-    const entries =
-      rows.length > 0
-        ? rows.map((row) => ({
-            entry_id: row.entry_id,
-            entry_title: row.entry_title,
-            entry_content: row.entry_content,
-            creation_date: row.creation_date,
-            labels: row.labels ? row.labels.split(",") : [],
-          }))
-        : [];
+		const entries =
+			rows.length > 0
+				? rows.map((row) => ({
+						entry_id: row.entry_id,
+						entry_title: row.entry_title,
+						entry_content: row.entry_content,
+						creation_date: row.creation_date,
+						labels: row.labels ? row.labels.split(",") : []
+					}))
+				: [];
 
-    ercb(entries);
-  });
+		ercb(entries);
+	});
 }
 
 /**
@@ -483,28 +486,31 @@ function getFilteredEntries(filterCriteria, ercb) {
  * @param {entriesRenderCallback} ercb - the tasks render callback to update the frontend.
  */
 function getEntries(ercb) {
-  const sql = `
+	const sql = `
     SELECT e.entry_id, e.entry_title, e.entry_content, e.creation_date, GROUP_CONCAT(l.label) as labels
     FROM entries e
     LEFT JOIN entry_labels l ON e.entry_id = l.entry_id
     GROUP BY e.entry_id;
   `;
 
-  db.all(sql, [], (err, rows) => {
-    if (err) {
-      throw err;
-    }
+	db.all(sql, [], (err, rows) => {
+		if (err) {
+			throw err;
+		}
 
-    const entries = rows.length > 0 ? rows.map(row => ({
-      entry_id: row.entry_id,
-      entry_title: row.entry_title,
-      entry_content: row.entry_content,
-      creation_date: row.creation_date,
-      labels: row.labels ? row.labels.split(",") : []
-    })) : [];
+		const entries =
+			rows.length > 0
+				? rows.map((row) => ({
+						entry_id: row.entry_id,
+						entry_title: row.entry_title,
+						entry_content: row.entry_content,
+						creation_date: row.creation_date,
+						labels: row.labels ? row.labels.split(",") : []
+					}))
+				: [];
 
-    ercb(entries);
-  });
+		ercb(entries);
+	});
 }
 
 /**
@@ -513,46 +519,58 @@ function getEntries(ercb) {
  * @param {callback} callback - callback to update the frontend.
  */
 function addTask(task, callback) {
-  const taskSql = `INSERT INTO tasks (task_id, task_name, task_content, creation_date, due_date, priority, expected_time)
+	const taskSql = `INSERT INTO tasks (task_id, task_name, task_content, creation_date, due_date, priority, expected_time)
         VALUES (?, ?, ?, ?, ?, ?, ?);`;
 
 	const labelSql = `INSERT INTO task_labels (task_id, label) VALUES (?, ?);`;
 
-  db.run(taskSql, [task.task_id, task.task_name, task.task_content, task.creation_date, task.due_date, task.priority, task.expected_time], (err) => {
-    if (err) {
-      throw err;
-    }
+	db.run(
+		taskSql,
+		[
+			task.task_id,
+			task.task_name,
+			task.task_content,
+			task.creation_date,
+			task.due_date,
+			task.priority,
+			task.expected_time
+		],
+		(err) => {
+			if (err) {
+				throw err;
+			}
 
-    const stmt = db.prepare(labelSql);
-    let remaining = task.labels.length;
+			const stmt = db.prepare(labelSql);
+			let remaining = task.labels.length;
 
-    if (remaining === 0) {
-      stmt.finalize((finalizeErr) => {
-        if (finalizeErr) {
-          throw finalizeErr;
-        }
-        callback();
-      });
-      return;
-    }
+			if (remaining === 0) {
+				stmt.finalize((finalizeErr) => {
+					if (finalizeErr) {
+						throw finalizeErr;
+					}
+					callback();
+				});
+				return;
+			}
 
-    task.labels.forEach((label) => {
-      stmt.run([task.task_id, label], (err) => {
-        if (err) {
-          throw err;
-        }
-        remaining--;
-        if (remaining === 0) {
-          stmt.finalize((finalizeErr) => {
-            if (finalizeErr) {
-              throw finalizeErr;
-            }
-            callback();
-          });
-        }
-      });
-    });
-  });
+			task.labels.forEach((label) => {
+				stmt.run([task.task_id, label], (err) => {
+					if (err) {
+						throw err;
+					}
+					remaining--;
+					if (remaining === 0) {
+						stmt.finalize((finalizeErr) => {
+							if (finalizeErr) {
+								throw finalizeErr;
+							}
+							callback();
+						});
+					}
+				});
+			});
+		}
+	);
 }
 
 /**
@@ -609,46 +627,55 @@ function addTasks(tasks, trcb) {
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
  */
 function addEntry(entry, callback) {
-  const entrySql = `INSERT INTO entries (entry_id, entry_title, entry_content, creation_date)
+	const entrySql = `INSERT INTO entries (entry_id, entry_title, entry_content, creation_date)
         VALUES (?, ?, ?, ?);`;
 
-  const labelSql = `INSERT INTO entry_labels (entry_id, label) VALUES (?, ?);`;
+	const labelSql = `INSERT INTO entry_labels (entry_id, label) VALUES (?, ?);`;
 
-  db.run(entrySql, [entry.entry_id, entry.entry_title, entry.entry_content, entry.creation_date], (err) => {
-    if (err) {
-      throw err;
-    }
+	db.run(
+		entrySql,
+		[
+			entry.entry_id,
+			entry.entry_title,
+			entry.entry_content,
+			entry.creation_date
+		],
+		(err) => {
+			if (err) {
+				throw err;
+			}
 
-    const stmt = db.prepare(labelSql);
-    let remaining = entry.labels.length;
+			const stmt = db.prepare(labelSql);
+			let remaining = entry.labels.length;
 
-    if (remaining === 0) {
-      stmt.finalize((finalizeErr) => {
-        if (finalizeErr) {
-          throw finalizeErr;
-        }
-        callback();
-      });
-      return;
-    }
+			if (remaining === 0) {
+				stmt.finalize((finalizeErr) => {
+					if (finalizeErr) {
+						throw finalizeErr;
+					}
+					callback();
+				});
+				return;
+			}
 
-    entry.labels.forEach((label) => {
-      stmt.run([entry.entry_id, label], (err) => {
-        if (err) {
-          throw err;
-        }
-        remaining--;
-        if (remaining === 0) {
-          stmt.finalize((finalizeErr) => {
-            if (finalizeErr) {
-              throw finalizeErr;
-            }
-            callback();
-          });
-        }
-      });
-    });
-  });
+			entry.labels.forEach((label) => {
+				stmt.run([entry.entry_id, label], (err) => {
+					if (err) {
+						throw err;
+					}
+					remaining--;
+					if (remaining === 0) {
+						stmt.finalize((finalizeErr) => {
+							if (finalizeErr) {
+								throw finalizeErr;
+							}
+							callback();
+						});
+					}
+				});
+			});
+		}
+	);
 }
 
 /**
@@ -657,38 +684,43 @@ function addEntry(entry, callback) {
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
  */
 function addEntries(entries, ercb) {
-  const entrySql = `INSERT INTO entries (entry_id, entry_title, entry_content, creation_date)
+	const entrySql = `INSERT INTO entries (entry_id, entry_title, entry_content, creation_date)
         VALUES (?, ?, ?, ?);`;
-  const labelSql = `INSERT INTO entry_labels (entry_id, label) VALUES (?, ?);`;
+	const labelSql = `INSERT INTO entry_labels (entry_id, label) VALUES (?, ?);`;
 
-  db.serialize(() => {
-    const entryStmt = db.prepare(entrySql);
-    const labelStmt = db.prepare(labelSql);
+	db.serialize(() => {
+		const entryStmt = db.prepare(entrySql);
+		const labelStmt = db.prepare(labelSql);
 
-    entries.forEach((entry) => {
-      entryStmt.run(
-        [entry.entry_id, entry.entry_title, entry.entry_content, entry.creation_date],
-        (err) => {
-          if (err) {
-            throw err;
-          }
-        }
-      );
+		entries.forEach((entry) => {
+			entryStmt.run(
+				[
+					entry.entry_id,
+					entry.entry_title,
+					entry.entry_content,
+					entry.creation_date
+				],
+				(err) => {
+					if (err) {
+						throw err;
+					}
+				}
+			);
 
-      entry.labels.forEach((label) => {
-        labelStmt.run([entry.entry_id, label], (err) => {
-          if (err) {
-            throw err;
-          }
-        });
-      });
-    });
+			entry.labels.forEach((label) => {
+				labelStmt.run([entry.entry_id, label], (err) => {
+					if (err) {
+						throw err;
+					}
+				});
+			});
+		});
 
-    entryStmt.finalize();
-    labelStmt.finalize();
+		entryStmt.finalize();
+		labelStmt.finalize();
 
-    getEntries(ercb);
-  });
+		getEntries(ercb);
+	});
 }
 
 /**
@@ -698,13 +730,13 @@ function addEntries(entries, ercb) {
  * @param {labelRendererCallback} lrcb - the labels render callback to update the frontend.
  */
 function addLabel(label, color, lrcb) {
-  const sql = `INSERT INTO labels (label, color) VALUES (?, ?);`;
-  db.run(sql, [label, color], (err) => {
-    if (err) {
-      throw err;
-    }
-    getLabels(lrcb);
-  });
+	const sql = `INSERT INTO labels (label, color) VALUES (?, ?);`;
+	db.run(sql, [label, color], (err) => {
+		if (err) {
+			throw err;
+		}
+		getLabels(lrcb);
+	});
 }
 
 /**
@@ -714,19 +746,19 @@ function addLabel(label, color, lrcb) {
  * @param {labelRendererCallback} lrcb - the labels render callback to update the frontend.
  */
 function addLabels(labels, colors, lrcb) {
-  const sql = `INSERT INTO labels (label, color) VALUES (?, ?);`;
-  db.serialize(() => {
-    const stmt = db.prepare(sql);
-    for(let i = 0; i<labels.length; i++){
-      stmt.run([labels[i], colors[i]], (err) => {
-        if (err) {
-          throw err;
-        }
-      });
-    }
-    stmt.finalize();
-    getLabels(lrcb);
-  });
+	const sql = `INSERT INTO labels (label, color) VALUES (?, ?);`;
+	db.serialize(() => {
+		const stmt = db.prepare(sql);
+		for (let i = 0; i < labels.length; i++) {
+			stmt.run([labels[i], colors[i]], (err) => {
+				if (err) {
+					throw err;
+				}
+			});
+		}
+		stmt.finalize();
+		getLabels(lrcb);
+	});
 }
 
 /**
@@ -757,41 +789,50 @@ function editTask(task, trcb) {
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
  */
 function editEntry(entry, ercb) {
-  const entrySql = `UPDATE entries SET
+	const entrySql = `UPDATE entries SET
             entry_title = ?,
             entry_content = ?,
             creation_date = ?
         WHERE entry_id = ?;`;
 
-  const deleteLabelsSql = `DELETE FROM entry_labels WHERE entry_id = ?;`;
+	const deleteLabelsSql = `DELETE FROM entry_labels WHERE entry_id = ?;`;
 
-  const insertLabelSql = `INSERT INTO entry_labels (entry_id, label) VALUES (?, ?);`;
+	const insertLabelSql = `INSERT INTO entry_labels (entry_id, label) VALUES (?, ?);`;
 
-  db.serialize(() => {
-    db.run(entrySql, [entry.entry_title, entry.entry_content, entry.creation_date, entry.entry_id], (err) => {
-      if (err) {
-        throw err;
-      }
-    });
+	db.serialize(() => {
+		db.run(
+			entrySql,
+			[
+				entry.entry_title,
+				entry.entry_content,
+				entry.creation_date,
+				entry.entry_id
+			],
+			(err) => {
+				if (err) {
+					throw err;
+				}
+			}
+		);
 
-    db.run(deleteLabelsSql, [entry.entry_id], (err) => {
-      if (err) {
-        throw err;
-      }
-    });
+		db.run(deleteLabelsSql, [entry.entry_id], (err) => {
+			if (err) {
+				throw err;
+			}
+		});
 
-    const stmt = db.prepare(insertLabelSql);
-    entry.labels.forEach((label) => {
-      stmt.run([entry.entry_id, label], (err) => {
-        if (err) {
-          throw err;
-        }
-      });
-    });
-    stmt.finalize();
+		const stmt = db.prepare(insertLabelSql);
+		entry.labels.forEach((label) => {
+			stmt.run([entry.entry_id, label], (err) => {
+				if (err) {
+					throw err;
+				}
+			});
+		});
+		stmt.finalize();
 
-    getEntries(ercb);
-  });
+		getEntries(ercb);
+	});
 }
 
 /**
@@ -840,13 +881,13 @@ function deleteTasks(task_ids, trcb) {
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
  */
 function deleteEntry(entry_id, ercb) {
-  const sql = `DELETE FROM entries WHERE entry_id = ?;`;
-  db.run(sql, [entry_id], (err) => {
-    if (err) {
-      throw err;
-    }
-    getEntries(ercb);
-  });
+	const sql = `DELETE FROM entries WHERE entry_id = ?;`;
+	db.run(sql, [entry_id], (err) => {
+		if (err) {
+			throw err;
+		}
+		getEntries(ercb);
+	});
 }
 
 /**
@@ -855,23 +896,23 @@ function deleteEntry(entry_id, ercb) {
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
  */
 function deleteEntries(entry_ids, ercb) {
-  const deleteEntrySql = `DELETE FROM entries WHERE entry_id = ?`;
+	const deleteEntrySql = `DELETE FROM entries WHERE entry_id = ?`;
 
-  db.serialize(() => {
-    const entryStmt = db.prepare(deleteEntrySql);
+	db.serialize(() => {
+		const entryStmt = db.prepare(deleteEntrySql);
 
-    entry_ids.forEach((entry_id) => {
-      entryStmt.run([entry_id], (err) => {
-        if (err) {
-          throw err;
-        }
-      });
-    });
+		entry_ids.forEach((entry_id) => {
+			entryStmt.run([entry_id], (err) => {
+				if (err) {
+					throw err;
+				}
+			});
+		});
 
-    entryStmt.finalize();
+		entryStmt.finalize();
 
-    getEntries(ercb);
-  });
+		getEntries(ercb);
+	});
 }
 
 /**
@@ -880,13 +921,13 @@ function deleteEntries(entry_ids, ercb) {
  * @param {labelRendererCallback} lrcb - the labels render callback to update the frontend.
  */
 function deleteLabel(label, lrcb) {
-  const sql = `DELETE FROM labels WHERE label = ?;`;
-  db.run(sql, [label], (err) => {
-    if (err) {
-      throw err;
-    }
-    getLabels(lrcb);
-  });
+	const sql = `DELETE FROM labels WHERE label = ?;`;
+	db.run(sql, [label], (err) => {
+		if (err) {
+			throw err;
+		}
+		getLabels(lrcb);
+	});
 }
 
 /**
@@ -895,44 +936,44 @@ function deleteLabel(label, lrcb) {
  * @param {labelRendererCallback} lrcb - the labels render callback to update the frontend.
  */
 function deleteLabels(labels, lrcb) {
-  const sql = `DELETE FROM labels WHERE label = ?;`;
-  db.serialize(() => {
-    const stmt = db.prepare(sql);
-    labels.forEach((label) => {
-      stmt.run([label], (err) => {
-        if (err) {
-          throw err;
-        }
-      });
-    });
-    stmt.finalize();
-    getLabels(lrcb);
-  });
+	const sql = `DELETE FROM labels WHERE label = ?;`;
+	db.serialize(() => {
+		const stmt = db.prepare(sql);
+		labels.forEach((label) => {
+			stmt.run([label], (err) => {
+				if (err) {
+					throw err;
+				}
+			});
+		});
+		stmt.finalize();
+		getLabels(lrcb);
+	});
 }
 
 module.exports = {
-  init,
-  connect,
-  getTasks,
-  getTasksConjunctLabels,
-  getTasksDisjunctLabels,
-  getFilteredTasks,
-  getFilteredEntries,
-  getEntries,
-  addTask,
-  addTasks,
-  addEntry,
-  addEntries,
-  editTask,
-  editEntry,
-  deleteTask,
-  deleteTasks,
-  deleteEntry,
-  deleteEntries,
-  getLabels,
-  getLabelColorMap,
-  addLabel,
-  addLabels,
-  deleteLabel,
-  deleteLabels,
+	init,
+	connect,
+	getTasks,
+	getTasksConjunctLabels,
+	getTasksDisjunctLabels,
+	getFilteredTasks,
+	getFilteredEntries,
+	getEntries,
+	addTask,
+	addTasks,
+	addEntry,
+	addEntries,
+	editTask,
+	editEntry,
+	deleteTask,
+	deleteTasks,
+	deleteEntry,
+	deleteEntries,
+	getLabels,
+	getLabelColorMap,
+	addLabel,
+	addLabels,
+	deleteLabel,
+	deleteLabels
 };

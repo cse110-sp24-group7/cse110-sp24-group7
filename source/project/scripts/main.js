@@ -11,7 +11,7 @@ const path = require("node:path");
 const dbMgr = require("./database/dbMgr.js");
 const fs = require("fs");
 
-ipcMain.handle('getUserData', () => app.getPath("userData"));
+ipcMain.handle("getUserData", () => app.getPath("userData"));
 
 const createWindow = () => {
 	const win = new BrowserWindow({
@@ -24,19 +24,18 @@ const createWindow = () => {
 	});
 	// win.webContents.openDevTools();
 	win.loadFile("./source/project/components/mainview/mainview.html");
-
 };
 
 app.whenReady().then(() => {
-  let userDataDB = path.resolve(app.getPath("userData"), "data.db");
-  console.log("Path to userdata DB: " + userDataDB);
-  if(!fs.existsSync(userDataDB)){
-    // touch .db in userData
-    console.log("Did not find " + userDataDB);
-    let file = fs.openSync(userDataDB, 'a');
-    fs.closeSync(file);
-  }
-  createWindow();
+	const userDataDB = path.resolve(app.getPath("userData"), "data.db");
+	console.log("Path to userdata DB: " + userDataDB);
+	if (!fs.existsSync(userDataDB)) {
+		// touch .db in userData
+		console.log("Did not find " + userDataDB);
+		const file = fs.openSync(userDataDB, "a");
+		fs.closeSync(file);
+	}
+	createWindow();
 });
 
 app.on("window-all-closed", () => {

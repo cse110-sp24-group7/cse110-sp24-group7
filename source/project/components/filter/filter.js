@@ -47,14 +47,14 @@ class Filter extends HTMLElement {
 		// Check if labels is a non-empty array and populate the dropdown
 		if (Array.isArray(labels) && labels.length > 0) {
 			labels.forEach((label) => {
-				let div = document.createElement("div");
+				const div = document.createElement("div");
 				div.classList.add("label-item");
 
-				let checkbox = document.createElement("input");
+				const checkbox = document.createElement("input");
 				checkbox.type = "checkbox";
 				checkbox.classList.add("checkbox");
 
-				let labelBadge = document.createElement("span");
+				const labelBadge = document.createElement("span");
 				labelBadge.classList.add("theLabels");
 				labelBadge.textContent = label;
 
@@ -80,7 +80,7 @@ class Filter extends HTMLElement {
 			const priorityItems =
 				priorityContainer.getElementsByClassName("priority-item");
 			Array.from(priorityItems).forEach((item) => {
-				let checkbox = document.createElement("input");
+				const checkbox = document.createElement("input");
 				checkbox.type = "checkbox";
 				checkbox.classList.add("checkbox");
 

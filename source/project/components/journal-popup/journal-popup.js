@@ -41,8 +41,7 @@ class JournalPopup extends HTMLElement {
 			"#c4c9e9",
 			"#99779e",
 			"#ccbdcf"
-		  ];
-		  
+		];
 
 		// get the css file and append it to the shadow root
 		const style = document.createElement("link");
@@ -103,22 +102,23 @@ class JournalPopup extends HTMLElement {
 	 */
 	populateLabels() {
 		const labelContainer = this.shadowRoot.getElementById("label");
-		const selectedLabelsContainer = this.shadowRoot.querySelector(".selectedLabels");
+		const selectedLabelsContainer =
+			this.shadowRoot.querySelector(".selectedLabels");
 		const labels = JSON.parse(window.localStorage.getItem("labels")) || [];
 
 		window.api.getLabels((labels) => {
 			// Clear the label container
 			labelContainer.innerHTML = "";
-	  
+
 			// Add new label input
 			this.addNewLabelInput(labelContainer);
-	  
+
 			// Populate the dropdown with stored labels
 			this.populateLabelDropdown(labelContainer, labels);
-	  
+
 			// Populate the selected labels
 			this.populateSelectedLabels(selectedLabelsContainer);
-		  });
+		});
 	}
 
 	/**
@@ -150,14 +150,21 @@ class JournalPopup extends HTMLElement {
 					window.api.getLabels((labels) => {
 						if (!labels.includes(newLabel)) {
 							const newColor = this.randomColor();
-							window.api.addLabel(newLabel, newColor, (newLabels) => {
-								localStorage.setItem("labels", JSON.stringify(newLabels));
-								window.api.getLabelColorMap((map) => {
-									this.labelToColor = map;
-									this.selectedLabels.add(newLabel);
-									this.populateLabels();
-								});
-							});
+							window.api.addLabel(
+								newLabel,
+								newColor,
+								(newLabels) => {
+									localStorage.setItem(
+										"labels",
+										JSON.stringify(newLabels)
+									);
+									window.api.getLabelColorMap((map) => {
+										this.labelToColor = map;
+										this.selectedLabels.add(newLabel);
+										this.populateLabels();
+									});
+								}
+							);
 						}
 					});
 				}
@@ -318,7 +325,9 @@ class JournalPopup extends HTMLElement {
 		window.api.deleteLabel(label, (labels) => {
 			// Update localStorage in sync with database
 			window.localStorage.setItem("labels", JSON.stringify(labels));
-			window.api.getLabelColorMap((map) => {this.labelToColor = map});
+			window.api.getLabelColorMap((map) => {
+				this.labelToColor = map;
+			});
 		});
 
 		// Remove the label from the selected labels set

@@ -1,10 +1,10 @@
 const { contextBridge, ipcRenderer } = require("electron");
-const dbMgr = require('./database/dbMgr');
+const dbMgr = require("./database/dbMgr");
 
-const getUserData = () => ipcRenderer.invoke('getUserData');
+const getUserData = () => ipcRenderer.invoke("getUserData");
 
 contextBridge.exposeInMainWorld("path", {
-  getUserData: getUserData,
+	getUserData: getUserData
 });
 
 const init = (bcb) => {
@@ -12,7 +12,7 @@ const init = (bcb) => {
 };
 
 const connect = (pathToDB, callback) => {
-  dbMgr.connect(pathToDB, callback);
+	dbMgr.connect(pathToDB, callback);
 };
 
 const getTasks = (trcb) => {
@@ -32,7 +32,7 @@ const getEntries = (ercb) => {
 };
 
 const addTask = (task, callback) => {
-  return dbMgr.addTask(task, callback);
+	return dbMgr.addTask(task, callback);
 };
 
 const addTasks = (tasks, trcb) => {
@@ -76,7 +76,7 @@ const getLabels = (lrcb) => {
 };
 
 const getLabelColorMap = (callback) => {
-  return dbMgr.getLabelColorMap(callback);
+	return dbMgr.getLabelColorMap(callback);
 };
 
 const addLabel = (label, color, lrcb) => {
@@ -103,9 +103,9 @@ const getFilteredEntries = (filterCriteria, ercb) => {
 	return dbMgr.getFilteredEntries(filterCriteria, ercb);
 };
 
-contextBridge.exposeInMainWorld('api', {
+contextBridge.exposeInMainWorld("api", {
 	init,
-  connect,
+	connect,
 	getTasks,
 	getTasksConjunctLabels,
 	getTasksDisjunctLabels,
@@ -127,5 +127,5 @@ contextBridge.exposeInMainWorld('api', {
 	deleteLabel,
 	deleteLabels,
 	getFilteredTasks,
-	getFilteredEntries,
+	getFilteredEntries
 });

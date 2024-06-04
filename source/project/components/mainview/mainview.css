@@ -1,5 +1,5 @@
 /* Roboto Mono Font Import */
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
 
 /* Resetting default margin and padding */
 * {
@@ -27,9 +27,9 @@
 }
 
 .logo span {
-  font-size: 35px;
-  font-family: "Roboto Mono";
-  padding-right: 20px;
+	font-size: 35px;
+	font-family: "Roboto Mono";
+	padding-right: 20px;
 }
 
 .menu-icon img {
@@ -38,65 +38,65 @@
 }
 
 #today-button {
-  background-color: #EEE;
-  padding: 5px;  
-  padding-left: 20px;
-  padding-right: 20px;
-  border: 1px solid #EEE;
-  border-spacing: 100px;
-  border-radius: 7px;
-  cursor: pointer; 
-  font-family: "Roboto Mono";
-  font-size: 15px;
-  font-weight: bold; 
+	background-color: #eee;
+	padding: 5px;
+	padding-left: 20px;
+	padding-right: 20px;
+	border: 1px solid #eee;
+	border-spacing: 100px;
+	border-radius: 7px;
+	cursor: pointer;
+	font-family: "Roboto Mono";
+	font-size: 15px;
+	font-weight: bold;
 }
 
 #today-button:hover {
-  background-color: #d4d4d4;
-  cursor: pointer;
+	background-color: #d4d4d4;
+	cursor: pointer;
 }
 
 /* Styling the current month text in header bar */
 #current-month {
-  flex: 1;
-  text-align: center;
-  font-size: 38px;
-  font-family: "Roboto Mono";
-  margin: 0;
+	flex: 1;
+	text-align: center;
+	font-size: 38px;
+	font-family: "Roboto Mono";
+	margin: 0;
 }
 
 /* Styling the prev/next week arrows*/
 .nav-button-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-left: 20px;
 }
 
 .nav-button {
-  background-color: #ffffff; /*#BF6F6F;*/
-  color: #000;
-  border: none;
-  padding: 0px 15px;
-  text-align: center;
-  cursor: pointer;
-  font-size: 20px;
-  font-family: "Monaco";
-  font-style: bold;
+	background-color: #ffffff; /*#BF6F6F;*/
+	color: #000;
+	border: none;
+	padding: 0px 15px;
+	text-align: center;
+	cursor: pointer;
+	font-size: 20px;
+	font-family: "Monaco";
+	font-style: bold;
 }
 
 .nav-button:hover {
-  color: #FBC6C4;
-  background-color: #BF6F6F;;
-  border-radius: 50px;
+	color: #fbc6c4;
+	background-color: #bf6f6f;
+	border-radius: 50px;
 }
 
 /* Styling the calendar */
 .calendar {
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 50px); /* Adjust height to leave space for header */
-  font-family: "Roboto Mono";
+	display: flex;
+	flex-direction: column;
+	height: calc(100vh - 50px); /* Adjust height to leave space for header */
+	font-family: "Roboto Mono";
 }
 
 .day {
@@ -106,12 +106,12 @@
 }
 
 .day > div {
-  flex: 1;
-  flex-direction: column;
-  text-align: center;
-  padding: 10px 0;
-  font-size: 10px;
-  font-family: "Roboto Mono";
+	flex: 1;
+	flex-direction: column;
+	text-align: center;
+	padding: 10px 0;
+	font-size: 10px;
+	font-family: "Roboto Mono";
 }
 
 /* Ensure the vertical lines reach all the way down */
@@ -121,72 +121,68 @@
 
 /* Styling the Date number display */
 .day-date {
-  font-size: 20px;
-  font-family: "Roboto Mono";
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  box-sizing: border-box;
-  
+	font-size: 20px;
+	font-family: "Roboto Mono";
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	padding: 10px;
+	box-sizing: border-box;
 }
 
 /* Red Indicator of today's date */
 .today {
-  background-color: #ffd1d1;
-  width: 45px;
-  border-radius: 50%;
-  
+	background-color: #ffd1d1;
+	width: 45px;
+	border-radius: 50%;
 }
 
 /* Add Task and Journal Buttons */
 .add-task,
 .add-journal {
-  margin: 5px; /* Adjust as needed */
-  padding: 10px; /* Adjust as needed */
-  width: calc(100% - 10px); /* Stretch button width to fill container */
-  border: 1px dotted #000; /* Dotted outline */
-  border-spacing: 100px; /* Increase spacing between dots */
-  border-radius: 7px; /* Rounded corners */
-  border-color: #969696; /* Border outline color */
-  cursor: pointer; /* Change cursor to pointer */
-  background-color: #f8f8f8; /* Background color */
-  color: #000; /* Text color */
-  font-weight: bold; /* Bold text */
-  font-family: "Roboto Mono"; /* Text font */
-
+	margin: 5px; /* Adjust as needed */
+	padding: 10px; /* Adjust as needed */
+	width: calc(100% - 10px); /* Stretch button width to fill container */
+	border: 1px dotted #000; /* Dotted outline */
+	border-spacing: 100px; /* Increase spacing between dots */
+	border-radius: 7px; /* Rounded corners */
+	border-color: #969696; /* Border outline color */
+	cursor: pointer; /* Change cursor to pointer */
+	background-color: #f8f8f8; /* Background color */
+	color: #000; /* Text color */
+	font-weight: bold; /* Bold text */
+	font-family: "Roboto Mono"; /* Text font */
 }
 
 .add-journal:hover,
-.add-task:hover{
-  background-color: #ddd;
-  cursor: pointer;
+.add-task:hover {
+	background-color: #ddd;
+	cursor: pointer;
 }
 
 /*Journal and Task Previews*/
 .journal-pv,
 .task-pv {
-  margin: 5px; /* Adjust as needed */
-  padding: 10px; /* Adjust as needed */
-  width: calc(100% - 10px); /* Adjusted to add-journal width */
-  flex: none;
-  border: 1px solid #000; /* Outline */
-  border-radius: 7px; /* Rounded corners */
-  justify-content: flex-start;
-  text-align: left; /* Text alignment */
-  align-items: stretch; /* Box alignment */
-  background-color: #fff; /* Background Color */
-  cursor: pointer; /* Change cursor to pointer */
-  font-size: 10px; /* Size of text */
+	margin: 5px; /* Adjust as needed */
+	padding: 10px; /* Adjust as needed */
+	width: calc(100% - 10px); /* Adjusted to add-journal width */
+	flex: none;
+	border: 1px solid #000; /* Outline */
+	border-radius: 7px; /* Rounded corners */
+	justify-content: flex-start;
+	text-align: left; /* Text alignment */
+	align-items: stretch; /* Box alignment */
+	background-color: #fff; /* Background Color */
+	cursor: pointer; /* Change cursor to pointer */
+	font-size: 10px; /* Size of text */
 }
 
 /* for the circle label colors */
 .label-container {
-  display: inline-flex;
-  flex-wrap: wrap;
-  margin-top: 5px;
-  gap: 5px;
-
+	display: inline-flex;
+	flex-wrap: wrap;
+	margin-top: 5px;
+	gap: 5px;
 }
 
 .label {
@@ -195,9 +191,8 @@
 	padding: 5px;
 }
 
-
 /* TODO: task formatting needs to be confirmed! */
-.journal-pv h2, 
+.journal-pv h2,
 .task-pv h2 {
 	font-style: bold;
 	margin: 0;

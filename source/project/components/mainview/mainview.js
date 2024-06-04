@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-let filters = {
+const filters = {
 	startTime: "",
 	endTime: "",
 	labels: [],
@@ -196,32 +196,31 @@ function setWeeklyView(weekOffset) {
 }
 
 function updateMainview() {
-  // First update color map, then update tasks and entries.
-  window.api.getLabelColorMap((map) => {
-    labelColorMap = map;
-    window.api.getFilteredTasks(filters, (tasks) => {
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-      tasksRendererCallback(tasks);
-    });
-    window.api.getFilteredEntries(filters, (entries) => {
-      localStorage.setItem("journalData", JSON.stringify(entries));
-      entriesRendererCallback(entries);
-    });
-  });
-	
+	// First update color map, then update tasks and entries.
+	window.api.getLabelColorMap((map) => {
+		labelColorMap = map;
+		window.api.getFilteredTasks(filters, (tasks) => {
+			localStorage.setItem("tasks", JSON.stringify(tasks));
+			tasksRendererCallback(tasks);
+		});
+		window.api.getFilteredEntries(filters, (entries) => {
+			localStorage.setItem("journalData", JSON.stringify(entries));
+			entriesRendererCallback(entries);
+		});
+	});
 }
 
-document.addEventListener("DOMContentLoaded", async function () {
-  let currentWeekOffset = 0;
-  await window.path.getUserData().then((userData) => {
-    console.log("Renderer access userdata: " + userData);
-    window.api.connect(userData, () => {
-      window.api.init(() => {
-        console.log("Renderer init table.");
-        setWeeklyView(currentWeekOffset); // Load this week's dates
-      });
-    });
-  })
+document.addEventListener("DOMContentLoaded", async () => {
+	let currentWeekOffset = 0;
+	await window.path.getUserData().then((userData) => {
+		console.log("Renderer access userdata: " + userData);
+		window.api.connect(userData, () => {
+			window.api.init(() => {
+				console.log("Renderer init table.");
+				setWeeklyView(currentWeekOffset); // Load this week's dates
+			});
+		});
+	});
 
 	document.addEventListener("storageUpdate", () => {
 		updateMainview();

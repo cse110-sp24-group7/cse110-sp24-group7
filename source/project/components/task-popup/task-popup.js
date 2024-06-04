@@ -4,14 +4,14 @@
  * supports custom styling and behavior through a Shadow DOM, and handles form submissions to save task data.
  */
 class TaskPopup extends HTMLElement {
-  /**
-   * @constructor
-   * @description Creates an instance of TaskPopup, sets up the shadow DOM, and initializes
-   * the component with CSS and HTML content loaded asynchronously.
-   */
-  constructor() {
-    super();
-    this.attachShadow({ mode: "open" });
+	/**
+	 * @constructor
+	 * @description Creates an instance of TaskPopup, sets up the shadow DOM, and initializes
+	 * the component with CSS and HTML content loaded asynchronously.
+	 */
+	constructor() {
+		super();
+		this.attachShadow({ mode: "open" });
 
 		// set to store selected labels
 		this.selectedLabels = new Set();
@@ -41,7 +41,7 @@ class TaskPopup extends HTMLElement {
 			"#c4c9e9",
 			"#99779e",
 			"#ccbdcf"
-		  ];
+		];
 
 		// get the css file and append it to the shadow root
 		const style = document.createElement("link");
@@ -74,12 +74,11 @@ class TaskPopup extends HTMLElement {
 				.addEventListener("click", () => {
 					this.remove();
 				});
-      window.api.getLabelColorMap((map) => {
-        this.labelToColor = map;
-        // populate the labels from database
-        this.populateLabels();
-      });
-
+			window.api.getLabelColorMap((map) => {
+				this.labelToColor = map;
+				// populate the labels from database
+				this.populateLabels();
+			});
 		};
 	}
 
@@ -97,28 +96,29 @@ class TaskPopup extends HTMLElement {
 		}, 3000);
 	}
 
-  /**
-   * @method populateLabels
-   * @description Populates the label selector with labels from local storage.
-   */
-  populateLabels() {
-    const labelContainer = this.shadowRoot.getElementById("label");
-    const selectedLabelsContainer = this.shadowRoot.querySelector(".selectedLabels");
+	/**
+	 * @method populateLabels
+	 * @description Populates the label selector with labels from local storage.
+	 */
+	populateLabels() {
+		const labelContainer = this.shadowRoot.getElementById("label");
+		const selectedLabelsContainer =
+			this.shadowRoot.querySelector(".selectedLabels");
 
-    window.api.getLabels((labels) => {
-      // Clear the label container
-      labelContainer.innerHTML = "";
+		window.api.getLabels((labels) => {
+			// Clear the label container
+			labelContainer.innerHTML = "";
 
-      // Add new label input
-      this.addNewLabelInput(labelContainer);
+			// Add new label input
+			this.addNewLabelInput(labelContainer);
 
-      // Populate the dropdown with stored labels
-      this.populateLabelDropdown(labelContainer, labels);
+			// Populate the dropdown with stored labels
+			this.populateLabelDropdown(labelContainer, labels);
 
-      // Populate the selected labels
-      this.populateSelectedLabels(selectedLabelsContainer);
-    });
-  }
+			// Populate the selected labels
+			this.populateSelectedLabels(selectedLabelsContainer);
+		});
+	}
 
 	/**
 	 * @method addNewLabelInput
@@ -140,29 +140,36 @@ class TaskPopup extends HTMLElement {
 		newLabelDiv.appendChild(input);
 		container.appendChild(newLabelDiv);
 
-    // Add event listener for input to save new label
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        const newLabel = input.value.trim();
-        if (newLabel) {
-          window.api.getLabels((labels) => {
+		// Add event listener for input to save new label
+		input.addEventListener("keydown", (e) => {
+			if (e.key === "Enter") {
+				e.preventDefault();
+				const newLabel = input.value.trim();
+				if (newLabel) {
+					window.api.getLabels((labels) => {
 						if (!labels.includes(newLabel)) {
-              const newColor = this.randomColor();
-							window.api.addLabel(newLabel, newColor, (newLabels) => {
-								localStorage.setItem("labels", JSON.stringify(newLabels));
-                window.api.getLabelColorMap((map) => {
-                  this.labelToColor = map;
-                  this.selectedLabels.add(newLabel);
-                  this.populateLabels();
-                });
-							});
+							const newColor = this.randomColor();
+							window.api.addLabel(
+								newLabel,
+								newColor,
+								(newLabels) => {
+									localStorage.setItem(
+										"labels",
+										JSON.stringify(newLabels)
+									);
+									window.api.getLabelColorMap((map) => {
+										this.labelToColor = map;
+										this.selectedLabels.add(newLabel);
+										this.populateLabels();
+									});
+								}
+							);
 						}
 					});
-        }
-      }
-    });
-  }
+				}
+			}
+		});
+	}
 
 	/**
 	 * @method setColors
@@ -312,20 +319,21 @@ class TaskPopup extends HTMLElement {
 		// Remove the label from the local storage elements
 		labels = labels.filter((item) => item !== label);
 		window.localStorage.setItem("labels", JSON.stringify(labels));
-    this.labelToColor.delete(label);
+		this.labelToColor.delete(label);
 
-    window.api.deleteLabel(label, (labels) => {
-      // Update localStorage in sync with database
-      window.localStorage.setItem("labels", JSON.stringify(labels));
-      window.api.getLabelColorMap((map) => {this.labelToColor = map});
-    });
+		window.api.deleteLabel(label, (labels) => {
+			// Update localStorage in sync with database
+			window.localStorage.setItem("labels", JSON.stringify(labels));
+			window.api.getLabelColorMap((map) => {
+				this.labelToColor = map;
+			});
+		});
 
 		// Remove the label from the selected labels set
 		this.selectedLabels.delete(label);
 
 		// Remove the entire label div from the DOM
 		labelDiv.remove();
-
 
 		// this.saveLabelColors();
 	}
@@ -346,7 +354,7 @@ class TaskPopup extends HTMLElement {
 	 */
 	saveTasksToStorage(tasks) {
 		localStorage.setItem("tasks", JSON.stringify(tasks));
-		let event = new CustomEvent("storageUpdate", {
+		const event = new CustomEvent("storageUpdate", {
 			bubbles: true,
 			composed: true
 		});
@@ -363,11 +371,11 @@ class TaskPopup extends HTMLElement {
 		event.preventDefault();
 
 		// get the current date and time
-		let currentDate = new Date();
-		let dateString = currentDate.toString();
+		const currentDate = new Date();
+		const dateString = currentDate.toString();
 
 		// get the users input and store it in a task object
-		let task = {
+		const task = {
 			task_id: Math.random().toString(36).substr(2, 9),
 			task_name: this.shadowRoot.getElementById("title").value,
 			task_content: this.shadowRoot.getElementById("description").value,
