@@ -17,14 +17,16 @@ body {
     padding: 0px;
     background-color: white;
     font-family: 'Roboto Mono', monospace;
+    font-weight: 100;
 }
 
 .header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
+    margin-left: 7px;
+    margin-bottom: 5px;
     font-family: 'Roboto Mono', monospace;
+    
 }
 
 .logo {
@@ -32,18 +34,27 @@ body {
     height: auto;
     left: 0;
     top: 0;
+    padding: 5px;
 }
 
 .menu {
     width: 30px;
     height: auto;
     cursor: pointer;
+    margin-right: 7px;
+    margin-left: auto;
 }
 
 .header h1 {
+    
     margin: 0;
-    font-size: 2rem;
+    font-size: 1.7rem;
     font-family: 'Roboto Mono', monospace;
+    color: gray;
+    align-self: flex-end;
+    justify-content: flex-start;
+
+    
 }
 
 .search-filter-upload {
@@ -58,35 +69,50 @@ body {
 .search-filter {
     display: flex;
     align-items: center;
+    width: 60%;
 }
 
 .search-icon {
     width: 20px;
-    height: auto;
+    height: 20px;
     margin-right: 10px;
+    margin-left: 15%;
+    
 }
 
 .search-bar {
-    padding: 10px;
+    padding: 5px 10px;
     border: 1px solid #ccc;
+    width: 50%;
     border-radius: 4px;
-    margin-right: 20px;
+    margin-right: 4px;
+}
+
+.filter-icon {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+    margin-left: 10%;
 }
 
 .filter {
-    padding: 10px;
+    padding: 5px 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    width: 40%; 
 }
 
 .upload {
     display: flex;
-    align-items: center;
+    margin-right: auto;
+    margin-left: 35%;
+    align-items: flex-end;
 }
 
 .file-input {
     
 }
+
 
 .upload button {
     padding: 10px 20px;
@@ -96,20 +122,29 @@ body {
     cursor: pointer;
 }
 
+.file-upload>input {
+    display: none;
+  }
 .upload button:hover {
     
 }
-
+.file-upload img {
+    height: auto;
+    width: 20px;
+}
 .main-section {
     padding-top: 10px;
     display: flex;
-    flex-direction: column;
     background-color: lightgray;
+    padding-bottom: 10px;
 }
-
+body {
+    background-color: lightgrey;
+}
 .sub-section {
-    margin-bottom: 40px;
-    background-color: white;
+  width: 80%;
+  background-color: white;
+  
 }
 
 .sub-section h2 {

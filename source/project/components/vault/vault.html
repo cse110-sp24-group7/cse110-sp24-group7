@@ -15,7 +15,7 @@
 					alt="Team Logo"
 					class="logo"
 				/>
-				<h1>Vault</h1>
+				<h1>vault</h1>
 				<img
 					src="../../assets/res/menuBtn.png"
 					alt="Menu"
@@ -25,7 +25,7 @@
 			<div class="main-section">
 				<div class="search-filter">
 					<img
-						src="../../assets/res/search-icon.png"
+						src="../../assets/res/search-icon2.png"
 						alt="Search"
 						class="search-icon"
 					/>
@@ -34,7 +34,11 @@
 						placeholder="Search"
 						class="search-bar"
 					/>
-					<!-- filter img will go here -->
+					<img
+						src="../../assets/res/filter-icon.webp"
+						alt="Search"
+						class="search-icon"
+					/>
 					<select name="filter" id="filter" class="filter">
 						<option value="all">All</option>
 						<option value="files">Files</option>
@@ -47,7 +51,10 @@
 						method="post"
 						enctype="multipart/form-data"
 					>
-						<div>
+						<div class="file-upload">
+                            <label for="file">
+                                <img src="../../assets/res/upload-icon.png">
+                            </label>
 							<input
 								type="file"
 								class="file-input"
@@ -58,10 +65,11 @@
 						</div>
 						<div>
 							<!-- Upload Files (turn into the little image later) -->
-							<button type="submit">Add Files</button>
+							<!-- <button type="submit">Add Files</button> -->
 						</div>
 					</form>
 				</div>
+            </div>
 				<div class="sub-section">
 					<div class="files">
 						<h2>Files</h2>
@@ -76,7 +84,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			
 		</div>
 	</body>
 </html>
