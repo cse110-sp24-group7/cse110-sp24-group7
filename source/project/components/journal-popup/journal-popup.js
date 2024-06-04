@@ -24,18 +24,25 @@ class JournalPopup extends HTMLElement {
 		// );
 
 		this.colors = [
-			"#ffd0f7",
-			"#e1a9f8",
-			"#bdbbfa",
-			"#a9dcf8",
-			"#a5d3a3",
-			"#edf7b5",
-			"#f7e1a3",
-			"#f7a9a9",
-			"#d1s8f4",
-			"#ebad6f",
-			"#cdb4db"
-		];
+			"#e1c6b1",
+			"#e3a896",
+			"#d15f3a",
+			"#e5ac29",
+			"#b5af61",
+			"#9dc0ba",
+			"#769cc0",
+			"#ccb89f",
+			"#de9f74",
+			"#4e7c57",
+			"#0b4d4b",
+			"#667f86",
+			"#aa7529",
+			"#c1685a",
+			"#c4c9e9",
+			"#99779e",
+			"#ccbdcf"
+		  ];
+		  
 
 		// get the css file and append it to the shadow root
 		const style = document.createElement("link");
