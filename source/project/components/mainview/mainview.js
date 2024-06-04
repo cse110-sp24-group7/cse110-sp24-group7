@@ -12,7 +12,7 @@ let labelColorMap = new Map();
 
 /**
  * Adds tasks to the task containers.
- * @param {import("../../scripts/database/dbMgr").task[]} tasks - an array of task objects.
+ * @param {Task[]} tasks - an array of task objects.
  */
 function tasksRendererCallback(tasks) {
 	// Clear all existing task entries first
