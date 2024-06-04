@@ -1,3 +1,120 @@
+/* roboto mono theme */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
 .file-input{
     background-image: url(../../assets/res/file-img.png);
 }
+
+body {
+    box-sizing: border-box;
+    font-family: 'Roboto Mono', monospace;
+    margin: 0;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    background-color: white;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.logo {
+    width: 50px;
+    height: auto;
+    left: 0;
+    top: 0;
+}
+
+.menu {
+    width: 30px;
+    height: auto;
+    cursor: pointer;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.search-filter-upload {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: lightgray;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.search-filter {
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    width: 20px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.search-bar {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 20px;
+}
+
+.filter {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.upload {
+    display: flex;
+    align-items: center;
+}
+
+.file-input {
+    
+}
+
+.upload button {
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.upload button:hover {
+    
+}
+
+.main-section {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    background-color: lightgray;
+}
+
+.sub-section {
+    margin-bottom: 40px;
+    background-color: white;
+}
+
+.sub-section h2 {
+    margin: 0 0 10px 0;
+    font-family: 'Roboto Mono', monospace;
+}
+
+
