@@ -25,6 +25,7 @@ function tasksRendererCallback(tasks) {
 		// Create elements for the task entry
 		const taskPv = document.createElement("div");
 		taskPv.classList.add("task-pv");
+    taskPv.setAttribute('data-task-id', task.task_id);
 
 		const taskName = document.createElement("h2");
 		taskName.textContent = task.task_name;
@@ -59,6 +60,24 @@ function tasksRendererCallback(tasks) {
 			taskPv.appendChild(taskLabels);
 		}
 
+    const buttonContainer = document.createElement("div");
+    buttonContainer.classList.add("button-container");
+
+    //add Edit button
+    const editButton = document.createElement("button");
+    editButton.textContent = "Edit";
+    editButton.classList.add("edit-task"); // Adding class for event delegation
+    editButton.innerHTML = `<img id="img1" src="edit-icon.png" alt="Edit">`;
+    editButton.addEventListener("click", () => {
+      // Open task popup for editing with task details
+      openTaskPopupForEdit(taskPv.getAttribute('data-task-id'));
+    });
+
+    buttonContainer.appendChild(editButton);
+    // TODO: add delete button too
+
+    taskPv.appendChild(buttonContainer);
+
 		// Find the appropriate day container based on the task's due date
 		// Assuming due_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
 		const dueDate = new Date(task.due_date);
@@ -71,6 +90,21 @@ function tasksRendererCallback(tasks) {
 			dayContainer.appendChild(taskPv);
 		}
 	});
+}
+
+/**
+ * Opens the task popup for editing with the provided task details and the corresponding task preview element.
+ * @param {string} task_id - the task ID to edit
+ * @param {HTMLElement} taskPv - The task preview element associated with the task.
+ */
+function openTaskPopupForEdit(task_id) {
+  window.api.fetchTask(task_id, (task) => {
+    const popup = document.createElement("task-popup");
+    document.body.appendChild(popup);
+    popup.addEventListener('popupReady', () => {
+      popup.taskEdit(task);
+    });
+  });
 }
 
 /**
