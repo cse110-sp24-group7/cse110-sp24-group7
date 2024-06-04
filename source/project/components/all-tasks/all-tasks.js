@@ -1,8 +1,14 @@
+console.log("all-tasks.js script loaded"); // Add this line
+
 /**
  * Adds tasks to the task containers.
  * @param {import("../scripts/database/dbMgr").task[]} tasks - an array of task objects.
  */
 function tasksRendererCallback(tasks) {
+    console.log("tasksRendererCallback called");
+    console.log(tasks);
+
+
     // Clear all existing task entries first
     document.querySelectorAll(".task-container").forEach((container) => {
       container.innerHTML = ""; // Clears all child elements
@@ -46,38 +52,41 @@ function tasksRendererCallback(tasks) {
       if (dayContainer) {
         const taskContainer = dayContainer.querySelector('.task-container');
         taskContainer.appendChild(taskPv);   
-      }
 
-      // TODO: Calculate number of squares to shade and populate the squares into the view
-      const totalDays = (dueDate - creationDate) / msDay;      // gives total number of days task can be done within
-      const daysLeft = (dueDate - creationDate) / msDay;      // days left
-      const daysPast = totalDays - daysLeft;
-      const graySquares = Math.round((daysPast / totalDays) * 10); // # of gray squares for days past
-      const greenSquares = 10 - graySquares; // # of gray squares for days past
-      
-      // Populate the gray squares
-      for (let i = 0; i < graySquares; i++) {
-        const square = document.createElement('div');
-        square.classList.add('day-left-square');
-        square.style.backgroundColor = '#bdbdbd';
-        daysLeftContainer.appendChild(square);
-      }
-      
-      // Populate the green squares
-      for (let i = 0; i < greenSquares; i++) {
-        const square = document.createElement('div');
-        square.classList.add('day-left-square');
-        square.style.backgroundColor = '#4caf50';
-        daysLeftContainer.appendChild(square);
-      }
+        // TODO: Calculate number of squares to shade and populate the squares into the view
+        const totalDays = (dueDate - creationDate) / msDay;      // gives total number of days task can be done within
+        const daysLeft = (dueDate - creationDate) / msDay;      // days left
+        const daysPast = totalDays - daysLeft;
+        const graySquares = Math.round((daysPast / totalDays) * 10); // # of gray squares for days past
+        const greenSquares = 10 - graySquares; // # of gray squares for days past
+        
+        console.log("calculations completed with " + graySquares + " " + greenSquares);
 
-      // Display amount of time left
-      const daysLeftText = dayContainer.querySelector('.days-left-text h3');
-      daysLeftText.textContent = `${Math.round(daysLeft)} days left`;
+        // Populate the gray squares
+        for (let i = 0; i < graySquares; i++) {
+            const square = document.createElement('div');
+            square.classList.add('day-left-square');
+            square.style.backgroundColor = '#bdbdbd';
+            daysLeftContainer.appendChild(square);
+        }
+        
+        // Populate the green squares
+        for (let i = 0; i < greenSquares; i++) {
+            const square = document.createElement('div');
+            square.classList.add('day-left-square');
+            square.style.backgroundColor = '#4caf50';
+            daysLeftContainer.appendChild(square);
+        }
 
+        // Display amount of time left
+        // Update days left text
+        const daysLeftTextContainer = dayContainer.querySelector('.days-left-text');
+        daysLeftTextContainer.querySelector('h3').textContent = `${Math.ceil(daysLeft)} days left`;
+      } else {
+        console.warn("No day container found for day index:", dayIndex); // Debugging log
+      }
     });
-  }
-
+}
   
   document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener("storageUpdate", () => {
@@ -101,6 +110,16 @@ function tasksRendererCallback(tasks) {
         document.body.appendChild(popup);
       });
     });
+
+    const testTask = {
+        task_name: "Test Task",
+        task_content: "This is a test task",
+        due_date: "2024-06-10",
+        creation_date: "2024-06-01",
+        priority: "P1",
+        expected_time: "2 hours"
+    };
+    tasksRendererCallback([testTask]);
   
   });
 
