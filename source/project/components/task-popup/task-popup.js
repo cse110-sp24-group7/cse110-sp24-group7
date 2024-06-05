@@ -125,14 +125,7 @@ class TaskPopup extends HTMLElement {
 	 * @description Lifecycle method that is called when the component is inserted into the DOM.
 	 * It sets up event listeners for form submission within the shadow DOM.
 	 */
-	// connectedCallback() {
-	// 	// event listener to form submission
-	// 	setTimeout(() => {
-	// 		this.shadowRoot
-	// 			.querySelector("#taskForm")
-	// 			.addEventListener("submit", this.onSubmit.bind(this));
-	// 	}, 3000);
-	// }
+	connectedCallback() {}
 
 	/**
 	 * @method populateLabels
@@ -197,13 +190,17 @@ class TaskPopup extends HTMLElement {
 									);
 									window.api.getLabelColorMap((map) => {
 										this.labelToColor = map;
-										
+										this.selectedLabels.add(newLabel);
+										this.populateLabels();
 									});
 								}
 							);
 						}
-						this.selectedLabels.add(newLabel);
-						this.populateLabels();
+						else{
+							this.selectedLabels.add(newLabel);
+							this.populateLabels();
+						}
+
 					});
 				}
 			}
