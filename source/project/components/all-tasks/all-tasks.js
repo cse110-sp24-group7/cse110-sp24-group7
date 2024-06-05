@@ -49,10 +49,10 @@ function tasksRendererCallback(tasks) {
     //   const dayContainer = dayContainers[dayIndex];
     //   const msDay = 60*60*24*1000;
   
-      if (dayContainer) {
-        const taskContainer = dayContainer.querySelector('.task-container');
-        const daysLeftContainer = dayContainer.querySelector('.time-left-container .days-left');
-        taskContainer.appendChild(taskPv);   
+      // if (dayContainer) {
+      //   const taskContainer = dayContainer.querySelector('.task-container');
+      //   const daysLeftContainer = dayContainer.querySelector('.time-left-container .days-left');
+      //   taskContainer.appendChild(taskPv);   
 
     //     // TODO: Calculate number of squares to shade and populate the squares into the view
     //     const totalDays = (dueDate - creationDate) / msDay;      // gives total number of days task can be done within
