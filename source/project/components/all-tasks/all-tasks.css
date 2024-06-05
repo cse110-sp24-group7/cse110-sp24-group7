@@ -16,6 +16,8 @@
 body, :host {
   font-family: var(--font-family);
   font-size: var(--font-size-small);
+  overflow: hidden;
+
 }
 
 /* Resetting default margin and padding */
@@ -51,6 +53,9 @@ body, :host {
 .menu-icon img {
   width: 35px;
   height: 35px;
+}
+.menu-icon img:hover {
+  cursor: pointer;
 }
 
 .search-filter-bar {
@@ -146,59 +151,64 @@ hr {
 /* Styling the calendar */
 .calendar {
     display: flex;
-    flex-direction: column;
+    flex-flow: column nowrap;
     height: calc(100vh - 50px); /* Adjust height to leave space for header */
     margin: auto;
     justify-content: center;
     align-items: center;
     font-family: "Roboto Mono";
     overflow-y: scroll;
-    padding-top: 850px;
+    scrollbar-width: thin;
+    padding-top: 550px;
     padding-bottom: 50px;
 }
 
 .day {
     display: flex;
-    flex-direction: row;
-    flex: 1;
-    width: 60%; /* Make each day section fill the available height */
+    
+    /* flex-direction: row; */
+    /* flex: 1; */
+    width: 80%; /* Make each day section fill the available height */
     align-items: center;
     border-bottom: 1px solid #ccc;
 }
 
 .day h2 {
+  flex-direction: row;
   padding-right: 20px; /* Adjust the value as needed */
+}
+
+.task-container {
+    flex: 1;
+    text-align: center;
+    align-items: center; 
+    padding: 10px 0;
+    font-weight: bold;
+    font-family: "Roboto Mono";   
+}
+
+.day > .tasks-wrapper {
+ flex: column;
+
 }
 
 .time-left-container {
   display: flex;
   flex-direction: column;
   text-align: center;
-  justify-content: center;
   align-items: center;
   padding: 10px 0;
   font-weight: bold;
   font-family: "Roboto Mono";
 }
 
-.day > div {
-    flex: 1;
-    flex-direction: row;
-    text-align: center;
-    align-items: center; 
-    padding: 10px 0;
-    font-weight: bold;
-    font-family: "Roboto Mono";
-}
-
 .task-pv {
 	margin: 5px; /* Adjust as needed */
 	padding: 10px; /* Adjust as needed */
 	width: calc(100% - 10px); /* Adjusted to add-journal width */
-	flex: none;
 	border: 1px solid #000; /* Outline */
 	border-radius: 7px; /* Rounded corners */
-	justify-content: flex-start;
+	justify-content: flex;
 	text-align: left; /* Text alignment */
 	align-items: stretch; /* Box alignment */
 	background-color: #fff; /* Background Color */
@@ -221,13 +231,9 @@ hr {
   border-radius: 5px;
 } 
 
-/* Additions */
-.day {
-  /* display: none; Hide all day divs by default */
-}
 
 .month-divider {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .day-date {
