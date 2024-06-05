@@ -159,27 +159,32 @@ hr {
     font-family: "Roboto Mono";
     overflow-y: scroll;
     scrollbar-width: thin;
-    padding-top: 550px;
+    padding-top: 650px;
     padding-bottom: 50px;
 }
 
 .day {
     display: flex;
     
-    /* flex-direction: row; */
-    /* flex: 1; */
+    flex-direction: column;
+    flex-grow: 1;
     width: 80%; /* Make each day section fill the available height */
     align-items: center;
     border-bottom: 1px solid #ccc;
 }
 
+.day > div {
+  flex-grow: 1
+}
+
 .day h2 {
-  flex-direction: row;
+  flex-direction: column;
+  flex-grow: 1;
   padding-right: 20px; /* Adjust the value as needed */
 }
 
 .task-container {
-    flex: 1;
+    flex-grow: 1;
     text-align: center;
     align-items: center; 
     padding: 10px 0;
@@ -188,8 +193,7 @@ hr {
 }
 
 .day > .tasks-wrapper {
- flex: column;
-
+  flex: column;
 }
 
 .time-left-container {
