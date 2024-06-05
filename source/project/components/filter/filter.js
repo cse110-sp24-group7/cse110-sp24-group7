@@ -149,6 +149,23 @@ class Filter extends HTMLElement {
 
 		// Update local storage with the new selection state
 		localStorage.setItem(`selected${type}`, JSON.stringify(selectedItems));
+
+		// Dispatch event to update all tasks view
+		const filters = {
+			startTime: "",
+			endTime: "",
+			labels: JSON.parse(localStorage.getItem(`selectedlabels`)) || [],
+			priorities: JSON.parse(localStorage.getItem(`selectedpriorities`)) || [],
+			exclusive: false
+		};
+		this.dispatchEvent(new CustomEvent(
+			"filterUpdate",
+			{
+				bubbles: true,
+				composed: true,
+				detail: filters
+			}
+		));
 	}
 
 	/**
