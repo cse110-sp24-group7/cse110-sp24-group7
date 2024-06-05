@@ -13,6 +13,7 @@
   <!--References to component js files-->
   <script src="../all-tasks/all-tasks.js" type="module"></script>
   <script src="../task-popup/task-popup.js"></script>
+  <script src="../filter/filter.js"></script>
 </head>
 
 <body>
@@ -36,26 +37,7 @@
       <input type="text" id="searchInput" placeholder="Search tasks..." />
     </div>
   </div>
-
-  <div class="filter-buttons">
-    <img src="../../assets/res/filter-icon.png" alt="Filter Icon" class="filter-icon" width="20" height="20">
-    <div id="labelDiv" class="holder">
-      <span id="labelText" class="mainText">Labels</span>
-      <div id="labels" class="dropdown-content">
-        <!-- Labels will be added here -->
-      </div>
-    </div>
-    <div id="priorityDiv" class="holder">
-      <span id="priorityText" class="mainText">Priority</span>
-      <div id="priority" class="dropdown-content">
-        <div class="priority-item">P1</div>
-        <div class="priority-item">P2</div>
-        <div class="priority-item">P3</div>
-        <div class="priority-item">P4</div>
-      </div>
-    </div>
-    <span id="resetBtn" class="mainText">Clear</span>
-  </div>
+  <filter-component></filter-component>
 </div>
 
   <hr>
