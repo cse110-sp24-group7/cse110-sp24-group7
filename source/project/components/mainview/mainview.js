@@ -353,5 +353,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 		setWeeklyView(currentWeekOffset);
 	});
 
+    document.querySelector(".menu-icon").addEventListener("click", () => {
+        window.location = "../all-tasks/all-tasks.html";
+    });
+
 	// updateMainview();
 });

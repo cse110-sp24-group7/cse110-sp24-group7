@@ -166,6 +166,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 		});
 	});
 
+	document.querySelector(".menu-icon").addEventListener("click", () => {
+        window.location = "../mainview/mainview.html";
+    });
+
 	const testTasks = [
 		{
 			task_name: "Task 1 05-15",
