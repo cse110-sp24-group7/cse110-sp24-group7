@@ -41,6 +41,27 @@ document.addEventListener("DOMContentLoaded", async function () {
 			console.error("No files selected");
 		}
 	});
+
+    // filter
+    const filterFiles = document.getElementById("filter");
+    const filterButton = document.getElementById("filter-button");
+
+    filterButton.addEventListener("click", function (event) {
+        console.log("filter!");
+        const filesSection = document.querySelector(".sub-section .files");
+        const imagesSection = document.querySelector(".sub-section .images");
+
+        if(filterFiles.value == "images"){
+            filesSection.style.display = "none";
+            imagesSection.style.display = "block";
+        } else if (filterFiles.value == "files") {
+            filesSection.style.display = "block";
+            imagesSection.style.display = "none";
+        } else {
+            filesSection.style.display = "block";
+            imagesSection.style.display = "block";
+        }
+    });
 });
 
 function displayFile(file_name, is_img) {
