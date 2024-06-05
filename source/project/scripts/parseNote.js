@@ -10,11 +10,11 @@
  * formatNote("This is a sample note.", "John");
  */
 function formatNote(content, user = "Anonymous") {
-  const timestamp = new Date()
-    .toISOString()
-    .replace("T", " ")
-    .replace(/\.\d+Z/, "");
-  return `${timestamp} - ${user}: ${content}`;
+	const timestamp = new Date()
+		.toISOString()
+		.replace("T", " ")
+		.replace(/\.\d+Z/, "");
+	return `${timestamp} - ${user}: ${content}`;
 }
 
 module.exports = { formatNote };
