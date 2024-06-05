@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All tasks</title>
+  <link rel="icon" type="image/x-icon" href="../assets/res/favicon.ico" />
+  <link rel="stylesheet" href="../all-tasks/all-tasks.css" />
+  
+  <!--References to component css files-->
+  <link rel="stylesheetTask" href="../task-popup/task-popup.css" />
+
+  <!--References to component js files-->
+  <script src="../all-tasks/all-tasks.js" type="module"></script>
+  <script src="../task-popup/task-popup.js"></script>
+</head>
+
+<body>
+  <!--Header-->
+  <div class="header">
+      <div class="logo">
+          <img src="../../assets/res/logo.png" alt="Logo">
+          <span>tasks</span>
+      </div>
+      <div class="menu-icon">
+          <img src="../../assets/res/menuBtn.png" alt="Menu">
+      </div>
+  </div>
+
+
+<!-- Container -->
+<div class="search-filter-bar">
+  <div class="search-bar">
+    <div class="search-container">
+      <img src="../../assets/res/search-icon.png" alt="Search Icon">
+      <input type="text" id="searchInput" placeholder="Search tasks..." />
+    </div>
+  </div>
+
+  <div class="filter-buttons">
+    <img src="../../assets/res/filter-icon.png" alt="Filter Icon" class="filter-icon" width="20" height="20">
+    <div id="labelDiv" class="holder">
+      <span id="labelText" class="mainText">Labels</span>
+      <div id="labels" class="dropdown-content">
+        <!-- Labels will be added here -->
+      </div>
+    </div>
+    <div id="priorityDiv" class="holder">
+      <span id="priorityText" class="mainText">Priority</span>
+      <div id="priority" class="dropdown-content">
+        <div class="priority-item">P1</div>
+        <div class="priority-item">P2</div>
+        <div class="priority-item">P3</div>
+        <div class="priority-item">P4</div>
+      </div>
+    </div>
+    <span id="resetBtn" class="mainText">Clear</span>
+  </div>
+</div>
+
+  <hr>
+  
+  <!--Calendar Container-->
+  <div class="calendar">
+      <!--Sunday Container-->
+      <div class="day">
+        <h2>SUN</h2>
+        <hr>
+        <ul id="UL1"> </ul>
+        <div class="task-container">
+          <div class="label-box"></div>
+        </div>
+        <div class="time-left-container"> 
+          <div class="label-box"></div>
+          <div class="days-left"></div>
+          <div class="days-left-text">
+            <h3></h3>
+          </div>
+        </div>
+      </div>
+
+      <!--Monday Container-->
+      <div class="day">
+        <h2>MON</h2>
+        <hr>
+        <div class="task-container">
+          <div class="label-box"></div>
+        </div> 
+        <div class="time-left-container">
+          <div class="label-box"></div>
+          <div class="days-left"></div>
+          <div class="days-left-text">
+            <h3></h3>
+          </div>
+        </div>   
+      </div>
+
+      <!--Tuesday Container-->
+      <div class="day">
+        <h2>TUES</h2>
+        <hr>
+        <div class="task-container">
+          <div class="label-box"></div>
+        </div> 
+        <div class="time-left-container">
+          <div class="label-box"></div>
+          <div class="days-left"></div>
+          <div class="days-left-text">
+            <h3></h3>
+          </div>
+        </div>
+      </div>
+
+      <!--Wednesday Container-->
+      <div class="day">
+        <h2>WED</h2>
+        <hr>  
+        <div class="task-container">
+          <div class="label-box"></div>
+        </div> 
+        <div class="time-left-container">
+          <div class="label-box"></div>
+          <div class="days-left"></div>
+          <div class="days-left-text">
+            <h3></h3>
+          </div>
+        </div>  
+      </div>
+      
+      <!--Thursday Container-->
+      <div class="day">
+        <h2>THURS</h2>
+        <hr>
+        <div class="task-container">
+          <div class="label-box"></div>
+        </div> 
+        <div class="time-left-container">
+          <div class="label-box"></div>
+          <div class="days-left"></div>
+          <div class="days-left-text">
+            <h3></h3>
+          </div>
+        </div>
+      </div>
+
+      <!--Friday Container-->
+      <div class="day">
+        <h2>FRI</h2>
+        <hr>
+        <div class="task-container">
+          <div class="label-box"></div>
+        </div> 
+        <div class="time-left-container">
+          <div class="label-box"></div>
+          <div class="days-left"></div>
+          <div class="days-left-text">
+            <h3></h3>
+          </div>
+        </div>  
+      </div>
+
+      <!--Saturday Container--> 
+      <div class="day">
+        <h2>SAT</h2>
+        <hr>
+        <div class="task-container">
+          <div class="label-box"></div>
+        </div> 
+        <div class="time-left-container">
+          <div class="label-box"></div>
+          <div class="days-left"></div>
+          <div class="days-left-text">
+            <h3></h3>
+          </div>
+        </div>
+      </div>
+    </div> <!--Calendar-->
+
+  <!--References to component js files-->
+  
+
+</body>
+</html>
+
