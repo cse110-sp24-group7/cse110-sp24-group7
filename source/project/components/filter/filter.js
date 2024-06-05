@@ -38,35 +38,37 @@ class Filter extends HTMLElement {
 	 * @returns {void}
 	 */
 	populateLabels() {
-		const labels = this.getLabelsFromStorage();
 		const labelContainer = this.shadowRoot.getElementById("labels");
 
-		// Clear the label container before populating it
-		labelContainer.innerHTML = "";
+		window.api.getLabels((labels) => {
+			// Clear the label container before populating it
+			labelContainer.innerHTML = "";
 
-		// Check if labels is a non-empty array and populate the dropdown
-		if (Array.isArray(labels) && labels.length > 0) {
-			labels.forEach((label) => {
-				const div = document.createElement("div");
-				div.classList.add("label-item");
+			// Check if labels is a non-empty array and populate the dropdown
+			if (Array.isArray(labels) && labels.length > 0) {
+				labels.forEach((label) => {
+					const div = document.createElement("div");
+					div.classList.add("label-item");
 
-				const checkbox = document.createElement("input");
-				checkbox.type = "checkbox";
-				checkbox.classList.add("checkbox");
+					const checkbox = document.createElement("input");
+					checkbox.type = "checkbox";
+					checkbox.classList.add("checkbox");
 
-				const labelBadge = document.createElement("span");
-				labelBadge.classList.add("theLabels");
-				labelBadge.textContent = label;
+					const labelBadge = document.createElement("span");
+					labelBadge.classList.add("theLabels");
+					labelBadge.textContent = label;
 
-				div.appendChild(checkbox);
-				div.appendChild(labelBadge);
-				div.addEventListener("click", (e) =>
-					this.toggleSelection(e, div, "labels")
-				);
+					div.appendChild(checkbox);
+					div.appendChild(labelBadge);
+					div.addEventListener("click", (e) =>
+						this.toggleSelection(e, div, "labels")
+					);
 
-				labelContainer.appendChild(div);
-			});
-		}
+					labelContainer.appendChild(div);
+				});
+			}
+		});
+		
 	}
 
 	/**

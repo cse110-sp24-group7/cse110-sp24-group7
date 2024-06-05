@@ -304,6 +304,8 @@ function updateMainview() {
 
 document.addEventListener("DOMContentLoaded", async () => {
 	let currentWeekOffset = 0;
+
+    // Establish database connection
 	await window.path.getUserData().then((userData) => {
 		console.log("Renderer access userdata: " + userData);
 		window.api.connect(userData, () => {
