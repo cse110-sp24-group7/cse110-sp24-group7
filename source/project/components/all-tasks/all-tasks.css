@@ -1,3 +1,6 @@
+/* Roboto Mono Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
 :root {
   --font-family: "Courier New", monospace;
   --font-size-small: 14px;
@@ -230,7 +233,8 @@ hr {
     margin: auto;
     justify-content: center;
     align-items: center;
-    font-family: "Courier New";
+    font-family: "Roboto Mono";
+    overflow-y: scroll;
 }
 
 .day {
@@ -277,3 +281,25 @@ hr {
   margin: 5px;
   border-radius: 5px;
 } 
+
+/* Additions */
+.day {
+  display: none; /* Hide all day divs by default */
+}
+
+.month-divider {
+  margin-top: 20px; /* Add some space between month dividers */
+}
+
+.day-date {
+  font-weight: bold;
+  font-family: "Roboto Mono";
+  margin-bottom: 5px;
+  justify-content: left;
+}
+
+.task-container {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
