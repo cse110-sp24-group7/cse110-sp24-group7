@@ -215,7 +215,8 @@ function getTasks(trcb) {
     SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels
     FROM tasks t
     LEFT JOIN task_labels l ON t.task_id = l.task_id
-    GROUP BY t.task_id;
+    GROUP BY t.task_id
+    ORDER BY t.due_date ASC;
     `;
 
 	db.all(sql, [], (err, rows) => {
@@ -345,8 +346,7 @@ function getTasksDisjunctLabels(labels, trcb) {
  * @param {tasksRenderCallback} trcb - The tasks render callback to update the frontend.
  */
 function getFilteredTasks(filterCriteria, trcb) {
-	const { startTime, endTime, labels, priorities, exclusive } =
-		filterCriteria;
+	const { startTime, endTime, labels, priorities, exclusive } = filterCriteria;
 
 	let sql = `
     SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels
@@ -392,6 +392,8 @@ function getFilteredTasks(filterCriteria, trcb) {
 		}
 		// Disjunctive (OR) filtering: Ensure the task has at least one of the specified labels
 	}
+
+	sql += ` ORDER BY t.due_date ASC`;
 
 	db.all(sql, params, (err, rows) => {
 		if (err) {
