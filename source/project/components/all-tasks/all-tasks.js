@@ -8,6 +8,95 @@ let filters = {
 	exclusive: false
 };
 
+/**
+ * Generates an HTML element for task preview given a task object
+ * @param {import("../../scripts/database/dbMgr").task} task - the task to append
+ * @param {Object} taskContainer - the HTML element to append tasks to.
+ * @returns {Object} taskContainer - the HTML element with appended task
+ */
+function appendTaskHTML(task, taskContainer) {
+	const msDay = 60 * 60 * 24 * 1000;
+	const creationDate = new Date(task.creation_date);
+	const dueDate = new Date(task.due_date);
+	const currDate = new Date();
+
+	// Handle label coloring first
+	const labelBox = document.createElement('div');
+	labelBox.classList.add('label-box');
+	//TODO: implement label coloring here
+	taskContainer.appendChild(labelBox);
+
+	// Task preview
+	const taskPv = document.createElement('div');
+	taskPv.classList.add('task-pv');
+
+	const taskName = document.createElement('h2');
+	taskName.textContent = task.task_name;
+	taskPv.appendChild(taskName);
+
+	const taskContent = document.createElement('p');
+	taskContent.textContent = task.task_content;
+	taskPv.appendChild(taskContent);
+
+	const taskDueDate = document.createElement('p');
+	taskDueDate.textContent = `Due: ${dueDate.toDateString()}`;
+	taskPv.appendChild(taskDueDate);
+
+	const taskPriority = document.createElement('p');
+	taskPriority.textContent = `Priority: ${task.priority}`;
+	taskPv.appendChild(taskPriority);
+
+	const taskExpectedTime = document.createElement('p');
+	taskExpectedTime.textContent = `Expected Time: ${task.expected_time}`;
+	taskPv.appendChild(taskExpectedTime);
+
+	taskContainer.appendChild(taskPv);
+
+	// Days left functionality
+	const totalDays = Math.floor((dueDate - creationDate) / msDay);
+	const daysLeft = Math.floor((dueDate - currDate) / msDay);
+	const daysPast = totalDays - daysLeft;
+
+	const graySquares = Math.min(Math.round((daysPast / totalDays) * 10), 10);
+    const greenSquares = 10 - graySquares;
+	
+	const timeLeftContainer = document.createElement('div');
+	timeLeftContainer.classList.add('time-left-container');
+	const daysLeftSquares = document.createElement('div');
+	daysLeftSquares.classList.add('days-left');
+
+	for (let i = 0; i < graySquares; i++) {
+		const square = document.createElement('div');
+		square.classList.add('day-left-square');
+		square.style.backgroundColor = '#bdbdbd';
+		daysLeftSquares.appendChild(square);
+	}
+
+	for (let i = 0; i < greenSquares; i++) {
+		const square = document.createElement('div');
+		square.classList.add('day-left-square');
+		square.style.backgroundColor = '#4caf50';
+		daysLeftSquares.appendChild(square);
+	}
+
+	const daysLeftText = document.createElement('div');
+	daysLeftText.classList.add('days-left-text');
+	const daysLeftTextContent = document.createElement('h3');
+	if(dueDate > currDate){
+		daysLeftTextContent.textContent = `${daysLeft} days left`;
+	}
+	else{
+		daysLeftTextContent.textContent = `${daysLeft == 0 ? 0 : -daysLeft} days overdue`;
+	}
+
+	daysLeftText.appendChild(daysLeftTextContent);
+	timeLeftContainer.appendChild(daysLeftSquares);
+	timeLeftContainer.appendChild(daysLeftText);
+
+	taskContainer.append(timeLeftContainer);
+
+	return taskContainer;
+}
 
 /**
  * Generates the dates to show for each row of visible tasks
@@ -15,125 +104,89 @@ let filters = {
  */
 function displayTasks(tasks) {
 	const calendar = document.querySelector('.calendar');
-	const dayTemplates = document.querySelectorAll('.day');
+	calendar.innerHTML = '';  // Clear the calendar content
+	// const dayTemplates = document.querySelectorAll('.day');
 
-	let currentMonth = '';
+	let currDate = null;
+	let currDayContainer = null;
+    let currDayDate = '';
 	tasks.forEach(task => {
+		let needUpdate = false;
+		let flushed = false;
 		const dueDate = new Date(task.due_date);
-		dueDate.setDate(dueDate.getDate() + 1);
-		const month = dueDate.toLocaleString('en-US', { month: 'long' });
+		if(currDate == null){
+			needUpdate = true;
+			currDate = dueDate;
+		}
+		// dueDate.setDate(dueDate.getDate() + 1);
+		const dueYear = dueDate.toLocaleString('en-US', {year: 'numeric'});
+		const dueMonth = dueDate.toLocaleString('en-US', { month: 'long' });
+		const dueDay = dueDate.toLocaleString('en-US', { day: 'numeric'});
 
-		//Displays month divider
-		if (month !== currentMonth) {
+		const currYear = currDate.toLocaleString('en-US', {year: 'numeric'});
+		const currMonth = currDate.toLocaleString('en-US', { month: 'long' });
+		const currDay = currDate.toLocaleString('en-US', { day: 'numeric'});
+
+		// Displays year divider
+		if(needUpdate || dueYear != currYear){
+			if(!flushed && currDayContainer != null) {
+				calendar.appendChild(currDayContainer);
+				flushed = true;
+				currDate = dueDate;
+			}
+			const yearDivider = document.createElement('div');
+			// TODO: add styling for year-divider
+			yearDivider.classList.add('month-divider');
+			yearDivider.textContent = dueYear;
+			calendar.appendChild(yearDivider);
+		}
+
+		// Displays month divider
+		if (needUpdate || dueMonth != currMonth) {
+			if(!flushed && currDayContainer != null) {
+				calendar.appendChild(currDayContainer);
+				flushed = true;
+				currDate = dueDate;
+			}
 			const monthDivider = document.createElement('div');
 			monthDivider.classList.add('month-divider');
-			monthDivider.textContent = month;
+			monthDivider.textContent = dueMonth;
 			calendar.appendChild(monthDivider);
-			currentMonth = month;
 		}
 
-
-		const dayOfWeek = dueDate.toLocaleDateString('en-US', { weekday: 'short' }).toLowerCase().slice(0, 3);
-		const dayTemplate = Array.from(dayTemplates).find(template => template.id === dayOfWeek);
-		let currentDate = dueDate;
-
-		// Iterates through each task (Due-Date) in array
-		if (dayTemplate) {
-			// Using HTML as templates, avoiding dupes and blocking empty 7 rows
-			const dayDiv = dayTemplate.cloneNode(true);
-			dayDiv.removeAttribute('id');
-			dayDiv.style.display = 'block';
-
-			// Displays correct date
-			const dateDiv = dayDiv.querySelector('.day-date');
-			dateDiv.textContent = `${currentDate.getDate()}`;
-
-			// TODO: FILL TASKS CONTAINER
-			const taskContainer = dayDiv.querySelector('.task-container');
-			// taskDiv.innerHTML = `TASK GOES HERE`;
-
-			// TODO: Call tasksRendererCallback so the squares are also populated
-			// Create elements for the task entry
-			const taskPv = document.createElement("div");
-			taskPv.classList.add("task-pv");
-
-			const taskName = document.createElement("h2");
-			taskName.textContent = task.task_name;
-			taskPv.appendChild(taskName);
-
-			const taskContent = document.createElement("p");
-			taskContent.textContent = task.task_content;
-			taskPv.appendChild(taskContent);
-
-			const taskDueDate = document.createElement("p");
-			taskDueDate.textContent = `Due: ${dueDate}`;
-			taskPv.appendChild(taskDueDate);
-
-			const taskPriority = document.createElement("p");
-			taskPriority.textContent = `Priority: ${task.priority}`;
-			taskPv.appendChild(taskPriority);
-
-			const taskExpectedTime = document.createElement("p");
-			taskExpectedTime.textContent = `Expected Time: ${task.expected_time}`;
-			taskPv.appendChild(taskExpectedTime);
-
-			// Find the appropriate day container based on the task's due date
-			// Assuming due_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
-			const creationDate = new Date(task.creation_date);
-			const dayContainer = dayDiv;
-			const msDay = 60 * 60 * 24 * 1000;
-			const todayDate = new Date();
-
-			console.log("Today's date is " + todayDate);
-
-			if (dayContainer) {
-				const daysLeftContainer = dayContainer.querySelector('.time-left-container .days-left');
-				taskContainer.appendChild(taskPv);
-
-				// TODO: Calculate number of squares to shade and populate the squares into the view
-				const totalDays = (dueDate - creationDate) / msDay;      // gives total number of days task can be done within
-				const daysLeft = Math.round((dueDate - todayDate) / msDay);      // days left
-
-				console.log(daysLeft);
-
-				const daysPast = totalDays - daysLeft;
-
-				console.log(daysPast);
-
-				const graySquares = Math.min(Math.round((daysPast / totalDays) * 10), 10); // # of gray squares for days past
-				const greenSquares = 10 - graySquares; // # of gray squares for days past
-
-				console.log("calculations completed with " + graySquares + " " + greenSquares);
-
-				// Populate the gray squares
-				for (let i = 0; i < graySquares; i++) {
-					const square = document.createElement('div');
-					square.classList.add('day-left-square');
-					square.style.backgroundColor = '#bdbdbd';
-					daysLeftContainer.appendChild(square);
-				}
-
-				// Populate the green squares
-				for (let i = 0; i < greenSquares; i++) {
-					const square = document.createElement('div');
-					square.classList.add('day-left-square');
-					square.style.backgroundColor = '#4caf50';
-					daysLeftContainer.appendChild(square);
-				}
-
-				// Display amount of time left
-				// Update days left text
-				const daysLeftTextContainer = dayContainer.querySelector('.days-left-text');
-				daysLeftTextContainer.querySelector('h3').textContent = `${Math.ceil(daysLeft)} days left`;
-			} else {
-				console.warn("No day container found for day index:", dayIndex); // Debugging log
+		// Checks day container to see if a new one is required.
+		if (needUpdate || dueDay != currDay) {
+			// Flush the current day container
+			if(!flushed && currDayContainer != null) {
+				calendar.appendChild(currDayContainer);
+				flushed = true;
+				currDate = dueDate;
 			}
 
-
-			//tasksRendererCallback([task]);
-
-			calendar.appendChild(dayDiv);
+			// Create a new day container
+			const dayOfWeek = dueDate.toLocaleDateString('en-US', { weekday: 'short' }).toLowerCase().slice(0, 3);
+			currDayContainer = document.createElement('div');
+            currDayContainer.classList.add('day');
+            currDayContainer.id = dayOfWeek;
+			
+			const dayTitle = document.createElement('h2');
+            dayTitle.textContent = `${dayOfWeek.toUpperCase()}, ${dueMonth} ${dueDay}`;
+            currDayContainer.appendChild(dayTitle);
+			// const lineBreak = document.createElement('br');
+			// currDayContainer.appendChild(lineBreak);
+			// ALERT: I skipped day-date div here
 		}
+
+		// Create task container
+		let taskContainer = document.createElement('div');
+		taskContainer.classList.add('task-container');
+		taskContainer = appendTaskHTML(task, taskContainer);
+		// Append task to current day.
+		currDayContainer.appendChild(taskContainer);
+		// const lineBreak = document.createElement('br');
+		// currDayContainer.appendChild(lineBreak);
+
+		// ALERT: division between new and old method
 	});
 }
 
@@ -144,14 +197,14 @@ function updateTasklist(){
 
 document.addEventListener("DOMContentLoaded", async function () {
 	// Establish database connection
-	await window.path.getUserData().then((userData) => {
-		console.log("Renderer access userdata: " + userData);
-		window.api.connect(userData, () => {
-			window.api.init(() => {
-				console.log("Renderer init table.");
-			});
-		});
-	});
+	// await window.path.getUserData().then((userData) => {
+	// 	console.log("Renderer access userdata: " + userData);
+	// 	window.api.connect(userData, () => {
+	// 		window.api.init(() => {
+	// 			console.log("Renderer init table.");
+	// 		});
+	// 	});
+	// });
 
 	document.addEventListener("filterUpdate", (e) => {
 		filters = e.detail;
@@ -237,6 +290,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		}
 	];
 
-	updateTasklist();
+	// updateTasklist();
+	displayTasks(testTasks);
 
 });

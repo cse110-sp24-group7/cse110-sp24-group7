@@ -223,7 +223,7 @@ hr {
 
 /* Additions */
 .day {
-  display: none; /* Hide all day divs by default */
+  /* display: none; Hide all day divs by default */
 }
 
 .month-divider {
