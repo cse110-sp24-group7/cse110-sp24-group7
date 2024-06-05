@@ -154,12 +154,12 @@ hr {
     flex-flow: column nowrap;
     height: calc(100vh - 50px); /* Adjust height to leave space for header */
     margin: auto;
-    justify-content: center;
+    justify-content: bottom;
     align-items: center;
     font-family: "Roboto Mono";
     overflow-y: scroll;
     scrollbar-width: thin;
-    padding-top: 830px;
+    /* padding-top: 300px; */
     padding-bottom: 50px;
 }
 
@@ -178,8 +178,8 @@ hr {
 }
 
 .day h2 {
-  flex-direction: column;
-  flex-grow: 1;
+  flex-direction: row;
+  /* flex-grow: 1; */
   padding-right: 20px; /* Adjust the value as needed */
 }
 
