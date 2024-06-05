@@ -173,7 +173,6 @@
 	text-align: left; /* Text alignment */
 	align-items: stretch; /* Box alignment */
 	background-color: #fff; /* Background Color */
-	cursor: pointer; /* Change cursor to pointer */
 	font-size: 10px; /* Size of text */
 	position: relative;
 }
