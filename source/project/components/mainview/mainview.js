@@ -81,7 +81,8 @@ function tasksRendererCallback(tasks) {
 		deleteButton.textContent = "Delete";
 		deleteButton.classList.add("delete");
 		deleteButton.innerHTML = `<img id="img2" src="delete-icon.jpg" alt="Delete">`;
-		deleteButton.addEventListener("click", () => {
+		deleteButton.setAttribute("data-tooltip", "double click to delete");
+		deleteButton.addEventListener("dblclick", () => {
 			window.api.deleteTask(task.task_id, (tasks) => {
 				updateMainview();
 			});
@@ -176,7 +177,8 @@ function entriesRendererCallback(entries) {
 		deleteButton.textContent = "Delete";
 		deleteButton.classList.add("delete");
 		deleteButton.innerHTML = `<img id="img2" src="delete-icon.jpg" alt="Delete">`;
-		deleteButton.addEventListener("click", () => {
+		deleteButton.setAttribute("data-tooltip", "double click to delete");
+		deleteButton.addEventListener("dblclick", () => {
 			window.api.deleteEntry(entry.entry_id, (entries) => {
 				updateMainview();
 			});
