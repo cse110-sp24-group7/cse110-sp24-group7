@@ -1085,6 +1085,6 @@ module.exports = {
 	addLabels,
 	deleteLabel,
 	deleteLabels,
-  fetchEntry,
-  fetchTask
+	fetchEntry,
+	fetchTask
 };

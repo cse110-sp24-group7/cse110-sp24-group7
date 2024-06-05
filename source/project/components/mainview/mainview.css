@@ -222,26 +222,26 @@
 
 /*button icon container*/
 .button-container {
-  position: absolute;
-  top: 7px;
-  right: 5px;
-  z-index: 10;
-  display: flex;
-  padding: 0;
-  gap: 1px;
-  width: 41px;
-  background-color: white;
+	position: absolute;
+	top: 7px;
+	right: 5px;
+	z-index: 10;
+	display: flex;
+	padding: 0;
+	gap: 1px;
+	width: 41px;
+	background-color: white;
 }
 
 .button-container button {
-  border: 0;
-  background-color: white;
-  cursor: pointer;
+	border: 0;
+	background-color: white;
+	cursor: pointer;
 }
 
 /*edit button icon*/
-#img1, #img2 {
-  width: 20px;
-  height: 20px;
+#img1,
+#img2 {
+	width: 20px;
+	height: 20px;
 }
-

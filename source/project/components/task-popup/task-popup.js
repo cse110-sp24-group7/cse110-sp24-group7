@@ -37,7 +37,7 @@ class TaskPopup extends HTMLElement {
 		];
 
 		this.editMode = false; // Track whether we're editing an existing task
-    	this.editTaskId = null; // Track the ID of the task being edited
+		this.editTaskId = null; // Track the ID of the task being edited
 
 		// get the css file and append it to the shadow root
 		const style = document.createElement("link");
@@ -77,31 +77,34 @@ class TaskPopup extends HTMLElement {
 				this.labelToColor = map;
 				// populate the labels from database
 				this.populateLabels();
-				this.dispatchEvent(new CustomEvent('popupReady', {
-					bubbles: true,
-					composed: true
-				}));
+				this.dispatchEvent(
+					new CustomEvent("popupReady", {
+						bubbles: true,
+						composed: true
+					})
+				);
 			});
 		};
 	}
 
-	/** 
-   	 * @method taskEdit
+	/**
+	 * @method taskEdit
 	 * @param {import("../../scripts/database/dbMgr").task} task - the task to edit
-   	 * @description Populates the popup component with data from taskpv when edit button is 
-   	 * clicked.
-  	 */
+	 * @description Populates the popup component with data from taskpv when edit button is
+	 * clicked.
+	 */
 	taskEdit(task) {
 		this.editMode = true;
 		this.editTaskId = task.task_id;
-	
+
 		// Selects the ids from the shadow DOM of the current componenet
 		const titleInput = this.shadowRoot.getElementById("title");
 		const descriptionText = this.shadowRoot.getElementById("description");
 		const dueDateInput = this.shadowRoot.getElementById("dueDate");
 		const prioritySelect = this.shadowRoot.getElementById("priority");
-		const expectedTimeInput = this.shadowRoot.getElementById("expectedTime");
-	
+		const expectedTimeInput =
+			this.shadowRoot.getElementById("expectedTime");
+
 		// Populate the task with the information from taskDetails into a popup
 		titleInput.value = task.task_name;
 		descriptionText.value = task.task_content;
@@ -111,11 +114,11 @@ class TaskPopup extends HTMLElement {
 
 		// Clear and populate selectedLabels set with task labels
 		this.selectedLabels.clear();
-		task.labels.forEach(label => {
+		task.labels.forEach((label) => {
 			this.selectedLabels.add(label);
 		});
 		this.populateLabels();
-	
+
 		// Show the popup for editing
 		this.style.display = "block";
 	}
@@ -195,12 +198,10 @@ class TaskPopup extends HTMLElement {
 									});
 								}
 							);
-						}
-						else{
+						} else {
 							this.selectedLabels.add(newLabel);
 							this.populateLabels();
 						}
-
 					});
 				}
 			}
@@ -344,7 +345,6 @@ class TaskPopup extends HTMLElement {
 
 		// Remove the entire label div from the DOM
 		labelDiv.remove();
-
 	}
 
 	/**
@@ -385,7 +385,9 @@ class TaskPopup extends HTMLElement {
 
 		// get the users input and store it in a task object
 		const task = {
-			task_id: this.editMode ? this.editTaskId : Math.random().toString(36).substr(2, 9),
+			task_id: this.editMode
+				? this.editTaskId
+				: Math.random().toString(36).substr(2, 9),
 			task_name: this.shadowRoot.getElementById("title").value,
 			task_content: this.shadowRoot.getElementById("description").value,
 			creation_date: dateString,
@@ -395,16 +397,16 @@ class TaskPopup extends HTMLElement {
 			expected_time: this.shadowRoot.getElementById("expectedTime").value
 		};
 
-		if(this.editMode){
+		if (this.editMode) {
 			window.api.editTask(task, (tasks) => {
 				this.saveTasksToStorage(tasks);
 			});
-		}else{
+		} else {
 			window.api.addTask(task, (tasks) => {
 				this.saveTasksToStorage(tasks);
 			});
 		}
-		
+
 		event.target.reset();
 	}
 }
