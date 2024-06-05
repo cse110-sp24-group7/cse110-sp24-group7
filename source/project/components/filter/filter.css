@@ -11,6 +11,10 @@
 	margin-right: 250px;
 }
 
+img {
+	width: 25px;
+	height: 25px;
+}
 .holder {
 	position: relative;
 	width: 130px;
@@ -70,10 +74,6 @@
 .dropdown-content div:hover {
 	background-color: #ddd;
 }
-
-/* .dropdown-content .priority-item {
-  color: aqua;
-} */
 
 .priority-item {
 	cursor: pointer;
