@@ -1,28 +1,26 @@
+let fileMgr;
+
 document.addEventListener("DOMContentLoaded", async function () {
 	const uploadForm = document.getElementById("uploadForm");
 	const fileInput = document.getElementById("file");
 
-	// temp file manager that works on liveserver
-	const fileMgr = {
-		addFile: (file) => {
-			return new Promise((resolve, reject) => {
-				const fileType = file.type.startsWith("image/")
-					? "image"
-					: "file";
-				resolve(fileType);
-			});
-		},
-		getFiles: () => {
-			return [];
-		}
-    };
-    
-    // having problems with this
-    // const fileMgr = await window.path.getUserData().then((appDataPath) => {
-    //     console.log("App data path:", appDataPath); // Log the path
-    //     let manager = window.file.fileManager(appDataPath);
-    //     return manager;
-    // });
+	fileMgr = await window.path.getUserData().then((appDataPath) => {
+		console.log("App data path:", appDataPath); // Log the path
+		let manager = window.file.fileManager(appDataPath);
+		return manager;
+	});
+	
+	const files = fileMgr.getFileNames();
+	const images =  fileMgr.getImageNames();
+	
+
+	for(let i in files) {
+		displayFile(files[i], false);
+	}
+
+	for(let i in images) {
+		displayFile(images[i], true);
+	}
 
 	uploadForm.addEventListener("change", function (event) {
 		event.preventDefault(); // Prevent default form submission
@@ -30,15 +28,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 		if (files.length > 0) {
 			for (let file of files) {
 				console.log("Uploading file:", file.name); // Log the file name
-				fileMgr
-					.addFile(file)
-					.then((fileType) => {
-						console.log(`File added: ${file.name}`);
-						displayFile(file, fileType);
-					})
-					.catch((err) => {
-						console.error("Error adding file:", err);
-					});
+				try {
+					fileMgr.add(file)
+					console.log(`File added: ${file.name}`);
+					const is_img = file.type.includes('image');
+					displayFile(file.name, is_img);
+				} catch(err) {
+					console.error("Error adding file:", err);
+				}
 			}
 		} else {
 			console.error("No files selected");
@@ -46,10 +43,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 	});
 });
 
-function displayFile(file, fileType) {
-	console.log("Displaying file:", file.name, "Type:", fileType); // Log file display
+function displayFile(file_name, is_img) {
+	console.log("Displaying file:", file_name, "is_img:", is_img); // Log file display
 	const fileSection =
-		fileType === "image"
+		is_img
 			? document.querySelector(".images .grid")
 			: document.querySelector(".files .grid");
 
@@ -61,10 +58,10 @@ function displayFile(file, fileType) {
 	const fileElement = document.createElement("div");
 	fileElement.classList.add("file-item");
 
-	if (fileType === "image") {
+	if (is_img) {
 		const img = document.createElement("img");
-		img.src = URL.createObjectURL(file);
-		img.alt = file.name;
+		img.src = fileMgr.getFileLocation(file_name, true);
+		img.alt = file_name;
 		img.classList.add("file-preview");
 		fileElement.appendChild(img);
 	} else {
@@ -76,7 +73,7 @@ function displayFile(file, fileType) {
 
 	const title = document.createElement("div");
 	title.classList.add("file-title");
-	title.textContent = file.name;
+	title.textContent = file_name;
 	fileElement.appendChild(title);
 
 	fileSection.appendChild(fileElement);
