@@ -202,12 +202,12 @@ class JournalPopup extends HTMLElement {
 									);
 									window.api.getLabelColorMap((map) => {
 										this.labelToColor = map;
-										this.selectedLabels.add(newLabel);
-										this.populateLabels();
 									});
 								}
 							);
 						}
+						this.selectedLabels.add(newLabel);
+						this.populateLabels();
 					});
 				}
 			}
