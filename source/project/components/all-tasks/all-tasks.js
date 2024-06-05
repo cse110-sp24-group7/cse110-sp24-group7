@@ -197,14 +197,14 @@ function updateTasklist(){
 
 document.addEventListener("DOMContentLoaded", async function () {
 	// Establish database connection
-	// await window.path.getUserData().then((userData) => {
-	// 	console.log("Renderer access userdata: " + userData);
-	// 	window.api.connect(userData, () => {
-	// 		window.api.init(() => {
-	// 			console.log("Renderer init table.");
-	// 		});
-	// 	});
-	// });
+	await window.path.getUserData().then((userData) => {
+		console.log("Renderer access userdata: " + userData);
+		window.api.connect(userData, () => {
+			window.api.init(() => {
+				console.log("Renderer init table.");
+			});
+		});
+	});
 
 	document.addEventListener("filterUpdate", (e) => {
 		filters = e.detail;
@@ -290,7 +290,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		}
 	];
 
-	// updateTasklist();
-	displayTasks(testTasks);
+	updateTasklist();
+	// displayTasks(testTasks);
 
 });
