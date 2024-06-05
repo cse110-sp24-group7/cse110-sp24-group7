@@ -1,5 +1,9 @@
+/* Roboto Mono Font Import */
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
+
+
 :root {
-  --font-family: "Courier New", monospace;
+  --font-family: "Roboto Mono", monospace;
   --font-size-small: 14px;
   --font-size-medium: 16px;
   --font-size-large: 35px;
@@ -230,16 +234,20 @@ hr {
     margin: auto;
     justify-content: center;
     align-items: center;
-    font-family: "Courier New";
+    font-family: "Roboto Mono";
 }
 
 .day {
     display: flex;
     flex-direction: row;
     flex: 1;
-    width: 50%; /* Make each day section fill the available height */
+    width: 60%; /* Make each day section fill the available height */
     align-items: center;
     border-bottom: 1px solid #ccc;
+}
+
+.day h2 {
+  padding-right: 20px; /* Adjust the value as needed */
 }
 
 .time-left-container {
@@ -250,7 +258,7 @@ hr {
   align-items: center;
   padding: 10px 0;
   font-weight: bold;
-  font-family: "Lucida Sans Unicode";
+  font-family: "Roboto Mono";
 }
 
 .day > div {
@@ -260,7 +268,22 @@ hr {
     align-items: center; 
     padding: 10px 0;
     font-weight: bold;
-    font-family: "Lucida Sans Unicode";
+    font-family: "Roboto Mono";
+}
+
+.task-pv {
+	margin: 5px; /* Adjust as needed */
+	padding: 10px; /* Adjust as needed */
+	width: calc(100% - 10px); /* Adjusted to add-journal width */
+	flex: none;
+	border: 1px solid #000; /* Outline */
+	border-radius: 7px; /* Rounded corners */
+	justify-content: flex-start;
+	text-align: left; /* Text alignment */
+	align-items: stretch; /* Box alignment */
+	background-color: #fff; /* Background Color */
+	cursor: pointer; /* Change cursor to pointer */
+	font-size: 10px; /* Size of text */
 }
 
 .days-left {
