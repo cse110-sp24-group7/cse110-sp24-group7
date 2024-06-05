@@ -159,13 +159,12 @@ hr {
     font-family: "Roboto Mono";
     overflow-y: scroll;
     scrollbar-width: thin;
-    padding-top: 650px;
+    padding-top: 830px;
     padding-bottom: 50px;
 }
 
 .day {
     display: flex;
-    
     flex-direction: column;
     flex-grow: 1;
     width: 80%; /* Make each day section fill the available height */
@@ -174,7 +173,8 @@ hr {
 }
 
 .day > div {
-  flex-grow: 1
+  flex-grow: 1;
+  flex: 1;
 }
 
 .day h2 {
@@ -184,12 +184,15 @@ hr {
 }
 
 .task-container {
-    flex-grow: 1;
+    /* flex-grow: 1; */
+    width: 80%;
+    flex: 1;
     text-align: center;
     align-items: center; 
     padding: 10px 0;
     font-weight: bold;
-    font-family: "Roboto Mono";   
+    font-family: "Roboto Mono"; 
+
 }
 
 .day > .tasks-wrapper {
