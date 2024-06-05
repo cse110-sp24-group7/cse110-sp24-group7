@@ -236,6 +236,8 @@ hr {
     align-items: center;
     font-family: "Roboto Mono";
     overflow-y: scroll;
+    padding-top: 850px;
+    padding-bottom: 50px;
 }
 
 .day {
@@ -290,8 +292,8 @@ hr {
 .days-left {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap; /* Allow squares to wrap if needed */
   justify-content: center;
+  padding-right: 15px;
 }
 
 .day-left-square {
@@ -318,8 +320,4 @@ hr {
   justify-content: left;
 }
 
-.task-container {
-  background-color: #f9f9f9;
-  padding: 10px;
-  border: 1px solid #ddd;
-}
+
