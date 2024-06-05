@@ -77,14 +77,14 @@ body {
     width: 20px;
     height: 20px;
     margin-right: 10px;
-    margin-left: 15%;
+    margin-left: 10%;
     
 }
 
 .search-bar {
     padding: 5px 10px;
     border: 1px solid #ccc;
-    width: 50%;
+    width: 40%;
     border-radius: 4px;
     margin-right: 4px;
 }
@@ -99,7 +99,7 @@ body {
     padding: 5px 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 40%; 
+    width: 20%; 
 }
 
 .upload {
@@ -108,11 +108,6 @@ body {
     margin-left: 35%;
     align-items: flex-end;
 }
-
-.file-input {
-    
-}
-
 
 .upload button {
     padding: 10px 20px;
@@ -124,13 +119,13 @@ body {
 
 .file-upload>input {
     display: none;
+
   }
-.upload button:hover {
-    
-}
+
 .file-upload img {
     height: auto;
     width: 20px;
+    cursor: pointer;
 }
 .main-section {
     padding-top: 10px;
@@ -140,7 +135,6 @@ body {
 }
 
 .sub-section {
-    
     width: 93%; /* Set a percentage width */
     min-height: 78vh;
     background-color: white;
@@ -154,4 +148,37 @@ body {
     font-family: 'Roboto Mono', monospace;
 }
 
+.files .grid,
+.images .grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
 
+.file-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    width: 150px;
+    text-align: center;
+}
+
+.file-preview {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 5px;
+}
+
+.file-icon {
+    font-size: 50px;
+    margin-bottom: 5px;
+}
+
+.file-title {
+    font-size: 12px;
+    word-wrap: break-word;
+}
