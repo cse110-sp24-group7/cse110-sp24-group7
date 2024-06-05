@@ -1,6 +1,6 @@
 console.log("all-tasks.js script loaded"); // Add this line
 
-const filters = {
+let filters = {
 	startTime: "",
 	endTime: "",
 	labels: [],
