@@ -12,7 +12,7 @@ let labelColorMap = new Map();
 
 /**
  * Adds tasks to the task containers.
- * @param {Task[]} tasks - an array of task objects.
+ * @param {import("../../scripts/database/dbMgr").task[]} tasks - an array of task objects.
  */
 function tasksRendererCallback(tasks) {
 	// Clear all existing task entries first
@@ -20,12 +20,12 @@ function tasksRendererCallback(tasks) {
 		container.innerHTML = ""; // Clears all child elements
 	});
 
-  // Add new tasks
-  tasks.forEach((task) => {
-    // Create elements for the task entry
-    const taskPv = document.createElement("div");
-    taskPv.classList.add("task-pv");
-    taskPv.setAttribute('data-task-id', task.task_id); // Set task ID for easy retrieval
+	// Add new tasks
+	tasks.forEach((task) => {
+		// Create elements for the task entry
+		const taskPv = document.createElement("div");
+		taskPv.classList.add("task-pv");
+    taskPv.setAttribute('data-task-id', task.task_id);
 
 		const taskName = document.createElement("h2");
 		taskName.textContent = task.task_name;
@@ -80,6 +80,36 @@ function tasksRendererCallback(tasks) {
 			taskPv.appendChild(taskLabels);
 		}
 
+    // Manipulation Buttons
+    const buttonContainer = document.createElement("div");
+    buttonContainer.classList.add("button-container");
+
+    //add Edit button
+    const editButton = document.createElement("button");
+    editButton.textContent = "Edit";
+    editButton.classList.add("edit-task"); // Adding class for event delegation
+    editButton.innerHTML = `<img id="img1" src="edit-icon.png" alt="Edit">`;
+    editButton.addEventListener("click", () => {
+      // Open task popup for editing with task details
+      openTaskPopupForEdit(taskPv.getAttribute('data-task-id'));
+    });
+
+    buttonContainer.appendChild(editButton);
+    
+    // Add Delete Button
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+    deleteButton.classList.add("delete");
+    deleteButton.innerHTML = `<img id="img2" src="delete-icon.jpg" alt="Delete">`;
+    deleteButton.addEventListener("click", () => {
+      window.api.deleteTask(task.task_id, (tasks) => {
+        updateMainview();
+      });
+    });
+    buttonContainer.appendChild(deleteButton);
+
+    taskPv.appendChild(buttonContainer);
+
     // Find the appropriate day container based on the task's due date
     // Assuming due_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
     const dueDate = new Date(task.due_date);
@@ -96,32 +126,21 @@ function tasksRendererCallback(tasks) {
 
 /**
  * Opens the task popup for editing with the provided task details and the corresponding task preview element.
- * @param {Object} taskDetails - The task details to populate the popup with.
- * @param {HTMLElement} taskPv - The task preview element associated with the task.
+ * @param {string} task_id - the task ID to edit
  */
-function openTaskPopupForEdit(taskDetails) {
+function openTaskPopupForEdit(task_id) {
+  window.api.fetchTask(task_id, (task) => {
     const popup = document.createElement("task-popup");
     document.body.appendChild(popup);
     popup.addEventListener('popupReady', () => {
-      popup.taskEdit(taskDetails);
-  });
-}
-
-/**
- * Opens the journal popup for editing with the provided journal details.
- * @param {Object} journalDetails - The journal details to populate the popup with.
- */
-function openJournalPopupForEdit(journalDetails) {
-  const popup = document.createElement("journal-popup");
-  document.body.appendChild(popup);
-  popup.addEventListener('entryReady', () => {
-    popup.journalEdit(journalDetails);
+      popup.taskEdit(task);
+    });
   });
 }
 
 /**
  * Adds journal entries to the journal containers.
- * @param {Entry[]} entries - an array of journal entry objects.
+ * @param {import("../../scripts/database/dbMgr").entry[]} entries - an array of journal entry objects.
  */
 function entriesRendererCallback(entries) {
 	// Clear all existing journal entries first
@@ -129,11 +148,11 @@ function entriesRendererCallback(entries) {
 		container.innerHTML = ""; // Clears all child elements
 	});
 
-  entries.forEach((entry) => {
-    // Create elements for the journal entry
-    const journalPv = document.createElement("div");
-    journalPv.classList.add("journal-pv");
-    journalPv.setAttribute('data-entry-id', entry.entry_id)
+	entries.forEach((entry) => {
+		// Create elements for the journal entry
+		const journalPv = document.createElement("div");
+		journalPv.classList.add("journal-pv");
+    journalPv.setAttribute('data-entry-id', entry.entry_id);
 
 		const journalTitle = document.createElement("h2");
 		journalTitle.textContent = entry.entry_title;
@@ -175,6 +194,36 @@ function entriesRendererCallback(entries) {
 			journalPv.appendChild(journalLabels);
 		}
 
+    // Manipulation Buttons
+    const buttonContainer = document.createElement("div");
+    buttonContainer.classList.add("button-container");
+
+    //add Edit button
+    const editButton = document.createElement("button");
+    editButton.textContent = "Edit";
+    editButton.classList.add("edit-entry"); // Adding class for event delegation
+    editButton.innerHTML = `<img id="img1" src="edit-icon.png" alt="Edit">`;
+    editButton.addEventListener("click", () => {
+      // Open journal popup for editing with task details
+      openJournalPopupForEdit(journalPv.getAttribute('data-entry-id'));
+    });
+
+    buttonContainer.appendChild(editButton);
+
+    // Add Delete Button
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+    deleteButton.classList.add("delete");
+    deleteButton.innerHTML = `<img id="img2" src="delete-icon.jpg" alt="Delete">`;
+    deleteButton.addEventListener("click", () => {
+      window.api.deleteEntry(entry.entry_id, (entries) => {
+        updateMainview();
+      });
+    });
+    buttonContainer.appendChild(deleteButton);
+
+    journalPv.appendChild(buttonContainer);
+
     // Find the appropriate day container based on the entry's creation date
     // Assuming creation_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
     const creationDate = new Date(entry.creation_date);
@@ -187,6 +236,20 @@ function entriesRendererCallback(entries) {
 			dayContainer.appendChild(journalPv);
 		}
 	});
+}
+
+/**
+ * Opens the journal popup for editing with the provided journal details.
+ * @param {string} entry_id - the journal entry ID to edit
+ */
+function openJournalPopupForEdit(entry_id) {
+  window.api.fetchEntry(entry_id, (entry) => {
+    const popup = document.createElement("journal-popup");
+    document.body.appendChild(popup);
+    popup.addEventListener('entryReady', () => {
+      popup.journalEdit(entry);
+    });
+  });
 }
 
 /**
@@ -326,37 +389,4 @@ document.addEventListener("DOMContentLoaded", async () => {
 	});
 
 	// updateMainview();
-  document.body.addEventListener("click", (event) => {
-    // Check if the clicked element is a button with class "edit-task"
-    if (event.target.matches(".edit-task")) {
-      // Extract task details from the task preview element
-      const taskPv = event.target.closest(".task-pv");
-      if (taskPv) {
-        const taskDetails = {
-          task_id: taskPv.getAttribute('data-task-id'),
-          task_name: taskPv.querySelector('h2').textContent,
-          task_content: taskPv.querySelector('p1').textContent,
-          due_date: taskPv.querySelector('p2').textContent,
-          priority: taskPv.querySelector('p3').textContent,
-          expected_time: taskPv.querySelector('p4').textContent
-        };
-
-        // Open task popup for editing with task details
-        openTaskPopupForEdit(taskDetails);
-      }
-    }
-    else if (event.target.matches(".edit-entry")) {
-      // Extract task details from the task preview element
-      const journalPv = event.target.closest(".journal-pv");
-      if (journalPv) {
-        const entryId = journalPv.getAttribute('data-entry-id');
-        const storedEntries = JSON.parse(localStorage.getItem("journalData")) || [];
-        const journalDetails = storedEntries.find(entry => entry.entry_id === entryId);
-
-        if (journalDetails) {
-          openJournalPopupForEdit(journalDetails);
-        }
-      }
-    }
-  });
 });

@@ -45,6 +45,9 @@ class JournalPopup extends HTMLElement {
 			"#ccbdcf"
 		];
 
+		this.editMode = false; // Track whether we're editing an existing journal
+    	this.editEntryId = null; // Track the ID of the journal being edited
+
 		// get the css file and append it to the shadow root
 		const style = document.createElement("link");
 		style.rel = "stylesheet";
@@ -76,15 +79,52 @@ class JournalPopup extends HTMLElement {
 				.addEventListener("click", () => {
 					this.remove();
 				});
+
+			this.shadowRoot
+				.querySelector("#journalForm")
+				.addEventListener("submit", this.onSubmit.bind(this));
 			window.api.getLabelColorMap((map) => {
 				this.labelToColor = map;
 				// populate the labels from database
 				this.populateLabels();
+				this.dispatchEvent(new CustomEvent('entryReady', {
+					bubbles: true,
+					composed: true
+				}));
 			});
-
-			this.dispatchEvent(new CustomEvent('entryReady'));
 		};
 	}
+
+	/** 
+   	 * @method journalEdit
+	 * @param {import("../../scripts/database/dbMgr").entry} entry - the journal entry to edit
+   	 * @description Populates the popup component with data from journalPv when edit button is 
+   	 * clicked.
+  	 */
+	journalEdit(entry){
+		this.editMode = true; 
+		this.editEntryId = entry.entry_id;
+	
+		// Selects the ids from the shadow DOM of the current componenet
+		const titleInput = this.shadowRoot.getElementById("title");
+		const descriptionText = this.shadowRoot.getElementById("description");
+		const creationDateInput = this.shadowRoot.getElementById("dueDate");
+		
+		// Populate the journal popup with the entryDetails
+		titleInput.value = entry.entry_title;
+		descriptionText.value = entry.entry_content;
+		creationDateInput.value = entry.creation_date;
+	
+		// Clear and populate selectedLabels set with task labels
+		this.selectedLabels.clear();
+		entry.labels.forEach(label => {
+			this.selectedLabels.add(label);
+		});
+		this.populateLabels();
+
+		// Show popup for editing
+		this.style.display = "block";
+	  }
 
 	/**
 	 * @method connectedCallback
@@ -175,32 +215,6 @@ class JournalPopup extends HTMLElement {
 			}
 		});
 	}
-
-	/**
-	 * @method setColors
-	 * @description Sets the colors for the given labels if they do not already have a color.
-	 * @param {Array} labels - The list of labels to set colors for
-	 * @returns {void}
-	 */
-	// setColors(labels) {
-	// 	labels.forEach((label) => {
-	// 		if (!this.labelToColor.has(label)) {
-	// 			const newColor = this.randomColor();
-	// 			this.labelToColor.set(label, newColor);
-	// 			this.saveLabelColors();
-	// 		}
-	// 	});
-	// }
-
-	/**
-	 * @method saveLabelColors
-	 * @description Saves the label colors to local storage.
-	 * @returns {void}
-	 */
-	// saveLabelColors() {
-	// 	const obj = Object.fromEntries(this.labelToColor);
-	// 	localStorage.setItem("labelColors", JSON.stringify(obj));
-	// }
 
 	/**
 	 * @method randomColor
@@ -341,7 +355,6 @@ class JournalPopup extends HTMLElement {
 		labelDiv.remove();
 
 		this.labelToColor.delete(label);
-		// this.saveLabelColors();
 	}
 
 	/**
@@ -377,36 +390,27 @@ class JournalPopup extends HTMLElement {
 	onSubmit(event) {
 		event.preventDefault();
 
-    // get the users input from form
-    let journalData = {
-      entry_id: this.editMode ? this.editJournalId :Math.random().toString(36).substr(2, 9),
-      entry_title: this.shadowRoot.querySelector("#title").value,
-      entry_content: this.shadowRoot.querySelector("#description").value,
-      creation_date: this.shadowRoot.querySelector("#dueDate").value,
-      labels: Array.from(this.selectedLabels),
-    };
-    if (this.editMode) {
-      let journals = this.getJournalsFromStorage();
-      let journalIndex = journals.findIndex(j => j.entry_id === this.editJournalId);
-      if (journalIndex > -1) {
-        journals[journalIndex] = journalData; // Update existing task
-  
-        // Update the taskPv element
-        const journalPv = document.querySelector(`.journal-pv[data-entry-id="${this.editJournalId}"]`);
-        if (journalPv) {
-          journalPv.querySelector('h2').textContent = journalData.entry_title;
-          journalPv.querySelector('p').textContent = journalData.entry_content;		  
-        }
-      }
-      this.saveJournalsToStorage(journals);
-    }
-    else{
-      window.api.addEntry(journalData, (entries) => {
-        this.saveJournalsToStorage(entries);
-      });
-    }
-    event.target.reset();
-  }
+		// get the users input from form
+		const journalData = {
+			entry_id: this.editMode ? this.editEntryId : Math.random().toString(36).substr(2, 9),
+			entry_title: this.shadowRoot.querySelector("#title").value,
+			entry_content: this.shadowRoot.querySelector("#description").value,
+			creation_date: this.shadowRoot.querySelector("#dueDate").value,
+			labels: Array.from(this.selectedLabels)
+		};
+
+		if(this.editMode){
+			window.api.editEntry(journalData, (entries) => {
+				this.saveJournalsToStorage(entries);
+			});
+		}else{
+			window.api.addEntry(journalData, (entries) => {
+				this.saveJournalsToStorage(entries);
+			});
+		}
+		
+		event.target.reset();
+	}
 }
 
 // define the custom element

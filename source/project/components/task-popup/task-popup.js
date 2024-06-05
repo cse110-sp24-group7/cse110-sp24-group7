@@ -13,17 +13,8 @@ class TaskPopup extends HTMLElement {
 		super();
 		this.attachShadow({ mode: "open" });
 
-    // set to store selected labels
-    this.selectedLabels = new Set();
-    this.editMode = false; // Track whether we're editing an existing task
-    this.editTaskId = null; // Track the ID of the task being edited
-
-		// map to store label colors with labels
-		// this.labelToColor = new Map(
-		// 	Object.entries(
-		// 		JSON.parse(window.localStorage.getItem("labelColors") || "{}")
-		// 	)
-		// );
+		// set to store selected labels
+		this.selectedLabels = new Set();
 
 		this.colors = [
 			"#e1c6b1",
@@ -44,6 +35,9 @@ class TaskPopup extends HTMLElement {
 			"#99779e",
 			"#ccbdcf"
 		];
+
+		this.editMode = false; // Track whether we're editing an existing task
+    	this.editTaskId = null; // Track the ID of the task being edited
 
 		// get the css file and append it to the shadow root
 		const style = document.createElement("link");
@@ -76,66 +70,73 @@ class TaskPopup extends HTMLElement {
 				.addEventListener("click", () => {
 					this.remove();
 				});
+			this.shadowRoot
+				.querySelector("#taskForm")
+				.addEventListener("submit", this.onSubmit.bind(this));
 			window.api.getLabelColorMap((map) => {
 				this.labelToColor = map;
 				// populate the labels from database
 				this.populateLabels();
+				this.dispatchEvent(new CustomEvent('popupReady', {
+					bubbles: true,
+					composed: true
+				}));
 			});
-			this.dispatchEvent(new CustomEvent('popupReady'));
 		};
 	}
-}
-  
 
-  /** 
-   * @method taskEdit
-   * @description Populates the popup component with data from taskpv when edit button is 
-   * clicked.
-  */
-  taskEdit(taskDetails) {
-    this.editMode = true;
-    this.editTaskId = taskDetails.task_id;
+	/** 
+   	 * @method taskEdit
+	 * @param {import("../../scripts/database/dbMgr").task} task - the task to edit
+   	 * @description Populates the popup component with data from taskpv when edit button is 
+   	 * clicked.
+  	 */
+	taskEdit(task) {
+		this.editMode = true;
+		this.editTaskId = task.task_id;
+	
+		// Selects the ids from the shadow DOM of the current componenet
+		const titleInput = this.shadowRoot.getElementById("title");
+		const descriptionText = this.shadowRoot.getElementById("description");
+		const dueDateInput = this.shadowRoot.getElementById("dueDate");
+		const prioritySelect = this.shadowRoot.getElementById("priority");
+		const expectedTimeInput = this.shadowRoot.getElementById("expectedTime");
+	
+		// Populate the task with the information from taskDetails into a popup
+		titleInput.value = task.task_name;
+		descriptionText.value = task.task_content;
+		dueDateInput.value = task.due_date;
+		prioritySelect.value = task.priority;
+		expectedTimeInput.value = task.expected_time;
 
-    // Selects the ids from the shadow DOM of the current componenet
-    const titleInput = this.shadowRoot.getElementById("title");
-    const descriptionText = this.shadowRoot.getElementById("description");
-    const dueDateInput = this.shadowRoot.getElementById("dueDate");
-    const prioritySelect = this.shadowRoot.getElementById("priority");
-    const expectedTimeInput = this.shadowRoot.getElementById("expectedTime");
-    
-    // Trims the information so that it is able to be passed through the popup
-    const dueDate = taskDetails.due_date.replace("Due: ", "").trim();
-    const expectedTime = taskDetails.expected_time.replace("Expected Time: ", "").trim();
-    const priority1 = taskDetails.priority.replace("Priority: ", "").trim();
+		// Clear and populate selectedLabels set with task labels
+		this.selectedLabels.clear();
+		task.labels.forEach(label => {
+			this.selectedLabels.add(label);
+		});
+		this.populateLabels();
+	
+		// Show the popup for editing
+		this.style.display = "block";
+	}
 
-    // Populate the task with the information from taskDetails into a popup
-    titleInput.value = taskDetails.task_name;
-    descriptionText.value = taskDetails.task_content;
-    dueDateInput.value = dueDate;
-    prioritySelect.value = priority1;
-    expectedTimeInput.value = expectedTime;
-
-    // Show the popup for editing
-    this.style.display = "block";
-}
-
-  /**
-   * @method connectedCallback
-   * @description Lifecycle method that is called when the component is inserted into the DOM.
-   * It sets up event listeners for form submission within the shadow DOM.
-   */
-  connectedCallback() {
-    // event listener to form submission
-    setTimeout(() => {
-      this.shadowRoot
-        .querySelector("#taskForm")
-        .addEventListener("submit", this.onSubmit.bind(this));
-    }, 3000);
-  }
+	/**
+	 * @method connectedCallback
+	 * @description Lifecycle method that is called when the component is inserted into the DOM.
+	 * It sets up event listeners for form submission within the shadow DOM.
+	 */
+	// connectedCallback() {
+	// 	// event listener to form submission
+	// 	setTimeout(() => {
+	// 		this.shadowRoot
+	// 			.querySelector("#taskForm")
+	// 			.addEventListener("submit", this.onSubmit.bind(this));
+	// 	}, 3000);
+	// }
 
 	/**
 	 * @method populateLabels
-	 * @description Populates the label selector with labels from local storage.
+	 * @description Populates the label selector with labels.
 	 */
 	populateLabels() {
 		const labelContainer = this.shadowRoot.getElementById("label");
@@ -207,32 +208,6 @@ class TaskPopup extends HTMLElement {
 			}
 		});
 	}
-
-	/**
-	 * @method setColors
-	 * @description Sets the colors for the given labels if they do not already have a color.
-	 * @param {Array} labels - The list of labels to set colors for
-	 * @returns {void}
-	 */
-	// setColors(labels) {
-	// 	labels.forEach((label) => {
-	// 		if (!this.labelToColor.has(label)) {
-	// 			const newColor = this.randomColor();
-	// 			this.labelToColor.set(label, newColor);
-	// 			this.saveLabelColors();
-	// 		}
-	// 	});
-	// }
-
-	/**
-	 * @method saveLabelColors
-	 * @description Saves the label colors to local storage.
-	 * @returns {void}
-	 */
-	// saveLabelColors() {
-	// 	const obj = Object.fromEntries(this.labelToColor);
-	// 	localStorage.setItem("labelColors", JSON.stringify(obj));
-	// }
 
 	/**
 	 * @method randomColor
@@ -372,7 +347,6 @@ class TaskPopup extends HTMLElement {
 		// Remove the entire label div from the DOM
 		labelDiv.remove();
 
-		// this.saveLabelColors();
 	}
 
 	/**
@@ -411,45 +385,30 @@ class TaskPopup extends HTMLElement {
 		const currentDate = new Date();
 		const dateString = currentDate.toString();
 
-    // get the users input and store it in a task object
-    let task = {
-      task_id: this.editMode ? this.editTaskId :Math.random().toString(36).substr(2, 9),
-      // creator_id: userID,
-      task_name: this.shadowRoot.getElementById("title").value,
-      task_content: this.shadowRoot.getElementById("description").value,
-      creation_date: dateString,
-      due_date: this.shadowRoot.getElementById("dueDate").value,
-      priority: this.shadowRoot.getElementById("priority").value,
-      labels: Array.from(this.selectedLabels),
-      expected_time: this.shadowRoot.getElementById("expectedTime").value,
-    };
+		// get the users input and store it in a task object
+		const task = {
+			task_id: this.editMode ? this.editTaskId : Math.random().toString(36).substr(2, 9),
+			task_name: this.shadowRoot.getElementById("title").value,
+			task_content: this.shadowRoot.getElementById("description").value,
+			creation_date: dateString,
+			due_date: this.shadowRoot.getElementById("dueDate").value,
+			priority: this.shadowRoot.getElementById("priority").value,
+			labels: Array.from(this.selectedLabels),
+			expected_time: this.shadowRoot.getElementById("expectedTime").value
+		};
 
-    if (this.editMode) {
-      let tasks = this.getTasksFromStorage();
-      let taskIndex = tasks.findIndex(t => t.task_id === this.editTaskId);
-      if (taskIndex > -1) {
-        tasks[taskIndex] = task; // Update existing task
-  
-        // Update the taskPv element
-        const taskPv = document.querySelector(`.task-pv[data-task-id="${this.editTaskId}"]`);
-        if (taskPv) {
-          taskPv.querySelector('h2').textContent = task.task_name;
-          taskPv.querySelector('p1').textContent = task.task_content;
-          taskPv.querySelector('p2').textContent = `Due: ${task.due_date}`;
-          taskPv.querySelector('p3').textContent = `Priority: ${task.priority}`;
-          taskPv.querySelector('p4').textContent = `Expected Time: ${task.expected_time}`;
-        }
-      }
-      this.saveTasksToStorage(tasks);
-    }
-      else{
-        window.api.addTask(task, (tasks) => {
-          this.saveTasksToStorage(tasks);
-        });
-      }
-
-    event.target.reset();
-  }
+		if(this.editMode){
+			window.api.editTask(task, (tasks) => {
+				this.saveTasksToStorage(tasks);
+			});
+		}else{
+			window.api.addTask(task, (tasks) => {
+				this.saveTasksToStorage(tasks);
+			});
+		}
+		
+		event.target.reset();
+	}
 }
 
 // define the custom element
