@@ -214,7 +214,7 @@ describe("Database functions", () => {
       expect(idMatch).toBe(true);
       done();
     }
-    manager.getTasksConjunctLabels(
+    dbMgr.getTasksConjunctLabels(
       ["test_label_1", "test_label_2"],
       trcbConjunctiveTest,
     );

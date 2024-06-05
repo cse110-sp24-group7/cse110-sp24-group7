@@ -1,5 +1,5 @@
-import { test, _electron as electron } from "@playwright/test";
-import { expect } from "@playwright/test";
+const { test, _electron, expect } = require("@playwright/test");
+const electron = _electron;
 
 const mainLocation = "./source/project/scripts/main.cjs";
 

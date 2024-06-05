@@ -1,5 +1,6 @@
 const { contextBridge, ipcRenderer } = require("electron");
 const dbMgr = require("./database/dbMgr");
+const fileMgr = require("./fileMgr");
 
 const getUserData = () => ipcRenderer.invoke("getUserData");
 
@@ -132,29 +133,9 @@ contextBridge.exposeInMainWorld("api", {
 
 //API for uploading or retrieving files
 const fileManager = (data_location) => {
-  return FileManager(data_location);
+  return fileMgr.FileManager(data_location);
 }
-
-/* const getFiles = cb => {
-  return fileManager.getFiles(cb);
-}
-
-const getFile = (file_name, cb) => {
-  return fileManager.getFile(file_name, cb);
-}
-
-const addFile = (file, cb) => {
-  return fileManager.addFile(file, cb);
-}
-
-const deleteFile = (file_name, cb) => {
-  return fileManager.deleteFile(file_name, cb);
-} */
 
 contextBridge.exposeInMainWorld("file", {
   fileManager: fileManager,
-/*   getFiles: getFiles,
-  getFile: getFile,
-  addFile: addFile,
-  deleteFile: deleteFile, */
 });

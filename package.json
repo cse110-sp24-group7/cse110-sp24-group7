@@ -45,7 +45,8 @@
     "transform": {},
     "verbose": true,
     "testPathIgnorePatterns": [
-      "./source/project/__tests__/E2E"
+      "./source/project/__tests__/E2E",
+      "./source/project/__tests__/playwright"
     ]
   },
   "dependencies": {

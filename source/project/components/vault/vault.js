@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const uploadForm = document.getElementById('uploadForm');
     const fileInput = document.getElementById('file');
 
-    const fileMgr = await window.path.getPath()
+    const fileMgr = await window.path.getUserData()
     .then((appDataPath) => {
       let manager = window.file.fileManager(appDataPath);
       return manager;

@@ -7,7 +7,6 @@
 // import * as dbMgr from './database/dbMgr.js';
 
 const { app, BrowserWindow, ipcMain } = require("electron");
-const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("node:path");
 const dbMgr = require("./database/dbMgr.js");
 const fs = require("fs");
@@ -27,8 +26,6 @@ const createWindow = () => {
 	win.loadFile("./source/project/components/mainview/mainview.html");
 };
 
-const {DatabaseManager} = require("./database/dbMgr.js");
-const dbManager = DatabaseManager(app.getPath("userData"));
 app.whenReady().then(() => {
 	const userDataDB = path.resolve(app.getPath("userData"), "data.db");
 	console.log("Path to userdata DB: " + userDataDB);
