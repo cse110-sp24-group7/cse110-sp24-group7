@@ -44,22 +44,21 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // filter
     const filterFiles = document.getElementById("filter");
-    const filterButton = document.getElementById("filter-button");
 
-    filterButton.addEventListener("click", function (event) {
+    filterFiles.addEventListener("change", (event) => {
         console.log("filter!");
-        const filesSection = document.querySelector(".sub-section .files");
-        const imagesSection = document.querySelector(".sub-section .images");
+        const filesSection = document.getElementById("files");
+        const imagesSection = document.getElementById("images");
 
         if(filterFiles.value == "images"){
-            filesSection.style.display = "none";
-            imagesSection.style.display = "block";
+            filesSection.classList.add('hidden');
+            imagesSection.classList.remove('hidden');
         } else if (filterFiles.value == "files") {
-            filesSection.style.display = "block";
-            imagesSection.style.display = "none";
+            filesSection.classList.remove('hidden');
+            imagesSection.classList.add('hidden');
         } else {
-            filesSection.style.display = "block";
-            imagesSection.style.display = "block";
+            filesSection.classList.remove('hidden');
+            imagesSection.classList.remove('hidden');
         }
     });
 });
@@ -68,8 +67,8 @@ function displayFile(file_name, is_img) {
 	console.log("Displaying file:", file_name, "is_img:", is_img); // Log file display
 	const fileSection =
 		is_img
-			? document.querySelector(".images .grid")
-			: document.querySelector(".files .grid");
+			? document.getElementById("images").getElementsByClassName('grid')[0]
+			: document.getElementById("files").getElementsByClassName('grid')[0];
 
 	if (!fileSection) {
 		console.error("File section not found!");
