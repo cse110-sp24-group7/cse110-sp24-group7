@@ -346,7 +346,8 @@ function getTasksDisjunctLabels(labels, trcb) {
  * @param {tasksRenderCallback} trcb - The tasks render callback to update the frontend.
  */
 function getFilteredTasks(filterCriteria, trcb) {
-	const { startTime, endTime, labels, priorities, exclusive } = filterCriteria;
+	const { startTime, endTime, labels, priorities, exclusive } =
+		filterCriteria;
 
 	let sql = `
     SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels

@@ -68,7 +68,6 @@ class Filter extends HTMLElement {
 				});
 			}
 		});
-		
 	}
 
 	/**
@@ -155,17 +154,17 @@ class Filter extends HTMLElement {
 			startTime: "",
 			endTime: "",
 			labels: JSON.parse(localStorage.getItem(`selectedlabels`)) || [],
-			priorities: JSON.parse(localStorage.getItem(`selectedpriorities`)) || [],
+			priorities:
+				JSON.parse(localStorage.getItem(`selectedpriorities`)) || [],
 			exclusive: false
 		};
-		this.dispatchEvent(new CustomEvent(
-			"filterUpdate",
-			{
+		this.dispatchEvent(
+			new CustomEvent("filterUpdate", {
 				bubbles: true,
 				composed: true,
 				detail: filters
-			}
-		));
+			})
+		);
 	}
 
 	/**

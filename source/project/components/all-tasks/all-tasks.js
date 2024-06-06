@@ -21,32 +21,32 @@ function appendTaskHTML(task, taskContainer) {
 	const currDate = new Date();
 
 	// Handle label coloring first
-	const labelBox = document.createElement('div');
-	labelBox.classList.add('label-box');
+	const labelBox = document.createElement("div");
+	labelBox.classList.add("label-box");
 	//TODO: implement label coloring here
 	taskContainer.appendChild(labelBox);
 
 	// Task preview
-	const taskPv = document.createElement('div');
-	taskPv.classList.add('task-pv');
+	const taskPv = document.createElement("div");
+	taskPv.classList.add("task-pv");
 
-	const taskName = document.createElement('h2');
+	const taskName = document.createElement("h2");
 	taskName.textContent = task.task_name;
 	taskPv.appendChild(taskName);
 
-	const taskContent = document.createElement('p');
+	const taskContent = document.createElement("p");
 	taskContent.textContent = task.task_content;
 	taskPv.appendChild(taskContent);
 
-	const taskDueDate = document.createElement('p');
+	const taskDueDate = document.createElement("p");
 	taskDueDate.textContent = `Due: ${dueDate.toDateString()}`;
 	taskPv.appendChild(taskDueDate);
 
-	const taskPriority = document.createElement('p');
+	const taskPriority = document.createElement("p");
 	taskPriority.textContent = `Priority: ${task.priority}`;
 	taskPv.appendChild(taskPriority);
 
-	const taskExpectedTime = document.createElement('p');
+	const taskExpectedTime = document.createElement("p");
 	taskExpectedTime.textContent = `Expected Time: ${task.expected_time}`;
 	taskPv.appendChild(taskExpectedTime);
 
@@ -59,35 +59,37 @@ function appendTaskHTML(task, taskContainer) {
 
 	// Edge case: total days negative (task is created after it was due...?)
 	// In this case should be no greens, all gray.
-	const graySquares = totalDays < 0 ? 10 : Math.min(Math.round((daysPast / totalDays) * 10), 10);
-    const greenSquares = 10 - graySquares;
-	
-	const timeLeftContainer = document.createElement('div');
-	timeLeftContainer.classList.add('time-left-container');
-	const daysLeftSquares = document.createElement('div');
-	daysLeftSquares.classList.add('days-left');
+	const graySquares =
+		totalDays < 0
+			? 10
+			: Math.min(Math.round((daysPast / totalDays) * 10), 10);
+	const greenSquares = 10 - graySquares;
+
+	const timeLeftContainer = document.createElement("div");
+	timeLeftContainer.classList.add("time-left-container");
+	const daysLeftSquares = document.createElement("div");
+	daysLeftSquares.classList.add("days-left");
 
 	for (let i = 0; i < graySquares; i++) {
-		const square = document.createElement('div');
-		square.classList.add('day-left-square');
-		square.style.backgroundColor = '#bdbdbd';
+		const square = document.createElement("div");
+		square.classList.add("day-left-square");
+		square.style.backgroundColor = "#bdbdbd";
 		daysLeftSquares.appendChild(square);
 	}
 
 	for (let i = 0; i < greenSquares; i++) {
-		const square = document.createElement('div');
-		square.classList.add('day-left-square');
-		square.style.backgroundColor = '#4caf50';
+		const square = document.createElement("div");
+		square.classList.add("day-left-square");
+		square.style.backgroundColor = "#4caf50";
 		daysLeftSquares.appendChild(square);
 	}
 
-	const daysLeftText = document.createElement('div');
-	daysLeftText.classList.add('days-left-text');
-	const daysLeftTextContent = document.createElement('h3');
-	if(dueDate > currDate){
+	const daysLeftText = document.createElement("div");
+	daysLeftText.classList.add("days-left-text");
+	const daysLeftTextContent = document.createElement("h3");
+	if (dueDate > currDate) {
 		daysLeftTextContent.textContent = `${daysLeft} days left`;
-	}
-	else{
+	} else {
 		daysLeftTextContent.textContent = `${daysLeft == 0 ? 0 : -daysLeft} days overdue`;
 	}
 
@@ -105,53 +107,53 @@ function appendTaskHTML(task, taskContainer) {
  * @param {Array} tasks - an array of task objects.
  */
 function displayTasks(tasks) {
-	const calendar = document.querySelector('.calendar');
-	calendar.innerHTML = '';  // Clear the calendar content
+	const calendar = document.querySelector(".calendar");
+	calendar.innerHTML = ""; // Clear the calendar content
 	// const dayTemplates = document.querySelectorAll('.day');
 
 	let currDate = null;
 	let currDayContainer = null;
-    let currDayDate = '';
-	tasks.forEach(task => {
+	let currDayDate = "";
+	tasks.forEach((task) => {
 		let needUpdate = false;
 		let flushed = false;
 		const dueDate = new Date(task.due_date);
-		if(currDate == null){
+		if (currDate == null) {
 			needUpdate = true;
 			currDate = dueDate;
 		}
 		// dueDate.setDate(dueDate.getDate() + 1);
-		const dueYear = dueDate.toLocaleString('en-US', {year: 'numeric'});
-		const dueMonth = dueDate.toLocaleString('en-US', { month: 'long' });
-		const dueDay = dueDate.toLocaleString('en-US', { day: 'numeric'});
+		const dueYear = dueDate.toLocaleString("en-US", { year: "numeric" });
+		const dueMonth = dueDate.toLocaleString("en-US", { month: "long" });
+		const dueDay = dueDate.toLocaleString("en-US", { day: "numeric" });
 
-		const currYear = currDate.toLocaleString('en-US', {year: 'numeric'});
-		const currMonth = currDate.toLocaleString('en-US', { month: 'long' });
-		const currDay = currDate.toLocaleString('en-US', { day: 'numeric'});
+		const currYear = currDate.toLocaleString("en-US", { year: "numeric" });
+		const currMonth = currDate.toLocaleString("en-US", { month: "long" });
+		const currDay = currDate.toLocaleString("en-US", { day: "numeric" });
 
 		// Displays year divider
-		if(needUpdate || dueYear != currYear){
-			if(!flushed && currDayContainer != null) {
+		if (needUpdate || dueYear != currYear) {
+			if (!flushed && currDayContainer != null) {
 				calendar.appendChild(currDayContainer);
 				flushed = true;
 				currDate = dueDate;
 			}
-			const yearDivider = document.createElement('div');
+			const yearDivider = document.createElement("div");
 			// TODO: add styling for year-divider
-			yearDivider.classList.add('month-divider');
+			yearDivider.classList.add("month-divider");
 			yearDivider.textContent = dueYear;
 			calendar.appendChild(yearDivider);
 		}
 
 		// Displays month divider
 		if (needUpdate || dueMonth != currMonth) {
-			if(!flushed && currDayContainer != null) {
+			if (!flushed && currDayContainer != null) {
 				calendar.appendChild(currDayContainer);
 				flushed = true;
 				currDate = dueDate;
 			}
-			const monthDivider = document.createElement('div');
-			monthDivider.classList.add('month-divider');
+			const monthDivider = document.createElement("div");
+			monthDivider.classList.add("month-divider");
 			monthDivider.textContent = dueMonth;
 			calendar.appendChild(monthDivider);
 		}
@@ -159,29 +161,32 @@ function displayTasks(tasks) {
 		// Checks day container to see if a new one is required.
 		if (needUpdate || dueDay != currDay) {
 			// Flush the current day container
-			if(!flushed && currDayContainer != null) {
+			if (!flushed && currDayContainer != null) {
 				calendar.appendChild(currDayContainer);
 				flushed = true;
 				currDate = dueDate;
 			}
 
 			// Create a new day container
-			const dayOfWeek = dueDate.toLocaleDateString('en-US', { weekday: 'short' }).toLowerCase().slice(0, 3);
-			currDayContainer = document.createElement('div');
-            currDayContainer.classList.add('day');
-            currDayContainer.id = dayOfWeek;
-			
-			const dayTitle = document.createElement('h2');
-            dayTitle.textContent = `${dayOfWeek.toUpperCase()}, ${dueMonth} ${dueDay}`;
-            currDayContainer.appendChild(dayTitle);
+			const dayOfWeek = dueDate
+				.toLocaleDateString("en-US", { weekday: "short" })
+				.toLowerCase()
+				.slice(0, 3);
+			currDayContainer = document.createElement("div");
+			currDayContainer.classList.add("day");
+			currDayContainer.id = dayOfWeek;
+
+			const dayTitle = document.createElement("h2");
+			dayTitle.textContent = `${dayOfWeek.toUpperCase()}, ${dueMonth} ${dueDay}`;
+			currDayContainer.appendChild(dayTitle);
 			// const lineBreak = document.createElement('br');
 			// currDayContainer.appendChild(lineBreak);
 			// ALERT: I skipped day-date div here
 		}
 
 		// Create task container
-		let taskContainer = document.createElement('div');
-		taskContainer.classList.add('task-container');
+		let taskContainer = document.createElement("div");
+		taskContainer.classList.add("task-container");
 		taskContainer = appendTaskHTML(task, taskContainer);
 		// Append task to current day.
 		currDayContainer.appendChild(taskContainer);
@@ -192,14 +197,12 @@ function displayTasks(tasks) {
 	});
 
 	// Flush last remaining container.
-	if(currDayContainer != null) {
+	if (currDayContainer != null) {
 		calendar.appendChild(currDayContainer);
-
 	}
 }
 
-
-function updateTasklist(){
+function updateTasklist() {
 	window.api.getFilteredTasks(filters, displayTasks);
 }
 
@@ -228,8 +231,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 	});
 
 	document.querySelector(".menu-icon").addEventListener("click", () => {
-        window.location = "../mainview/mainview.html";
-    });
+		window.location = "../mainview/mainview.html";
+	});
 
 	const testTasks = [
 		{
@@ -300,5 +303,4 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 	updateTasklist();
 	// displayTasks(testTasks);
-
 });

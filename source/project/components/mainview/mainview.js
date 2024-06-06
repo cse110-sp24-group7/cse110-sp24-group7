@@ -305,7 +305,7 @@ function updateMainview() {
 document.addEventListener("DOMContentLoaded", async () => {
 	let currentWeekOffset = 0;
 
-    // Establish database connection
+	// Establish database connection
 	await window.path.getUserData().then((userData) => {
 		console.log("Renderer access userdata: " + userData);
 		window.api.connect(userData, () => {
@@ -353,9 +353,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 		setWeeklyView(currentWeekOffset);
 	});
 
-    document.querySelector(".menu-icon").addEventListener("click", () => {
-        window.location = "../all-tasks/all-tasks.html";
-    });
+	document.querySelector(".menu-icon").addEventListener("click", () => {
+		window.location = "../all-tasks/all-tasks.html";
+	});
 
 	// updateMainview();
 });
