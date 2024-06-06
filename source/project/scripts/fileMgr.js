@@ -1,6 +1,5 @@
 const path = require("path");
 const fs = require('fs');
-const unlink = require('node:fs');
 
 const FileManager = (data_location) => {
     const route = path.join(data_location, 'assets');
@@ -12,6 +11,13 @@ const FileManager = (data_location) => {
     const file_route = path.join(route, 'files');
     if (!fs.existsSync(file_route)) fs.mkdirSync(file_route);
 
+    //check if file exists 
+    const exists = (file_name, is_img=false) => {
+        const location = getFileLocation(file_name, is_img);
+        return fs.existsSync(location);
+    }
+
+    //check where a file with its name and type would be located
     const getFileLocation = (file_name, is_img=false) => {
         let fileLocation;
         if(is_img) fileLocation = path.join(img_route, file_name);
@@ -29,7 +35,7 @@ const FileManager = (data_location) => {
         return fs.readdirSync(img_route);
     } 
     
-    //get file as file object (missing type and )
+    //get file contents
     const getContent = async (file_name, is_img=false) => {
         const location = getFileLocation(file_name, is_img);
         const blob = new Blob([fs.readFileSync(location)]);
@@ -58,7 +64,7 @@ const FileManager = (data_location) => {
             console.log(`${file_name} was deleted`);
         }); 
     }
-    return {getFileLocation, getFileNames, getImageNames, getContent, add, remove};
+    return {exists, getFileLocation, getFileNames, getImageNames, getContent, add, remove};
 }
 
 module.exports = {
