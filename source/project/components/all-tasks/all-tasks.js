@@ -10,7 +10,7 @@ let filters = {
 
 /**
  * Generates an HTML element for task preview given a task object
- * @param {import("../../scripts/database/dbMgr").task} task - the task to append
+ * @param {Task} task - the task to append
  * @param {Object} taskContainer - the HTML element to append tasks to.
  * @returns {Object} taskContainer - the HTML element with appended task
  */
@@ -104,7 +104,7 @@ function appendTaskHTML(task, taskContainer) {
 
 /**
  * Generates the dates to show for each row of visible tasks
- * @param {Array} tasks - an array of task objects.
+ * @param {Task[]} tasks - an array of task objects.
  */
 function displayTasks(tasks) {
 	const calendar = document.querySelector(".calendar");

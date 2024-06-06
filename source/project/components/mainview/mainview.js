@@ -12,7 +12,7 @@ let labelColorMap = new Map();
 
 /**
  * Adds tasks to the task containers.
- * @param {import("../../scripts/database/dbMgr").task[]} tasks - an array of task objects.
+ * @param {Task[]} tasks - an array of task objects.
  */
 function tasksRendererCallback(tasks) {
 	// Clear all existing task entries first
@@ -121,7 +121,7 @@ function openTaskPopupForEdit(task_id) {
 
 /**
  * Adds journal entries to the journal containers.
- * @param {import("../../scripts/database/dbMgr").entry[]} entries - an array of journal entry objects.
+ * @param {Entry[]} entries - an array of journal entry objects.
  */
 function entriesRendererCallback(entries) {
 	// Clear all existing journal entries first

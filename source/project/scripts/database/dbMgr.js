@@ -28,7 +28,7 @@ function connect(pathToDB, callback) {
 
 /**
  * An object representing a task
- * @typedef {Object} task
+ * @typedef {Object} Task
  * @property {string} task_id - the task's unique id.
  * @property {string} task_name - the task's name or title.
  * @property {string} task_content - the task's content.
@@ -41,7 +41,7 @@ function connect(pathToDB, callback) {
 
 /**
  * An object representing a journal entry
- * @typedef {Object} entry
+ * @typedef {Object} Entry
  * @property {string} entry_id - the entry's unique id.
  * @property {string} entry_title - the entry's title.
  * @property {string} entry_content - the entry's content.
