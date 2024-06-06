@@ -3,22 +3,22 @@ let fileMgr;
 document.addEventListener("DOMContentLoaded", async function () {
 	const uploadForm = document.getElementById("uploadForm");
 	const fileInput = document.getElementById("file");
+	const searchInput = document.getElementById("search-input");
 
 	fileMgr = await window.path.getUserData().then((appDataPath) => {
 		console.log("App data path:", appDataPath); // Log the path
 		let manager = window.file.fileManager(appDataPath);
 		return manager;
 	});
-	
-	const files = fileMgr.getFileNames();
-	const images =  fileMgr.getImageNames();
-	
 
-	for(let i in files) {
+	const files = fileMgr.getFileNames();
+	const images = fileMgr.getImageNames();
+
+	for (let i in files) {
 		displayFile(files[i], false);
 	}
 
-	for(let i in images) {
+	for (let i in images) {
 		displayFile(images[i], true);
 	}
 
@@ -29,11 +29,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 			for (let file of files) {
 				console.log("Uploading file:", file.name); // Log the file name
 				try {
-					fileMgr.add(file)
+					fileMgr.add(file);
 					console.log(`File added: ${file.name}`);
-					const is_img = file.type.includes('image');
+					const is_img = file.type.includes("image");
 					displayFile(file.name, is_img);
-				} catch(err) {
+				} catch (err) {
 					console.error("Error adding file:", err);
 				}
 			}
@@ -42,33 +42,63 @@ document.addEventListener("DOMContentLoaded", async function () {
 		}
 	});
 
-    // filter
-    const filterFiles = document.getElementById("filter");
+	// filter
+	const filterFiles = document.getElementById("filter");
 
-    filterFiles.addEventListener("change", (event) => {
-        console.log("filter!");
-        const filesSection = document.getElementById("files");
-        const imagesSection = document.getElementById("images");
+	filterFiles.addEventListener("change", (event) => {
+		console.log("filter!");
+		const filesSection = document.getElementById("files");
+		const imagesSection = document.getElementById("images");
 
-        if(filterFiles.value == "images"){
-            filesSection.classList.add('hidden');
-            imagesSection.classList.remove('hidden');
-        } else if (filterFiles.value == "files") {
-            filesSection.classList.remove('hidden');
-            imagesSection.classList.add('hidden');
-        } else {
-            filesSection.classList.remove('hidden');
-            imagesSection.classList.remove('hidden');
-        }
-    });
+		if (filterFiles.value == "images") {
+			filesSection.classList.add("hidden");
+			imagesSection.classList.remove("hidden");
+		} else if (filterFiles.value == "files") {
+			filesSection.classList.remove("hidden");
+			imagesSection.classList.add("hidden");
+		} else {
+			filesSection.classList.remove("hidden");
+			imagesSection.classList.remove("hidden");
+		}
+	});
+
+	// search
+	searchInput.addEventListener("input", function () {
+		const query = searchInput.value.toLowerCase();
+		console.log("Searching for:", query); // Log search query
+		searchFiles(query);
+
+	});
 });
+
+function searchFiles(query) {
+	const files = fileMgr.getFileNames();
+	const images = fileMgr.getImageNames();
+
+	const fileSection = document.getElementById("files").getElementsByClassName("grid")[0];
+	const imageSection = document.getElementById("images").getElementsByClassName("grid")[0];
+
+	fileSection.innerHTML = "";
+	imageSection.innerHTML = "";
+
+	for (let i in files) {
+		if (files[i].toLowerCase().includes(query)) {
+			displayFile(files[i], false);
+		}
+	}
+
+	for (let i in images) {
+		if (images[i].toLowerCase().includes(query)) {
+			displayFile(images[i], true);
+		}
+	}
+}
 
 function displayFile(file_name, is_img) {
 	console.log("Displaying file:", file_name, "is_img:", is_img); // Log file display
-	const fileSection =
-		is_img
-			? document.getElementById("images").getElementsByClassName('grid')[0]
-			: document.getElementById("files").getElementsByClassName('grid')[0];
+	const fileSection = is_img
+		? document.getElementById("images").getElementsByClassName("grid")[0]
+		: document.getElementById("files").getElementsByClassName("grid")[0];
 
 	if (!fileSection) {
 		console.error("File section not found!");
@@ -78,8 +108,8 @@ function displayFile(file_name, is_img) {
 	const fileElement = document.createElement("button");
 	fileElement.classList.add("file-item");
 	fileElement.addEventListener("click", function (event) {
-        window.open(fileMgr.getFileLocation(file_name, is_img))
-    });
+		window.open(fileMgr.getFileLocation(file_name, is_img));
+	});
 
 	if (is_img) {
 		const img = document.createElement("img");
