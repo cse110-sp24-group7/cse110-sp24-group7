@@ -2,7 +2,6 @@ const path = require("path");
 const fs = require('fs');
 const unlink = require('node:fs');
 
-//images are getting corrupted when attempting to add them
 const FileManager = (data_location) => {
     const route = path.join(data_location, 'assets');
     if (!fs.existsSync(route)) fs.mkdirSync(route);
@@ -42,20 +41,19 @@ const FileManager = (data_location) => {
         const is_img = file.type.includes('image');
         const fileLocation = getFileLocation(file.name, is_img);
         if (fs.existsSync(fileLocation)) return {errorCode: 403, errorMsg: `A file with the name ${file.name} already exists. No new file was created.`};
-        const fileReader = new FileReader();
-        fileReader.onload = function (e) { 
-            fs.writeFileSync(fileLocation, e.target.result)
-        };
-        if(!is_img) fileReader.readAsText(file);
-        else fileReader.readAsDataURL(file);
-        console.log('file added at ' + fileLocation);
+        try {
+            fs.copyFileSync(file.path, fileLocation);
+            console.log('file added at ' + fileLocation);
+        }catch(err){
+            throw err;
+        }
     }
     
     //remove file from directory
     const remove = (file_name, is_img=false) => {
         const fileLocation = getFileLocation(file_name, is_img)
         if (!fs.existsSync(fileLocation)) return {errorCode: 404, errorMsg: `A file with the name ${file_name} was not found. No files were deleted.`};
-        unlink(fileLocation, (err) => {
+        fs.unlink(fileLocation, (err) => {
             if (err) throw err;
             console.log(`${file_name} was deleted`);
         }); 
