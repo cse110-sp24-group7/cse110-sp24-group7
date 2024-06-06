@@ -4,12 +4,22 @@ const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 module.exports = {
   packagerConfig: {
     asar: true,
+    icon: 'source/project/assets/res/icons/App',
+    name: 'Akatsuki 7 Dev Journal'
   },
   rebuildConfig: {},
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {},
+      config: {
+        icon: 'source/project/assets/res/icons/App.ico',
+      },
+    },
+    {
+      name: '@electron-forge/maker-dmg',
+      config: {
+        icon: 'source/project/assets/res/icons/App.icns',
+      },
     },
     {
       name: '@electron-forge/maker-zip',

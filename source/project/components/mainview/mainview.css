@@ -40,6 +40,19 @@
 	cursor: pointer;
 }
 
+/* Styling the All Tasks button */
+.menu-icon button {
+	font-family: "Roboto Mono";
+	font-size: 18px;
+	background-color: transparent;
+	border: none;
+	transition: color 0.5s ease;
+}
+.menu-icon button:hover {
+	color: #8b0000;
+	cursor: pointer;
+}
+
 #today-button {
 	background-color: #eee;
 	padding: 5px;
