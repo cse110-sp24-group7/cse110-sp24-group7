@@ -8,8 +8,13 @@
 .filter-container {
 	display: flex;
 	gap: 5px;
+	margin-right: 250px;
 }
 
+img {
+	width: 25px;
+	height: 25px;
+}
 .holder {
 	position: relative;
 	width: 130px;
@@ -19,20 +24,20 @@
 	cursor: pointer;
 	padding: 0;
 	margin: 0;
-	height: 30px;
+	height: 25px;
 	display: flex;
 }
 
 #resetBtn {
 	position: relative;
-	width: 130px;
+	width: 100px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
 	background-color: white;
 	cursor: pointer;
 	padding: 0;
 	margin: 0;
-	height: 30px;
+	height: 25px;
 	display: flex;
 }
 
@@ -69,10 +74,6 @@
 .dropdown-content div:hover {
 	background-color: #ddd;
 }
-
-/* .dropdown-content .priority-item {
-  color: aqua;
-} */
 
 .priority-item {
 	cursor: pointer;

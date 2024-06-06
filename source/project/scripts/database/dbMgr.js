@@ -46,6 +46,7 @@ function connect(pathToDB, callback) {
  * @property {string} entry_title - the entry's title.
  * @property {string} entry_content - the entry's content.
  * @property {string} creation_date - the entry's creation date, in string format.
+ * @property {string[]} labels - the entry's labels
  */
 
 /**
@@ -214,7 +215,8 @@ function getTasks(trcb) {
     SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels
     FROM tasks t
     LEFT JOIN task_labels l ON t.task_id = l.task_id
-    GROUP BY t.task_id;
+    GROUP BY t.task_id
+    ORDER BY t.due_date ASC;
     `;
 
 	db.all(sql, [], (err, rows) => {
@@ -391,6 +393,8 @@ function getFilteredTasks(filterCriteria, trcb) {
 		}
 		// Disjunctive (OR) filtering: Ensure the task has at least one of the specified labels
 	}
+
+	sql += ` ORDER BY t.due_date ASC`;
 
 	db.all(sql, params, (err, rows) => {
 		if (err) {
@@ -767,18 +771,57 @@ function addLabels(labels, colors, lrcb) {
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  */
 function editTask(task, trcb) {
-	const sql = `UPDATE tasks SET
-            task_name = '${task.task_name}',
-            task_content = '${task.task_content}',
-            creation_date = '${task.creation_date}',
-            due_date = '${task.due_date}',
-            priority = '${task.priority}',
-            expected_time = '${task.expected_time}'
-        WHERE task_id = '${task.task_id}';`;
-	db.run(sql, [], (err) => {
-		if (err) {
-			throw err;
-		}
+	const taskSql = `UPDATE tasks SET
+            task_name = ?,
+            task_content = ?,
+            creation_date = ?,
+            due_date = ?,
+            priority = ?,
+            expected_time = ?
+        WHERE task_id = ?;`;
+
+	const deleteLabelsSql = `DELETE FROM task_labels WHERE task_id = ?;`;
+
+	const insertLabelSql = `INSERT INTO task_labels (task_id, label) VALUES (?, ?);`;
+
+	db.serialize(() => {
+		// Update the task details
+		db.run(
+			taskSql,
+			[
+				task.task_name,
+				task.task_content,
+				task.creation_date,
+				task.due_date,
+				task.priority,
+				task.expected_time,
+				task.task_id
+			],
+			(err) => {
+				if (err) {
+					throw err;
+				}
+			}
+		);
+
+		// Delete existing labels
+		db.run(deleteLabelsSql, [task.task_id], (err) => {
+			if (err) {
+				throw err;
+			}
+		});
+
+		// Insert updated labels
+		const stmt = db.prepare(insertLabelSql);
+		task.labels.forEach((label) => {
+			stmt.run([task.task_id, label], (err) => {
+				if (err) {
+					throw err;
+				}
+			});
+		});
+		stmt.finalize();
+
 		getTasks(trcb);
 	});
 }
@@ -951,6 +994,75 @@ function deleteLabels(labels, lrcb) {
 	});
 }
 
+/**
+ * Fetches a task from the database based on the task_id.
+ * @param {string} task_id - the ID of the task to fetch.
+ * @param {function} callback - the callback function to handle the resulting task object.
+ */
+function fetchTask(task_id, callback) {
+	const sql = `
+        SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels
+        FROM tasks t
+        LEFT JOIN task_labels l ON t.task_id = l.task_id
+        WHERE t.task_id = ?
+        GROUP BY t.task_id;
+    `;
+
+	db.get(sql, [task_id], (err, row) => {
+		if (err) {
+			throw err;
+		}
+
+		const task = row
+			? {
+					task_id: row.task_id,
+					task_name: row.task_name,
+					task_content: row.task_content,
+					creation_date: row.creation_date,
+					due_date: row.due_date,
+					priority: row.priority,
+					expected_time: row.expected_time,
+					labels: row.labels ? row.labels.split(",") : []
+				}
+			: null;
+
+		callback(task);
+	});
+}
+
+/**
+ * Fetches an entry from the database based on the entry_id.
+ * @param {string} entry_id - the ID of the entry to fetch.
+ * @param {function} callback - the callback function to handle the resulting entry object.
+ */
+function fetchEntry(entry_id, callback) {
+	const sql = `
+        SELECT e.entry_id, e.entry_title, e.entry_content, e.creation_date, GROUP_CONCAT(l.label) as labels
+        FROM entries e
+        LEFT JOIN entry_labels l ON e.entry_id = l.entry_id
+        WHERE e.entry_id = ?
+        GROUP BY e.entry_id;
+    `;
+
+	db.get(sql, [entry_id], (err, row) => {
+		if (err) {
+			throw err;
+		}
+
+		const entry = row
+			? {
+					entry_id: row.entry_id,
+					entry_title: row.entry_title,
+					entry_content: row.entry_content,
+					creation_date: row.creation_date,
+					labels: row.labels ? row.labels.split(",") : []
+				}
+			: null;
+
+		callback(entry);
+	});
+}
+
 module.exports = {
 	init,
 	connect,
@@ -975,5 +1087,7 @@ module.exports = {
 	addLabel,
 	addLabels,
 	deleteLabel,
-	deleteLabels
+	deleteLabels,
+	fetchEntry,
+	fetchTask
 };

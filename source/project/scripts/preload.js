@@ -103,6 +103,14 @@ const getFilteredEntries = (filterCriteria, ercb) => {
 	return dbMgr.getFilteredEntries(filterCriteria, ercb);
 };
 
+const fetchTask = (task_id, callback) => {
+	return dbMgr.fetchTask(task_id, callback);
+};
+
+const fetchEntry = (entry_id, callback) => {
+	return dbMgr.fetchEntry(entry_id, callback);
+};
+
 contextBridge.exposeInMainWorld("api", {
 	init,
 	connect,
@@ -127,5 +135,7 @@ contextBridge.exposeInMainWorld("api", {
 	deleteLabel,
 	deleteLabels,
 	getFilteredTasks,
-	getFilteredEntries
+	getFilteredEntries,
+	fetchTask,
+	fetchEntry
 });
