@@ -76,8 +76,11 @@ function displayFile(file_name, is_img) {
 		return;
 	}
 
-	const fileElement = document.createElement("div");
+	const fileElement = document.createElement("button");
 	fileElement.classList.add("file-item");
+	fileElement.addEventListener("click", function (event) {
+        window.open(fileMgr.getFileLocation(file_name, is_img))
+    });
 
 	if (is_img) {
 		const img = document.createElement("img");
@@ -92,7 +95,7 @@ function displayFile(file_name, is_img) {
 		fileElement.appendChild(icon);
 	}
 
-	const title = document.createElement("div");
+	const title = document.createElement("p");
 	title.classList.add("file-title");
 	title.textContent = file_name;
 	fileElement.appendChild(title);
