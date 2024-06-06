@@ -57,7 +57,9 @@ function appendTaskHTML(task, taskContainer) {
 	const daysLeft = Math.floor((dueDate - currDate) / msDay);
 	const daysPast = totalDays - daysLeft;
 
-	const graySquares = Math.min(Math.round((daysPast / totalDays) * 10), 10);
+	// Edge case: total days negative (task is created after it was due...?)
+	// In this case should be no greens, all gray.
+	const graySquares = totalDays < 0 ? 10 : Math.min(Math.round((daysPast / totalDays) * 10), 10);
     const greenSquares = 10 - graySquares;
 	
 	const timeLeftContainer = document.createElement('div');
@@ -188,6 +190,12 @@ function displayTasks(tasks) {
 
 		// ALERT: division between new and old method
 	});
+
+	// Flush last remaining container.
+	if(currDayContainer != null) {
+		calendar.appendChild(currDayContainer);
+
+	}
 }
 
 
