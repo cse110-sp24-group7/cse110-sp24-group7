@@ -47,26 +47,6 @@ function tasksRendererCallback(tasks) {
     taskExpectedTime.textContent = `Expected Time: ${task.expected_time}`;
     taskPv.appendChild(taskExpectedTime);
 
-    const editButton = document.createElement("button");
-    editButton.textContent = "Edit";
-    editButton.classList.add("edit-task"); // Adding class for event delegation
-    taskPv.appendChild(editButton);
-
-    // Add Delete Button
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "Delete";
-    deleteButton.addEventListener("click", () => {
-      const taskId = task.task_id;
-  
-      // Remove the task from local storage
-      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-      tasks = tasks.filter(t => t.task_id !== taskId);
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-
-      taskPv.remove();
-    });
-    taskPv.appendChild(deleteButton);
-
 		// for each label, create a small colored box representing that label
 		if (task.labels.length > 0) {
 			const taskLabels = document.createElement("div");
@@ -162,25 +142,6 @@ function entriesRendererCallback(entries) {
 		const journalDesc = document.createElement("p");
 		journalDesc.textContent = entry.entry_content;
 		journalPv.appendChild(journalDesc);
-
-    const editButton = document.createElement("button");
-    editButton.textContent = "Edit";
-    editButton.classList.add("edit-entry"); // Adding class for event delegation
-    journalPv.appendChild(editButton);
-
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "Delete";
-    deleteButton.addEventListener("click", () => {
-      const entryId = entry.entry_id;
-  
-      // Remove the entry from local storage
-      let entries = JSON.parse(localStorage.getItem("journalData")) || [];
-      entries = entries.filter(e => e.entry_id !== entryId);
-      localStorage.setItem("journalData", JSON.stringify(entries));
-
-      journalPv.remove();
-    });
-    journalPv.appendChild(deleteButton);
 
 		if (entry.labels.length > 0) {
 			const journalLabels = document.createElement("div");
