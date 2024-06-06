@@ -97,7 +97,7 @@ class JournalPopup extends HTMLElement {
 
 	/**
 	 * @method journalEdit
-	 * @param {import("../../scripts/database/dbMgr").entry} entry - the journal entry to edit
+	 * @param {Entry} entry - the journal entry to edit
 	 * @description Populates the popup component with data from journalPv when edit button is
 	 * clicked.
 	 */

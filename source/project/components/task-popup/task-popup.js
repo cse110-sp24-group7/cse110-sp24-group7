@@ -89,7 +89,7 @@ class TaskPopup extends HTMLElement {
 
 	/**
 	 * @method taskEdit
-	 * @param {import("../../scripts/database/dbMgr").task} task - the task to edit
+	 * @param {Task} task - the task to edit
 	 * @description Populates the popup component with data from taskpv when edit button is
 	 * clicked.
 	 */
