@@ -189,11 +189,11 @@ function entriesRendererCallback(entries) {
 
     // Find the appropriate day container based on the entry's creation date
     // Assuming creation_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
-    const creationDate = new Date(entry.creation_date);
-    const dayIndex = creationDate.getDay(); // Sunday - Saturday : 0 - 6
-    const dayContainer = document.querySelector(
-      `.day${dayIndex + 1} .journal-container`,
-    );
+    	const creationDate = new Date(entry.creation_date);
+    	const dayIndex = creationDate.getDay(); // Sunday - Saturday : 0 - 6
+    	const dayContainer = document.querySelector(
+      		`.day${dayIndex + 1} .journal-container`,
+    	);
 
 		if (dayContainer) {
 			dayContainer.appendChild(journalPv);
