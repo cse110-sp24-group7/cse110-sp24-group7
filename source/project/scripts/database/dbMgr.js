@@ -28,7 +28,7 @@ function connect(pathToDB, callback) {
 
 /**
  * An object representing a task
- * @typedef {Object} task
+ * @typedef {Object} Task
  * @property {string} task_id - the task's unique id.
  * @property {string} task_name - the task's name or title.
  * @property {string} task_content - the task's content.
@@ -41,7 +41,7 @@ function connect(pathToDB, callback) {
 
 /**
  * An object representing a journal entry
- * @typedef {Object} entry
+ * @typedef {Object} Entry
  * @property {string} entry_id - the entry's unique id.
  * @property {string} entry_title - the entry's title.
  * @property {string} entry_content - the entry's content.
@@ -215,7 +215,8 @@ function getTasks(trcb) {
     SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels
     FROM tasks t
     LEFT JOIN task_labels l ON t.task_id = l.task_id
-    GROUP BY t.task_id;
+    GROUP BY t.task_id
+    ORDER BY t.due_date ASC;
     `;
 
 	db.all(sql, [], (err, rows) => {
@@ -392,6 +393,8 @@ function getFilteredTasks(filterCriteria, trcb) {
 		}
 		// Disjunctive (OR) filtering: Ensure the task has at least one of the specified labels
 	}
+
+	sql += ` ORDER BY t.due_date ASC`;
 
 	db.all(sql, params, (err, rows) => {
 		if (err) {
@@ -1085,6 +1088,6 @@ module.exports = {
 	addLabels,
 	deleteLabel,
 	deleteLabels,
-  fetchEntry,
-  fetchTask
+	fetchEntry,
+	fetchTask
 };

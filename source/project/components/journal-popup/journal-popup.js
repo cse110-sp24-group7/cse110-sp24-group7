@@ -46,7 +46,7 @@ class JournalPopup extends HTMLElement {
 		];
 
 		this.editMode = false; // Track whether we're editing an existing journal
-    	this.editEntryId = null; // Track the ID of the journal being edited
+		this.editEntryId = null; // Track the ID of the journal being edited
 
 		// get the css file and append it to the shadow root
 		const style = document.createElement("link");
@@ -87,58 +87,53 @@ class JournalPopup extends HTMLElement {
 				this.labelToColor = map;
 				// populate the labels from database
 				this.populateLabels();
-				this.dispatchEvent(new CustomEvent('entryReady', {
-					bubbles: true,
-					composed: true
-				}));
+				this.dispatchEvent(
+					new CustomEvent("entryReady", {
+						bubbles: true,
+						composed: true
+					})
+				);
 			});
 		};
 	}
 
-	/** 
-   	 * @method journalEdit
-	 * @param {import("../../scripts/database/dbMgr").entry} entry - the journal entry to edit
-   	 * @description Populates the popup component with data from journalPv when edit button is 
-   	 * clicked.
-  	 */
-	journalEdit(entry){
-		this.editMode = true; 
+	/**
+	 * @method journalEdit
+	 * @param {Entry} entry - the journal entry to edit
+	 * @description Populates the popup component with data from journalPv when edit button is
+	 * clicked.
+	 */
+	journalEdit(entry) {
+		this.editMode = true;
 		this.editEntryId = entry.entry_id;
-	
+
 		// Selects the ids from the shadow DOM of the current componenet
 		const titleInput = this.shadowRoot.getElementById("title");
 		const descriptionText = this.shadowRoot.getElementById("description");
 		const creationDateInput = this.shadowRoot.getElementById("dueDate");
-		
+
 		// Populate the journal popup with the entryDetails
 		titleInput.value = entry.entry_title;
 		descriptionText.value = entry.entry_content;
 		creationDateInput.value = entry.creation_date;
-	
+
 		// Clear and populate selectedLabels set with task labels
 		this.selectedLabels.clear();
-		entry.labels.forEach(label => {
+		entry.labels.forEach((label) => {
 			this.selectedLabels.add(label);
 		});
 		this.populateLabels();
 
 		// Show popup for editing
 		this.style.display = "block";
-	  }
+	}
 
 	/**
 	 * @method connectedCallback
 	 * @description Lifecycle method that is called when the component is inserted into the DOM.
 	 * It sets up event listeners for form submission within the shadow DOM.
 	 */
-	connectedCallback() {
-		// event listener to form submission
-		setTimeout(() => {
-			this.shadowRoot
-				.querySelector("#journalForm")
-				.addEventListener("submit", this.onSubmit.bind(this));
-		}, 3000);
-	}
+	connectedCallback() {}
 
 	/**
 	 * @method populateLabels
@@ -209,6 +204,9 @@ class JournalPopup extends HTMLElement {
 									});
 								}
 							);
+						} else {
+							this.selectedLabels.add(newLabel);
+							this.populateLabels();
 						}
 					});
 				}
@@ -392,23 +390,25 @@ class JournalPopup extends HTMLElement {
 
 		// get the users input from form
 		const journalData = {
-			entry_id: this.editMode ? this.editEntryId : Math.random().toString(36).substr(2, 9),
+			entry_id: this.editMode
+				? this.editEntryId
+				: Math.random().toString(36).substr(2, 9),
 			entry_title: this.shadowRoot.querySelector("#title").value,
 			entry_content: this.shadowRoot.querySelector("#description").value,
 			creation_date: this.shadowRoot.querySelector("#dueDate").value,
 			labels: Array.from(this.selectedLabels)
 		};
 
-		if(this.editMode){
+		if (this.editMode) {
 			window.api.editEntry(journalData, (entries) => {
 				this.saveJournalsToStorage(entries);
 			});
-		}else{
+		} else {
 			window.api.addEntry(journalData, (entries) => {
 				this.saveJournalsToStorage(entries);
 			});
 		}
-		
+
 		event.target.reset();
 	}
 }

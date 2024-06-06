@@ -38,35 +38,36 @@ class Filter extends HTMLElement {
 	 * @returns {void}
 	 */
 	populateLabels() {
-		const labels = this.getLabelsFromStorage();
 		const labelContainer = this.shadowRoot.getElementById("labels");
 
-		// Clear the label container before populating it
-		labelContainer.innerHTML = "";
+		window.api.getLabels((labels) => {
+			// Clear the label container before populating it
+			labelContainer.innerHTML = "";
 
-		// Check if labels is a non-empty array and populate the dropdown
-		if (Array.isArray(labels) && labels.length > 0) {
-			labels.forEach((label) => {
-				const div = document.createElement("div");
-				div.classList.add("label-item");
+			// Check if labels is a non-empty array and populate the dropdown
+			if (Array.isArray(labels) && labels.length > 0) {
+				labels.forEach((label) => {
+					const div = document.createElement("div");
+					div.classList.add("label-item");
 
-				const checkbox = document.createElement("input");
-				checkbox.type = "checkbox";
-				checkbox.classList.add("checkbox");
+					const checkbox = document.createElement("input");
+					checkbox.type = "checkbox";
+					checkbox.classList.add("checkbox");
 
-				const labelBadge = document.createElement("span");
-				labelBadge.classList.add("theLabels");
-				labelBadge.textContent = label;
+					const labelBadge = document.createElement("span");
+					labelBadge.classList.add("theLabels");
+					labelBadge.textContent = label;
 
-				div.appendChild(checkbox);
-				div.appendChild(labelBadge);
-				div.addEventListener("click", (e) =>
-					this.toggleSelection(e, div, "labels")
-				);
+					div.appendChild(checkbox);
+					div.appendChild(labelBadge);
+					div.addEventListener("click", (e) =>
+						this.toggleSelection(e, div, "labels")
+					);
 
-				labelContainer.appendChild(div);
-			});
-		}
+					labelContainer.appendChild(div);
+				});
+			}
+		});
 	}
 
 	/**
@@ -147,6 +148,23 @@ class Filter extends HTMLElement {
 
 		// Update local storage with the new selection state
 		localStorage.setItem(`selected${type}`, JSON.stringify(selectedItems));
+
+		// Dispatch event to update all tasks view
+		const filters = {
+			startTime: "",
+			endTime: "",
+			labels: JSON.parse(localStorage.getItem(`selectedlabels`)) || [],
+			priorities:
+				JSON.parse(localStorage.getItem(`selectedpriorities`)) || [],
+			exclusive: false
+		};
+		this.dispatchEvent(
+			new CustomEvent("filterUpdate", {
+				bubbles: true,
+				composed: true,
+				detail: filters
+			})
+		);
 	}
 
 	/**
@@ -179,6 +197,28 @@ class Filter extends HTMLElement {
 				item.querySelector('input[type="checkbox"]').checked = false;
 			});
 		}
+
+		// clear search bar
+		const searchInput = document.getElementById("searchInput");
+		if (searchInput) {
+			searchInput.value = "";
+		}
+
+		const filters = {
+			startTime: "",
+			endTime: "",
+			labels: [],
+			priorities: [],
+			exclusive: false
+		};
+
+		this.dispatchEvent(
+			new CustomEvent("filterUpdate", {
+				bubbles: true,
+				composed: true,
+				detail: filters
+			})
+		);
 	}
 
 	/**
