@@ -114,7 +114,7 @@ function displayTasks(tasks) {
 
 	let currDate = null;
 	let currDayContainer = null;
-	let currDayDate = "";
+	let currTaskWrapper = null;
 	tasks.forEach((task) => {
 		let needUpdate = false;
 		let flushed = false;
@@ -133,6 +133,7 @@ function displayTasks(tasks) {
 
 		if (needUpdate || dueYear != currYear) {
 			if (!flushed && currDayContainer != null) {
+				currDayContainer.appendChild(currTaskWrapper);
 				calendar.appendChild(currDayContainer);
 				flushed = true;
 				currDate = dueDate;
@@ -145,6 +146,7 @@ function displayTasks(tasks) {
 
 		if (needUpdate || dueMonth != currMonth) {
 			if (!flushed && currDayContainer != null) {
+				currDayContainer.appendChild(currTaskWrapper);
 				calendar.appendChild(currDayContainer);
 				flushed = true;
 				currDate = dueDate;
@@ -157,6 +159,7 @@ function displayTasks(tasks) {
 
 		if (needUpdate || dueDay != currDay) {
 			if (!flushed && currDayContainer != null) {
+				currDayContainer.appendChild(currTaskWrapper);
 				calendar.appendChild(currDayContainer);
 				flushed = true;
 				currDate = dueDate;
@@ -170,6 +173,9 @@ function displayTasks(tasks) {
 			currDayContainer.classList.add("day");
 			currDayContainer.id = dayOfWeek;
 
+			currTaskWrapper = document.createElement("div");
+			currTaskWrapper.classList.add("tasks-wrapper");
+
 			const dayTitle = document.createElement("h2");
 			dayTitle.textContent = `${dayOfWeek.toUpperCase()}, ${dueMonth} ${dueDay}`;
 			currDayContainer.appendChild(dayTitle);
@@ -178,10 +184,11 @@ function displayTasks(tasks) {
 		let taskContainer = document.createElement("div");
 		taskContainer.classList.add("task-container");
 		taskContainer = appendTaskHTML(task, taskContainer);
-		currDayContainer.appendChild(taskContainer);
+		currTaskWrapper.appendChild(taskContainer);
 	});
 
 	if (currDayContainer != null) {
+		currDayContainer.appendChild(currTaskWrapper);
 		calendar.appendChild(currDayContainer);
 	}
 }
