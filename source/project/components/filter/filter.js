@@ -197,6 +197,28 @@ class Filter extends HTMLElement {
 				item.querySelector('input[type="checkbox"]').checked = false;
 			});
 		}
+
+		// clear search bar
+		const searchInput = document.getElementById("searchInput");
+		if (searchInput) {
+			searchInput.value = "";
+		}
+
+		const filters = {
+			startTime: "",
+			endTime: "",
+			labels: [],
+			priorities: [],
+			exclusive: false
+		};
+
+		this.dispatchEvent(
+			new CustomEvent("filterUpdate", {
+				bubbles: true,
+				composed: true,
+				detail: filters
+			})
+		);
 	}
 
 	/**
