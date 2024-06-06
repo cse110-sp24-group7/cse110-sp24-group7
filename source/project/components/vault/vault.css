@@ -1,7 +1,6 @@
-/* roboto mono theme */
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
 
-.file-input{
+.file-input {
     background-image: url(../../assets/res/file-img.png);
 }
 
@@ -10,6 +9,10 @@ body {
     font-family: 'Roboto Mono', monospace;
     margin: 0;
     background-color: lightgrey;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .hidden {
@@ -17,12 +20,10 @@ body {
 }
 
 .container {
-    width: 100%;
-    height: 100%;
-    padding: 0px;
     background-color: white;
     font-family: 'Roboto Mono', monospace;
     font-weight: 100;
+    overflow: hidden;
 }
 
 .header {
@@ -31,7 +32,6 @@ body {
     margin-left: 7px;
     margin-bottom: 5px;
     font-family: 'Roboto Mono', monospace;
-    
 }
 
 .logo {
@@ -51,46 +51,34 @@ body {
 }
 
 .header h1 {
-    
     margin: 0;
     font-size: 1.7rem;
     font-family: 'Roboto Mono', monospace;
-    color: gray;
+    color: black;
     align-self: flex-end;
     justify-content: flex-start;
-
-    
-}
-
-.search-filter-upload {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    background-color: lightgray;
-    font-family: 'Roboto Mono', monospace;
+    font-weight: normal;
 }
 
 .search-filter {
     display: flex;
     align-items: center;
-    width: 60%;
+    width: 100%;
+    padding: 15px 0 15px 0;
 }
 
 .search-icon {
     width: 20px;
     height: 20px;
     margin-right: 10px;
-    margin-left: 10%;
-    
+    margin-left: 8%;
 }
 
 .search-bar {
     padding: 5px 10px;
     border: 1px solid #ccc;
-    width: 40%;
+    width: 30%;
     border-radius: 4px;
-    margin-right: 4px;
 }
 
 .filter-icon {
@@ -103,13 +91,11 @@ body {
     padding: 5px 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 20%; 
+    width: 10%;
 }
 
 .upload {
-    display: flex;
-    margin-right: auto;
-    margin-left: 35%;
+    margin-left: 30%;
     align-items: flex-end;
 }
 
@@ -117,38 +103,53 @@ body {
     padding: 10px 20px;
     color: white;
     border: none;
-    border-radius: 4px;
     cursor: pointer;
 }
 
-.file-upload>input {
+.file-upload > input {
     display: none;
-  }
+}
 
 .file-upload img {
     height: auto;
     width: 20px;
     cursor: pointer;
 }
+
 .main-section {
-    padding-top: 10px;
-    display: flex;
     background-color: lightgray;
-    padding-bottom: 10px;
+    overflow: hidden;
 }
 
 .sub-section {
+    flex: 1;
     width: 93%;
-    min-height: 78vh;
     background-color: white;
-    margin: 0 auto; 
+    margin: 0 auto;
     padding: 10px 20px 20px 20px;
-  
+    overflow-y: scroll;
+    border: 1px solid #b4b4b4;
+}
+
+.sub-section::-webkit-scrollbar {
+    width: 25px;
+}
+
+.sub-section::-webkit-scrollbar-thumb {
+    background-color: #6d6d6d;
+    border-radius: 5px;
+}
+
+.sub-section::-webkit-scrollbar-track {
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    border: 1px solid #b4b4b4;
 }
 
 .sub-section h2 {
     margin: 10px 0 10px 0;
     font-family: 'Roboto Mono', monospace;
+    font-weight: normal;
 }
 
 #files .grid,
@@ -167,8 +168,8 @@ body {
     border: 1px solid #ccc;
     border-radius: 10px;
     background-color: #f9f9f9;
-    width: 200px;
-    height: 150px;
+    width: 18%;
+    height: 200px;
     overflow: hidden;
 }
 
@@ -179,8 +180,9 @@ body {
 }
 
 .file-icon {
-    font-size: 50px;
-    margin-bottom: 5px;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
 }
 
 .file-title {
@@ -191,12 +193,13 @@ body {
     bottom: 0;
     width: 100%;
     background-color: white;
-    height: 40px;
+    height: 50px;
     margin: 0;
     text-align: left;
     border-top: 1px solid #ccc;
     display: flex;
-    align-items: center; 
-    padding-left: 10px;
+    align-items: center;
+    padding-left: 15px;
     overflow: hidden;
+    font-family: 'Roboto Mono', monospace;
 }
