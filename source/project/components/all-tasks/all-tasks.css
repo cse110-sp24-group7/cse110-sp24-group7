@@ -57,6 +57,7 @@ body,
 	cursor: pointer;
 }
 */
+
 /** Temporary fix for menu icon */
 .menu-icon button {
 	font: inherit;
@@ -69,6 +70,8 @@ body,
 	color: #8b0000;
 	cursor: pointer;
 }
+
+/* Styling search functions in header bar */
 .search-filter-bar {
 	display: flex;
 	justify-content: space-between;
@@ -102,6 +105,7 @@ body,
 	font-size: var(--font-size-small);
 }
 
+/* Styling filter functions in header bar */
 .filter-buttons {
 	display: flex;
 	align-items: center;
@@ -158,6 +162,7 @@ hr {
 	}
 }
 
+
 /* Styling the calendar */
 .calendar {
 	display: flex;
@@ -175,7 +180,7 @@ hr {
 
 .day {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row; /* Change to column to get dates as top headers */
 	flex-grow: 1;
 	width: 80%; /* Make each day section fill the available height */
 	align-items: center;
@@ -185,6 +190,8 @@ hr {
 .day > div {
 	flex-grow: 1;
 	flex: 1;
+	flex-direction: row;
+
 }
 
 .day h2 {
@@ -195,7 +202,7 @@ hr {
 
 .task-container {
 	/* flex-grow: 1; */
-	width: 80%;
+	width: 90%;
 	flex: 1;
 	text-align: center;
 	align-items: center;
@@ -204,8 +211,9 @@ hr {
 	font-family: "Roboto Mono";
 }
 
-.day > .tasks-wrapper {
-	flex: column;
+.tasks-wrapper {
+  justify-content: center;
+  width: 100%;
 }
 
 .time-left-container {
