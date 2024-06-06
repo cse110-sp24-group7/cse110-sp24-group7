@@ -1,0 +1,305 @@
+/* Roboto Mono Font Import */
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
+
+/* Resetting default margin and padding */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+/* Styling the header container */
+.header {
+	background-color: #fff;
+	color: #000;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px 20px;
+	border-bottom: 1px solid #ccc; /* Add border bottom to header */
+}
+
+/* Styling the header bar components (logo, title, menu, today button) */
+.logo img {
+	width: 30px;
+	height: 30px;
+	margin-right: 10px;
+}
+
+.logo span {
+	font-size: 35px;
+	font-family: "Roboto Mono";
+	padding-right: 20px;
+}
+
+.menu-icon img {
+	width: 35px;
+	height: 35px;
+}
+.menu-icon img:hover {
+	cursor: pointer;
+}
+
+/* Styling the All Tasks button */
+.menu-icon button {
+	font-family: "Roboto Mono";
+	font-size: 18px;
+	background-color: transparent;
+	border: none;
+	transition: color 0.5s ease;
+}
+.menu-icon button:hover {
+	color: #8b0000;
+	cursor: pointer;
+}
+
+#today-button {
+	background-color: #eee;
+	padding: 5px;
+	padding-left: 20px;
+	padding-right: 20px;
+	border: 1px solid #eee;
+	border-spacing: 100px;
+	border-radius: 7px;
+	cursor: pointer;
+	font-family: "Roboto Mono";
+	font-size: 15px;
+	font-weight: bold;
+}
+
+#today-button:hover {
+	background-color: #d4d4d4;
+	cursor: pointer;
+}
+
+/* Styling the current month text in header bar */
+#current-month {
+	flex: 1;
+	text-align: center;
+	font-size: 38px;
+	font-family: "Roboto Mono";
+	margin: 0;
+}
+
+/* Styling the prev/next week arrows*/
+.nav-button-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-left: 20px;
+}
+
+.nav-button {
+	background-color: #ffffff; /*#BF6F6F;*/
+	color: #000;
+	border: none;
+	padding: 0px 15px;
+	text-align: center;
+	cursor: pointer;
+	font-size: 20px;
+	font-family: "Monaco";
+	font-style: bold;
+}
+
+.nav-button:hover {
+	color: #fbc6c4;
+	background-color: #bf6f6f;
+	border-radius: 50px;
+}
+
+/* Styling the calendar */
+.calendar {
+	display: flex;
+	flex-direction: column;
+	height: calc(100vh - 50px); /* Adjust height to leave space for header */
+	font-family: "Roboto Mono";
+}
+
+.day {
+	display: flex;
+	flex: 1;
+	height: 100%; /* Make each day section fill the available height */
+}
+
+.day > div {
+	flex: 1;
+	flex-direction: column;
+	text-align: center;
+	padding: 10px 0;
+	font-size: 10px;
+	font-family: "Roboto Mono";
+}
+
+/* Ensure the vertical lines reach all the way down */
+.day > div:not(:last-child) {
+	border-right: 1px solid #ccc;
+}
+
+/* Styling the Date number display */
+.day-date {
+	font-size: 20px;
+	font-family: "Roboto Mono";
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+/* Red Indicator of today's date */
+.today {
+	background-color: #ffd1d1;
+	width: 45px;
+	border-radius: 50%;
+}
+
+/* Add Task and Journal Buttons */
+.add-task,
+.add-journal {
+	margin: 5px; /* Adjust as needed */
+	padding: 10px; /* Adjust as needed */
+	width: calc(100% - 10px); /* Stretch button width to fill container */
+	border: 1px dotted #000; /* Dotted outline */
+	border-spacing: 100px; /* Increase spacing between dots */
+	border-radius: 7px; /* Rounded corners */
+	border-color: #969696; /* Border outline color */
+	cursor: pointer; /* Change cursor to pointer */
+	background-color: #f8f8f8; /* Background color */
+	color: #000; /* Text color */
+	font-weight: bold; /* Bold text */
+	font-family: "Roboto Mono"; /* Text font */
+}
+
+.add-journal:hover,
+.add-task:hover {
+	background-color: #ddd;
+	cursor: pointer;
+}
+
+/*Journal and Task Previews*/
+.journal-pv,
+.task-pv {
+	margin: 5px; /* Adjust as needed */
+	padding: 10px; /* Adjust as needed */
+	width: calc(100% - 10px); /* Adjusted to add-journal width */
+	flex: none;
+	border: 1px solid #000; /* Outline */
+	border-radius: 7px; /* Rounded corners */
+	justify-content: flex-start;
+	text-align: left; /* Text alignment */
+	align-items: stretch; /* Box alignment */
+	background-color: #fff; /* Background Color */
+	font-size: 10px; /* Size of text */
+	position: relative;
+}
+
+/* for the circle label colors */
+.label-container {
+	display: inline-flex;
+	flex-wrap: wrap;
+	margin-top: 5px;
+	gap: 5px;
+}
+
+.label {
+	border: 1px solid #282828ac;
+	border-radius: 50%;
+	padding: 5px;
+}
+
+/* TODO: task formatting needs to be confirmed! */
+.journal-pv h2,
+.task-pv h2 {
+	font-style: bold;
+	margin: 0;
+	font-size: auto;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 1; /* Adjust the number of lines to show before truncating */
+	flex: auto;
+	text-overflow: clip;
+	overflow: hidden;
+	overflow: ellipsis;
+}
+
+.journal-pv p,
+.task-pv p {
+	margin: 0;
+	font-size: 10px;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2; /* Adjust the number of lines to show before truncating */
+	flex: auto;
+	text-overflow: clip;
+	overflow: hidden;
+	overflow: ellipsis;
+}
+
+/*button icon container*/
+.button-container {
+	position: absolute;
+	top: 7px;
+	right: 5px;
+	z-index: 10;
+	display: flex;
+	padding: 0;
+	gap: 2px;
+	width: 41px;
+	background-color: white;
+}
+
+.button-container button {
+	border: 0;
+	background-color: white;
+	cursor: pointer;
+}
+
+/*edit button icon*/
+#img1,
+#img2 {
+	width: 20px;
+	height: 20px;
+}
+
+/* info message for the delete button */
+.button-container button[data-tooltip]::after {
+	content: attr(data-tooltip);
+	position: absolute;
+	bottom: 120%;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: #333;
+	color: #fff;
+	padding: 3px 5px;
+	border-radius: 5px;
+	white-space: nowrap;
+	z-index: 100;
+	font-size: 10px;
+	opacity: 0;
+	pointer-events: none;
+}
+
+/* little triangle */
+.button-container button[data-tooltip]::before {
+	content: "";
+	position: absolute;
+	bottom: 80%;
+	left: 77%;
+	transform: translateX(-50%);
+	border-width: 5px;
+	border-style: solid;
+	border-color: #333 transparent transparent transparent;
+	opacity: 0;
+}
+
+.button-container button[data-tooltip]:hover::after,
+.button-container button[data-tooltip]:hover::before {
+	animation: show-tooltip 0.3s forwards;
+	animation-delay: 1.5s;
+}
+
+@keyframes show-tooltip {
+	to {
+		opacity: 1;
+	}
+}

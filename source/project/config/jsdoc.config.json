@@ -1,0 +1,12 @@
+{
+  "source": {
+    "include": ["./source/project/scripts", "./source/project/components"],
+    "includePattern": ".+\\.js(doc|x)?$",
+    "excludePattern": "(^|\\/|\\\\)_",
+    "recurseDepth": 5
+  },
+  "opts": {
+    "destination": "./source/project/docs/JSDocs",
+    "recurse": true
+  }
+}

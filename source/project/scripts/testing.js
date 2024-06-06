@@ -2,7 +2,7 @@
  * @function testing
  * @description This is a test function
  * @param {string} test - This is a test parameter
- * @type {string} This is a test type
+ * @type {string}
  * @returns {string} This is a test return
  * @example
  * testing('test');
@@ -14,7 +14,7 @@
  */
 
 function testing(test) {
-  return test + ' testing';
+	return test + " testing";
 }
 
-export default testing;
+module.exports = testing;
