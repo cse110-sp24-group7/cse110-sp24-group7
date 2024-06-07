@@ -64,7 +64,7 @@ const FileManager = (data_location) => {
             console.log(`${file_name} was deleted`);
         }); 
     }
-    return {exists, getFileLocation, getFileNames, getImageNames, getContent, add, remove};
+    return {route, img_route, file_route, exists, getFileLocation, getFileNames, getImageNames, getContent, add, remove};
 }
 
 module.exports = {
