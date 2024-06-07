@@ -1,6 +1,6 @@
 //import * as dbMgr from '../scripts/database/dbMgr';
 const dbMgr = require("../scripts/database/dbMgr");
-const path = require('path');
+const path = require("path");
 
 describe("Database functions", () => {
 	let taskLength = 0;
@@ -198,27 +198,27 @@ describe("Database functions", () => {
 		function trcbConjunctiveTest(tasks) {
 			expect(tasks.length).toBe(2);
 
-      let idMatch = false;
-      if (
-        tasks[0].task_id == test1.task_id &&
-        tasks[1].task_id == test3.task_id
-      ) {
-        idMatch = true;
-      }
-      if (
-        tasks[0].task_id == test3.task_id &&
-        tasks[1].task_id == test1.task_id
-      ) {
-        idMatch = true;
-      }
-      expect(idMatch).toBe(true);
-      done();
-    }
-    dbMgr.getTasksConjunctLabels(
-      ["test_label_1", "test_label_2"],
-      trcbConjunctiveTest,
-    );
-  });
+			let idMatch = false;
+			if (
+				tasks[0].task_id == test1.task_id &&
+				tasks[1].task_id == test3.task_id
+			) {
+				idMatch = true;
+			}
+			if (
+				tasks[0].task_id == test3.task_id &&
+				tasks[1].task_id == test1.task_id
+			) {
+				idMatch = true;
+			}
+			expect(idMatch).toBe(true);
+			done();
+		}
+		dbMgr.getTasksConjunctLabels(
+			["test_label_1", "test_label_2"],
+			trcbConjunctiveTest
+		);
+	});
 
 	test("Testing disjunctive label search", (done) => {
 		function trcbDisjunctiveTest(tasks) {

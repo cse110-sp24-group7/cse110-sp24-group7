@@ -150,14 +150,13 @@ function displayFile(file_name, is_img) {
 		img.classList.add("file-preview");
 		fileElement.appendChild(img);
 	} else {
-        const img = document.createElement("img");
-        img.classList.add("file-preview");
+		const img = document.createElement("img");
+		img.classList.add("file-preview");
 
-        // Determine the file type and assign appropriate icon
-        const fileExtension = file_name.split('.').pop().toLowerCase();
-        
+		// Determine the file type and assign appropriate icon
+		const fileExtension = file_name.split(".").pop().toLowerCase();
 
-        switch (fileExtension) {
+		switch (fileExtension) {
 			case "pdf":
 				img.src = "../../assets/res/file-images/pdf.png";
 				img.alt = file_name;
