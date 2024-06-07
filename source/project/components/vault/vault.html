@@ -20,7 +20,14 @@
 					src="../../assets/res/menuBtn.png"
 					alt="Menu"
 					class="menu"
+					id="menu"
 				/>
+				<div class="menu-options" id="menu-options">
+					<ul>
+						<li><a href="#">calender</a></li>
+						<li><a href="#">tasks</a></li>
+					</ul>
+				</div>
 			</div>
 			<div class="main-section">
 				<div class="search-filter">
@@ -39,52 +46,52 @@
 						src="../../assets/res/filter-icon.webp"
 						alt="Search"
 						class="search-icon"
-                        id="filter-button"
+						id="filter-button"
 					/>
 					<select name="filter" id="filter" class="filter">
 						<option value="all">All</option>
 						<option value="files">Files</option>
 						<option value="images">Images</option>
 					</select>
-				
-				<div class="upload">
-					<form
-						id="uploadForm"
-						method="post"
-						enctype="multipart/form-data"
-					>
-						<div class="file-upload">
-                            <label for="file">
-                                <img src="../../assets/res/upload-icon.png">
-                            </label>
-							<input
-								type="file"
-								class="file-input"
-								id="file"
-								name="file"
-								multiple
-							/>
-						</div>
-					</form>
+
+					<div class="upload">
+						<form
+							id="uploadForm"
+							method="post"
+							enctype="multipart/form-data"
+						>
+							<div class="file-upload">
+								<label for="file">
+									<img
+										src="../../assets/res/upload-icon.png"
+									/>
+								</label>
+								<input
+									type="file"
+									class="file-input"
+									id="file"
+									name="file"
+									multiple
+								/>
+							</div>
+						</form>
+					</div>
 				</div>
+			</div>
+		</div>
+		<div class="sub-section">
+			<div id="files">
+				<h2>Files</h2>
+				<div class="grid">
+					<!-- Files will go here -->
 				</div>
-            </div>
-        </div>
-            <div class="sub-section">
-                <div id="files">
-                    <h2>Files</h2>
-                    <div class="grid">
-                        <!-- Files will go here -->
-                    </div>
-                </div>
-                <div id="images">
-                    <h2>Images</h2>
-                    <div class="grid">
-                        <!-- Images will go here -->
-                    </div>
-                </div>
-            </div>
-			
-		
+			</div>
+			<div id="images">
+				<h2>Images</h2>
+				<div class="grid">
+					<!-- Images will go here -->
+				</div>
+			</div>
+		</div>
 	</body>
 </html>

@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 	const uploadForm = document.getElementById("uploadForm");
 	const fileInput = document.getElementById("file");
 	const searchInput = document.getElementById("search-input");
+	const menuButton = document.getElementById("menu");
+	const menuOptions = document.getElementById("menu-options");
 
 	fileMgr = await window.path.getUserData().then((appDataPath) => {
 		console.log("App data path:", appDataPath); // Log the path
@@ -67,8 +69,23 @@ document.addEventListener("DOMContentLoaded", async function () {
 		const query = searchInput.value.toLowerCase();
 		console.log("Searching for:", query); // Log search query
 		searchFiles(query);
-
 	});
+
+	// // menu
+	// menuButton.addEventListener("click", function () {
+	// 	console.log("Menu clicked"); // Log menu click
+	// 	menuOptions.style.display =
+	// 		menuOptions.style.display === "block" ? "none" : "block";
+	// });
+
+	// document.addEventListener("click", function (event) {
+	// 	if (
+	// 		!menuButton.contains(event.target) &&
+	// 		!menuOptions.contains(event.target)
+	// 	) {
+	// 		menuOptions.style.display = "none";
+	// 	}
+	// });
 });
 
 function searchFiles(query) {
@@ -128,6 +145,18 @@ function displayFile(file_name, is_img) {
 	title.classList.add("file-title");
 	title.textContent = file_name;
 	fileElement.appendChild(title);
+
+	// delete functionality and button
+	const deleteButton = document.createElement("button");
+	deleteButton.classList.add("delete");
+	deleteButton.innerHTML = `<img id="deleteBtn" src="./delete-icon.jpg" alt="Delete">`;
+	deleteButton.setAttribute("data-tooltip", "double click to delete");
+	deleteButton.addEventListener("click", (event) => {
+		event.stopPropagation();
+		fileMgr.remove(file_name, is_img);
+		fileElement.remove();
+	});
+	fileElement.appendChild(deleteButton);
 
 	fileSection.appendChild(fileElement);
 }
