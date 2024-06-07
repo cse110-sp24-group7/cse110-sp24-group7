@@ -324,6 +324,10 @@ function updateMainview() {
  */
 document.addEventListener("DOMContentLoaded", async () => {
 	let currentWeekOffset = 0;
+	const menuButton = document.getElementById("menu");
+	const menuOptions = document.getElementById("menu-options");
+	const tasksLink = document.getElementById("tasks");
+	const vaultLink = document.getElementById("vault");
 
 	// Establish database connection
 	await window.path.getUserData().then((userData) => {
@@ -373,9 +377,30 @@ document.addEventListener("DOMContentLoaded", async () => {
 		setWeeklyView(currentWeekOffset);
 	});
 
-	document.querySelector(".menu-icon").addEventListener("click", () => {
-		window.location = "../all-tasks/all-tasks.html";
+	// menu
+	menuButton.addEventListener("click", function () {
+		console.log("Menu clicked"); // Log menu click
+		menuOptions.style.display =
+			menuOptions.style.display === "block" ? "none" : "block";
 	});
 
+	document.addEventListener("click", function (event) {
+		if (
+			!menuButton.contains(event.target) &&
+			!menuOptions.contains(event.target)
+		) {
+			menuOptions.style.display = "none";
+		}
+	});
+
+	// tasks link
+	tasksLink.addEventListener("click", function (event) {
+		window.location.href = "../all-tasks/all-tasks.html";
+	});
+
+	// vault link
+	vaultLink.addEventListener("click", function (event) {
+		window.location.href = "../vault/vault.html";
+	});
 	// updateMainview();
 });

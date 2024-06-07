@@ -203,6 +203,11 @@ function updateTasklist() {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
+	const menuButton = document.getElementById("menu");
+	const menuOptions = document.getElementById("menu-options");
+	const vaultLink = document.getElementById("vault");
+	const calendarLink = document.getElementById("calendar");
+
 	await window.path.getUserData().then((userData) => {
 		console.log("Renderer access userdata: " + userData);
 		window.api.connect(userData, () => {
@@ -225,8 +230,30 @@ document.addEventListener("DOMContentLoaded", async function () {
 		});
 	});
 
-	document.querySelector(".menu-icon").addEventListener("click", () => {
-		window.location = "../mainview/mainview.html";
+	// menu
+	menuButton.addEventListener("click", function () {
+		console.log("Menu clicked"); // Log menu click
+		menuOptions.style.display =
+			menuOptions.style.display === "block" ? "none" : "block";
+	});
+
+	document.addEventListener("click", function (event) {
+		if (
+			!menuButton.contains(event.target) &&
+			!menuOptions.contains(event.target)
+		) {
+			menuOptions.style.display = "none";
+		}
+	});
+
+	// tasks link
+	calendarLink.addEventListener("click", function (event) {
+		window.location.href = "../mainview/mainview.html";
+	});
+
+	// vault link
+	vaultLink.addEventListener("click", function (event) {
+		window.location.href = "../vault/vault.html";
 	});
 
 	// search

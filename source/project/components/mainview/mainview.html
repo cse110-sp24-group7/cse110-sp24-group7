@@ -39,9 +39,17 @@
 			<h1 id="current-month"></h1>
 
 			<!-- Menu Icon Button -->
-			<div class="menu-icon">
-				<button>All Tasks</button>
-				<!-- <img src="../../assets/res/menuBtn.png" alt="Menu" /> -->
+			<img
+				src="../../assets/res/menuBtn.png"
+				alt="Menu"
+				class="menu"
+				id="menu"
+			/>
+			<div class="menu-options" id="menu-options">
+				<ul>
+					<li><span id="tasks">tasks</span></li>
+					<li><span id="vault">vault</span></li>
+				</ul>
 			</div>
 		</div>
 
@@ -190,12 +198,18 @@
 
 		<!--Upload file-->
 		<form id="uploadForm" method="post" enctype="multipart/form-data">
-            <div>
-              <input type="file" class ="file-input" id="file" name="file" multiple />
-            </div>
-            <div>
-              <button type="submit">Add Files</button>
-            </div>
-          </form>
+			<div>
+				<input
+					type="file"
+					class="file-input"
+					id="file"
+					name="file"
+					multiple
+				/>
+			</div>
+			<div>
+				<button type="submit">Add Files</button>
+			</div>
+		</form>
 	</body>
 </html>
