@@ -1,4 +1,7 @@
-/* eslint-disable no-undef */
+/** 
+ * @module MainView 
+ * @description This module is responsible for rendering the main view of the application, which includes the weekly view of tasks and journal entries.
+ */
 
 const filters = {
 	startTime: "",
@@ -11,8 +14,10 @@ const filters = {
 let labelColorMap = new Map();
 
 /**
- * Adds tasks to the task containers.
+ * @method tasksRendererCallback
+ * @description Adds tasks to the task containers.
  * @param {Task[]} tasks - an array of task objects.
+ * @returns {void}
  */
 function tasksRendererCallback(tasks) {
 	// Clear all existing task entries first
@@ -106,8 +111,10 @@ function tasksRendererCallback(tasks) {
 }
 
 /**
- * Opens the task popup for editing with the provided task details and the corresponding task preview element.
+ * @method openTaskPopupForEdit
+ * @description Opens the task popup for editing with the provided task details and the corresponding task preview element.
  * @param {string} task_id - the task ID to edit
+ * @returns {void}
  */
 function openTaskPopupForEdit(task_id) {
 	window.api.fetchTask(task_id, (task) => {
@@ -120,8 +127,9 @@ function openTaskPopupForEdit(task_id) {
 }
 
 /**
- * Adds journal entries to the journal containers.
+ * @description Adds journal entries to the journal containers.
  * @param {Entry[]} entries - an array of journal entry objects.
+ * 
  */
 function entriesRendererCallback(entries) {
 	// Clear all existing journal entries first
@@ -202,7 +210,8 @@ function entriesRendererCallback(entries) {
 }
 
 /**
- * Opens the journal popup for editing with the provided journal details.
+ * @method openJournalPopupForEdit
+ * @description Opens the journal popup for editing with the provided journal details.
  * @param {string} entry_id - the journal entry ID to edit
  */
 function openJournalPopupForEdit(entry_id) {
@@ -216,7 +225,8 @@ function openJournalPopupForEdit(entry_id) {
 }
 
 /**
- * Loads the dates on the weekly view
+ * @method setWeeklyView
+ * @description Loads the dates on the weekly view
  * @param {number} weekOffset = index value relative to today's current week
  */
 function setWeeklyView(weekOffset) {
@@ -287,6 +297,13 @@ function setWeeklyView(weekOffset) {
 	updateMainview();
 }
 
+/**
+ * @method updateMainview
+ * @description Updates the main view by fetching tasks and entries based on the current the current date range.
+ * @returns {void}
+ * @callback tasksRendererCallback
+ * 
+ */
 function updateMainview() {
 	// First update color map, then update tasks and entries.
 	window.api.getLabelColorMap((map) => {
@@ -302,6 +319,9 @@ function updateMainview() {
 	});
 }
 
+/*
+ * Adding HTML Elements to the main view and setting up event listeners to tie to the SQLlite backend. 
+ */
 document.addEventListener("DOMContentLoaded", async () => {
 	let currentWeekOffset = 0;
 
