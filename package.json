@@ -6,15 +6,15 @@
   "author": "Akatsuki 7",
   "type": "commonjs",
   "devDependencies": {
-    "@babel/core": "^7.24.7",
+    "@babel/core": "^7.24.6",
     "@babel/eslint-parser": "^7.24.6",
-    "@babel/preset-env": "^7.24.7",
+    "@babel/preset-env": "^7.24.6",
     "@electron-forge/cli": "^7.4.0",
     "@electron-forge/maker-deb": "^7.4.0",
-    "@electron-forge/maker-dmg": "^7.4.0",
     "@electron-forge/maker-rpm": "^7.4.0",
     "@electron-forge/maker-squirrel": "^7.4.0",
     "@electron-forge/maker-zip": "^7.4.0",
+    "@electron-forge/maker-dmg": "^7.4.0",
     "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
     "@electron-forge/plugin-fuses": "^7.4.0",
     "@electron/fuses": "^1.8.0",
@@ -31,7 +31,7 @@
     "puppeteer": "^22.10.0"
   },
   "scripts": {
-    "test:unit": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test": "jest --maxWorkers=1",
     "prettier:fix": "prettier --write --ignore-path .prettierignore \"./source/project/**/*.{html,css,js}\" \"./specs/**/*.md\"",
     "prettier:check": "prettier --check --ignore-path .prettierignore \"./source/project/**/*.{html,css,js}\" \"./specs/**/*.md\"",
     "jsdoc": "jsdoc -c ./source/project/config/jsdoc.config.json",
