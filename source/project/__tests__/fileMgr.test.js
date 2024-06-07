@@ -81,7 +81,7 @@ describe("File functions", () => {
     test("Remove all files", async () => {
 		for(let i = 0; i < files.length; i++) {
             const is_img = files[i].type == 'image';
-            manager.remove(files[i].name, is_img);
+            await manager.remove(files[i].name, is_img);
         }
         await expect(manager.getFileNames().length + manager.getImageNames().length).toBe(0);
 	});
