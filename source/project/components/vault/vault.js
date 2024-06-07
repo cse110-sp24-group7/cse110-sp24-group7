@@ -103,8 +103,12 @@ function searchFiles(query) {
 	const files = fileMgr.getFileNames();
 	const images = fileMgr.getImageNames();
 
-	const fileSection = document.getElementById("files").getElementsByClassName("grid")[0];
-	const imageSection = document.getElementById("images").getElementsByClassName("grid")[0];
+	const fileSection = document
+		.getElementById("files")
+		.getElementsByClassName("grid")[0];
+	const imageSection = document
+		.getElementById("images")
+		.getElementsByClassName("grid")[0];
 
 	fileSection.innerHTML = "";
 	imageSection.innerHTML = "";

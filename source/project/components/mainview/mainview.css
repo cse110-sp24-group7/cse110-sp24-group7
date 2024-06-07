@@ -33,49 +33,49 @@
 }
 
 .menu {
-    width: 30px;
-    height: auto;
-    cursor: pointer;
-    margin-right: 7px;
-    margin-left: auto;
-    z-index: 1001;
+	width: 30px;
+	height: auto;
+	cursor: pointer;
+	margin-right: 7px;
+	margin-left: auto;
+	z-index: 1001;
 }
 
 .menu-options {
-    display: none;
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    background-color: white;
-    border-left: 1px solid #b4b4b4;
-    z-index: 1000;
-    padding-top: 30px;
+	display: none;
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+	background-color: white;
+	border-left: 1px solid #b4b4b4;
+	z-index: 1000;
+	padding-top: 30px;
 }
 
 .menu-options ul {
-    list-style-type: none;
-    padding: 20px;
-    margin: 0;
+	list-style-type: none;
+	padding: 20px;
+	margin: 0;
 }
 
 .menu-options ul li {
-    margin: 10px 0;
+	margin: 10px 0;
 }
 
 .menu-options ul li span {
-    text-decoration: none;
-    color: black;
-    display: block;
-    padding: 5px 10px;
-    font-family: 'Roboto Mono', monospace;
-    font-weight: normal;
-    font-size: 22px;
-    cursor: pointer;
+	text-decoration: none;
+	color: black;
+	display: block;
+	padding: 5px 10px;
+	font-family: "Roboto Mono", monospace;
+	font-weight: normal;
+	font-size: 22px;
+	cursor: pointer;
 }
 
 .menu-options ul li span:hover {
-    background-color: #f0f0f0;
+	background-color: #f0f0f0;
 }
 
 #today-button {
