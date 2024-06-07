@@ -59,10 +59,12 @@ const FileManager = (data_location) => {
     const remove = (file_name, is_img=false) => {
         const fileLocation = getFileLocation(file_name, is_img)
         if (!fs.existsSync(fileLocation)) return {errorCode: 404, errorMsg: `A file with the name ${file_name} was not found. No files were deleted.`};
-        fs.unlink(fileLocation, (err) => {
-            if (err) throw err;
-            console.log(`${file_name} was deleted`);
-        }); 
+        return new Promise((resolve, reject) => {
+            fs.unlink(fileLocation, (err) => {
+                if (err) reject(err);
+                resolve(`Deleted ${file_name}`);
+            }); 
+        })
     }
     return {route, img_route, file_route, exists, getFileLocation, getFileNames, getImageNames, getContent, add, remove};
 }

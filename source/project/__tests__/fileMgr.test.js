@@ -78,13 +78,12 @@ describe("File functions", () => {
         expect(image_files.sort().join(',')).toEqual(retrieved_image_files.sort().join(','));
 	});
 
-    test("Remove all files", () => {
+    test("Remove all files", async () => {
 		for(let i = 0; i < files.length; i++) {
             const is_img = files[i].type == 'image';
             manager.remove(files[i].name, is_img);
         }
-
-        expect(manager.getFileNames().length + manager.getImageNames().length).toBe(0);
+        await expect(manager.getFileNames().length + manager.getImageNames().length).toBe(0);
 	});
 
     afterAll(() => {
