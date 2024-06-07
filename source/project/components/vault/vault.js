@@ -150,10 +150,44 @@ function displayFile(file_name, is_img) {
 		img.classList.add("file-preview");
 		fileElement.appendChild(img);
 	} else {
-		const icon = document.createElement("div");
-		icon.classList.add("file-icon");
-		icon.textContent = "📄"; // temp icon
-		fileElement.appendChild(icon);
+        const img = document.createElement("img");
+        img.classList.add("file-preview");
+
+        // Determine the file type and assign appropriate icon
+        const fileExtension = file_name.split('.').pop().toLowerCase();
+        
+
+        switch (fileExtension) {
+			case "pdf":
+				img.src = "../../assets/res/file-images/pdf.png";
+				img.alt = file_name;
+				break;
+			case "doc":
+			case "docx":
+				img.src = "../../assets/res/file-images/doc.png";
+				img.alt = file_name;
+				break;
+			case "html":
+				img.src = "../../assets/res/file-images/html.png";
+				img.alt = file_name;
+				break;
+			case "js":
+				img.src = "../../assets/res/file-images/js.png";
+				img.alt = file_name;
+				break;
+			case "txt":
+				img.src = "../../assets/res/file-images/txt.png";
+				img.alt = file_name;
+				break;
+			case "css":
+				img.src = "../../assets/res/file-images/css.png";
+				img.alt = file_name;
+				break;
+			default:
+				img.src = "../../assets/res/file-images/generic.png";
+				img.alt = file_name;
+		}
+		fileElement.appendChild(img);
 	}
 
 	const title = document.createElement("p");
