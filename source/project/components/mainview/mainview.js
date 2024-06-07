@@ -1,5 +1,5 @@
-/** 
- * @module MainView 
+/**
+ * @module MainView
  * @description This module is responsible for rendering the main view of the application, which includes the weekly view of tasks and journal entries.
  */
 
@@ -129,7 +129,7 @@ function openTaskPopupForEdit(task_id) {
 /**
  * @description Adds journal entries to the journal containers.
  * @param {Entry[]} entries - an array of journal entry objects.
- * 
+ *
  */
 function entriesRendererCallback(entries) {
 	// Clear all existing journal entries first
@@ -302,7 +302,7 @@ function setWeeklyView(weekOffset) {
  * @description Updates the main view by fetching tasks and entries based on the current the current date range.
  * @returns {void}
  * @callback tasksRendererCallback
- * 
+ *
  */
 function updateMainview() {
 	// First update color map, then update tasks and entries.
@@ -320,7 +320,7 @@ function updateMainview() {
 }
 
 /*
- * Adding HTML Elements to the main view and setting up event listeners to tie to the SQLlite backend. 
+ * Adding HTML Elements to the main view and setting up event listeners to tie to the SQLlite backend.
  */
 document.addEventListener("DOMContentLoaded", async () => {
 	let currentWeekOffset = 0;

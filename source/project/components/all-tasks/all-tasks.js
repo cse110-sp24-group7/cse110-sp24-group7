@@ -193,7 +193,7 @@ function displayTasks(tasks) {
 /**
  * @description Updates the tasklist based on the current filters selected
  * @returns {void}
- * 
+ *
  */
 function updateTasklist() {
 	window.api.getFilteredTasks(filters, (tasks) => {
@@ -240,7 +240,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 	});
 
 	/**
-	 * test cases for tasks. 
+	 * test cases for tasks.
 	 */
 	const testTasks = [
 		{

@@ -264,8 +264,8 @@ function getTasks(trcb) {
  * @description Queries and returns all tasks that have ALL labels specified.
  * @param {string[]} labels - an array of labels that each task must contain
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
- * @returns {void} if we have a nonzero length. Otherwise just returns the callback. 
- * 
+ * @returns {void} if we have a nonzero length. Otherwise just returns the callback.
+ *
  */
 function getTasksConjunctLabels(labels, trcb) {
 	if (labels.length === 0) {
