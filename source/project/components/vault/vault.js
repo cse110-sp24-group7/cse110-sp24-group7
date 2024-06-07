@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 	const searchInput = document.getElementById("search-input");
 	const menuButton = document.getElementById("menu");
 	const menuOptions = document.getElementById("menu-options");
+	const tasksLink = document.getElementById("tasks");
+	const calendarLink = document.getElementById("calendar");
 
 	fileMgr = await window.path.getUserData().then((appDataPath) => {
 		console.log("App data path:", appDataPath); // Log the path
@@ -71,21 +73,30 @@ document.addEventListener("DOMContentLoaded", async function () {
 		searchFiles(query);
 	});
 
-	// // menu
-	// menuButton.addEventListener("click", function () {
-	// 	console.log("Menu clicked"); // Log menu click
-	// 	menuOptions.style.display =
-	// 		menuOptions.style.display === "block" ? "none" : "block";
-	// });
+	// menu
+	menuButton.addEventListener("click", function () {
+		menuOptions.style.display =
+			menuOptions.style.display === "block" ? "none" : "block";
+	});
 
-	// document.addEventListener("click", function (event) {
-	// 	if (
-	// 		!menuButton.contains(event.target) &&
-	// 		!menuOptions.contains(event.target)
-	// 	) {
-	// 		menuOptions.style.display = "none";
-	// 	}
-	// });
+	document.addEventListener("click", function (event) {
+		if (
+			!menuButton.contains(event.target) &&
+			!menuOptions.contains(event.target)
+		) {
+			menuOptions.style.display = "none";
+		}
+	});
+
+	// tasks link
+	tasksLink.addEventListener("click", function (event) {
+		window.location.href = "../all-tasks/all-tasks.html";
+	});
+
+	// calender link
+	calendarLink.addEventListener("click", function (event) {
+		window.location.href = "../mainview/mainview.html";
+	});
 });
 
 function searchFiles(query) {

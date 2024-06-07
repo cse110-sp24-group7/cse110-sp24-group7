@@ -73,7 +73,7 @@ body {
     margin: 10px 0;
 }
 
-.menu-options ul li a {
+.menu-options ul li span {
     text-decoration: none;
     color: black;
     display: block;
@@ -81,9 +81,10 @@ body {
     font-family: 'Roboto Mono', monospace;
     font-weight: normal;
     font-size: 22px;
+    cursor: pointer;
 }
 
-.menu-options ul li a:hover {
+.menu-options ul li span:hover {
     background-color: #f0f0f0;
 }
 
