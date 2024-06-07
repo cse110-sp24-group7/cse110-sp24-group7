@@ -5,7 +5,7 @@
  */
 class JournalPopup extends HTMLElement {
 	/**
-	 * @constructor
+	 * @constructor JournalPopup
 	 * @description Creates an instance of JournalPopup, sets up the shadow DOM, and initializes
 	 * the component with CSS and HTML content loaded asynchronously.
 	 */
@@ -43,6 +43,9 @@ class JournalPopup extends HTMLElement {
 			"#ccbdcf"
 		];
 
+		this.editMode = false; // Track whether we're editing an existing journal
+		this.editEntryId = null; // Track the ID of the journal being edited
+
 		// get the css file and append it to the shadow root
 		const style = document.createElement("link");
 		style.rel = "stylesheet";
@@ -74,31 +77,68 @@ class JournalPopup extends HTMLElement {
 				.addEventListener("click", () => {
 					this.remove();
 				});
+
+			this.shadowRoot
+				.querySelector("#journalForm")
+				.addEventListener("submit", this.onSubmit.bind(this));
 			window.api.getLabelColorMap((map) => {
 				this.labelToColor = map;
 				// populate the labels from database
 				this.populateLabels();
+				this.dispatchEvent(
+					new CustomEvent("entryReady", {
+						bubbles: true,
+						composed: true
+					})
+				);
 			});
 		};
+	}
+
+	/**
+	 * @method journalEdit
+	 * @param {Entry} entry - the journal entry to edit
+	 * @description Populates the popup component with data from journalPv when edit button is
+	 * clicked.
+	 * @memberof JournalPopup
+	 */
+	journalEdit(entry) {
+		this.editMode = true;
+		this.editEntryId = entry.entry_id;
+
+		// Selects the ids from the shadow DOM of the current componenet
+		const titleInput = this.shadowRoot.getElementById("title");
+		const descriptionText = this.shadowRoot.getElementById("description");
+		const creationDateInput = this.shadowRoot.getElementById("dueDate");
+
+		// Populate the journal popup with the entryDetails
+		titleInput.value = entry.entry_title;
+		descriptionText.value = entry.entry_content;
+		creationDateInput.value = entry.creation_date;
+
+		// Clear and populate selectedLabels set with task labels
+		this.selectedLabels.clear();
+		entry.labels.forEach((label) => {
+			this.selectedLabels.add(label);
+		});
+		this.populateLabels();
+
+		// Show popup for editing
+		this.style.display = "block";
 	}
 
 	/**
 	 * @method connectedCallback
 	 * @description Lifecycle method that is called when the component is inserted into the DOM.
 	 * It sets up event listeners for form submission within the shadow DOM.
+	 * @memberof JournalPopup
 	 */
-	connectedCallback() {
-		// event listener to form submission
-		setTimeout(() => {
-			this.shadowRoot
-				.querySelector("#journalForm")
-				.addEventListener("submit", this.onSubmit.bind(this));
-		}, 3000);
-	}
+	connectedCallback() {}
 
 	/**
 	 * @method populateLabels
 	 * @description Populates the label selector with labels from local storage.
+	 * @memberof JournalPopup
 	 */
 	populateLabels() {
 		const labelContainer = this.shadowRoot.getElementById("label");
@@ -125,6 +165,7 @@ class JournalPopup extends HTMLElement {
 	 * @method addNewLabelInput
 	 * @description Adds an input field for creating new labels.
 	 * @param {HTMLElement} container - The container to add the input field to
+	 * @memberof JournalPopup
 	 */
 	addNewLabelInput(container) {
 		const newLabelDiv = document.createElement("div");
@@ -165,6 +206,9 @@ class JournalPopup extends HTMLElement {
 									});
 								}
 							);
+						} else {
+							this.selectedLabels.add(newLabel);
+							this.populateLabels();
 						}
 					});
 				}
@@ -173,35 +217,10 @@ class JournalPopup extends HTMLElement {
 	}
 
 	/**
-	 * @method setColors
-	 * @description Sets the colors for the given labels if they do not already have a color.
-	 * @param {Array} labels - The list of labels to set colors for
-	 * @returns {void}
-	 */
-	// setColors(labels) {
-	// 	labels.forEach((label) => {
-	// 		if (!this.labelToColor.has(label)) {
-	// 			const newColor = this.randomColor();
-	// 			this.labelToColor.set(label, newColor);
-	// 			this.saveLabelColors();
-	// 		}
-	// 	});
-	// }
-
-	/**
-	 * @method saveLabelColors
-	 * @description Saves the label colors to local storage.
-	 * @returns {void}
-	 */
-	// saveLabelColors() {
-	// 	const obj = Object.fromEntries(this.labelToColor);
-	// 	localStorage.setItem("labelColors", JSON.stringify(obj));
-	// }
-
-	/**
 	 * @method randomColor
 	 * @description Returns a random color from the colors array.
 	 * @returns {string} - A random color from the colors array
+	 * @memberof JournalPopup
 	 */
 	randomColor() {
 		return this.colors[Math.floor(Math.random() * this.colors.length)];
@@ -212,6 +231,7 @@ class JournalPopup extends HTMLElement {
 	 * @description Populates the label dropdown with stored labels.
 	 * @param {HTMLElement} container - The container to add the labels to
 	 * @param {Array} labels - The list of labels to populate
+	 * @memberof JournalPopup
 	 */
 	populateLabelDropdown(container, labels) {
 		// this.setColors(labels);
@@ -250,6 +270,7 @@ class JournalPopup extends HTMLElement {
 	 * @method populateSelectedLabels
 	 * @description Populates the container with the selected labels.
 	 * @param {HTMLElement} container - The container to add the selected labels to
+	 * @memberof JournalPopup
 	 */
 	populateSelectedLabels(container) {
 		container.innerHTML = "";
@@ -287,6 +308,7 @@ class JournalPopup extends HTMLElement {
 	 * @description Handles the selection of a label, moving it to the selected labels container.
 	 * @param {string} label - The label to select
 	 * @param {HTMLElement} labelElement - The label element to remove from the dropdown
+	 * @memberof JournalPopup
 	 */
 	selectLabel(label, labelElement) {
 		this.selectedLabels.add(label);
@@ -299,6 +321,7 @@ class JournalPopup extends HTMLElement {
 	 * @description Handles the removal of a selected label, moving it back to the dropdown.
 	 * @param {string} label - The label to remove
 	 * @param {HTMLElement} selectedLabelDiv - The selected label element to remove
+	 * @memberof JournalPopup
 	 */
 	removeLabel(label, selectedLabelDiv) {
 		this.selectedLabels.delete(label);
@@ -311,6 +334,7 @@ class JournalPopup extends HTMLElement {
 	 * @description Deletes a label from the local storage and the selected labels set.
 	 * @param {HTMLElement} labelElement - The label element to delete
 	 * @returns {void}
+	 * @memberof JournalPopup
 	 */
 	deleteLabel(labelElement) {
 		const labelDiv = labelElement.parentElement;
@@ -337,13 +361,13 @@ class JournalPopup extends HTMLElement {
 		labelDiv.remove();
 
 		this.labelToColor.delete(label);
-		// this.saveLabelColors();
 	}
 
 	/**
 	 * @method getJournalsFromStorage
 	 * @description Retrieves the tasks array from local storage, or returns an of journal entries if no entries are found.
 	 * @returns {Array} The array of journal entries
+	 * @memberof JournalPopup
 	 */
 	getJournalsFromStorage() {
 		const storedData = JSON.parse(localStorage.getItem("journalData"));
@@ -354,6 +378,7 @@ class JournalPopup extends HTMLElement {
 	 * @method saveJournalsToStorage
 	 * @description Saves the given journalData array to local storage after converting it to a JSON string.
 	 * @param {Array} journalData - The array of Journals to save
+	 * @memberof JournalPopup
 	 */
 	saveJournalsToStorage(journalData) {
 		localStorage.setItem("journalData", JSON.stringify(journalData));
@@ -369,22 +394,32 @@ class JournalPopup extends HTMLElement {
 	 * @method onSubmit
 	 * @description Handles form submission, prevents default submission, saves and logs data, resets form, and hides popup.
 	 * @param {Event} event - The form submission event
+	 * @memberof JournalPopup
 	 */
 	onSubmit(event) {
 		event.preventDefault();
 
 		// get the users input from form
 		const journalData = {
-			entry_id: Math.random().toString(36).substr(2, 9),
+			entry_id: this.editMode
+				? this.editEntryId
+				: Math.random().toString(36).substr(2, 9),
 			entry_title: this.shadowRoot.querySelector("#title").value,
 			entry_content: this.shadowRoot.querySelector("#description").value,
 			creation_date: this.shadowRoot.querySelector("#dueDate").value,
 			labels: Array.from(this.selectedLabels)
 		};
 
-		window.api.addEntry(journalData, (entries) => {
-			this.saveJournalsToStorage(entries);
-		});
+		if (this.editMode) {
+			window.api.editEntry(journalData, (entries) => {
+				this.saveJournalsToStorage(entries);
+			});
+		} else {
+			window.api.addEntry(journalData, (entries) => {
+				this.saveJournalsToStorage(entries);
+			});
+		}
+
 		event.target.reset();
 	}
 }

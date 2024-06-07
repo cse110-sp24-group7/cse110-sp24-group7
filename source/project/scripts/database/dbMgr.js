@@ -5,22 +5,22 @@
 
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = dirname(__filename);
-
-/* const sqlite = require("sqlite3");
-const path = require("path");
-const dbPath = path.resolve(__dirname, '..', '..', 'data', 'data.db');
-const db = new sqlite.Database(dbPath, 
-  sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE, 
-  (err) => { 
-      if(err) console.error(err);
-}); */
-
+/**
+ * @module dbMgr
+ * @description This module is responsible for managing the database connection and executing queries. This uses a SQLite Database and interfaces using the sqlite3 package.
+ */
 const sqlite = require("sqlite3");
 const path = require("path");
 
 const defaultPath = path.resolve(__dirname, "../../data/data.db");
 let db = {};
-
+/**
+ * @description Connects to the database with a specified path. If no path is provided, the default path is used.
+ * @param {string} pathToDB - the path to the database file.
+ * @param {function} callback - the callback function to execute after the connection is established.
+ * @returns {void}
+ 
+ */
 function connect(pathToDB, callback) {
 	if (pathToDB != "") {
 		db = new sqlite.Database(path.resolve(pathToDB, "data.db"), (err) => {
@@ -37,7 +37,7 @@ function connect(pathToDB, callback) {
 
 /**
  * An object representing a task
- * @typedef {Object} task
+ * @typedef {Object} Task
  * @property {string} task_id - the task's unique id.
  * @property {string} task_name - the task's name or title.
  * @property {string} task_content - the task's content.
@@ -50,11 +50,12 @@ function connect(pathToDB, callback) {
 
 /**
  * An object representing a journal entry
- * @typedef {Object} entry
+ * @typedef {Object} Entry
  * @property {string} entry_id - the entry's unique id.
  * @property {string} entry_title - the entry's title.
  * @property {string} entry_content - the entry's content.
  * @property {string} creation_date - the entry's creation date, in string format.
+ * @property {string[]} labels - the entry's labels
  */
 
 /**
@@ -91,10 +92,13 @@ function connect(pathToDB, callback) {
  */
 
 /**
- * Initializes database by creating tables if needed.
+ * @description Initializes database by creating tables if needed.
  * Must call this function before any queries to prevent error.
  *
  * @param {beginCallback} bcb - beginCallback to load main window.
+ * @returns {void}
+ 
+ * 
  */
 
 const init = (bcb) => {
@@ -170,8 +174,10 @@ const init = (bcb) => {
 }
 
 /**
- * Queries and returns all labels.
+ * @description Queries and returns all labels.
  * @param {labelRendererCallback} lrcb - the label render callback to update the frontend.
+ * @returns {void}
+ 
  */
 function getLabels(lrcb) {
 	const sql = `
@@ -191,8 +197,10 @@ function getLabels(lrcb) {
 }
 
 /**
- * Queries and returns a map of labels to their corresponding colors.
+ * @description Queries and returns a map of labels to their corresponding colors.
  * @param {function} callback - the callback function to handle the resulting map.
+ * @returns {void}
+ 
  */
 function getLabelColorMap(callback) {
 	const sql = `
@@ -216,15 +224,18 @@ function getLabelColorMap(callback) {
 }
 
 /**
- * Queries and returns all tasks.
+ * @description Queries and returns all tasks.
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
+ * @returns {void}
+ 
  */
 const getTasks = (trcb) => {
   const sql = `
     SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels
     FROM tasks t
     LEFT JOIN task_labels l ON t.task_id = l.task_id
-    GROUP BY t.task_id;
+    GROUP BY t.task_id
+    ORDER BY t.due_date ASC;
     `;
 
     db.all(sql, [], (err, rows) => {
@@ -250,9 +261,11 @@ const getTasks = (trcb) => {
 }
 
 /**
- * Queries and returns all tasks that have ALL labels specified.
+ * @description Queries and returns all tasks that have ALL labels specified.
  * @param {string[]} labels - an array of labels that each task must contain
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
+ * @returns {void} if we have a nonzero length. Otherwise just returns the callback.
+ *
  */
 const getTasksConjunctLabels = (labels, trcb) => {
   if (labels.length === 0) {
@@ -293,9 +306,10 @@ const getTasksConjunctLabels = (labels, trcb) => {
 }
 
 /**
- * Queries and returns all tasks that have ANY of the labels specified. If none is provided, then all tasks are returned.
+ * @description Queries and returns all tasks that have ANY of the labels specified. If none is provided, then all tasks are returned.
  * @param {string[]} labels - an array of labels; each task must contain AT LEAST one
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
+ 
  */
 const getTasksDisjunctLabels = (labels, trcb) => {
   let sql = `
@@ -348,9 +362,10 @@ const getTasksDisjunctLabels = (labels, trcb) => {
  */
 
 /**
- * Queries and returns all tasks based on the provided filter criteria.
+ * @description Queries and returns all tasks based on the provided filter criteria.
  * @param {filters} filterCriteria - The filter criteria object.
  * @param {tasksRenderCallback} trcb - The tasks render callback to update the frontend.
+ 
  */
 function getFilteredTasks(filterCriteria, trcb) {
 	const { startTime, endTime, labels, priorities, exclusive } =
@@ -401,6 +416,8 @@ function getFilteredTasks(filterCriteria, trcb) {
 		// Disjunctive (OR) filtering: Ensure the task has at least one of the specified labels
 	}
 
+	sql += ` ORDER BY t.due_date ASC`;
+
 	db.all(sql, params, (err, rows) => {
 		if (err) {
 			throw err;
@@ -425,9 +442,10 @@ function getFilteredTasks(filterCriteria, trcb) {
 }
 
 /**
- * Queries and returns all entries based on the provided filter criteria.
+ * @description Queries and returns all entries based on the provided filter criteria.
  * @param {entryFilters} filterCriteria - The filter criteria object.
  * @param {entriesRenderCallback} ercb - The entries render callback to update the frontend.
+ 
  */
 function getFilteredEntries(filterCriteria, ercb) {
 	const { startTime, endTime, labels, exclusive } = filterCriteria;
@@ -491,8 +509,9 @@ function getFilteredEntries(filterCriteria, ercb) {
 }
 
 /**
- * Queries and returns all entries.
+ * @description Queries and returns all entries.
  * @param {entriesRenderCallback} ercb - the tasks render callback to update the frontend.
+ 
  */
 function getEntries(ercb) {
 	const sql = `
@@ -523,9 +542,10 @@ function getEntries(ercb) {
 }
 
 /**
- * Adds a task to the database
+ * @description Adds a task to the database
  * @param {task} task - the task to add
  * @param {callback} callback - callback to update the frontend.
+ 
  */
 function addTask(task, callback) {
 	const taskSql = `INSERT INTO tasks (task_id, task_name, task_content, creation_date, due_date, priority, expected_time)
@@ -583,9 +603,10 @@ function addTask(task, callback) {
 }
 
 /**
- * Adds multiple tasks to the database
+ * @description Adds multiple tasks to the database
  * @param {task[]} tasks - the tasks to add
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
+ 
  */
  const addTasks = (tasks, trcb) => {
   const taskSql = `INSERT INTO tasks (task_id, task_name, task_content, creation_date, due_date, priority, expected_time)
@@ -631,9 +652,10 @@ function addTask(task, callback) {
 }
 
 /**
- * Adds an entry to the database
+ * @description Adds an entry to the database
  * @param {entry} entry - the entry to add
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
+ 
  */
 function addEntry(entry, callback) {
 	const entrySql = `INSERT INTO entries (entry_id, entry_title, entry_content, creation_date)
@@ -688,9 +710,10 @@ function addEntry(entry, callback) {
 }
 
 /**
- * Adds multiple entries to the database
+ * @description Adds multiple entries to the database
  * @param {entry[]} entries - the entries to add
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
+ 
  */
 function addEntries(entries, ercb) {
 	const entrySql = `INSERT INTO entries (entry_id, entry_title, entry_content, creation_date)
@@ -733,10 +756,11 @@ function addEntries(entries, ercb) {
 }
 
 /**
- * Adds a label to the database
+ * @description Adds a label to the database
  * @param {string} label - the label to add
  * @param {string} color - the color of the label
  * @param {labelRendererCallback} lrcb - the labels render callback to update the frontend.
+ 
  */
 function addLabel(label, color, lrcb) {
 	const sql = `INSERT INTO labels (label, color) VALUES (?, ?);`;
@@ -749,10 +773,11 @@ function addLabel(label, color, lrcb) {
 }
 
 /**
- * Adds multiple labels to the database
+ * @description Adds multiple labels to the database
  * @param {string[]} labels - the labels to add
  * @param {string[]} colors - the colors of labels to add
  * @param {labelRendererCallback} lrcb - the labels render callback to update the frontend.
+ 
  */
 function addLabels(labels, colors, lrcb) {
 	const sql = `INSERT INTO labels (label, color) VALUES (?, ?);`;
@@ -771,31 +796,72 @@ function addLabels(labels, colors, lrcb) {
 }
 
 /**
- * Edits a task in the database
+ * @description Edits a task in the database
  * @param {task} task - the task to edit. The ID must exist in the database.
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
+ 
  */
- const editTask = (task, trcb) => {
-  const sql = `UPDATE tasks SET
-            task_name = '${task.task_name}',
-            task_content = '${task.task_content}',
-            creation_date = '${task.creation_date}',
-            due_date = '${task.due_date}',
-            priority = '${task.priority}',
-            expected_time = '${task.expected_time}'
-        WHERE task_id = '${task.task_id}';`;
-	db.run(sql, [], (err) => {
-		if (err) {
-			throw err;
-		}
+function editTask(task, trcb) {
+	const taskSql = `UPDATE tasks SET
+            task_name = ?,
+            task_content = ?,
+            creation_date = ?,
+            due_date = ?,
+            priority = ?,
+            expected_time = ?
+        WHERE task_id = ?;`;
+
+	const deleteLabelsSql = `DELETE FROM task_labels WHERE task_id = ?;`;
+
+	const insertLabelSql = `INSERT INTO task_labels (task_id, label) VALUES (?, ?);`;
+
+	db.serialize(() => {
+		// Update the task details
+		db.run(
+			taskSql,
+			[
+				task.task_name,
+				task.task_content,
+				task.creation_date,
+				task.due_date,
+				task.priority,
+				task.expected_time,
+				task.task_id
+			],
+			(err) => {
+				if (err) {
+					throw err;
+				}
+			}
+		);
+
+		// Delete existing labels
+		db.run(deleteLabelsSql, [task.task_id], (err) => {
+			if (err) {
+				throw err;
+			}
+		});
+
+		// Insert updated labels
+		const stmt = db.prepare(insertLabelSql);
+		task.labels.forEach((label) => {
+			stmt.run([task.task_id, label], (err) => {
+				if (err) {
+					throw err;
+				}
+			});
+		});
+		stmt.finalize();
+
 		getTasks(trcb);
 	});
 }
 
 /**
- * Edits an entry in the database
+ * @description Edits an entry in the database
  * @param {entry} entry - the entry to edit. The ID must exist in the database.
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
+ 
  */
 function editEntry(entry, ercb) {
 	const entrySql = `UPDATE entries SET
@@ -845,9 +911,10 @@ function editEntry(entry, ercb) {
 }
 
 /**
- * Deletes a task in the database
+ * @description Deletes a task in the database
  * @param {string} task_id - the ID of the task to be deleted.
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
+ 
  */
  const deleteTask = (task_id, trcb) => {
   const sql = `DELETE FROM tasks WHERE task_id = '${task_id}'`;
@@ -860,9 +927,10 @@ function editEntry(entry, ercb) {
 }
 
 /**
- * Deletes tasks in the database
+ * @description Deletes tasks in the database
  * @param {string[]} task_ids - the IDs of tasks to be deleted.
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
+ 
  */
  const deleteTasks = (task_ids, trcb) => {
   const deleteTaskSql = `DELETE FROM tasks WHERE task_id = ?`;
@@ -884,9 +952,10 @@ function editEntry(entry, ercb) {
 }
 
 /**
- * Deletes an entry in the database
+ * @description Deletes an entry in the database
  * @param {string} entry_id - the ID of the entry to be deleted.
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
+ 
  */
 function deleteEntry(entry_id, ercb) {
 	const sql = `DELETE FROM entries WHERE entry_id = ?;`;
@@ -899,9 +968,10 @@ function deleteEntry(entry_id, ercb) {
 }
 
 /**
- * Deletes multiple entries in the database
+ * @description Deletes multiple entries in the database
  * @param {string[]} entry_ids - the IDs of entries to be deleted.
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
+ 
  */
 function deleteEntries(entry_ids, ercb) {
 	const deleteEntrySql = `DELETE FROM entries WHERE entry_id = ?`;
@@ -924,9 +994,10 @@ function deleteEntries(entry_ids, ercb) {
 }
 
 /**
- * Deletes a label from the database
+ * @description Deletes a label from the database
  * @param {string} label - the label to delete
  * @param {labelRendererCallback} lrcb - the labels render callback to update the frontend.
+ 
  */
 function deleteLabel(label, lrcb) {
 	const sql = `DELETE FROM labels WHERE label = ?;`;
@@ -939,9 +1010,10 @@ function deleteLabel(label, lrcb) {
 }
 
 /**
- * Deletes multiple labels from the database
+ * @description Deletes multiple labels from the database
  * @param {string[]} labels - the labels to delete
  * @param {labelRendererCallback} lrcb - the labels render callback to update the frontend.
+ 
  */
 function deleteLabels(labels, lrcb) {
 	const sql = `DELETE FROM labels WHERE label = ?;`;
@@ -956,6 +1028,77 @@ function deleteLabels(labels, lrcb) {
 		});
 		stmt.finalize();
 		getLabels(lrcb);
+	});
+}
+
+/**
+ * @description Fetches a task from the database based on the task_id.
+ * @param {string} task_id - the ID of the task to fetch.
+ * @param {function} callback - the callback function to handle the resulting task object.
+ 
+ */
+function fetchTask(task_id, callback) {
+	const sql = `
+        SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels
+        FROM tasks t
+        LEFT JOIN task_labels l ON t.task_id = l.task_id
+        WHERE t.task_id = ?
+        GROUP BY t.task_id;
+    `;
+
+	db.get(sql, [task_id], (err, row) => {
+		if (err) {
+			throw err;
+		}
+
+		const task = row
+			? {
+					task_id: row.task_id,
+					task_name: row.task_name,
+					task_content: row.task_content,
+					creation_date: row.creation_date,
+					due_date: row.due_date,
+					priority: row.priority,
+					expected_time: row.expected_time,
+					labels: row.labels ? row.labels.split(",") : []
+				}
+			: null;
+
+		callback(task);
+	});
+}
+
+/**
+ * @description Fetches an entry from the database based on the entry_id.
+ * @param {string} entry_id - the ID of the entry to fetch.
+ * @param {function} callback - the callback function to handle the resulting entry object.
+ 
+ */
+function fetchEntry(entry_id, callback) {
+	const sql = `
+        SELECT e.entry_id, e.entry_title, e.entry_content, e.creation_date, GROUP_CONCAT(l.label) as labels
+        FROM entries e
+        LEFT JOIN entry_labels l ON e.entry_id = l.entry_id
+        WHERE e.entry_id = ?
+        GROUP BY e.entry_id;
+    `;
+
+	db.get(sql, [entry_id], (err, row) => {
+		if (err) {
+			throw err;
+		}
+
+		const entry = row
+			? {
+					entry_id: row.entry_id,
+					entry_title: row.entry_title,
+					entry_content: row.entry_content,
+					creation_date: row.creation_date,
+					labels: row.labels ? row.labels.split(",") : []
+				}
+			: null;
+
+		callback(entry);
 	});
 }
 
@@ -983,5 +1126,7 @@ module.exports = {
 	addLabel,
 	addLabels,
 	deleteLabel,
-	deleteLabels
+	deleteLabels,
+	fetchEntry,
+	fetchTask
 };

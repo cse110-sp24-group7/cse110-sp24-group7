@@ -4,6 +4,10 @@
  * @extends HTMLElement
  */
 class Filter extends HTMLElement {
+	/**
+	 * @constructor Filter
+	 * @description Initializes the filter component.
+	 */
 	constructor() {
 		super();
 		this.attachShadow({ mode: "open" });
@@ -36,43 +40,46 @@ class Filter extends HTMLElement {
 	 * @method populateLabels
 	 * @description Populates the labels as options in the multi-select dropdown.
 	 * @returns {void}
+	 * @memberof Filter
 	 */
 	populateLabels() {
-		const labels = this.getLabelsFromStorage();
 		const labelContainer = this.shadowRoot.getElementById("labels");
 
-		// Clear the label container before populating it
-		labelContainer.innerHTML = "";
+		window.api.getLabels((labels) => {
+			// Clear the label container before populating it
+			labelContainer.innerHTML = "";
 
-		// Check if labels is a non-empty array and populate the dropdown
-		if (Array.isArray(labels) && labels.length > 0) {
-			labels.forEach((label) => {
-				const div = document.createElement("div");
-				div.classList.add("label-item");
+			// Check if labels is a non-empty array and populate the dropdown
+			if (Array.isArray(labels) && labels.length > 0) {
+				labels.forEach((label) => {
+					const div = document.createElement("div");
+					div.classList.add("label-item");
 
-				const checkbox = document.createElement("input");
-				checkbox.type = "checkbox";
-				checkbox.classList.add("checkbox");
+					const checkbox = document.createElement("input");
+					checkbox.type = "checkbox";
+					checkbox.classList.add("checkbox");
 
-				const labelBadge = document.createElement("span");
-				labelBadge.classList.add("theLabels");
-				labelBadge.textContent = label;
+					const labelBadge = document.createElement("span");
+					labelBadge.classList.add("theLabels");
+					labelBadge.textContent = label;
 
-				div.appendChild(checkbox);
-				div.appendChild(labelBadge);
-				div.addEventListener("click", (e) =>
-					this.toggleSelection(e, div, "labels")
-				);
+					div.appendChild(checkbox);
+					div.appendChild(labelBadge);
+					div.addEventListener("click", (e) =>
+						this.toggleSelection(e, div, "labels")
+					);
 
-				labelContainer.appendChild(div);
-			});
-		}
+					labelContainer.appendChild(div);
+				});
+			}
+		});
 	}
 
 	/**
 	 * @method addPriorityListeners
 	 * @description Adds event listeners to priority items.
 	 * @returns {void}
+	 * @memberof Filter
 	 */
 	addPriorityListeners() {
 		const priorityContainer = this.shadowRoot.getElementById("priority");
@@ -96,6 +103,7 @@ class Filter extends HTMLElement {
 	 * @method addResetListener
 	 * @description Adds an event listener to the reset button to clear the filter.
 	 * @returns {void}
+	 * @memberof Filter
 	 */
 	addResetListener() {
 		const resetButton = this.shadowRoot.getElementById("resetBtn");
@@ -107,6 +115,7 @@ class Filter extends HTMLElement {
 	 * @method getLabelsFromStorage
 	 * @description Retrieves the labels from local storage.
 	 * @returns {Array} An array of labels.
+	 * @memberof Filter
 	 */
 	getLabelsFromStorage() {
 		return JSON.parse(localStorage.getItem("labels")) || [];
@@ -119,6 +128,7 @@ class Filter extends HTMLElement {
 	 * @param {HTMLElement} element - The element to toggle.
 	 * @param {string} type - The type of selection ('labels' or 'priorities').
 	 * @returns {void}
+	 * @memberof Filter
 	 */
 	toggleSelection(e, element, type) {
 		// Prevent checkbox from toggling twice when clicked
@@ -147,12 +157,30 @@ class Filter extends HTMLElement {
 
 		// Update local storage with the new selection state
 		localStorage.setItem(`selected${type}`, JSON.stringify(selectedItems));
+
+		// Dispatch event to update all tasks view
+		const filters = {
+			startTime: "",
+			endTime: "",
+			labels: JSON.parse(localStorage.getItem(`selectedlabels`)) || [],
+			priorities:
+				JSON.parse(localStorage.getItem(`selectedpriorities`)) || [],
+			exclusive: false
+		};
+		this.dispatchEvent(
+			new CustomEvent("filterUpdate", {
+				bubbles: true,
+				composed: true,
+				detail: filters
+			})
+		);
 	}
 
 	/**
 	 * @method clearFilter
 	 * @description Clears the filter by removing the selected labels and priorities from local storage.
 	 * @returns {void}
+	 * @memberof Filter
 	 */
 	clearFilter() {
 		localStorage.removeItem("selectedlabels");
@@ -179,12 +207,35 @@ class Filter extends HTMLElement {
 				item.querySelector('input[type="checkbox"]').checked = false;
 			});
 		}
+
+		// clear search bar
+		const searchInput = document.getElementById("searchInput");
+		if (searchInput) {
+			searchInput.value = "";
+		}
+
+		const filters = {
+			startTime: "",
+			endTime: "",
+			labels: [],
+			priorities: [],
+			exclusive: false
+		};
+
+		this.dispatchEvent(
+			new CustomEvent("filterUpdate", {
+				bubbles: true,
+				composed: true,
+				detail: filters
+			})
+		);
 	}
 
 	/**
 	 * @method connectedCallback
 	 * @description Called when the element is added to the DOM.
 	 * @returns {void}
+	 * @memberof Filter
 	 */
 	connectedCallback() {
 		// Clear previous selections when the component is connected to the DOM

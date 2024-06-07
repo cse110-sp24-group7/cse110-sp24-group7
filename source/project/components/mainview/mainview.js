@@ -1,4 +1,7 @@
-/* eslint-disable no-undef */
+/**
+ * @module MainView
+ * @description This module is responsible for rendering the main view of the application, which includes the weekly view of tasks and journal entries.
+ */
 
 const filters = {
 	startTime: "",
@@ -11,8 +14,10 @@ const filters = {
 let labelColorMap = new Map();
 
 /**
- * Adds tasks to the task containers.
+ * @method tasksRendererCallback
+ * @description Adds tasks to the task containers.
  * @param {Task[]} tasks - an array of task objects.
+ * @returns {void}
  */
 function tasksRendererCallback(tasks) {
 	// Clear all existing task entries first
@@ -25,6 +30,7 @@ function tasksRendererCallback(tasks) {
 		// Create elements for the task entry
 		const taskPv = document.createElement("div");
 		taskPv.classList.add("task-pv");
+		taskPv.setAttribute("data-task-id", task.task_id);
 
 		const taskName = document.createElement("h2");
 		taskName.textContent = task.task_name;
@@ -59,6 +65,37 @@ function tasksRendererCallback(tasks) {
 			taskPv.appendChild(taskLabels);
 		}
 
+		// Manipulation Buttons
+		const buttonContainer = document.createElement("div");
+		buttonContainer.classList.add("button-container");
+
+		//add Edit button
+		const editButton = document.createElement("button");
+		editButton.textContent = "Edit";
+		editButton.classList.add("edit-task"); // Adding class for event delegation
+		editButton.innerHTML = `<img id="img1" src="edit-icon.png" alt="Edit">`;
+		editButton.addEventListener("click", () => {
+			// Open task popup for editing with task details
+			openTaskPopupForEdit(taskPv.getAttribute("data-task-id"));
+		});
+
+		buttonContainer.appendChild(editButton);
+
+		// Add Delete Button
+		const deleteButton = document.createElement("button");
+		deleteButton.textContent = "Delete";
+		deleteButton.classList.add("delete");
+		deleteButton.innerHTML = `<img id="img2" src="delete-icon.jpg" alt="Delete">`;
+		deleteButton.setAttribute("data-tooltip", "double click to delete");
+		deleteButton.addEventListener("dblclick", () => {
+			window.api.deleteTask(task.task_id, (tasks) => {
+				updateMainview();
+			});
+		});
+		buttonContainer.appendChild(deleteButton);
+
+		taskPv.appendChild(buttonContainer);
+
 		// Find the appropriate day container based on the task's due date
 		// Assuming due_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
 		const dueDate = new Date(task.due_date);
@@ -74,8 +111,25 @@ function tasksRendererCallback(tasks) {
 }
 
 /**
- * Adds journal entries to the journal containers.
+ * @method openTaskPopupForEdit
+ * @description Opens the task popup for editing with the provided task details and the corresponding task preview element.
+ * @param {string} task_id - the task ID to edit
+ * @returns {void}
+ */
+function openTaskPopupForEdit(task_id) {
+	window.api.fetchTask(task_id, (task) => {
+		const popup = document.createElement("task-popup");
+		document.body.appendChild(popup);
+		popup.addEventListener("popupReady", () => {
+			popup.taskEdit(task);
+		});
+	});
+}
+
+/**
+ * @description Adds journal entries to the journal containers.
  * @param {Entry[]} entries - an array of journal entry objects.
+ *
  */
 function entriesRendererCallback(entries) {
 	// Clear all existing journal entries first
@@ -87,6 +141,7 @@ function entriesRendererCallback(entries) {
 		// Create elements for the journal entry
 		const journalPv = document.createElement("div");
 		journalPv.classList.add("journal-pv");
+		journalPv.setAttribute("data-entry-id", entry.entry_id);
 
 		const journalTitle = document.createElement("h2");
 		journalTitle.textContent = entry.entry_title;
@@ -109,6 +164,37 @@ function entriesRendererCallback(entries) {
 			journalPv.appendChild(journalLabels);
 		}
 
+		// Manipulation Buttons
+		const buttonContainer = document.createElement("div");
+		buttonContainer.classList.add("button-container");
+
+		//add Edit button
+		const editButton = document.createElement("button");
+		editButton.textContent = "Edit";
+		editButton.classList.add("edit-entry"); // Adding class for event delegation
+		editButton.innerHTML = `<img id="img1" src="edit-icon.png" alt="Edit">`;
+		editButton.addEventListener("click", () => {
+			// Open journal popup for editing with task details
+			openJournalPopupForEdit(journalPv.getAttribute("data-entry-id"));
+		});
+
+		buttonContainer.appendChild(editButton);
+
+		// Add Delete Button
+		const deleteButton = document.createElement("button");
+		deleteButton.textContent = "Delete";
+		deleteButton.classList.add("delete");
+		deleteButton.innerHTML = `<img id="img2" src="delete-icon.jpg" alt="Delete">`;
+		deleteButton.setAttribute("data-tooltip", "double click to delete");
+		deleteButton.addEventListener("dblclick", () => {
+			window.api.deleteEntry(entry.entry_id, (entries) => {
+				updateMainview();
+			});
+		});
+		buttonContainer.appendChild(deleteButton);
+
+		journalPv.appendChild(buttonContainer);
+
 		// Find the appropriate day container based on the entry's creation date
 		// Assuming creation_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
 		const creationDate = new Date(entry.creation_date);
@@ -124,7 +210,23 @@ function entriesRendererCallback(entries) {
 }
 
 /**
- * Loads the dates on the weekly view
+ * @method openJournalPopupForEdit
+ * @description Opens the journal popup for editing with the provided journal details.
+ * @param {string} entry_id - the journal entry ID to edit
+ */
+function openJournalPopupForEdit(entry_id) {
+	window.api.fetchEntry(entry_id, (entry) => {
+		const popup = document.createElement("journal-popup");
+		document.body.appendChild(popup);
+		popup.addEventListener("entryReady", () => {
+			popup.journalEdit(entry);
+		});
+	});
+}
+
+/**
+ * @method setWeeklyView
+ * @description Loads the dates on the weekly view
  * @param {number} weekOffset = index value relative to today's current week
  */
 function setWeeklyView(weekOffset) {
@@ -195,6 +297,13 @@ function setWeeklyView(weekOffset) {
 	updateMainview();
 }
 
+/**
+ * @method updateMainview
+ * @description Updates the main view by fetching tasks and entries based on the current the current date range.
+ * @returns {void}
+ * @callback tasksRendererCallback
+ *
+ */
 function updateMainview() {
 	// First update color map, then update tasks and entries.
 	window.api.getLabelColorMap((map) => {
@@ -210,8 +319,13 @@ function updateMainview() {
 	});
 }
 
+/*
+ * Adding HTML Elements to the main view and setting up event listeners to tie to the SQLlite backend.
+ */
 document.addEventListener("DOMContentLoaded", async () => {
 	let currentWeekOffset = 0;
+
+	// Establish database connection
 	await window.path.getUserData().then((userData) => {
 		console.log("Renderer access userdata: " + userData);
 		window.api.connect(userData, () => {
@@ -257,6 +371,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 	document.getElementById("today-button").addEventListener("click", () => {
 		currentWeekOffset = 0;
 		setWeeklyView(currentWeekOffset);
+	});
+
+	document.querySelector(".menu-icon").addEventListener("click", () => {
+		window.location = "../all-tasks/all-tasks.html";
 	});
 
 	// updateMainview();

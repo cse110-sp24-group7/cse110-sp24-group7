@@ -1,203 +1,230 @@
 /* Roboto Mono Font Import */
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
 
-
 :root {
-  --font-family: "Roboto Mono", monospace;
-  --font-size-small: 14px;
-  --font-size-medium: 16px;
-  --font-size-large: 35px;
-  --border-color: #ccc;
-  --background-color: white;
-  --hover-background-color: #ddd;
-  --search-bg-color: #d9d6d66e;
+	--font-family: "Roboto Mono", monospace;
+	--font-size-small: 14px;
+	--font-size-medium: 16px;
+	--font-size-large: 35px;
+	--border-color: #ccc;
+	--background-color: white;
+	--hover-background-color: #ddd;
+	--search-bg-color: #d9d6d66e;
 }
 
-body, :host {
-  font-family: var(--font-family);
-  font-size: var(--font-size-small);
+body,
+:host {
+	font-family: var(--font-family);
+	font-size: var(--font-size-small);
+	overflow: hidden;
 }
 
 /* Resetting default margin and padding */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 /* Styling the header */
 .header {
-  background-color: var(--background-color);
-  color: #000;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  border-bottom: 1px solid var(--border-color);
+	background-color: var(--background-color);
+	color: #000;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px 20px;
+	border-bottom: 1px solid var(--border-color);
 }
 
 .logo img {
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
+	width: 30px;
+	height: 30px;
+	margin-right: 10px;
 }
 
 .logo span {
-  font-size: var(--font-size-large);
-  font-family: var(--font-family);
+	font-weight: bold;
+	font-size: var(--font-size-large);
+	font-family: var(--font-family);
 }
-
+/** TODO: Need to change this when vault is implemented 
 .menu-icon img {
-  width: 35px;
-  height: 35px;
+	width: 35px;
+	height: 35px;
 }
-
+.menu-icon img:hover {
+	cursor: pointer;
+}
+*/
+/** Temporary fix for menu icon */
+.menu-icon button {
+	font: inherit;
+	font-size: 18px;
+	background-color: transparent;
+	border: none;
+	transition: color 0.5s ease;
+}
+.menu-icon button:hover {
+	color: #8b0000;
+	cursor: pointer;
+}
 .search-filter-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 20px;
 }
 
 .search-bar {
-  display: flex;
-  align-items: center;
-  margin-left: 200px; /* Space before the search bar */
+	display: flex;
+	align-items: center;
+	margin-left: 200px; /* Space before the search bar */
 }
 
 .search-container {
-  position: relative;
-  display: flex;
-  align-items: center;
+	position: relative;
+	display: flex;
+	align-items: center;
 }
 
 .search-container img {
-  width: 24px;
-  height: 24px;
+	width: 24px;
+	height: 24px;
 }
 
 #searchInput {
-  padding: 5px 5px 5px 30px;
-  width: 200px;
-  border: none;
-  border-radius: 5px;
-  background-color: var(--search-bg-color);
-  font-size: var(--font-size-small);
+	padding: 5px 5px 5px 30px;
+	width: 200px;
+	border: none;
+	border-radius: 5px;
+	background-color: var(--search-bg-color);
+	font-size: var(--font-size-small);
 }
 
 .filter-buttons {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-left: auto;
-  margin-right: 200px;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	margin-left: auto;
+	margin-right: 200px;
 }
 
 hr {
-  margin-top: 20px;
+	margin-top: 20px;
 }
 
 /* Adding styles for the filter icon */
 .filter-icon {
-  height: 30px; /* Same height as the label button */
-  width: 30px; /* Same width as the height to keep it square */
-  margin-right: 5px; /* Space between the icon and the text */
+	height: 30px; /* Same height as the label button */
+	width: 30px; /* Same width as the height to keep it square */
+	margin-right: 5px; /* Space between the icon and the text */
 }
 
 #labelDiv {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 #labelText {
-  margin-left: 5px; /* Adjust if needed to ensure proper alignment */
+	margin-left: 5px; /* Adjust if needed to ensure proper alignment */
 }
 
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
-  .search-filter-bar {
-    flex-direction: column;
-    align-items: stretch;
-  }
+	.search-filter-bar {
+		flex-direction: column;
+		align-items: stretch;
+	}
 
-  .search-bar {
-    width: 100%;
-    margin-bottom: 10px;
-  }
+	.search-bar {
+		width: 100%;
+		margin-bottom: 10px;
+	}
 
-  .filter-buttons {
-    justify-content: flex-end;
-  }
+	.filter-buttons {
+		justify-content: flex-end;
+	}
 
-  .holder, #resetBtn {
-    width: auto;
-    flex: 1;
-  }
+	.holder,
+	#resetBtn {
+		width: auto;
+		flex: 1;
+	}
 
-  #searchInput {
-    width: 100%;
-  }
+	#searchInput {
+		width: 100%;
+	}
 }
-
-  
 
 /* Styling the calendar */
 .calendar {
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 50px); /* Adjust height to leave space for header */
-    margin: auto;
-    justify-content: center;
-    align-items: center;
-    font-family: "Roboto Mono";
-    overflow-y: scroll;
-    padding-top: 850px;
-    padding-bottom: 50px;
+	display: flex;
+	flex-flow: column nowrap;
+	height: calc(100vh - 50px); /* Adjust height to leave space for header */
+	margin: auto;
+	justify-content: bottom;
+	align-items: center;
+	font-family: "Roboto Mono";
+	overflow-y: scroll;
+	scrollbar-width: thin;
+	/* padding-top: 300px; */
+	padding-bottom: 100px;
 }
 
 .day {
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-    width: 60%; /* Make each day section fill the available height */
-    align-items: center;
-    border-bottom: 1px solid #ccc;
-}
-
-.day h2 {
-  padding-right: 20px; /* Adjust the value as needed */
-}
-
-.time-left-container {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 0;
-  font-weight: bold;
-  font-family: "Roboto Mono";
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	width: 80%; /* Make each day section fill the available height */
+	align-items: center;
+	border-bottom: 1px solid #ccc;
 }
 
 .day > div {
-    flex: 1;
-    flex-direction: row;
-    text-align: center;
-    align-items: center; 
-    padding: 10px 0;
-    font-weight: bold;
-    font-family: "Roboto Mono";
+	flex-grow: 1;
+	flex: 1;
+}
+
+.day h2 {
+	flex-direction: row;
+	/* flex-grow: 1; */
+	padding-right: 20px; /* Adjust the value as needed */
+}
+
+.task-container {
+	/* flex-grow: 1; */
+	width: 80%;
+	flex: 1;
+	text-align: center;
+	align-items: center;
+	padding: 10px 0;
+	font-weight: bold;
+	font-family: "Roboto Mono";
+}
+
+.day > .tasks-wrapper {
+	flex: column;
+}
+
+.time-left-container {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	align-items: center;
+	padding: 10px 0;
+	font-weight: bold;
+	font-family: "Roboto Mono";
 }
 
 .task-pv {
 	margin: 5px; /* Adjust as needed */
 	padding: 10px; /* Adjust as needed */
 	width: calc(100% - 10px); /* Adjusted to add-journal width */
-	flex: none;
 	border: 1px solid #000; /* Outline */
 	border-radius: 7px; /* Rounded corners */
-	justify-content: flex-start;
+	justify-content: flex;
 	text-align: left; /* Text alignment */
 	align-items: stretch; /* Box alignment */
 	background-color: #fff; /* Background Color */
@@ -206,34 +233,27 @@ hr {
 }
 
 .days-left {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  padding-right: 15px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	padding-right: 15px;
 }
 
 .day-left-square {
-  height: 20px;
-  width: 20px;
-  background-color: #bdbdbd;
-  margin: 5px;
-  border-radius: 5px;
-} 
-
-/* Additions */
-.day {
-  display: none; /* Hide all day divs by default */
+	height: 20px;
+	width: 20px;
+	background-color: #bdbdbd;
+	margin: 5px;
+	border-radius: 5px;
 }
 
 .month-divider {
-  margin-top: 20px;
+	margin-top: 10px;
 }
 
 .day-date {
-  font-weight: bold;
-  font-family: "Roboto Mono";
-  margin-bottom: 5px;
-  justify-content: left;
+	font-weight: bold;
+	font-family: "Roboto Mono";
+	margin-bottom: 5px;
+	justify-content: left;
 }
-
-
