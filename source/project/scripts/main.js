@@ -22,7 +22,7 @@ const createWindow = () => {
 			nodeIntegration: true
 		}
 	});
-	win.loadFile("./source/project/components/vault/vault.html");
+	win.loadFile("./source/project/components/mainview/mainview.html");
 };
 
 app.whenReady().then(() => {
