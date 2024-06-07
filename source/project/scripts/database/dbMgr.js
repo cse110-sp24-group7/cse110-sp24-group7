@@ -5,13 +5,22 @@
 
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = dirname(__filename);
-
+/**
+ * @module dbMgr
+ * @description This module is responsible for managing the database connection and executing queries. This uses a SQLite Database and interfaces using the sqlite3 package.
+ */
 const sqlite = require("sqlite3");
 const path = require("path");
 
 const defaultPath = path.resolve(__dirname, "../../data/data.db");
 let db = {};
-
+/**
+ * @description Connects to the database with a specified path. If no path is provided, the default path is used.
+ * @param {string} pathToDB - the path to the database file.
+ * @param {function} callback - the callback function to execute after the connection is established.
+ * @returns {void}
+ 
+ */
 function connect(pathToDB, callback) {
 	if (pathToDB != "") {
 		db = new sqlite.Database(path.resolve(pathToDB, "data.db"), (err) => {
@@ -83,10 +92,13 @@ function connect(pathToDB, callback) {
  */
 
 /**
- * Initializes database by creating tables if needed.
+ * @description Initializes database by creating tables if needed.
  * Must call this function before any queries to prevent error.
  *
  * @param {beginCallback} bcb - beginCallback to load main window.
+ * @returns {void}
+ 
+ * 
  */
 function init(bcb) {
 	const fk_sql = `PRAGMA foreign_keys=ON`;
@@ -161,8 +173,10 @@ function init(bcb) {
 }
 
 /**
- * Queries and returns all labels.
+ * @description Queries and returns all labels.
  * @param {labelRendererCallback} lrcb - the label render callback to update the frontend.
+ * @returns {void}
+ 
  */
 function getLabels(lrcb) {
 	const sql = `
@@ -182,8 +196,10 @@ function getLabels(lrcb) {
 }
 
 /**
- * Queries and returns a map of labels to their corresponding colors.
+ * @description Queries and returns a map of labels to their corresponding colors.
  * @param {function} callback - the callback function to handle the resulting map.
+ * @returns {void}
+ 
  */
 function getLabelColorMap(callback) {
 	const sql = `
@@ -207,8 +223,10 @@ function getLabelColorMap(callback) {
 }
 
 /**
- * Queries and returns all tasks.
+ * @description Queries and returns all tasks.
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
+ * @returns {void}
+ 
  */
 function getTasks(trcb) {
 	const sql = `
@@ -243,9 +261,11 @@ function getTasks(trcb) {
 }
 
 /**
- * Queries and returns all tasks that have ALL labels specified.
+ * @description Queries and returns all tasks that have ALL labels specified.
  * @param {string[]} labels - an array of labels that each task must contain
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
+ * @returns {void} if we have a nonzero length. Otherwise just returns the callback.
+ *
  */
 function getTasksConjunctLabels(labels, trcb) {
 	if (labels.length === 0) {
@@ -286,9 +306,10 @@ function getTasksConjunctLabels(labels, trcb) {
 }
 
 /**
- * Queries and returns all tasks that have ANY of the labels specified. If none is provided, then all tasks are returned.
+ * @description Queries and returns all tasks that have ANY of the labels specified. If none is provided, then all tasks are returned.
  * @param {string[]} labels - an array of labels; each task must contain AT LEAST one
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
+ 
  */
 function getTasksDisjunctLabels(labels, trcb) {
 	let sql = `
@@ -341,9 +362,10 @@ function getTasksDisjunctLabels(labels, trcb) {
  */
 
 /**
- * Queries and returns all tasks based on the provided filter criteria.
+ * @description Queries and returns all tasks based on the provided filter criteria.
  * @param {filters} filterCriteria - The filter criteria object.
  * @param {tasksRenderCallback} trcb - The tasks render callback to update the frontend.
+ 
  */
 function getFilteredTasks(filterCriteria, trcb) {
 	const { startTime, endTime, labels, priorities, exclusive } =
@@ -420,9 +442,10 @@ function getFilteredTasks(filterCriteria, trcb) {
 }
 
 /**
- * Queries and returns all entries based on the provided filter criteria.
+ * @description Queries and returns all entries based on the provided filter criteria.
  * @param {entryFilters} filterCriteria - The filter criteria object.
  * @param {entriesRenderCallback} ercb - The entries render callback to update the frontend.
+ 
  */
 function getFilteredEntries(filterCriteria, ercb) {
 	const { startTime, endTime, labels, exclusive } = filterCriteria;
@@ -486,8 +509,9 @@ function getFilteredEntries(filterCriteria, ercb) {
 }
 
 /**
- * Queries and returns all entries.
+ * @description Queries and returns all entries.
  * @param {entriesRenderCallback} ercb - the tasks render callback to update the frontend.
+ 
  */
 function getEntries(ercb) {
 	const sql = `
@@ -518,9 +542,10 @@ function getEntries(ercb) {
 }
 
 /**
- * Adds a task to the database
+ * @description Adds a task to the database
  * @param {task} task - the task to add
  * @param {callback} callback - callback to update the frontend.
+ 
  */
 function addTask(task, callback) {
 	const taskSql = `INSERT INTO tasks (task_id, task_name, task_content, creation_date, due_date, priority, expected_time)
@@ -578,9 +603,10 @@ function addTask(task, callback) {
 }
 
 /**
- * Adds multiple tasks to the database
+ * @description Adds multiple tasks to the database
  * @param {task[]} tasks - the tasks to add
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
+ 
  */
 function addTasks(tasks, trcb) {
 	const taskSql = `INSERT INTO tasks (task_id, task_name, task_content, creation_date, due_date, priority, expected_time)
@@ -626,9 +652,10 @@ function addTasks(tasks, trcb) {
 }
 
 /**
- * Adds an entry to the database
+ * @description Adds an entry to the database
  * @param {entry} entry - the entry to add
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
+ 
  */
 function addEntry(entry, callback) {
 	const entrySql = `INSERT INTO entries (entry_id, entry_title, entry_content, creation_date)
@@ -683,9 +710,10 @@ function addEntry(entry, callback) {
 }
 
 /**
- * Adds multiple entries to the database
+ * @description Adds multiple entries to the database
  * @param {entry[]} entries - the entries to add
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
+ 
  */
 function addEntries(entries, ercb) {
 	const entrySql = `INSERT INTO entries (entry_id, entry_title, entry_content, creation_date)
@@ -728,10 +756,11 @@ function addEntries(entries, ercb) {
 }
 
 /**
- * Adds a label to the database
+ * @description Adds a label to the database
  * @param {string} label - the label to add
  * @param {string} color - the color of the label
  * @param {labelRendererCallback} lrcb - the labels render callback to update the frontend.
+ 
  */
 function addLabel(label, color, lrcb) {
 	const sql = `INSERT INTO labels (label, color) VALUES (?, ?);`;
@@ -744,10 +773,11 @@ function addLabel(label, color, lrcb) {
 }
 
 /**
- * Adds multiple labels to the database
+ * @description Adds multiple labels to the database
  * @param {string[]} labels - the labels to add
  * @param {string[]} colors - the colors of labels to add
  * @param {labelRendererCallback} lrcb - the labels render callback to update the frontend.
+ 
  */
 function addLabels(labels, colors, lrcb) {
 	const sql = `INSERT INTO labels (label, color) VALUES (?, ?);`;
@@ -766,9 +796,10 @@ function addLabels(labels, colors, lrcb) {
 }
 
 /**
- * Edits a task in the database
+ * @description Edits a task in the database
  * @param {task} task - the task to edit. The ID must exist in the database.
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
+ 
  */
 function editTask(task, trcb) {
 	const taskSql = `UPDATE tasks SET
@@ -827,9 +858,10 @@ function editTask(task, trcb) {
 }
 
 /**
- * Edits an entry in the database
+ * @description Edits an entry in the database
  * @param {entry} entry - the entry to edit. The ID must exist in the database.
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
+ 
  */
 function editEntry(entry, ercb) {
 	const entrySql = `UPDATE entries SET
@@ -879,9 +911,10 @@ function editEntry(entry, ercb) {
 }
 
 /**
- * Deletes a task in the database
+ * @description Deletes a task in the database
  * @param {string} task_id - the ID of the task to be deleted.
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
+ 
  */
 function deleteTask(task_id, trcb) {
 	const sql = `DELETE FROM tasks WHERE task_id = '${task_id}'`;
@@ -894,9 +927,10 @@ function deleteTask(task_id, trcb) {
 }
 
 /**
- * Deletes tasks in the database
+ * @description Deletes tasks in the database
  * @param {string[]} task_ids - the IDs of tasks to be deleted.
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
+ 
  */
 function deleteTasks(task_ids, trcb) {
 	const deleteTaskSql = `DELETE FROM tasks WHERE task_id = ?`;
@@ -919,9 +953,10 @@ function deleteTasks(task_ids, trcb) {
 }
 
 /**
- * Deletes an entry in the database
+ * @description Deletes an entry in the database
  * @param {string} entry_id - the ID of the entry to be deleted.
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
+ 
  */
 function deleteEntry(entry_id, ercb) {
 	const sql = `DELETE FROM entries WHERE entry_id = ?;`;
@@ -934,9 +969,10 @@ function deleteEntry(entry_id, ercb) {
 }
 
 /**
- * Deletes multiple entries in the database
+ * @description Deletes multiple entries in the database
  * @param {string[]} entry_ids - the IDs of entries to be deleted.
  * @param {entriesRenderCallback} ercb - the entries render callback to update the frontend.
+ 
  */
 function deleteEntries(entry_ids, ercb) {
 	const deleteEntrySql = `DELETE FROM entries WHERE entry_id = ?`;
@@ -959,9 +995,10 @@ function deleteEntries(entry_ids, ercb) {
 }
 
 /**
- * Deletes a label from the database
+ * @description Deletes a label from the database
  * @param {string} label - the label to delete
  * @param {labelRendererCallback} lrcb - the labels render callback to update the frontend.
+ 
  */
 function deleteLabel(label, lrcb) {
 	const sql = `DELETE FROM labels WHERE label = ?;`;
@@ -974,9 +1011,10 @@ function deleteLabel(label, lrcb) {
 }
 
 /**
- * Deletes multiple labels from the database
+ * @description Deletes multiple labels from the database
  * @param {string[]} labels - the labels to delete
  * @param {labelRendererCallback} lrcb - the labels render callback to update the frontend.
+ 
  */
 function deleteLabels(labels, lrcb) {
 	const sql = `DELETE FROM labels WHERE label = ?;`;
@@ -995,9 +1033,10 @@ function deleteLabels(labels, lrcb) {
 }
 
 /**
- * Fetches a task from the database based on the task_id.
+ * @description Fetches a task from the database based on the task_id.
  * @param {string} task_id - the ID of the task to fetch.
  * @param {function} callback - the callback function to handle the resulting task object.
+ 
  */
 function fetchTask(task_id, callback) {
 	const sql = `
@@ -1031,9 +1070,10 @@ function fetchTask(task_id, callback) {
 }
 
 /**
- * Fetches an entry from the database based on the entry_id.
+ * @description Fetches an entry from the database based on the entry_id.
  * @param {string} entry_id - the ID of the entry to fetch.
  * @param {function} callback - the callback function to handle the resulting entry object.
+ 
  */
 function fetchEntry(entry_id, callback) {
 	const sql = `
