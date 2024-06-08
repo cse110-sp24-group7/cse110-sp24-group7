@@ -83,17 +83,28 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 	// Add event listener for menu button click
 	menuButton.addEventListener("click", function () {
-		menuOptions.style.display =
-			menuOptions.style.display === "block" ? "none" : "block";
+		if (menuOptions.classList.contains("visible")) {
+			menuOptions.classList.remove("visible");
+			setTimeout(() => {
+				menuOptions.style.display = "none";
+			}, 300);
+		} else {
+			menuOptions.style.display = "block";
+			setTimeout(() => {
+				menuOptions.classList.add("visible");
+			}, 10);
+		}
 	});
 
-	// Add event listener for document click to hide menu
 	document.addEventListener("click", function (event) {
 		if (
 			!menuButton.contains(event.target) &&
 			!menuOptions.contains(event.target)
 		) {
-			menuOptions.style.display = "none";
+			menuOptions.classList.remove("visible");
+			setTimeout(() => {
+				menuOptions.style.display = "none";
+			}, 300);
 		}
 	});
 

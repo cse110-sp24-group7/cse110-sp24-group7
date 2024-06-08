@@ -387,11 +387,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 		setWeeklyView(currentWeekOffset);
 	});
 
-	// menu
+	// menu slide in from the right
 	menuButton.addEventListener("click", function () {
-		console.log("Menu clicked"); // Log menu click
-		menuOptions.style.display =
-			menuOptions.style.display === "block" ? "none" : "block";
+		if (menuOptions.classList.contains("visible")) {
+			menuOptions.classList.remove("visible");
+			setTimeout(() => {
+				menuOptions.style.display = "none";
+			}, 300);
+		} else {
+			menuOptions.style.display = "block";
+			setTimeout(() => {
+				menuOptions.classList.add("visible");
+			}, 10);
+		}
 	});
 
 	document.addEventListener("click", function (event) {
@@ -399,7 +407,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 			!menuButton.contains(event.target) &&
 			!menuOptions.contains(event.target)
 		) {
-			menuOptions.style.display = "none";
+			menuOptions.classList.remove("visible");
+			setTimeout(() => {
+				menuOptions.style.display = "none";
+			}, 300);
 		}
 	});
 
