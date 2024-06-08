@@ -14,15 +14,10 @@ const filters = {
 let labelColorMap = new Map();
 
 /**
-<<<<<<< HEAD
- * Adds tasks to the task containers.
- * @param {import("../../scripts/database/dbMgr").task[]} tasks - an array of task objects.
-=======
  * @method tasksRendererCallback
  * @description Adds tasks to the task containers.
  * @param {Task[]} tasks - an array of task objects.
  * @returns {void}
->>>>>>> 7d965e14d2e962e5dc452b447b78e1a595c4e203
  */
 function tasksRendererCallback(tasks) {
 	// Clear all existing task entries first
@@ -41,21 +36,21 @@ function tasksRendererCallback(tasks) {
 		taskName.textContent = task.task_name;
 		taskPv.appendChild(taskName);
 
-    const taskContent = document.createElement("p");
-    taskContent.textContent = task.task_content;
-    taskPv.appendChild(taskContent);
+		const taskContent = document.createElement("p");
+		taskContent.textContent = task.task_content;
+		taskPv.appendChild(taskContent);
 
-    const taskDueDate = document.createElement("p");
-    taskDueDate.textContent = `Due: ${task.due_date}`;
-    taskPv.appendChild(taskDueDate);
+		const taskDueDate = document.createElement("p");
+		taskDueDate.textContent = `Due: ${task.due_date}`;
+		taskPv.appendChild(taskDueDate);
 
-    const taskPriority = document.createElement("p");
-    taskPriority.textContent = `Priority: ${task.priority}`;
-    taskPv.appendChild(taskPriority);
+		const taskPriority = document.createElement("p");
+		taskPriority.textContent = `Priority: ${task.priority}`;
+		taskPv.appendChild(taskPriority);
 
-    const taskExpectedTime = document.createElement("p");
-    taskExpectedTime.textContent = `Expected Time: ${task.expected_time}`;
-    taskPv.appendChild(taskExpectedTime);
+		const taskExpectedTime = document.createElement("p");
+		taskExpectedTime.textContent = `Expected Time: ${task.expected_time}`;
+		taskPv.appendChild(taskExpectedTime);
 
 		// for each label, create a small colored box representing that label
 		if (task.labels.length > 0) {
@@ -101,13 +96,13 @@ function tasksRendererCallback(tasks) {
 
 		taskPv.appendChild(buttonContainer);
 
-    // Find the appropriate day container based on the task's due date
-    // Assuming due_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
-    const dueDate = new Date(task.due_date);
-    const dayIndex = dueDate.getDay(); // Sunday - Saturday : 0 - 6
-    const dayContainer = document.querySelector(
-      `.day${dayIndex + 1} .task-container`,
-    );
+		// Find the appropriate day container based on the task's due date
+		// Assuming due_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
+		const dueDate = new Date(task.due_date);
+		const dayIndex = dueDate.getDay(); // Sunday - Saturday : 0 - 6
+		const dayContainer = document.querySelector(
+			`.day${dayIndex + 1} .task-container`
+		);
 
 		if (dayContainer) {
 			dayContainer.appendChild(taskPv);
@@ -200,13 +195,13 @@ function entriesRendererCallback(entries) {
 
 		journalPv.appendChild(buttonContainer);
 
-    // Find the appropriate day container based on the entry's creation date
-    // Assuming creation_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
-    	const creationDate = new Date(entry.creation_date);
-    	const dayIndex = creationDate.getDay(); // Sunday - Saturday : 0 - 6
-    	const dayContainer = document.querySelector(
-      		`.day${dayIndex + 1} .journal-container`,
-    	);
+		// Find the appropriate day container based on the entry's creation date
+		// Assuming creation_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
+		const creationDate = new Date(entry.creation_date);
+		const dayIndex = creationDate.getDay(); // Sunday - Saturday : 0 - 6
+		const dayContainer = document.querySelector(
+			`.day${dayIndex + 1} .journal-container`
+		);
 
 		if (dayContainer) {
 			dayContainer.appendChild(journalPv);
@@ -357,13 +352,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 		});
 	});
 
-  // creates the popup when the add journal entry button is clicked
-  document.querySelectorAll(".add-journal").forEach((button) => {
-    button.addEventListener("click", () => {
-      const popup = document.createElement("journal-popup");
-      document.body.appendChild(popup);
-    });
-  });
+	// creates the popup when the add journal entry button is clicked
+	document.querySelectorAll(".add-journal").forEach((button) => {
+		button.addEventListener("click", () => {
+			const popup = document.createElement("journal-popup");
+			document.body.appendChild(popup);
+		});
+	});
 
 	// Display correct week when clicking arrows
 	document.getElementById("prev-week").addEventListener("click", () => {

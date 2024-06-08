@@ -64,8 +64,8 @@
 }
 
 .form-control:focus {
-  border-color: #0056b3;
-  outline: none;
+	border-color: #0056b3;
+	outline: none;
 }
 
 textarea.form-control {
@@ -107,7 +107,7 @@ textarea.form-control {
 }
 
 #addBtn:hover {
-  background-color: green;
+	background-color: green;
 }
 
 nav {

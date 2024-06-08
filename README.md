@@ -23,7 +23,7 @@ Linux:
     CPU: An Intel Pentium 4 processor or later that's SSE3 capable
     RAM: 2GB
 
-### How to Install/Launch
+# How to Install/Launch
 
 To install the app you first want to go here [Install](https://github.com/cse110-sp24-group7/cse110-sp24-group7/releases/tag/v0.1.0)
 

@@ -13,10 +13,10 @@ class JournalPopup extends HTMLElement {
 		super();
 		const shadowRoot = this.attachShadow({ mode: "open" });
 
-    // set to store selected labels
-    this.selectedLabels = new Set();
-    this.editMode = false; // Track whether we're editing an existing journal
-    this.editJournalId = null; // Track the ID of the journal being edited
+		// set to store selected labels
+		this.selectedLabels = new Set();
+		this.editMode = false; // Track whether we're editing an existing journal
+		this.editJournalId = null; // Track the ID of the journal being edited
 
 		// map to store label colors with labels
 		// this.labelToColor = new Map(
