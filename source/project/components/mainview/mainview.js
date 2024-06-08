@@ -1,4 +1,7 @@
-/* eslint-disable no-undef */
+/**
+ * @module MainView
+ * @description This module is responsible for rendering the main view of the application, which includes the weekly view of tasks and journal entries.
+ */
 
 const filters = {
 	startTime: "",
@@ -11,8 +14,15 @@ const filters = {
 let labelColorMap = new Map();
 
 /**
+<<<<<<< HEAD
  * Adds tasks to the task containers.
  * @param {import("../../scripts/database/dbMgr").task[]} tasks - an array of task objects.
+=======
+ * @method tasksRendererCallback
+ * @description Adds tasks to the task containers.
+ * @param {Task[]} tasks - an array of task objects.
+ * @returns {void}
+>>>>>>> 7d965e14d2e962e5dc452b447b78e1a595c4e203
  */
 function tasksRendererCallback(tasks) {
 	// Clear all existing task entries first
@@ -68,7 +78,7 @@ function tasksRendererCallback(tasks) {
 		const editButton = document.createElement("button");
 		editButton.textContent = "Edit";
 		editButton.classList.add("edit-task"); // Adding class for event delegation
-		editButton.innerHTML = `<img id="img1" src="edit-icon.png" alt="Edit">`;
+		editButton.innerHTML = `<img id="img1" src="../../assets/res/edit-icon.png" alt="Edit">`;
 		editButton.addEventListener("click", () => {
 			// Open task popup for editing with task details
 			openTaskPopupForEdit(taskPv.getAttribute("data-task-id"));
@@ -80,7 +90,7 @@ function tasksRendererCallback(tasks) {
 		const deleteButton = document.createElement("button");
 		deleteButton.textContent = "Delete";
 		deleteButton.classList.add("delete");
-		deleteButton.innerHTML = `<img id="img2" src="delete-icon.jpg" alt="Delete">`;
+		deleteButton.innerHTML = `<img id="img2" src="../../assets/res/delete-icon.jpg" alt="Delete">`;
 		deleteButton.setAttribute("data-tooltip", "double click to delete");
 		deleteButton.addEventListener("dblclick", () => {
 			window.api.deleteTask(task.task_id, (tasks) => {
@@ -106,8 +116,10 @@ function tasksRendererCallback(tasks) {
 }
 
 /**
- * Opens the task popup for editing with the provided task details and the corresponding task preview element.
+ * @method openTaskPopupForEdit
+ * @description Opens the task popup for editing with the provided task details and the corresponding task preview element.
  * @param {string} task_id - the task ID to edit
+ * @returns {void}
  */
 function openTaskPopupForEdit(task_id) {
 	window.api.fetchTask(task_id, (task) => {
@@ -120,8 +132,14 @@ function openTaskPopupForEdit(task_id) {
 }
 
 /**
+<<<<<<< HEAD
  * Adds journal entries to the journal containers.
  * @param {import("../../scripts/database/dbMgr").entry[]} entries - an array of journal entry objects.
+=======
+ * @description Adds journal entries to the journal containers.
+ * @param {Entry[]} entries - an array of journal entry objects.
+ *
+>>>>>>> 7d965e14d2e962e5dc452b447b78e1a595c4e203
  */
 function entriesRendererCallback(entries) {
 	// Clear all existing journal entries first
@@ -164,7 +182,7 @@ function entriesRendererCallback(entries) {
 		const editButton = document.createElement("button");
 		editButton.textContent = "Edit";
 		editButton.classList.add("edit-entry"); // Adding class for event delegation
-		editButton.innerHTML = `<img id="img1" src="edit-icon.png" alt="Edit">`;
+		editButton.innerHTML = `<img id="img1" src="../../assets/res/edit-icon.png" alt="Edit">`;
 		editButton.addEventListener("click", () => {
 			// Open journal popup for editing with task details
 			openJournalPopupForEdit(journalPv.getAttribute("data-entry-id"));
@@ -176,7 +194,7 @@ function entriesRendererCallback(entries) {
 		const deleteButton = document.createElement("button");
 		deleteButton.textContent = "Delete";
 		deleteButton.classList.add("delete");
-		deleteButton.innerHTML = `<img id="img2" src="delete-icon.jpg" alt="Delete">`;
+		deleteButton.innerHTML = `<img id="img2" src="../../assets/res/delete-icon.jpg" alt="Delete">`;
 		deleteButton.setAttribute("data-tooltip", "double click to delete");
 		deleteButton.addEventListener("dblclick", () => {
 			window.api.deleteEntry(entry.entry_id, (entries) => {
@@ -202,7 +220,8 @@ function entriesRendererCallback(entries) {
 }
 
 /**
- * Opens the journal popup for editing with the provided journal details.
+ * @method openJournalPopupForEdit
+ * @description Opens the journal popup for editing with the provided journal details.
  * @param {string} entry_id - the journal entry ID to edit
  */
 function openJournalPopupForEdit(entry_id) {
@@ -216,7 +235,8 @@ function openJournalPopupForEdit(entry_id) {
 }
 
 /**
- * Loads the dates on the weekly view
+ * @method setWeeklyView
+ * @description Loads the dates on the weekly view
  * @param {number} weekOffset = index value relative to today's current week
  */
 function setWeeklyView(weekOffset) {
@@ -287,6 +307,13 @@ function setWeeklyView(weekOffset) {
 	updateMainview();
 }
 
+/**
+ * @method updateMainview
+ * @description Updates the main view by fetching tasks and entries based on the current the current date range.
+ * @returns {void}
+ * @callback tasksRendererCallback
+ *
+ */
 function updateMainview() {
 	// First update color map, then update tasks and entries.
 	window.api.getLabelColorMap((map) => {
@@ -302,8 +329,15 @@ function updateMainview() {
 	});
 }
 
+/*
+ * Adding HTML Elements to the main view and setting up event listeners to tie to the SQLlite backend.
+ */
 document.addEventListener("DOMContentLoaded", async () => {
 	let currentWeekOffset = 0;
+	const menuButton = document.getElementById("menu");
+	const menuOptions = document.getElementById("menu-options");
+	const tasksLink = document.getElementById("tasks");
+	const vaultLink = document.getElementById("vault");
 
 	// Establish database connection
 	await window.path.getUserData().then((userData) => {
@@ -353,9 +387,30 @@ document.addEventListener("DOMContentLoaded", async () => {
 		setWeeklyView(currentWeekOffset);
 	});
 
-	document.querySelector(".menu-icon").addEventListener("click", () => {
-		window.location = "../all-tasks/all-tasks.html";
+	// menu
+	menuButton.addEventListener("click", function () {
+		console.log("Menu clicked"); // Log menu click
+		menuOptions.style.display =
+			menuOptions.style.display === "block" ? "none" : "block";
 	});
 
+	document.addEventListener("click", function (event) {
+		if (
+			!menuButton.contains(event.target) &&
+			!menuOptions.contains(event.target)
+		) {
+			menuOptions.style.display = "none";
+		}
+	});
+
+	// tasks link
+	tasksLink.addEventListener("click", function (event) {
+		window.location.href = "../all-tasks/all-tasks.html";
+	});
+
+	// vault link
+	vaultLink.addEventListener("click", function (event) {
+		window.location.href = "../vault/vault.html";
+	});
 	// updateMainview();
 });
