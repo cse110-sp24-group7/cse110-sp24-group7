@@ -261,7 +261,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 			menuOptions.style.display = "block";
 			setTimeout(() => {
 				menuOptions.classList.add("visible");
-			}, 10); 
+			}, 10);
 		}
 	});
 

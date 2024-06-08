@@ -53,7 +53,9 @@
 	border-left: 1px solid #b4b4b4;
 	z-index: 1000;
 	padding-top: 30px;
-	transition: opacity 0.3s ease, transform 0.3s ease;
+	transition:
+		opacity 0.3s ease,
+		transform 0.3s ease;
 }
 
 .menu-options.visible {
