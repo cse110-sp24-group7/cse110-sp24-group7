@@ -184,7 +184,9 @@ function displayTasks(tasks) {
 			// currDayContainer.appendChild(dayTitle);
 
 			const dayTitle = document.createElement("h4");
-			const dayOfWeekNode = document.createTextNode(dayOfWeek.toUpperCase());
+			const dayOfWeekNode = document.createTextNode(
+				dayOfWeek.toUpperCase()
+			);
 			const lineBreak = document.createElement("br");
 			const dueDateNode = document.createTextNode(`${dueDay}`);
 			const dueDateTitle = document.createElement("h4");
@@ -194,7 +196,6 @@ function displayTasks(tasks) {
 			dayTitle.appendChild(dueDateNode);
 
 			currDayContainer.appendChild(dayTitle);
-			
 		}
 
 		let taskContainer = document.createElement("div");

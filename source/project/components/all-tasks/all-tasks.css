@@ -106,7 +106,6 @@ body,
 	display: flex;
 	align-items: center;
 	margin-left: 200px; /* Space before the search bar */
-
 }
 
 .search-container {
@@ -158,7 +157,6 @@ hr {
 
 #labelText {
 	margin-left: 5px; /* Adjust if needed to ensure proper alignment */
-
 }
 
 /* Media Queries for Responsiveness */
@@ -189,7 +187,6 @@ hr {
 	}
 }
 
-
 /* Styling the calendar */
 .calendar {
 	display: flex;
@@ -210,7 +207,7 @@ hr {
 	display: flex;
 	flex-direction: row; /* Change to column to get dates as top headers */
 	flex-grow: 1;
-	width: 80%; 
+	width: 80%;
 	align-items: center;
 	border-bottom: 1px solid #ccc;
 }
@@ -219,7 +216,6 @@ hr {
 	flex-grow: 1;
 	flex: 1;
 	flex-direction: row;
-
 }
 
 .day h4 {
@@ -229,10 +225,9 @@ hr {
 	/* width: 20%; */
 	/* align-content: center; */
 	display: block;
-    text-align: center;
+	text-align: center;
 	font-size: 22px;
 	margin-right: 5%;
-	
 }
 
 .task-container {
@@ -247,12 +242,11 @@ hr {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	
 }
 
 .tasks-wrapper {
-  justify-content: center;
-  width: 100%;
+	justify-content: center;
+	width: 100%;
 }
 
 .time-left-container {
@@ -267,7 +261,7 @@ hr {
 }
 
 .task-pv {
-	margin:  auto; /* Adjust as needed */
+	margin: auto; /* Adjust as needed */
 	margin-right: 8%;
 	padding: 10px; /* Adjust as needed */
 	/* width: calc(100% - 10px);  */
