@@ -36,19 +36,19 @@ function tasksRendererCallback(tasks) {
 		taskName.textContent = task.task_name;
 		taskPv.appendChild(taskName);
 
-    const taskContent = document.createElement("p1");
+    const taskContent = document.createElement("p");
     taskContent.textContent = task.task_content;
     taskPv.appendChild(taskContent);
 
-    const taskDueDate = document.createElement("p2");
+    const taskDueDate = document.createElement("p");
     taskDueDate.textContent = `Due: ${task.due_date}`;
     taskPv.appendChild(taskDueDate);
 
-    const taskPriority = document.createElement("p3");
+    const taskPriority = document.createElement("p");
     taskPriority.textContent = `Priority: ${task.priority}`;
     taskPv.appendChild(taskPriority);
 
-    const taskExpectedTime = document.createElement("p4");
+    const taskExpectedTime = document.createElement("p");
     taskExpectedTime.textContent = `Expected Time: ${task.expected_time}`;
     taskPv.appendChild(taskExpectedTime);
 
