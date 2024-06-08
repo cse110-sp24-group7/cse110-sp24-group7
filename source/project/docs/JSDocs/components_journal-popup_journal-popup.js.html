@@ -33,7 +33,7 @@
  */
 class JournalPopup extends HTMLElement {
 	/**
-	 * @constructor
+	 * @constructor JournalPopup
 	 * @description Creates an instance of JournalPopup, sets up the shadow DOM, and initializes
 	 * the component with CSS and HTML content loaded asynchronously.
 	 */
@@ -128,6 +128,7 @@ class JournalPopup extends HTMLElement {
 	 * @param {Entry} entry - the journal entry to edit
 	 * @description Populates the popup component with data from journalPv when edit button is
 	 * clicked.
+	 * @memberof JournalPopup
 	 */
 	journalEdit(entry) {
 		this.editMode = true;
@@ -158,12 +159,14 @@ class JournalPopup extends HTMLElement {
 	 * @method connectedCallback
 	 * @description Lifecycle method that is called when the component is inserted into the DOM.
 	 * It sets up event listeners for form submission within the shadow DOM.
+	 * @memberof JournalPopup
 	 */
 	connectedCallback() {}
 
 	/**
 	 * @method populateLabels
 	 * @description Populates the label selector with labels from local storage.
+	 * @memberof JournalPopup
 	 */
 	populateLabels() {
 		const labelContainer = this.shadowRoot.getElementById("label");
@@ -190,6 +193,7 @@ class JournalPopup extends HTMLElement {
 	 * @method addNewLabelInput
 	 * @description Adds an input field for creating new labels.
 	 * @param {HTMLElement} container - The container to add the input field to
+	 * @memberof JournalPopup
 	 */
 	addNewLabelInput(container) {
 		const newLabelDiv = document.createElement("div");
@@ -244,6 +248,7 @@ class JournalPopup extends HTMLElement {
 	 * @method randomColor
 	 * @description Returns a random color from the colors array.
 	 * @returns {string} - A random color from the colors array
+	 * @memberof JournalPopup
 	 */
 	randomColor() {
 		return this.colors[Math.floor(Math.random() * this.colors.length)];
@@ -254,6 +259,7 @@ class JournalPopup extends HTMLElement {
 	 * @description Populates the label dropdown with stored labels.
 	 * @param {HTMLElement} container - The container to add the labels to
 	 * @param {Array} labels - The list of labels to populate
+	 * @memberof JournalPopup
 	 */
 	populateLabelDropdown(container, labels) {
 		// this.setColors(labels);
@@ -292,6 +298,7 @@ class JournalPopup extends HTMLElement {
 	 * @method populateSelectedLabels
 	 * @description Populates the container with the selected labels.
 	 * @param {HTMLElement} container - The container to add the selected labels to
+	 * @memberof JournalPopup
 	 */
 	populateSelectedLabels(container) {
 		container.innerHTML = "";
@@ -329,6 +336,7 @@ class JournalPopup extends HTMLElement {
 	 * @description Handles the selection of a label, moving it to the selected labels container.
 	 * @param {string} label - The label to select
 	 * @param {HTMLElement} labelElement - The label element to remove from the dropdown
+	 * @memberof JournalPopup
 	 */
 	selectLabel(label, labelElement) {
 		this.selectedLabels.add(label);
@@ -341,6 +349,7 @@ class JournalPopup extends HTMLElement {
 	 * @description Handles the removal of a selected label, moving it back to the dropdown.
 	 * @param {string} label - The label to remove
 	 * @param {HTMLElement} selectedLabelDiv - The selected label element to remove
+	 * @memberof JournalPopup
 	 */
 	removeLabel(label, selectedLabelDiv) {
 		this.selectedLabels.delete(label);
@@ -353,6 +362,7 @@ class JournalPopup extends HTMLElement {
 	 * @description Deletes a label from the local storage and the selected labels set.
 	 * @param {HTMLElement} labelElement - The label element to delete
 	 * @returns {void}
+	 * @memberof JournalPopup
 	 */
 	deleteLabel(labelElement) {
 		const labelDiv = labelElement.parentElement;
@@ -385,6 +395,7 @@ class JournalPopup extends HTMLElement {
 	 * @method getJournalsFromStorage
 	 * @description Retrieves the tasks array from local storage, or returns an of journal entries if no entries are found.
 	 * @returns {Array} The array of journal entries
+	 * @memberof JournalPopup
 	 */
 	getJournalsFromStorage() {
 		const storedData = JSON.parse(localStorage.getItem("journalData"));
@@ -395,6 +406,7 @@ class JournalPopup extends HTMLElement {
 	 * @method saveJournalsToStorage
 	 * @description Saves the given journalData array to local storage after converting it to a JSON string.
 	 * @param {Array} journalData - The array of Journals to save
+	 * @memberof JournalPopup
 	 */
 	saveJournalsToStorage(journalData) {
 		localStorage.setItem("journalData", JSON.stringify(journalData));
@@ -410,6 +422,7 @@ class JournalPopup extends HTMLElement {
 	 * @method onSubmit
 	 * @description Handles form submission, prevents default submission, saves and logs data, resets form, and hides popup.
 	 * @param {Event} event - The form submission event
+	 * @memberof JournalPopup
 	 */
 	onSubmit(event) {
 		event.preventDefault();
@@ -451,13 +464,13 @@ customElements.define("journal-popup", JournalPopup);
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Filter.html">Filter</a></li><li><a href="JournalPopup.html">JournalPopup</a></li><li><a href="TaskPopup.html">TaskPopup</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addEntries">addEntries</a></li><li><a href="global.html#addEntry">addEntry</a></li><li><a href="global.html#addLabel">addLabel</a></li><li><a href="global.html#addLabels">addLabels</a></li><li><a href="global.html#addNewLabelInput">addNewLabelInput</a></li><li><a href="global.html#addPriorityListeners">addPriorityListeners</a></li><li><a href="global.html#addResetListener">addResetListener</a></li><li><a href="global.html#addTask">addTask</a></li><li><a href="global.html#addTasks">addTasks</a></li><li><a href="global.html#appendTaskHTML">appendTaskHTML</a></li><li><a href="global.html#clearFilter">clearFilter</a></li><li><a href="global.html#connectedCallback">connectedCallback</a></li><li><a href="global.html#deleteEntries">deleteEntries</a></li><li><a href="global.html#deleteEntry">deleteEntry</a></li><li><a href="global.html#deleteLabel">deleteLabel</a></li><li><a href="global.html#deleteLabels">deleteLabels</a></li><li><a href="global.html#deleteTask">deleteTask</a></li><li><a href="global.html#deleteTasks">deleteTasks</a></li><li><a href="global.html#displayTasks">displayTasks</a></li><li><a href="global.html#editEntry">editEntry</a></li><li><a href="global.html#editTask">editTask</a></li><li><a href="global.html#entriesRendererCallback">entriesRendererCallback</a></li><li><a href="global.html#factorial">factorial</a></li><li><a href="global.html#fetchEntry">fetchEntry</a></li><li><a href="global.html#fetchTask">fetchTask</a></li><li><a href="global.html#formatNote">formatNote</a></li><li><a href="global.html#getEntries">getEntries</a></li><li><a href="global.html#getFilteredEntries">getFilteredEntries</a></li><li><a href="global.html#getFilteredTasks">getFilteredTasks</a></li><li><a href="global.html#getJournalsFromStorage">getJournalsFromStorage</a></li><li><a href="global.html#getLabelColorMap">getLabelColorMap</a></li><li><a href="global.html#getLabels">getLabels</a></li><li><a href="global.html#getLabelsFromStorage">getLabelsFromStorage</a></li><li><a href="global.html#getTasks">getTasks</a></li><li><a href="global.html#getTasksConjunctLabels">getTasksConjunctLabels</a></li><li><a href="global.html#getTasksDisjunctLabels">getTasksDisjunctLabels</a></li><li><a href="global.html#getTasksFromStorage">getTasksFromStorage</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#journalEdit">journalEdit</a></li><li><a href="global.html#onSubmit">onSubmit</a></li><li><a href="global.html#openJournalPopupForEdit">openJournalPopupForEdit</a></li><li><a href="global.html#openTaskPopupForEdit">openTaskPopupForEdit</a></li><li><a href="global.html#populateLabelDropdown">populateLabelDropdown</a></li><li><a href="global.html#populateLabels">populateLabels</a></li><li><a href="global.html#populateSelectedLabels">populateSelectedLabels</a></li><li><a href="global.html#randomColor">randomColor</a></li><li><a href="global.html#removeLabel">removeLabel</a></li><li><a href="global.html#saveJournalsToStorage">saveJournalsToStorage</a></li><li><a href="global.html#saveTasksToStorage">saveTasksToStorage</a></li><li><a href="global.html#selectLabel">selectLabel</a></li><li><a href="global.html#setWeeklyView">setWeeklyView</a></li><li><a href="global.html#taskEdit">taskEdit</a></li><li><a href="global.html#tasksRendererCallback">tasksRendererCallback</a></li><li><a href="global.html#testing">testing</a></li><li><a href="global.html#toggleSelection">toggleSelection</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-All_Tasks.html">All_Tasks</a></li><li><a href="module-MainView.html">MainView</a></li><li><a href="module-dbMgr.html">dbMgr</a></li></ul><h3>Classes</h3><ul><li><a href="Filter.html">Filter</a></li><li><a href="JournalPopup.html">JournalPopup</a></li><li><a href="TaskPopup.html">TaskPopup</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Thu Jun 06 2024 06:20:23 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Fri Jun 07 2024 00:43:31 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

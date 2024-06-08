@@ -1,0 +1,305 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap");
+
+.file-input {
+	background-image: url(../../assets/res/file-img.png);
+}
+
+body {
+	box-sizing: border-box;
+	font-family: "Roboto Mono", monospace;
+	margin: 0;
+	background-color: lightgrey;
+	height: 100vh;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+.hidden {
+	display: none;
+}
+
+.container {
+	background-color: white;
+	font-family: "Roboto Mono", monospace;
+	font-weight: 100;
+	overflow: hidden;
+}
+
+.header {
+	display: flex;
+	align-items: center;
+	margin-left: 7px;
+	margin-bottom: 5px;
+	font-family: "Roboto Mono", monospace;
+}
+
+.logo {
+	width: 50px;
+	height: auto;
+	left: 0;
+	top: 0;
+	padding: 5px;
+}
+
+.menu {
+	width: 30px;
+	height: auto;
+	cursor: pointer;
+	margin-right: 7px;
+	margin-left: auto;
+	z-index: 1001;
+}
+
+.menu-options {
+	display: none;
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+	background-color: white;
+	border-left: 1px solid #b4b4b4;
+	z-index: 1000;
+	padding-top: 30px;
+}
+
+.menu-options ul {
+	list-style-type: none;
+	padding: 20px;
+	margin: 0;
+}
+
+.menu-options ul li {
+	margin: 10px 0;
+}
+
+.menu-options ul li span {
+	text-decoration: none;
+	color: black;
+	display: block;
+	padding: 5px 10px;
+	font-family: "Roboto Mono", monospace;
+	font-weight: normal;
+	font-size: 22px;
+	cursor: pointer;
+}
+
+.menu-options ul li span:hover {
+	background-color: #f0f0f0;
+}
+
+.header h1 {
+	margin: 0;
+	font-size: 1.7rem;
+	font-family: "Roboto Mono", monospace;
+	color: black;
+	align-self: flex-end;
+	justify-content: flex-start;
+	font-weight: normal;
+}
+
+.search-filter {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	padding: 15px 0 15px 0;
+}
+
+.search-icon {
+	width: 20px;
+	height: 20px;
+	margin-right: 10px;
+	margin-left: 8%;
+}
+
+.search-bar {
+	padding: 5px 10px;
+	border: 1px solid #ccc;
+	width: 30%;
+	border-radius: 4px;
+}
+
+.filter-icon {
+	width: 50px;
+	height: auto;
+	margin-right: 10px;
+}
+
+.filter {
+	padding: 5px 10px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	width: 10%;
+}
+
+.upload {
+	margin-left: 30%;
+	align-items: flex-end;
+}
+
+.upload button {
+	padding: 10px 20px;
+	color: white;
+	border: none;
+	cursor: pointer;
+}
+
+.file-upload > input {
+	display: none;
+}
+
+.file-upload img {
+	height: auto;
+	width: 20px;
+	cursor: pointer;
+}
+
+.main-section {
+	background-color: lightgray;
+	overflow: hidden;
+}
+
+.sub-section {
+	flex: 1;
+	width: 93%;
+	background-color: white;
+	margin: 0 auto;
+	padding: 10px 20px 20px 20px;
+	overflow-y: scroll;
+	border: 1px solid #b4b4b4;
+}
+
+.sub-section::-webkit-scrollbar {
+	width: 25px;
+}
+
+.sub-section::-webkit-scrollbar-thumb {
+	background-color: #6d6d6d;
+	border-radius: 5px;
+}
+
+.sub-section::-webkit-scrollbar-track {
+	background-color: #f9f9f9;
+	border-radius: 5px;
+	border: 1px solid #b4b4b4;
+}
+
+.sub-section h2 {
+	margin: 10px 0 10px 0;
+	font-family: "Roboto Mono", monospace;
+	font-weight: normal;
+}
+
+#files .grid,
+#images .grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+}
+
+.file-item {
+	display: flex;
+	position: relative;
+	flex-direction: column;
+	align-items: center;
+	padding: 0;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	background-color: #f9f9f9;
+	width: 18%;
+	height: 200px;
+	overflow: hidden;
+}
+
+.file-preview {
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	cursor: pointer;
+}
+
+.file-icon {
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}
+
+.file-title {
+	font-size: 12px;
+	word-wrap: break-word;
+	z-index: 2;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	background-color: white;
+	height: 50px;
+	margin: 0;
+	text-align: left;
+	border-top: 1px solid #ccc;
+	display: flex;
+	align-items: center;
+	padding-left: 15px;
+	overflow: hidden;
+	font-family: "Roboto Mono", monospace;
+}
+
+/* delete button */
+.delete {
+	position: absolute;
+	top: 0;
+	right: 0;
+	background-color: transparent;
+	color: white;
+	border: none;
+	padding: 5px;
+	cursor: pointer;
+	z-index: 3;
+}
+
+#deleteBtn {
+	width: 30px;
+	height: 30px;
+}
+
+/* info message for the delete button */
+/* .delete [data-tooltip]::after {
+	content: attr(data-tooltip);
+	position: absolute;
+	bottom: 120%;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: #333;
+	color: #fff;
+	padding: 3px 5px;
+	border-radius: 5px;
+	white-space: nowrap;
+	z-index: 100;
+	font-size: 10px;
+	opacity: 0;
+	pointer-events: none;
+}
+
+/* little triangle */
+/* .button-container button[data-tooltip]::before {
+	content: "";
+	position: absolute;
+	bottom: 80%;
+	left: 77%;
+	transform: translateX(-50%);
+	border-width: 5px;
+	border-style: solid;
+	border-color: #333 transparent transparent transparent;
+	opacity: 0;
+} */
+
+/* .button-container button[data-tooltip]:hover::after,
+.button-container button[data-tooltip]:hover::before {
+	animation: show-tooltip 0.3s forwards;
+	animation-delay: 1.5s;
+} */
+
+/* @keyframes show-tooltip {
+	to {
+		opacity: 1;
+	}
+}  */

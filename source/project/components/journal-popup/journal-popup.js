@@ -5,7 +5,7 @@
  */
 class JournalPopup extends HTMLElement {
 	/**
-	 * @constructor
+	 * @constructor JournalPopup
 	 * @description Creates an instance of JournalPopup, sets up the shadow DOM, and initializes
 	 * the component with CSS and HTML content loaded asynchronously.
 	 */
@@ -102,6 +102,7 @@ class JournalPopup extends HTMLElement {
 	 * @param {Entry} entry - the journal entry to edit
 	 * @description Populates the popup component with data from journalPv when edit button is
 	 * clicked.
+	 * @memberof JournalPopup
 	 */
 	journalEdit(entry) {
 		this.editMode = true;
@@ -132,12 +133,14 @@ class JournalPopup extends HTMLElement {
 	 * @method connectedCallback
 	 * @description Lifecycle method that is called when the component is inserted into the DOM.
 	 * It sets up event listeners for form submission within the shadow DOM.
+	 * @memberof JournalPopup
 	 */
 	connectedCallback() {}
 
 	/**
 	 * @method populateLabels
 	 * @description Populates the label selector with labels from local storage.
+	 * @memberof JournalPopup
 	 */
 	populateLabels() {
 		const labelContainer = this.shadowRoot.getElementById("label");
@@ -164,6 +167,7 @@ class JournalPopup extends HTMLElement {
 	 * @method addNewLabelInput
 	 * @description Adds an input field for creating new labels.
 	 * @param {HTMLElement} container - The container to add the input field to
+	 * @memberof JournalPopup
 	 */
 	addNewLabelInput(container) {
 		const newLabelDiv = document.createElement("div");
@@ -218,6 +222,7 @@ class JournalPopup extends HTMLElement {
 	 * @method randomColor
 	 * @description Returns a random color from the colors array.
 	 * @returns {string} - A random color from the colors array
+	 * @memberof JournalPopup
 	 */
 	randomColor() {
 		return this.colors[Math.floor(Math.random() * this.colors.length)];
@@ -228,6 +233,7 @@ class JournalPopup extends HTMLElement {
 	 * @description Populates the label dropdown with stored labels.
 	 * @param {HTMLElement} container - The container to add the labels to
 	 * @param {Array} labels - The list of labels to populate
+	 * @memberof JournalPopup
 	 */
 	populateLabelDropdown(container, labels) {
 		// this.setColors(labels);
@@ -266,6 +272,7 @@ class JournalPopup extends HTMLElement {
 	 * @method populateSelectedLabels
 	 * @description Populates the container with the selected labels.
 	 * @param {HTMLElement} container - The container to add the selected labels to
+	 * @memberof JournalPopup
 	 */
 	populateSelectedLabels(container) {
 		container.innerHTML = "";
@@ -303,6 +310,7 @@ class JournalPopup extends HTMLElement {
 	 * @description Handles the selection of a label, moving it to the selected labels container.
 	 * @param {string} label - The label to select
 	 * @param {HTMLElement} labelElement - The label element to remove from the dropdown
+	 * @memberof JournalPopup
 	 */
 	selectLabel(label, labelElement) {
 		this.selectedLabels.add(label);
@@ -315,6 +323,7 @@ class JournalPopup extends HTMLElement {
 	 * @description Handles the removal of a selected label, moving it back to the dropdown.
 	 * @param {string} label - The label to remove
 	 * @param {HTMLElement} selectedLabelDiv - The selected label element to remove
+	 * @memberof JournalPopup
 	 */
 	removeLabel(label, selectedLabelDiv) {
 		this.selectedLabels.delete(label);
@@ -327,6 +336,7 @@ class JournalPopup extends HTMLElement {
 	 * @description Deletes a label from the local storage and the selected labels set.
 	 * @param {HTMLElement} labelElement - The label element to delete
 	 * @returns {void}
+	 * @memberof JournalPopup
 	 */
 	deleteLabel(labelElement) {
 		const labelDiv = labelElement.parentElement;
@@ -359,6 +369,7 @@ class JournalPopup extends HTMLElement {
 	 * @method getJournalsFromStorage
 	 * @description Retrieves the tasks array from local storage, or returns an of journal entries if no entries are found.
 	 * @returns {Array} The array of journal entries
+	 * @memberof JournalPopup
 	 */
 	getJournalsFromStorage() {
 		const storedData = JSON.parse(localStorage.getItem("journalData"));
@@ -369,6 +380,7 @@ class JournalPopup extends HTMLElement {
 	 * @method saveJournalsToStorage
 	 * @description Saves the given journalData array to local storage after converting it to a JSON string.
 	 * @param {Array} journalData - The array of Journals to save
+	 * @memberof JournalPopup
 	 */
 	saveJournalsToStorage(journalData) {
 		localStorage.setItem("journalData", JSON.stringify(journalData));
@@ -384,6 +396,7 @@ class JournalPopup extends HTMLElement {
 	 * @method onSubmit
 	 * @description Handles form submission, prevents default submission, saves and logs data, resets form, and hides popup.
 	 * @param {Event} event - The form submission event
+	 * @memberof JournalPopup
 	 */
 	onSubmit(event) {
 		event.preventDefault();

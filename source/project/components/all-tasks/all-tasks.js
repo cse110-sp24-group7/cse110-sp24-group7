@@ -1,3 +1,7 @@
+/**
+ * @module All_Tasks
+ * @description This module is responsible for displaying all tasks in a seperate view, with dynamic filtering and search functionality.
+ */
 console.log("all-tasks.js script loaded"); // Add this line
 
 let filters = {
@@ -11,7 +15,7 @@ let filters = {
 let allTasks = [];
 
 /**
- * Generates an HTML element for task preview given a task object
+ * @description Generates an HTML element for task preview given a task object
  * @param {Task} task - the task to append
  * @param {Object} taskContainer - the HTML element to append tasks to.
  * @returns {Object} taskContainer - the HTML element with appended task
@@ -40,9 +44,9 @@ function appendTaskHTML(task, taskContainer) {
 	taskContent.textContent = task.task_content;
 	taskPv.appendChild(taskContent);
 
-	const taskDueDate = document.createElement("p");
-	taskDueDate.textContent = `Due: ${dueDate.toDateString()}`;
-	taskPv.appendChild(taskDueDate);
+	// const taskDueDate = document.createElement("p");
+	// taskDueDate.textContent = `Due: ${dueDate.toDateString()}`;
+	// taskPv.appendChild(taskDueDate);
 
 	const taskPriority = document.createElement("p");
 	taskPriority.textContent = `Priority: ${task.priority}`;
@@ -105,7 +109,7 @@ function appendTaskHTML(task, taskContainer) {
 }
 
 /**
- * Generates the dates to show for each row of visible tasks
+ * @description Generates the dates to show for each row of visible tasks
  * @param {Task[]} tasks - an array of task objects.
  */
 function displayTasks(tasks) {
@@ -186,6 +190,11 @@ function displayTasks(tasks) {
 	}
 }
 
+/**
+ * @description Updates the tasklist based on the current filters selected
+ * @returns {void}
+ *
+ */
 function updateTasklist() {
 	window.api.getFilteredTasks(filters, (tasks) => {
 		allTasks = tasks;
@@ -194,6 +203,11 @@ function updateTasklist() {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
+	const menuButton = document.getElementById("menu");
+	const menuOptions = document.getElementById("menu-options");
+	const vaultLink = document.getElementById("vault");
+	const calendarLink = document.getElementById("calendar");
+
 	await window.path.getUserData().then((userData) => {
 		console.log("Renderer access userdata: " + userData);
 		window.api.connect(userData, () => {
@@ -216,8 +230,30 @@ document.addEventListener("DOMContentLoaded", async function () {
 		});
 	});
 
-	document.querySelector(".menu-icon").addEventListener("click", () => {
-		window.location = "../mainview/mainview.html";
+	// menu
+	menuButton.addEventListener("click", function () {
+		console.log("Menu clicked"); // Log menu click
+		menuOptions.style.display =
+			menuOptions.style.display === "block" ? "none" : "block";
+	});
+
+	document.addEventListener("click", function (event) {
+		if (
+			!menuButton.contains(event.target) &&
+			!menuOptions.contains(event.target)
+		) {
+			menuOptions.style.display = "none";
+		}
+	});
+
+	// tasks link
+	calendarLink.addEventListener("click", function (event) {
+		window.location.href = "../mainview/mainview.html";
+	});
+
+	// vault link
+	vaultLink.addEventListener("click", function (event) {
+		window.location.href = "../vault/vault.html";
 	});
 
 	// search
@@ -230,6 +266,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 		displayTasks(filteredTasks);
 	});
 
+	/**
+	 * test cases for tasks.
+	 */
 	const testTasks = [
 		{
 			task_name: "Task 1 05-15",

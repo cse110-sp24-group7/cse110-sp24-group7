@@ -1,5 +1,6 @@
 const { contextBridge, ipcRenderer } = require("electron");
 const dbMgr = require("./database/dbMgr");
+const fileMgr = require("./fileMgr");
 
 const getUserData = () => ipcRenderer.invoke("getUserData");
 
@@ -19,25 +20,25 @@ const getTasks = (trcb) => {
 	return dbMgr.getTasks(trcb);
 };
 
-const getTasksConjunctLabels = (labels, trcb) => {
-	return dbMgr.getTasksConjunctLabels(labels, trcb);
-};
+function getTasksConjunctLabels(labels, trcb) {
+	return this.getTasksConjunctLabels(labels, trcb);
+}
 
-const getTasksDisjunctLabels = (labels, trcb) => {
-	return dbMgr.getTasksDisjunctLabels(labels, trcb);
-};
+function getTasksDisjunctLabels(labels, trcb) {
+	return this.getTasksDisjunctLabels(labels, trcb);
+}
 
-const getEntries = (ercb) => {
-	return dbMgr.getEntries(ercb);
-};
+function getEntries(ercb) {
+	return this.getEntries(ercb);
+}
 
 const addTask = (task, callback) => {
 	return dbMgr.addTask(task, callback);
 };
 
-const addTasks = (tasks, trcb) => {
-	return dbMgr.addTasks(tasks, trcb);
-};
+function addTasks(tasks, trcb) {
+	return this.addTasks(tasks, trcb);
+}
 
 const addEntry = (entry, callback) => {
 	return dbMgr.addEntry(entry, callback);
@@ -138,4 +139,13 @@ contextBridge.exposeInMainWorld("api", {
 	getFilteredEntries,
 	fetchTask,
 	fetchEntry
+});
+
+//API for uploading or retrieving files
+const fileManager = (data_location) => {
+	return fileMgr.FileManager(data_location);
+};
+
+contextBridge.exposeInMainWorld("file", {
+	fileManager: fileManager
 });

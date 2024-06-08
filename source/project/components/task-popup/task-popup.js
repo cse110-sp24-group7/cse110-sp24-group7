@@ -5,7 +5,7 @@
  */
 class TaskPopup extends HTMLElement {
 	/**
-	 * @constructor
+	 * @constructor TaskPopup
 	 * @description Creates an instance of TaskPopup, sets up the shadow DOM, and initializes
 	 * the component with CSS and HTML content loaded asynchronously.
 	 */
@@ -92,6 +92,7 @@ class TaskPopup extends HTMLElement {
 	 * @param {Task} task - the task to edit
 	 * @description Populates the popup component with data from taskpv when edit button is
 	 * clicked.
+	 * @memberof TaskPopup
 	 */
 	taskEdit(task) {
 		this.editMode = true;
@@ -127,12 +128,14 @@ class TaskPopup extends HTMLElement {
 	 * @method connectedCallback
 	 * @description Lifecycle method that is called when the component is inserted into the DOM.
 	 * It sets up event listeners for form submission within the shadow DOM.
+	 * @memberof TaskPopup
 	 */
 	connectedCallback() {}
 
 	/**
 	 * @method populateLabels
 	 * @description Populates the label selector with labels.
+	 * @memberof TaskPopup
 	 */
 	populateLabels() {
 		const labelContainer = this.shadowRoot.getElementById("label");
@@ -158,6 +161,7 @@ class TaskPopup extends HTMLElement {
 	 * @method addNewLabelInput
 	 * @description Adds an input field for creating new labels.
 	 * @param {HTMLElement} container - The container to add the input field to
+	 * @memberof TaskPopup
 	 */
 	addNewLabelInput(container) {
 		const newLabelDiv = document.createElement("div");
@@ -212,6 +216,7 @@ class TaskPopup extends HTMLElement {
 	 * @method randomColor
 	 * @description Returns a random color from the colors array.
 	 * @returns {string} - A random color from the colors array
+	 * @memberof TaskPopup
 	 */
 	randomColor() {
 		return this.colors[Math.floor(Math.random() * this.colors.length)];
@@ -222,6 +227,7 @@ class TaskPopup extends HTMLElement {
 	 * @description Populates the label dropdown with stored labels.
 	 * @param {HTMLElement} container - The container to add the labels to
 	 * @param {Array} labels - The list of labels to populate
+	 * @memberof TaskPopup
 	 */
 	populateLabelDropdown(container, labels) {
 		// this.setColors(labels);
@@ -260,6 +266,7 @@ class TaskPopup extends HTMLElement {
 	 * @method populateSelectedLabels
 	 * @description Populates the container with the selected labels.
 	 * @param {HTMLElement} container - The container to add the selected labels to
+	 * @memberof TaskPopup
 	 */
 	populateSelectedLabels(container) {
 		container.innerHTML = "";
@@ -297,6 +304,7 @@ class TaskPopup extends HTMLElement {
 	 * @description Handles the selection of a label, moving it to the selected labels container.
 	 * @param {string} label - The label to select
 	 * @param {HTMLElement} labelElement - The label element to remove from the dropdown
+	 * @memberof TaskPopup
 	 */
 	selectLabel(label, labelElement) {
 		this.selectedLabels.add(label);
@@ -309,6 +317,7 @@ class TaskPopup extends HTMLElement {
 	 * @description Handles the removal of a selected label, moving it back to the dropdown.
 	 * @param {string} label - The label to remove
 	 * @param {HTMLElement} selectedLabelDiv - The selected label element to remove
+	 * @memberof TaskPopup
 	 */
 	removeLabel(label, selectedLabelDiv) {
 		this.selectedLabels.delete(label);
@@ -321,6 +330,7 @@ class TaskPopup extends HTMLElement {
 	 * @description Deletes a label from the local storage and the selected labels set.
 	 * @param {HTMLElement} labelElement - The label element to delete
 	 * @returns {void}
+	 * @memberof TaskPopup
 	 */
 	deleteLabel(labelElement) {
 		const labelDiv = labelElement.parentElement;
@@ -350,7 +360,8 @@ class TaskPopup extends HTMLElement {
 	/**
 	 * @method getTasksFromStorage
 	 * @description Retrieves the tasks array from local storage, or returns an empty array if no tasks are found.
-	 * @returns {Array} The array of tasks
+	 * @returns {Task[]} The array of tasks
+	 * @memberof TaskPopup
 	 */
 	getTasksFromStorage() {
 		return JSON.parse(window.localStorage.getItem("tasks")) || [];
@@ -359,7 +370,8 @@ class TaskPopup extends HTMLElement {
 	/**
 	 * @method saveTasksToStorage
 	 * @description Saves the given tasks array to local storage after converting it to a JSON string, then closes the popup.
-	 * @param {Array} tasks - The array of tasks to save
+	 * @param {Task[]} tasks - The array of tasks to save
+	 * @memberof TaskPopup
 	 */
 	saveTasksToStorage(tasks) {
 		localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -375,6 +387,7 @@ class TaskPopup extends HTMLElement {
 	 * @method onSubmit
 	 * @description Handles form submission, prevents default submission, saves and logs data, resets form, and hides popup.
 	 * @param {Event} event - The form submission event
+	 * @memberof TaskPopup
 	 */
 	onSubmit(event) {
 		event.preventDefault();

@@ -1,4 +1,12 @@
 .DS_Store
 node_modules
+
+out/
+*.db
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
 test-results
 out/
