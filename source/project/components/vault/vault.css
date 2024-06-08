@@ -1,9 +1,7 @@
+/* Import the Roboto Mono font from Google Fonts */
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap");
 
-.file-input {
-	background-image: url(../../assets/res/file-img.png);
-}
-
+/* Global styles for the body */
 body {
 	box-sizing: border-box;
 	font-family: "Roboto Mono", monospace;
@@ -15,10 +13,12 @@ body {
 	flex-direction: column;
 }
 
+/* Utility class to hide elements */
 .hidden {
 	display: none;
 }
 
+/* Styles for the main container */
 .container {
 	background-color: white;
 	font-family: "Roboto Mono", monospace;
@@ -26,6 +26,7 @@ body {
 	overflow: hidden;
 }
 
+/* Styles for the header section */
 .header {
 	display: flex;
 	align-items: center;
@@ -34,6 +35,7 @@ body {
 	font-family: "Roboto Mono", monospace;
 }
 
+/* Styles for the logo image */
 .logo {
 	width: 50px;
 	height: auto;
@@ -42,6 +44,7 @@ body {
 	padding: 5px;
 }
 
+/* Styles for the menu button */
 .menu {
 	width: 30px;
 	height: auto;
@@ -51,6 +54,7 @@ body {
 	z-index: 1001;
 }
 
+/* Styles for the menu options dropdown */
 .menu-options {
 	display: none;
 	position: absolute;
@@ -63,16 +67,19 @@ body {
 	padding-top: 30px;
 }
 
+/* Styles for the menu options list */
 .menu-options ul {
 	list-style-type: none;
 	padding: 20px;
 	margin: 0;
 }
 
+/* Styles for the menu options list items */
 .menu-options ul li {
 	margin: 10px 0;
 }
 
+/* Styles for the menu options links */
 .menu-options ul li span {
 	text-decoration: none;
 	color: black;
@@ -84,10 +91,12 @@ body {
 	cursor: pointer;
 }
 
+/* Hover effect for menu options links */
 .menu-options ul li span:hover {
 	background-color: #f0f0f0;
 }
 
+/* Styles for the header title */
 .header h1 {
 	margin: 0;
 	font-size: 1.7rem;
@@ -98,6 +107,7 @@ body {
 	font-weight: normal;
 }
 
+/* Styles for the search and filter section */
 .search-filter {
 	display: flex;
 	align-items: center;
@@ -105,6 +115,7 @@ body {
 	padding: 15px 0 15px 0;
 }
 
+/* Styles for the search icon */
 .search-icon {
 	width: 20px;
 	height: 20px;
@@ -112,6 +123,7 @@ body {
 	margin-left: 8%;
 }
 
+/* Styles for the search bar */
 .search-bar {
 	padding: 5px 10px;
 	border: 1px solid #ccc;
@@ -119,12 +131,14 @@ body {
 	border-radius: 4px;
 }
 
+/* Styles for the filter icon */
 .filter-icon {
 	width: 50px;
 	height: auto;
 	margin-right: 10px;
 }
 
+/* Styles for the filter dropdown */
 .filter {
 	padding: 5px 10px;
 	border: 1px solid #ccc;
@@ -132,11 +146,13 @@ body {
 	width: 10%;
 }
 
+/* Styles for the upload section */
 .upload {
 	margin-left: 30%;
 	align-items: flex-end;
 }
 
+/* Styles for the upload button */
 .upload button {
 	padding: 10px 20px;
 	color: white;
@@ -144,21 +160,25 @@ body {
 	cursor: pointer;
 }
 
+/* Hide the file input element */
 .file-upload > input {
 	display: none;
 }
 
+/* Styles for the file upload image */
 .file-upload img {
 	height: auto;
 	width: 20px;
 	cursor: pointer;
 }
 
+/* Styles for the main section */
 .main-section {
 	background-color: lightgray;
 	overflow: hidden;
 }
 
+/* Styles for the sub-section */
 .sub-section {
 	flex: 1;
 	width: 93%;
@@ -169,6 +189,7 @@ body {
 	border: 1px solid #b4b4b4;
 }
 
+/* Styles for the scrollbar in the sub-section */
 .sub-section::-webkit-scrollbar {
 	width: 25px;
 }
@@ -184,12 +205,14 @@ body {
 	border: 1px solid #b4b4b4;
 }
 
+/* Styles for the sub-section headings */
 .sub-section h2 {
 	margin: 10px 0 10px 0;
 	font-family: "Roboto Mono", monospace;
 	font-weight: normal;
 }
 
+/* Styles for the file and image grid containers */
 #files .grid,
 #images .grid {
 	display: flex;
@@ -197,6 +220,7 @@ body {
 	gap: 20px;
 }
 
+/* Styles for individual file items */
 .file-item {
 	display: flex;
 	position: relative;
@@ -211,6 +235,7 @@ body {
 	overflow: hidden;
 }
 
+/* Styles for file previews */
 .file-preview {
 	width: 100%;
 	height: 100%;
@@ -218,12 +243,14 @@ body {
 	cursor: pointer;
 }
 
+/* Styles for file icons */
 .file-icon {
 	width: 100%;
 	height: 100%;
 	z-index: 1;
 }
 
+/* Styles for file titles */
 .file-title {
 	font-size: 12px;
 	word-wrap: break-word;
@@ -243,7 +270,7 @@ body {
 	font-family: "Roboto Mono", monospace;
 }
 
-/* delete button */
+/* Styles for the delete button */
 .delete {
 	position: absolute;
 	top: 0;
@@ -256,50 +283,8 @@ body {
 	z-index: 3;
 }
 
+/* Styles for the delete button icon */
 #deleteBtn {
 	width: 30px;
 	height: 30px;
 }
-
-/* info message for the delete button */
-/* .delete [data-tooltip]::after {
-	content: attr(data-tooltip);
-	position: absolute;
-	bottom: 120%;
-	left: 50%;
-	transform: translateX(-50%);
-	background-color: #333;
-	color: #fff;
-	padding: 3px 5px;
-	border-radius: 5px;
-	white-space: nowrap;
-	z-index: 100;
-	font-size: 10px;
-	opacity: 0;
-	pointer-events: none;
-}
-
-/* little triangle */
-/* .button-container button[data-tooltip]::before {
-	content: "";
-	position: absolute;
-	bottom: 80%;
-	left: 77%;
-	transform: translateX(-50%);
-	border-width: 5px;
-	border-style: solid;
-	border-color: #333 transparent transparent transparent;
-	opacity: 0;
-} */
-
-/* .button-container button[data-tooltip]:hover::after,
-.button-container button[data-tooltip]:hover::before {
-	animation: show-tooltip 0.3s forwards;
-	animation-delay: 1.5s;
-} */
-
-/* @keyframes show-tooltip {
-	to {
-		opacity: 1;
-	}
-}  */
