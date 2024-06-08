@@ -22,6 +22,8 @@ let db = {};
  
  */
 function connect(pathToDB, callback) {
+	// Connects to the specified database file or the default path.
+    // Throws an error if the connection fails.
 	if (pathToDB != "") {
 		db = new sqlite.Database(path.resolve(pathToDB, "data.db"), (err) => {
 			if (err) throw err;
@@ -102,6 +104,7 @@ function connect(pathToDB, callback) {
  */
 
 const init = (bcb) => {
+	// Enable foreign key constraints
 	const fk_sql = `PRAGMA foreign_keys=ON`;
 	// SQL queries for each table
 	const tasks_sql = `CREATE TABLE IF NOT EXISTS tasks (
@@ -111,15 +114,15 @@ const init = (bcb) => {
         creation_date TEXT,
         due_date TEXT,
         priority TEXT,
-        expected_time TEXT);`;
+        expected_time TEXT);`; // Create tasks table if it does not exist
 	const entries_sql = `CREATE TABLE IF NOT EXISTS entries (
         entry_id TEXT PRIMARY KEY,
         entry_title TEXT,
         entry_content TEXT,
-        creation_date TEXT);`;
+        creation_date TEXT);`; // Create entries table if it does not exist
 	const labels_sql = `CREATE TABLE IF NOT EXISTS labels(
         label TEXT PRIMARY KEY,
-        color TEXT);`;
+        color TEXT);`; // Create labels table if it does not exist
 	const task_labels_sql = `CREATE TABLE IF NOT EXISTS task_labels (
         task_id TEXT,
         label TEXT,
@@ -131,7 +134,7 @@ const init = (bcb) => {
             FOREIGN KEY (label)
             REFERENCES labels(label)
             ON DELETE CASCADE
-        );`;
+        );`; // Create task_labels table if it does not exist
 	const entry_labels_sql = `CREATE TABLE IF NOT EXISTS entry_labels (
         entry_id TEXT,
         label TEXT,
@@ -143,7 +146,7 @@ const init = (bcb) => {
             FOREIGN KEY (label)
             REFERENCES labels(label)
             ON DELETE CASCADE
-        );`;
+        );`; // Create entry_labels table if it does not exist
 
 	// Table creation queries are serialized to ensure key constraints are followed.
 	db.serialize(() => {
@@ -206,7 +209,7 @@ function getLabelColorMap(callback) {
 	const sql = `
     SELECT label, color
     FROM labels;
-  `;
+  `; // Select all labels from the labels table
 	const labelColorMap = new Map();
 	db.each(
 		sql,
@@ -215,6 +218,7 @@ function getLabelColorMap(callback) {
 			if (err) {
 				throw err;
 			}
+			// Sets the key-value pair in map
 			labelColorMap.set(row.label, row.color);
 		},
 		() => {
@@ -230,6 +234,7 @@ function getLabelColorMap(callback) {
  
  */
 const getTasks = (trcb) => {
+	// Join tasks with their labels, and group concatenates the labels to be comma separated
 	const sql = `
     SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels
     FROM tasks t
@@ -242,7 +247,7 @@ const getTasks = (trcb) => {
 		if (err) {
 			throw err;
 		}
-
+		// Map the rows to task objects, splitting the labels into an array if they exist
 		const tasks =
 			rows.length > 0
 				? rows.map((row) => ({
@@ -572,6 +577,7 @@ function addTask(task, callback) {
 			const stmt = db.prepare(labelSql);
 			let remaining = task.labels.length;
 
+			// Callback runs only after every label has been added.
 			if (remaining === 0) {
 				stmt.finalize((finalizeErr) => {
 					if (finalizeErr) {
