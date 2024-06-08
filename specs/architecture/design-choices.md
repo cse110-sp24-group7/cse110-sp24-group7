@@ -33,8 +33,8 @@ Journal Popup: Similar to the task popup, we put in the labels container horizon
 ## Wireframe Layout
 ![Figma Mainview](figma-mainview.png)
 ![Figma Task Popup](figma-task-popup.png)
-![Figma Journal Popup](image.png)
-![Figma All Tasks](image.png)
+![Figma Journal Popup](figma-journal-popup.png)
+![Figma All Tasks](figma-all-tasks.png)
 
 ### V5 Changes
 Weekly View: We added in the month of the current week that is being displayed, as well as arrows for navigation so that the user can scroll between different weeks. Lastly, to also allow the user to come back to the current week quickly, we added in the today button.
