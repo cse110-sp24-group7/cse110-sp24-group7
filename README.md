@@ -1,6 +1,27 @@
+# cse110-sp24-group7
+
+Welcome to the Akatsuki 7 README! We are a group of 11 students representing **Team 7** in CSE 110 Spring '24!
+
+Attached in this repository is our team website, our meeting agendas and time tables, our workflow preferences, and our quarterly project for CSE 110.
+
+Here is our link to our Team Website: [Team Website](admin/team.md) or the full link: https://cse110-sp24-group7.github.io/cse110-sp24-group7/admin/team.html
+
+### Team Video
+
+Watch our Team Video here: [Team Video](https://youtu.be/FQCCy9b4-sM)
+
+### Inspiration behind the Brand
+
+Given our number **Team 7**, we decided to name ourselves after the Akatsuki, a reference from the Anime Show **Naruto**. The Team 7 was derived from the main trio of the group, Naruto, Sakura and Sasuke were all members of Team 7(led by Kakashi). Humorously, we have learned more about Naruto in the last two days than we have in our entire lives. As such, many of the branding elements are Ninja-esque and our main color scheme takes after the _Akatsuki_, a group of rogue ninja in the show that are clad in **red,black and white** robes.
+
+<img src = "admin/branding/Team_Kakashi.png" alt = "Naruto Team" style="width:300px; height:auto;">
+<img src = "admin/branding/Akatsuki%202.png" alt = "Akatsuki" style = "width:300px; height: auto">
+
 # Dev Journal
 
-Have you ever found it difficult keeping track of your daily tasks as a developer or wanting to write a thought down but don't know where to put it? Well, the Dev Journal is perfect for you.
+Have you ever found it difficult keeping track of your daily tasks as a developer or wanting to write a thought down but don't know where to put it? Ever felt overwhelemed with the myriad of tasks that you have to do? This app might be for you!
+
+![AbsentMinded](admin/branding/memes/AbsentMinded.jpeg)
 
 With the Dev Journal, you can keep track of all of your tasks and thoughts in a calendar format. You can even create labels to keep track of tasks that related to each other.We also allow you to upload photos and files so that you can keep all thing related to your developer life in one place.
 
@@ -23,56 +44,24 @@ Linux:
     CPU: An Intel Pentium 4 processor or later that's SSE3 capable
     RAM: 2GB
 
-# How to Install/Launch
+# How to Install
 
-To install the app you first want to go here [Install](https://github.com/cse110-sp24-group7/cse110-sp24-group7/releases/tag/v0.1.0)
+Check out our Installation Guide Here: [Installation Guide](https://github.com/cse110-sp24-group7/cse110-sp24-group7/wiki/Installation-Guide)
 
-After you go to this page, you will want to install the .zip file that says Akatsuki.7.
+# How to Use
 
-You will then go to your downloads folder and open the .zip. <br>![Download Folder!](/admin/photos/ReadME/Download.png)
+Our Usage Guide can be found here: [Usage Guide](https://github.com/cse110-sp24-group7/cse110-sp24-group7/wiki/Usage-Guide)
 
-Double click on the setup and a option to extract folders will pop up.<br> ![Extract!](/admin/photos/ReadME/Extract.png)
+Make sure to read the documentation!
 
-Once you click on "Extract all" then you will be given an option to place a folder in a path of your choice.<br> ![Folder Path!](/admin/photos/ReadME/FolderSelect.png)
+Here are some funny examples of what happens when you don't read the documentation:
 
-You will know have the folder saved in that location and can access it by going to the path it's stored in.<br> ![Destination!](/admin/photos/ReadME/Destination.png)
+![Docs](admin/branding/memes/Docs_You.png)
 
-You can now run the app by double clicking it.
+![Coffee](admin/branding/memes/Coffee_Docs.jpeg)
 
-If you are on Windows, you might encounter a screen that looks like this.<br> ![Info!](/admin/photos/ReadME/Info.png)
+## How to Contribute
 
-To run the app, you will have to click on the "More info" button and then you will get the option to run the app through a button that says "Run anyway".<br> ![Run!](/admin/photos/ReadME/Run.png)
+If you're a CSE 112 Student or just another developer who wants to contribute to our project, just `git clone` and have fun coding! We have a list of issues that you can work on or expand on and create your own!
 
-Once you've successfuly launched the app, you should get a screen like this. <br> ![Open!](/admin/photos/ReadME/Open.png)
 
-### How to Use
-
-#### Add Task/Journal
-
-To create a task, you can click the "Add Task" button. <br>![AddTask!](/admin/photos/ReadME/AddTask.png)
-
-You can then fill out the fields necessary which are the title, due date, expected time and priority. The labels and description are not required when creating a task. <br> ![TaskPopup!](/admin/photos/ReadME/TaskPopup.png)
-
-To fill out the date, select a day from the calendar and a time as well. <br> ![Date!](/admin/photos/ReadME/Date.png)
-
-The priority can be selected and has a range from 0 to 4 where 0 is the most urgent and 4 is the least urgent. <br> ![Prio!](/admin/photos/ReadME/Prio.png)
-
-If you want to add a label, you can hover over label, click the create label, type a label and press enter to add it. If you already have a label you, you can select the plus next to the label. You can also remove labels by clicking the x next to them which can be seen in the complete example of the task popup. <br> ![Labels!](/admin/photos/ReadME/Label.png)
-
-After you have done everythin you want, you can click done to save the task or canceling your creation by clicking the red x on the top right of the popup. <br> ![FinTask!](/admin/photos/ReadME/FinTask.png)
-
-Creating a journal has very similar steps. The difference is that the journal has no expected time or priority. The journal also require you to have a description for it unlike the task. <br> ![JournalPopup!](/admin/photos/ReadME/JournalPopup.png) 
-
-#### Edit/Delete
-
-The edit and delete button are pretty self explanatory. The edit opens up the selected task/journal in the popup view and allows you to make changes. The delete allows you to delete a task/journal by double clicking on it. <br> ![Edit&Delete!](/admin/photos/ReadME/Edit.png) 
-
-#### All Task View
-
-The all task view is also self explanatory as it allows you to look at all of your tasks. You can sear a specific task in the search bar at the top left. You can also filter out task through labels and priorities in the top right. <br> ![All Task!](/admin/photos/ReadME/AllTask.png) 
-
-#### Vault
-
-The vault is where you can store files. Images, such as screenshots, will have a preview of what the image looks like. Other files such as pdf or txt files will have a generic icon for them. The vault has a search tool in the top right and a way to add files onm the top left. You can also filter by file types using the scrollable filter to the right of the search tool. <br> ![Vault!](/admin/photos/ReadME/Vault.png) 
-
-Thank you for visiting our repository!
