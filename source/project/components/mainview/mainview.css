@@ -320,7 +320,7 @@
 .button-container button[data-tooltip]:hover::after,
 .button-container button[data-tooltip]:hover::before {
 	animation: show-tooltip 0.3s forwards;
-	animation-delay: 1.5s;
+	animation-delay: 0.75s;
 }
 
 @keyframes show-tooltip {
