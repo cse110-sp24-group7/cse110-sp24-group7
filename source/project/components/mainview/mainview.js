@@ -73,7 +73,7 @@ function tasksRendererCallback(tasks) {
 		const editButton = document.createElement("button");
 		editButton.textContent = "Edit";
 		editButton.classList.add("edit-task"); // Adding class for event delegation
-		editButton.innerHTML = `<img id="img1" src="edit-icon.png" alt="Edit">`;
+		editButton.innerHTML = `<img id="img1" src="../../assets/res/edit-icon.png" alt="Edit">`;
 		editButton.addEventListener("click", () => {
 			// Open task popup for editing with task details
 			openTaskPopupForEdit(taskPv.getAttribute("data-task-id"));
@@ -85,7 +85,7 @@ function tasksRendererCallback(tasks) {
 		const deleteButton = document.createElement("button");
 		deleteButton.textContent = "Delete";
 		deleteButton.classList.add("delete");
-		deleteButton.innerHTML = `<img id="img2" src="delete-icon.jpg" alt="Delete">`;
+		deleteButton.innerHTML = `<img id="img2" src="../../assets/res/delete-icon.jpg" alt="Delete">`;
 		deleteButton.setAttribute("data-tooltip", "double click to delete");
 		deleteButton.addEventListener("dblclick", () => {
 			window.api.deleteTask(task.task_id, (tasks) => {
@@ -172,7 +172,7 @@ function entriesRendererCallback(entries) {
 		const editButton = document.createElement("button");
 		editButton.textContent = "Edit";
 		editButton.classList.add("edit-entry"); // Adding class for event delegation
-		editButton.innerHTML = `<img id="img1" src="edit-icon.png" alt="Edit">`;
+		editButton.innerHTML = `<img id="img1" src="../../assets/res/edit-icon.png" alt="Edit">`;
 		editButton.addEventListener("click", () => {
 			// Open journal popup for editing with task details
 			openJournalPopupForEdit(journalPv.getAttribute("data-entry-id"));
@@ -184,7 +184,7 @@ function entriesRendererCallback(entries) {
 		const deleteButton = document.createElement("button");
 		deleteButton.textContent = "Delete";
 		deleteButton.classList.add("delete");
-		deleteButton.innerHTML = `<img id="img2" src="delete-icon.jpg" alt="Delete">`;
+		deleteButton.innerHTML = `<img id="img2" src="../../assets/res/delete-icon.jpg" alt="Delete">`;
 		deleteButton.setAttribute("data-tooltip", "double click to delete");
 		deleteButton.addEventListener("dblclick", () => {
 			window.api.deleteEntry(entry.entry_id, (entries) => {
