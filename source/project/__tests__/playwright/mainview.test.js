@@ -5,49 +5,52 @@ const { test, expect } = require('@playwright/test');
 
 const dbMgr = require('../../scripts/database/dbMgr');
 
-// beforeAll() {
-
-// }
-
 test('should open and interact with the TaskPopup and JournalPopup', async () => {
-    dbMgr.connect("", () => {
-    });
-    dbMgr.init(() => {
-    });
   const electronApp = await electron.launch({ args: ['.'] });
   const window = await electronApp.firstWindow();
+  const userDataPath = await electronApp.evaluate(async ({app}) => app.getPath("userData"));
+  await new Promise(resolve => {
+    dbMgr.connect(userDataPath, () => {
+      dbMgr.init(() => {
+        resolve();
+      });
+    });
+  });
+
+  // Get tasks length
+  const tasksLength = await new Promise(resolve => {
+    dbMgr.getTasks((tasks) => {
+      resolve(tasks ? tasks.length : 0);
+    });
+  });
 
   // Open the TaskPopup
   await window.click('.add-task');
-//   const taskPopup = await window.$('task-popup');
-//   expect(await taskPopup.isVisible()).toBeTruthy();
 
   // Interact with the TaskPopup
   await window.fill('task-popup #title', 'Test Task');
   await window.fill('task-popup #description', 'Test Description');
   await window.fill('task-popup #dueDate', '2024-06-08T01:30');
-//   await window.fill('task-popup #priority', 'P1');
   await window.selectOption('task-popup #priority', 'P1');
   await window.fill('task-popup #expectedTime', '2');
 
-//   await window.waitForTimeout(3000);
+  await window.waitForTimeout(200);
   // Submit the form
   const submitButton = await window.$('task-popup #addBtn');
-  // await expect(submitButton).toBeEnabled();
   await submitButton.click();
 
-//   await window.waitForTimeout(3000);
-
+  await window.waitForTimeout(200);
   // Verify form submission
   const tasks = await new Promise(resolve => {
-    dbMgr.getTasks(entries => {
-        expect(entries.length).toBe(4);
-        resolve(entries);
+    dbMgr.getTasks( (tasks) => {
+        expect(tasks.length).toBe(tasksLength + 1);
+        resolve(tasks);
     });
-});
+  });
 
   expect(tasks.length).toBeGreaterThanOrEqual(1); // Ensure at least one task is present
   const addedTask = tasks.find(task => task.task_name === 'Test Task');
+  await window.waitForTimeout(1000);
   expect(addedTask).toBeTruthy();
   expect(addedTask.task_content).toBe('Test Description');
   expect(addedTask.priority).toBe('P1');
@@ -76,7 +79,7 @@ test('should open and interact with the TaskPopup and JournalPopup', async () =>
     dbMgr.getEntries(entries => {
         resolve(entries);
     });
-});
+  });
 
 
   expect(journals.length).toBeGreaterThanOrEqual(1); // Ensure at least one journal entry is present
