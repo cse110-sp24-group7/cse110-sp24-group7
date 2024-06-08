@@ -2,7 +2,6 @@
  * @module All_Tasks
  * @description This module is responsible for displaying all tasks in a seperate view, with dynamic filtering and search functionality.
  */
-console.log("all-tasks.js script loaded"); // Add this line
 
 let filters = {
 	startTime: "",
