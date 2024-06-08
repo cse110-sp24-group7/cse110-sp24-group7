@@ -217,7 +217,7 @@ function displayFile(file_name, is_img) {
 	// Add delete button with functionality
 	const deleteButton = document.createElement("button");
 	deleteButton.classList.add("delete");
-	deleteButton.innerHTML = `<img id="deleteBtn" src="./delete-icon.jpg" alt="Delete">`;
+	deleteButton.innerHTML = `<img id="deleteBtn" src="../../assets/res/delete-icon-no-bg.jpg" alt="Delete">`;
 	deleteButton.setAttribute("data-tooltip", "double click to delete");
 	deleteButton.addEventListener("click", (event) => {
 		event.stopPropagation();
