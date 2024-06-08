@@ -179,17 +179,12 @@ function displayTasks(tasks) {
 			currTaskWrapper = document.createElement("div");
 			currTaskWrapper.classList.add("tasks-wrapper");
 
-			// const dayTitle = document.createElement("h2");
-			// dayTitle.textContent = `${dayOfWeek.toUpperCase()}, ${dueMonth} ${dueDay}`;
-			// currDayContainer.appendChild(dayTitle);
-
 			const dayTitle = document.createElement("h4");
 			const dayOfWeekNode = document.createTextNode(
 				dayOfWeek.toUpperCase()
 			);
 			const lineBreak = document.createElement("br");
 			const dueDateNode = document.createTextNode(`${dueDay}`);
-			const dueDateTitle = document.createElement("h4");
 
 			dayTitle.appendChild(dayOfWeekNode);
 			dayTitle.appendChild(lineBreak);
@@ -222,7 +217,7 @@ function updateTasklist() {
 	});
 }
 
-document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", async () => {
 	const menuButton = document.getElementById("menu");
 	const menuOptions = document.getElementById("menu-options");
 	const vaultLink = document.getElementById("vault");
@@ -244,20 +239,20 @@ document.addEventListener("DOMContentLoaded", async function () {
 	});
 
 	document.querySelectorAll(".add-task").forEach((button) => {
-		button.addEventListener("click", function () {
+		button.addEventListener("click", () => {
 			const popup = document.createElement("task-popup");
 			document.body.appendChild(popup);
 		});
 	});
 
 	// menu
-	menuButton.addEventListener("click", function () {
+	menuButton.addEventListener("click", () => {
 		console.log("Menu clicked"); // Log menu click
 		menuOptions.style.display =
 			menuOptions.style.display === "block" ? "none" : "block";
 	});
 
-	document.addEventListener("click", function (event) {
+	document.addEventListener("click", (event) => {
 		if (
 			!menuButton.contains(event.target) &&
 			!menuOptions.contains(event.target)
@@ -267,18 +262,18 @@ document.addEventListener("DOMContentLoaded", async function () {
 	});
 
 	// tasks link
-	calendarLink.addEventListener("click", function (event) {
+	calendarLink.addEventListener("click", () => {
 		window.location.href = "../mainview/mainview.html";
 	});
 
 	// vault link
-	vaultLink.addEventListener("click", function (event) {
+	vaultLink.addEventListener("click", () => {
 		window.location.href = "../vault/vault.html";
 	});
 
 	// search
 	const searchInput = document.getElementById("searchInput");
-	searchInput.addEventListener("input", function () {
+	searchInput.addEventListener("input", () => {
 		const query = searchInput.value.toLowerCase();
 		const filteredTasks = allTasks.filter((task) =>
 			task.task_name.toLowerCase().includes(query)
@@ -286,76 +281,5 @@ document.addEventListener("DOMContentLoaded", async function () {
 		displayTasks(filteredTasks);
 	});
 
-	/**
-	 * test cases for tasks.
-	 */
-	const testTasks = [
-		{
-			task_name: "Task 1 05-15",
-			task_content: "This is the first task",
-			due_date: "2024-06-01",
-			creation_date: "2024-05-15",
-			priority: "P1",
-			expected_time: "2 hours"
-		},
-		{
-			task_name: "Task 2 06-05",
-			task_content: "This is the second task",
-			due_date: "2024-06-05",
-			creation_date: "2024-05-30",
-			priority: "P2",
-			expected_time: "1 hour"
-		},
-		{
-			task_name: "Task 2.5 06-05",
-			task_content: "This is the second.5 task",
-			due_date: "2024-06-05",
-			creation_date: "2024-05-30",
-			priority: "P2",
-			expected_time: "1 hour"
-		},
-		{
-			task_name: "Task 3 06-10",
-			task_content: "This is the third task",
-			due_date: "2024-06-10",
-			creation_date: "2024-06-01",
-			priority: "P1",
-			expected_time: "3 hours"
-		},
-		{
-			task_name: "Task 4 06-15",
-			task_content: "This is the fourth task",
-			due_date: "2024-06-15",
-			creation_date: "2024-06-05",
-			priority: "P3",
-			expected_time: "2 hours"
-		},
-		{
-			task_name: "Task 5 06-20",
-			task_content: "This is the fifth task",
-			due_date: "2024-06-20",
-			creation_date: "2024-06-05",
-			priority: "P2",
-			expected_time: "1.5 hours"
-		},
-		{
-			task_name: "Task 6 06-25",
-			task_content: "This is the sixth task",
-			due_date: "2024-06-25",
-			creation_date: "2024-06-01",
-			priority: "P1",
-			expected_time: "2 hours"
-		},
-		{
-			task_name: "Task 7 07-10",
-			task_content: "This is the seventh task",
-			due_date: "2024-07-01",
-			creation_date: "2024-06-05",
-			priority: "P3",
-			expected_time: "1 hour"
-		}
-	];
-
 	updateTasklist();
-	// displayTasks(testTasks);
 });

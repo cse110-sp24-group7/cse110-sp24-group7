@@ -93,7 +93,7 @@ function tasksRendererCallback(tasks) {
 		deleteButton.innerHTML = `<img id="img2" src="../../assets/res/delete-icon.jpg" alt="Delete">`;
 		deleteButton.setAttribute("data-tooltip", "double click to delete");
 		deleteButton.addEventListener("dblclick", () => {
-			window.api.deleteTask(task.task_id, (tasks) => {
+			window.api.deleteTask(task.task_id, () => {
 				updateMainview();
 			});
 		});
@@ -132,14 +132,9 @@ function openTaskPopupForEdit(task_id) {
 }
 
 /**
-<<<<<<< HEAD
- * Adds journal entries to the journal containers.
- * @param {import("../../scripts/database/dbMgr").entry[]} entries - an array of journal entry objects.
-=======
  * @description Adds journal entries to the journal containers.
  * @param {Entry[]} entries - an array of journal entry objects.
  *
->>>>>>> 7d965e14d2e962e5dc452b447b78e1a595c4e203
  */
 function entriesRendererCallback(entries) {
 	// Clear all existing journal entries first
@@ -197,7 +192,7 @@ function entriesRendererCallback(entries) {
 		deleteButton.innerHTML = `<img id="img2" src="../../assets/res/delete-icon.jpg" alt="Delete">`;
 		deleteButton.setAttribute("data-tooltip", "double click to delete");
 		deleteButton.addEventListener("dblclick", () => {
-			window.api.deleteEntry(entry.entry_id, (entries) => {
+			window.api.deleteEntry(entry.entry_id, () => {
 				updateMainview();
 			});
 		});
@@ -388,13 +383,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 	});
 
 	// menu
-	menuButton.addEventListener("click", function () {
+	menuButton.addEventListener("click", () => {
 		console.log("Menu clicked"); // Log menu click
 		menuOptions.style.display =
 			menuOptions.style.display === "block" ? "none" : "block";
 	});
 
-	document.addEventListener("click", function (event) {
+	document.addEventListener("click", (event) => {
 		if (
 			!menuButton.contains(event.target) &&
 			!menuOptions.contains(event.target)
@@ -404,12 +399,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 	});
 
 	// tasks link
-	tasksLink.addEventListener("click", function (event) {
+	tasksLink.addEventListener("click", () => {
 		window.location.href = "../all-tasks/all-tasks.html";
 	});
 
 	// vault link
-	vaultLink.addEventListener("click", function (event) {
+	vaultLink.addEventListener("click", () => {
 		window.location.href = "../vault/vault.html";
 	});
 	// updateMainview();

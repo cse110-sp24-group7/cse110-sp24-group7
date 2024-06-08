@@ -8,7 +8,7 @@
 
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("node:path");
-const dbMgr = require("./database/dbMgr.js");
+const dbMgr = require("./database/dbMgr.js"); // eslint-disable-line no-unused-vars
 const fs = require("fs");
 
 ipcMain.handle("getUserData", () => app.getPath("userData"));

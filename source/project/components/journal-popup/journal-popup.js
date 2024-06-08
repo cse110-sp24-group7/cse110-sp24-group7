@@ -144,7 +144,7 @@ class JournalPopup extends HTMLElement {
 		const labelContainer = this.shadowRoot.getElementById("label");
 		const selectedLabelsContainer =
 			this.shadowRoot.querySelector(".selectedLabels");
-		const labels = JSON.parse(window.localStorage.getItem("labels")) || [];
+		const labels = JSON.parse(window.localStorage.getItem("labels")) || []; //eslint-disable-line no-unused-vars
 
 		window.api.getLabels((labels) => {
 			// Clear the label container
