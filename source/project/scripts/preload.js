@@ -21,24 +21,24 @@ const getTasks = (trcb) => {
 };
 
 function getTasksConjunctLabels(labels, trcb) {
-  return this.getTasksConjunctLabels(labels, trcb);
-};
+	return this.getTasksConjunctLabels(labels, trcb);
+}
 
 function getTasksDisjunctLabels(labels, trcb) {
-  return this.getTasksDisjunctLabels(labels, trcb);
-};
+	return this.getTasksDisjunctLabels(labels, trcb);
+}
 
 function getEntries(ercb) {
-  return this.getEntries(ercb);
-};
+	return this.getEntries(ercb);
+}
 
 const addTask = (task, callback) => {
 	return dbMgr.addTask(task, callback);
 };
 
 function addTasks(tasks, trcb) {
-  return this.addTasks(tasks, trcb);
-};
+	return this.addTasks(tasks, trcb);
+}
 
 const addEntry = (entry, callback) => {
 	return dbMgr.addEntry(entry, callback);
@@ -143,9 +143,9 @@ contextBridge.exposeInMainWorld("api", {
 
 //API for uploading or retrieving files
 const fileManager = (data_location) => {
-  return fileMgr.FileManager(data_location);
-}
+	return fileMgr.FileManager(data_location);
+};
 
 contextBridge.exposeInMainWorld("file", {
-  fileManager: fileManager,
+	fileManager: fileManager
 });

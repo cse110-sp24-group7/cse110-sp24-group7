@@ -22,7 +22,6 @@ const createWindow = () => {
 			nodeIntegration: true
 		}
 	});
-	win.webContents.openDevTools();
 	win.loadFile("./source/project/components/vault/vault.html");
 };
 
