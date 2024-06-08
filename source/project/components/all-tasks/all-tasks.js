@@ -176,9 +176,22 @@ function displayTasks(tasks) {
 			currTaskWrapper = document.createElement("div");
 			currTaskWrapper.classList.add("tasks-wrapper");
 
-			const dayTitle = document.createElement("h2");
-			dayTitle.textContent = `${dayOfWeek.toUpperCase()}, ${dueMonth} ${dueDay}`;
+			// const dayTitle = document.createElement("h2");
+			// dayTitle.textContent = `${dayOfWeek.toUpperCase()}, ${dueMonth} ${dueDay}`;
+			// currDayContainer.appendChild(dayTitle);
+
+			const dayTitle = document.createElement("h4");
+			const dayOfWeekNode = document.createTextNode(dayOfWeek.toUpperCase());
+			const lineBreak = document.createElement("br");
+			const dueDateNode = document.createTextNode(`${dueDay}`);
+			const dueDateTitle = document.createElement("h4");
+
+			dayTitle.appendChild(dayOfWeekNode);
+			dayTitle.appendChild(lineBreak);
+			dayTitle.appendChild(dueDateNode);
+
 			currDayContainer.appendChild(dayTitle);
+			
 		}
 
 		let taskContainer = document.createElement("div");
