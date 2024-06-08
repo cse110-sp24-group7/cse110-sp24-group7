@@ -100,7 +100,8 @@ function connect(pathToDB, callback) {
  
  * 
  */
-function init(bcb) {
+
+const init = (bcb) => {
 	const fk_sql = `PRAGMA foreign_keys=ON`;
 	// SQL queries for each table
 	const tasks_sql = `CREATE TABLE IF NOT EXISTS tasks (
@@ -170,7 +171,7 @@ function init(bcb) {
 			bcb
 		);
 	});
-}
+};
 
 /**
  * @description Queries and returns all labels.
@@ -228,7 +229,7 @@ function getLabelColorMap(callback) {
  * @returns {void}
  
  */
-function getTasks(trcb) {
+const getTasks = (trcb) => {
 	const sql = `
     SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels
     FROM tasks t
@@ -255,10 +256,9 @@ function getTasks(trcb) {
 						labels: row.labels ? row.labels.split(",") : []
 					}))
 				: [];
-
 		trcb(tasks);
 	});
-}
+};
 
 /**
  * @description Queries and returns all tasks that have ALL labels specified.
@@ -267,7 +267,7 @@ function getTasks(trcb) {
  * @returns {void} if we have a nonzero length. Otherwise just returns the callback.
  *
  */
-function getTasksConjunctLabels(labels, trcb) {
+const getTasksConjunctLabels = (labels, trcb) => {
 	if (labels.length === 0) {
 		return trcb([]);
 	}
@@ -303,7 +303,7 @@ function getTasksConjunctLabels(labels, trcb) {
 
 		trcb(tasks);
 	});
-}
+};
 
 /**
  * @description Queries and returns all tasks that have ANY of the labels specified. If none is provided, then all tasks are returned.
@@ -311,7 +311,7 @@ function getTasksConjunctLabels(labels, trcb) {
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  
  */
-function getTasksDisjunctLabels(labels, trcb) {
+const getTasksDisjunctLabels = (labels, trcb) => {
 	let sql = `
     SELECT t.task_id, t.task_name, t.task_content, t.creation_date, t.due_date, t.priority, t.expected_time, GROUP_CONCAT(l.label) as labels
     FROM tasks t
@@ -349,7 +349,7 @@ function getTasksDisjunctLabels(labels, trcb) {
 
 		trcb(tasks);
 	});
-}
+};
 
 /**
  * An object representing the filter criteria for querying tasks.
@@ -608,7 +608,7 @@ function addTask(task, callback) {
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  
  */
-function addTasks(tasks, trcb) {
+const addTasks = (tasks, trcb) => {
 	const taskSql = `INSERT INTO tasks (task_id, task_name, task_content, creation_date, due_date, priority, expected_time)
         VALUES (?, ?, ?, ?, ?, ?, ?);`;
 	const labelSql = `INSERT INTO task_labels (task_id, label) VALUES (?, ?);`;
@@ -649,7 +649,7 @@ function addTasks(tasks, trcb) {
 
 		getTasks(trcb);
 	});
-}
+};
 
 /**
  * @description Adds an entry to the database
@@ -916,7 +916,7 @@ function editEntry(entry, ercb) {
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  
  */
-function deleteTask(task_id, trcb) {
+const deleteTask = (task_id, trcb) => {
 	const sql = `DELETE FROM tasks WHERE task_id = '${task_id}'`;
 	db.run(sql, [], (err) => {
 		if (err) {
@@ -924,7 +924,7 @@ function deleteTask(task_id, trcb) {
 		}
 		getTasks(trcb);
 	});
-}
+};
 
 /**
  * @description Deletes tasks in the database
@@ -932,12 +932,11 @@ function deleteTask(task_id, trcb) {
  * @param {tasksRenderCallback} trcb - the tasks render callback to update the frontend.
  
  */
-function deleteTasks(task_ids, trcb) {
+const deleteTasks = (task_ids, trcb) => {
 	const deleteTaskSql = `DELETE FROM tasks WHERE task_id = ?`;
 
 	db.serialize(() => {
 		const taskStmt = db.prepare(deleteTaskSql);
-
 		task_ids.forEach((task_id) => {
 			taskStmt.run([task_id], (err) => {
 				if (err) {
@@ -950,7 +949,7 @@ function deleteTasks(task_ids, trcb) {
 
 		getTasks(trcb);
 	});
-}
+};
 
 /**
  * @description Deletes an entry in the database

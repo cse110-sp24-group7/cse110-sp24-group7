@@ -13,11 +13,13 @@
 			rel="stylesheetJournal"
 			href="../journal-popup/journal-popup.css"
 		/>
+		<link rel="stylesheetVault" href="../vault/vault.css" />
 
 		<!--References to component js files-->
 		<script src="../mainview/mainview.js" type="module"></script>
 		<script src="../task-popup/task-popup.js"></script>
 		<script src="../journal-popup/journal-popup.js"></script>
+		<script src="../vault/vault.js"></script>
 	</head>
 
 	<body>
@@ -37,9 +39,17 @@
 			<h1 id="current-month"></h1>
 
 			<!-- Menu Icon Button -->
-			<div class="menu-icon">
-				<button>All Tasks</button>
-				<!-- <img src="../../assets/res/menuBtn.png" alt="Menu" /> -->
+			<img
+				src="../../assets/res/menuBtn.png"
+				alt="Menu"
+				class="menu"
+				id="menu"
+			/>
+			<div class="menu-options" id="menu-options">
+				<ul>
+					<li><span id="tasks">tasks</span></li>
+					<li><span id="vault">vault</span></li>
+				</ul>
 			</div>
 		</div>
 
@@ -184,6 +194,22 @@
 			</div>
 			<!--Day (container)-->
 		</div>
-		<!--Calendar (container)-->
+		<!--Calendar-->
+
+		<!--Upload file-->
+		<form id="uploadForm" method="post" enctype="multipart/form-data">
+			<div>
+				<input
+					type="file"
+					class="file-input"
+					id="file"
+					name="file"
+					multiple
+				/>
+			</div>
+			<div>
+				<button type="submit">Add Files</button>
+			</div>
+		</form>
 	</body>
 </html>
