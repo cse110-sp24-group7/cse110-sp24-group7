@@ -35,6 +35,7 @@ Vault should be able to:
 - Integration Testing: Tested the vault in Electron for the integration of different components, such as file upload, search, and delete functionalities.
 - UI/UX Testing: Ensured the user interface is intuitive and user-friendly.
 
+![Vault](./vault.png)
 #### Authors
 
 - Angie Nguyen
