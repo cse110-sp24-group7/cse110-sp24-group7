@@ -14,10 +14,15 @@ const filters = {
 let labelColorMap = new Map();
 
 /**
+<<<<<<< HEAD
+ * Adds tasks to the task containers.
+ * @param {import("../../scripts/database/dbMgr").task[]} tasks - an array of task objects.
+=======
  * @method tasksRendererCallback
  * @description Adds tasks to the task containers.
  * @param {Task[]} tasks - an array of task objects.
  * @returns {void}
+>>>>>>> 7d965e14d2e962e5dc452b447b78e1a595c4e203
  */
 function tasksRendererCallback(tasks) {
 	// Clear all existing task entries first
@@ -127,9 +132,14 @@ function openTaskPopupForEdit(task_id) {
 }
 
 /**
+<<<<<<< HEAD
+ * Adds journal entries to the journal containers.
+ * @param {import("../../scripts/database/dbMgr").entry[]} entries - an array of journal entry objects.
+=======
  * @description Adds journal entries to the journal containers.
  * @param {Entry[]} entries - an array of journal entry objects.
  *
+>>>>>>> 7d965e14d2e962e5dc452b447b78e1a595c4e203
  */
 function entriesRendererCallback(entries) {
 	// Clear all existing journal entries first
