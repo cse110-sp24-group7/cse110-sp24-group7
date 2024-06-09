@@ -2,7 +2,6 @@
  * @module All_Tasks
  * @description This module is responsible for displaying all tasks in a seperate view, with dynamic filtering and search functionality.
  */
-console.log("all-tasks.js script loaded"); // Add this line
 
 let filters = {
 	startTime: "",
@@ -118,7 +117,7 @@ function displayTasks(tasks) {
 
 	let currDate = null;
 	let currDayContainer = null;
-	let currDayDate = "";
+	let currTaskWrapper = null;
 	tasks.forEach((task) => {
 		let needUpdate = false;
 		let flushed = false;
@@ -137,6 +136,7 @@ function displayTasks(tasks) {
 
 		if (needUpdate || dueYear != currYear) {
 			if (!flushed && currDayContainer != null) {
+				currDayContainer.appendChild(currTaskWrapper);
 				calendar.appendChild(currDayContainer);
 				flushed = true;
 				currDate = dueDate;
@@ -149,6 +149,7 @@ function displayTasks(tasks) {
 
 		if (needUpdate || dueMonth != currMonth) {
 			if (!flushed && currDayContainer != null) {
+				currDayContainer.appendChild(currTaskWrapper);
 				calendar.appendChild(currDayContainer);
 				flushed = true;
 				currDate = dueDate;
@@ -161,6 +162,7 @@ function displayTasks(tasks) {
 
 		if (needUpdate || dueDay != currDay) {
 			if (!flushed && currDayContainer != null) {
+				currDayContainer.appendChild(currTaskWrapper);
 				calendar.appendChild(currDayContainer);
 				flushed = true;
 				currDate = dueDate;
@@ -174,18 +176,36 @@ function displayTasks(tasks) {
 			currDayContainer.classList.add("day");
 			currDayContainer.id = dayOfWeek;
 
-			const dayTitle = document.createElement("h2");
-			dayTitle.textContent = `${dayOfWeek.toUpperCase()}, ${dueMonth} ${dueDay}`;
+			currTaskWrapper = document.createElement("div");
+			currTaskWrapper.classList.add("tasks-wrapper");
+
+			// const dayTitle = document.createElement("h2");
+			// dayTitle.textContent = `${dayOfWeek.toUpperCase()}, ${dueMonth} ${dueDay}`;
+			// currDayContainer.appendChild(dayTitle);
+
+			const dayTitle = document.createElement("h4");
+			const dayOfWeekNode = document.createTextNode(
+				dayOfWeek.toUpperCase()
+			);
+			const lineBreak = document.createElement("br");
+			const dueDateNode = document.createTextNode(`${dueDay}`);
+			const dueDateTitle = document.createElement("h4");
+
+			dayTitle.appendChild(dayOfWeekNode);
+			dayTitle.appendChild(lineBreak);
+			dayTitle.appendChild(dueDateNode);
+
 			currDayContainer.appendChild(dayTitle);
 		}
 
 		let taskContainer = document.createElement("div");
 		taskContainer.classList.add("task-container");
 		taskContainer = appendTaskHTML(task, taskContainer);
-		currDayContainer.appendChild(taskContainer);
+		currTaskWrapper.appendChild(taskContainer);
 	});
 
 	if (currDayContainer != null) {
+		currDayContainer.appendChild(currTaskWrapper);
 		calendar.appendChild(currDayContainer);
 	}
 }

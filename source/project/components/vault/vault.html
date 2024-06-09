@@ -4,11 +4,14 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Task Form</title>
+		<!-- Link to the external JavaScript file, loaded defer to ensure the DOM is fully parsed before execution -->
 		<script src="../vault/vault.js" defer></script>
+		<!-- Link to the external CSS file for styling -->
 		<link rel="stylesheet" href="../vault/vault.css" />
 	</head>
 	<body>
 		<div class="container">
+			<!-- Header section containing the logo, title, and menu button -->
 			<div class="header">
 				<img
 					src="../../assets/res/logo.png"
@@ -22,6 +25,7 @@
 					class="menu"
 					id="menu"
 				/>
+				<!-- Dropdown menu options -->
 				<div class="menu-options" id="menu-options">
 					<ul>
 						<li><span id="calendar">calendar</span></li>
@@ -29,8 +33,10 @@
 					</ul>
 				</div>
 			</div>
+			<!-- Main section containing the search bar, filter options, and upload form -->
 			<div class="main-section">
 				<div class="search-filter">
+					<!-- Search bar icon and input -->
 					<img
 						src="../../assets/res/search-icon2.png"
 						alt="Search"
@@ -42,6 +48,7 @@
 						class="search-bar"
 						id="search-input"
 					/>
+					<!-- Filter button and options -->
 					<img
 						src="../../assets/res/filter-icon.webp"
 						alt="Search"
@@ -53,7 +60,7 @@
 						<option value="files">Files</option>
 						<option value="images">Images</option>
 					</select>
-
+					<!-- File upload form -->
 					<div class="upload">
 						<form
 							id="uploadForm"
@@ -79,13 +86,16 @@
 				</div>
 			</div>
 		</div>
+		<!-- Sub-section to display files and images -->
 		<div class="sub-section">
+			<!-- Section for displaying files -->
 			<div id="files">
 				<h2>Files</h2>
 				<div class="grid">
 					<!-- Files will go here -->
 				</div>
 			</div>
+			<!-- Section for displaying images -->
 			<div id="images">
 				<h2>Images</h2>
 				<div class="grid">
