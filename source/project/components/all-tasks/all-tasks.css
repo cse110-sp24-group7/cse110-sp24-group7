@@ -90,6 +90,7 @@ body,
 	cursor: pointer;
 }
 
+/* Styling search functions in header bar */
 .menu-options ul li span:hover {
 	background-color: #f0f0f0;
 }
@@ -98,7 +99,7 @@ body,
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-top: 20px;
+	margin-top: 15px;
 }
 
 .search-bar {
@@ -114,19 +115,21 @@ body,
 }
 
 .search-container img {
-	width: 24px;
-	height: 24px;
+	width: 38px;
+	height: 38px;
 }
 
 #searchInput {
 	padding: 5px 5px 5px 30px;
-	width: 200px;
+	width: 400px;
+	height: 40px;
 	border: none;
 	border-radius: 5px;
 	background-color: var(--search-bg-color);
 	font-size: var(--font-size-small);
 }
 
+/* Styling filter functions in header bar */
 .filter-buttons {
 	display: flex;
 	align-items: center;
@@ -136,13 +139,13 @@ body,
 }
 
 hr {
-	margin-top: 20px;
+	margin-top: 15px;
 }
 
 /* Adding styles for the filter icon */
 .filter-icon {
-	height: 30px; /* Same height as the label button */
-	width: 30px; /* Same width as the height to keep it square */
+	height: 32px; /* Same height as the label button */
+	width: 32px; /* Same width as the height to keep it square */
 	margin-right: 5px; /* Space between the icon and the text */
 }
 
@@ -176,6 +179,7 @@ hr {
 	#resetBtn {
 		width: auto;
 		flex: 1;
+		height: 40px;
 	}
 
 	#searchInput {
@@ -196,13 +200,14 @@ hr {
 	scrollbar-width: thin;
 	/* padding-top: 300px; */
 	padding-bottom: 100px;
+	cursor: default;
 }
 
 .day {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row; /* Change to column to get dates as top headers */
 	flex-grow: 1;
-	width: 80%; /* Make each day section fill the available height */
+	width: 80%;
 	align-items: center;
 	border-bottom: 1px solid #ccc;
 }
@@ -210,27 +215,38 @@ hr {
 .day > div {
 	flex-grow: 1;
 	flex: 1;
+	flex-direction: row;
 }
 
-.day h2 {
-	flex-direction: row;
+.day h4 {
+	/* flex-direction: row; */
 	/* flex-grow: 1; */
-	padding-right: 20px; /* Adjust the value as needed */
+	margin-left: 10%;
+	/* width: 20%; */
+	/* align-content: center; */
+	display: block;
+	text-align: center;
+	font-size: 22px;
+	margin-right: 5%;
 }
 
 .task-container {
 	/* flex-grow: 1; */
-	width: 80%;
+	width: 90%;
 	flex: 1;
 	text-align: center;
 	align-items: center;
 	padding: 10px 0;
 	font-weight: bold;
 	font-family: "Roboto Mono";
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 }
 
-.day > .tasks-wrapper {
-	flex: column;
+.tasks-wrapper {
+	justify-content: center;
+	width: 100%;
 }
 
 .time-left-container {
@@ -241,20 +257,24 @@ hr {
 	padding: 10px 0;
 	font-weight: bold;
 	font-family: "Roboto Mono";
+	margin-right: 12%;
 }
 
 .task-pv {
-	margin: 5px; /* Adjust as needed */
+	margin: auto; /* Adjust as needed */
+	margin-right: 8%;
 	padding: 10px; /* Adjust as needed */
-	width: calc(100% - 10px); /* Adjusted to add-journal width */
+	/* width: calc(100% - 10px);  */
+	/* width: 350px; */
+	width: 80%;
 	border: 1px solid #000; /* Outline */
 	border-radius: 7px; /* Rounded corners */
 	justify-content: flex;
 	text-align: left; /* Text alignment */
 	align-items: stretch; /* Box alignment */
 	background-color: #fff; /* Background Color */
-	cursor: pointer; /* Change cursor to pointer */
 	font-size: 10px; /* Size of text */
+	align-self: flex-end;
 }
 
 .days-left {
@@ -273,7 +293,8 @@ hr {
 }
 
 .month-divider {
-	margin-top: 10px;
+	margin-top: 5px;
+	font-size: 24pt;
 }
 
 .day-date {
@@ -281,4 +302,5 @@ hr {
 	font-family: "Roboto Mono";
 	margin-bottom: 5px;
 	justify-content: left;
+	margin-right: 8%;
 }

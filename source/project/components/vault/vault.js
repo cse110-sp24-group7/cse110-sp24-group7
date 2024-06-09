@@ -1,6 +1,8 @@
+// Declare a variable to manage file operations
 let fileMgr;
 
 document.addEventListener("DOMContentLoaded", async function () {
+	// Retrieve DOM elements
 	const uploadForm = document.getElementById("uploadForm");
 	const fileInput = document.getElementById("file");
 	const searchInput = document.getElementById("search-input");
@@ -9,15 +11,18 @@ document.addEventListener("DOMContentLoaded", async function () {
 	const tasksLink = document.getElementById("tasks");
 	const calendarLink = document.getElementById("calendar");
 
+	// Initialize the file manager with user data path
 	fileMgr = await window.path.getUserData().then((appDataPath) => {
-		console.log("App data path:", appDataPath); // Log the path
+		// console.log("App data path:", appDataPath); // Log the path
 		let manager = window.file.fileManager(appDataPath);
 		return manager;
 	});
 
+	// Get file and image names from the file manager
 	const files = fileMgr.getFileNames();
 	const images = fileMgr.getImageNames();
 
+	// Display all files and images
 	for (let i in files) {
 		displayFile(files[i], false);
 	}
@@ -26,17 +31,18 @@ document.addEventListener("DOMContentLoaded", async function () {
 		displayFile(images[i], true);
 	}
 
+	// Add event listener for file upload form changes
 	uploadForm.addEventListener("change", function (event) {
 		event.preventDefault(); // Prevent default form submission
 		const files = fileInput.files;
 		if (files.length > 0) {
 			for (let file of files) {
-				console.log("Uploading file:", file.name); // Log the file name
+				// console.log("Uploading file:", file.name); // Log the file name
 				try {
-					fileMgr.add(file);
+					fileMgr.add(file); // Add file to file manager
 					console.log(`File added: ${file.name}`);
 					const is_img = file.type.includes("image");
-					displayFile(file.name, is_img);
+					displayFile(file.name, is_img); // Display the uploaded file
 				} catch (err) {
 					console.error("Error adding file:", err);
 				}
@@ -46,14 +52,16 @@ document.addEventListener("DOMContentLoaded", async function () {
 		}
 	});
 
-	// filter
+	// Get filter input element
 	const filterFiles = document.getElementById("filter");
 
+	// Add event listener for filter changes
 	filterFiles.addEventListener("change", (event) => {
-		console.log("filter!");
+		// console.log("filter!");
 		const filesSection = document.getElementById("files");
 		const imagesSection = document.getElementById("images");
 
+		// Show/hide sections based on filter value
 		if (filterFiles.value == "images") {
 			filesSection.classList.add("hidden");
 			imagesSection.classList.remove("hidden");
@@ -66,19 +74,20 @@ document.addEventListener("DOMContentLoaded", async function () {
 		}
 	});
 
-	// search
+	// Add event listener for search input changes
 	searchInput.addEventListener("input", function () {
 		const query = searchInput.value.toLowerCase();
-		console.log("Searching for:", query); // Log search query
-		searchFiles(query);
+		// console.log("Searching for:", query); // Log search query
+		searchFiles(query); // Perform the search
 	});
 
-	// menu
+	// Add event listener for menu button click
 	menuButton.addEventListener("click", function () {
 		menuOptions.style.display =
 			menuOptions.style.display === "block" ? "none" : "block";
 	});
 
+	// Add event listener for document click to hide menu
 	document.addEventListener("click", function (event) {
 		if (
 			!menuButton.contains(event.target) &&
@@ -88,21 +97,23 @@ document.addEventListener("DOMContentLoaded", async function () {
 		}
 	});
 
-	// tasks link
+	// Add event listener for tasks link click
 	tasksLink.addEventListener("click", function (event) {
 		window.location.href = "../all-tasks/all-tasks.html";
 	});
 
-	// calender link
+	// Add event listener for calendar link click
 	calendarLink.addEventListener("click", function (event) {
 		window.location.href = "../mainview/mainview.html";
 	});
 });
 
+// Function to search files based on query
 function searchFiles(query) {
 	const files = fileMgr.getFileNames();
 	const images = fileMgr.getImageNames();
 
+	// Retrieve the file and image sections
 	const fileSection = document
 		.getElementById("files")
 		.getElementsByClassName("grid")[0];
@@ -110,15 +121,18 @@ function searchFiles(query) {
 		.getElementById("images")
 		.getElementsByClassName("grid")[0];
 
+	// Clear the current content of sections
 	fileSection.innerHTML = "";
 	imageSection.innerHTML = "";
 
+	// Display files matching the query
 	for (let i in files) {
 		if (files[i].toLowerCase().includes(query)) {
 			displayFile(files[i], false);
 		}
 	}
 
+	// Display images matching the query
 	for (let i in images) {
 		if (images[i].toLowerCase().includes(query)) {
 			displayFile(images[i], true);
@@ -126,17 +140,22 @@ function searchFiles(query) {
 	}
 }
 
+// Function to display a file or image
 function displayFile(file_name, is_img) {
-	console.log("Displaying file:", file_name, "is_img:", is_img); // Log file display
+	// console.log("Displaying file:", file_name, "is_img:", is_img); // Log file display
+
+	// Retrieve the appropriate section based on file type
 	const fileSection = is_img
 		? document.getElementById("images").getElementsByClassName("grid")[0]
 		: document.getElementById("files").getElementsByClassName("grid")[0];
 
+	// Check if the section exists
 	if (!fileSection) {
 		console.error("File section not found!");
 		return;
 	}
 
+	// Create a button element for the file
 	const fileElement = document.createElement("button");
 	fileElement.classList.add("file-item");
 	fileElement.addEventListener("click", function (event) {
@@ -144,6 +163,7 @@ function displayFile(file_name, is_img) {
 	});
 
 	if (is_img) {
+		// Display image preview
 		const img = document.createElement("img");
 		img.src = fileMgr.getFileLocation(file_name, true);
 		img.alt = file_name;
@@ -155,7 +175,6 @@ function displayFile(file_name, is_img) {
 
 		// Determine the file type and assign appropriate icon
 		const fileExtension = file_name.split(".").pop().toLowerCase();
-
 		switch (fileExtension) {
 			case "pdf":
 				img.src = "../../assets/res/file-images/pdf.png";
@@ -189,15 +208,16 @@ function displayFile(file_name, is_img) {
 		fileElement.appendChild(img);
 	}
 
+	// Add file title
 	const title = document.createElement("p");
 	title.classList.add("file-title");
 	title.textContent = file_name;
 	fileElement.appendChild(title);
 
-	// delete functionality and button
+	// Add delete button with functionality
 	const deleteButton = document.createElement("button");
 	deleteButton.classList.add("delete");
-	deleteButton.innerHTML = `<img id="deleteBtn" src="./delete-icon.jpg" alt="Delete">`;
+	deleteButton.innerHTML = `<img id="deleteBtn" src="../../assets/res/delete-icon-no-bg.jpg" alt="Delete">`;
 	deleteButton.setAttribute("data-tooltip", "double click to delete");
 	deleteButton.addEventListener("click", (event) => {
 		event.stopPropagation();
@@ -206,5 +226,6 @@ function displayFile(file_name, is_img) {
 	});
 	fileElement.appendChild(deleteButton);
 
+	// Append the file element to the section
 	fileSection.appendChild(fileElement);
 }
