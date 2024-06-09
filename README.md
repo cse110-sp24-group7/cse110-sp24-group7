@@ -70,7 +70,6 @@ Here are some funny examples of what happens when you don't read the documentati
 If you're a CSE 112 Student or just another developer who wants to contribute to our project, just `git clone` and have fun coding! We have a list of issues that you can work on or expand on and create your own!
 
 Some issues that we thought would be fun to work on are: 
-- Making sure the button when clicked to Add journal or Add Task auto populates the date
 - Creating a month and calendar view for easy navigation
 - Creating a dark mode for the app
 - Creating a way to export the data to a CSV file
