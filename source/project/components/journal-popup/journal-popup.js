@@ -104,6 +104,7 @@ class JournalPopup extends HTMLElement {
 	 * @method setDueDate
 	 * @description Sets the due date input field to the specified date.
 	 * @param {Date} date - The date to set in the due date input field.
+	 * @memberof JournalPopup
 	 */
 	setDueDate(date) {
 		this.dueDate = date; // Store the date to use it later if needed
