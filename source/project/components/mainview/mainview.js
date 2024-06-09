@@ -369,8 +369,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// creates the popup when the add journal entry button is clicked
 	document.querySelectorAll(".add-journal").forEach((button) => {
-		button.addEventListener("click", () => {
-			const popup = document.createElement("task-popup");
+		button.addEventListener("click", (event) => {
+			const popup = document.createElement("journal-popup");
 			document.body.appendChild(popup);
 
 			// Retrieve the date from the button's dataset and set the due date
@@ -378,7 +378,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 			const dayDate = new Date(dateString);
 
 			// Ensure the due date is set to the clicked date after the popup is ready
-			popup.addEventListener("popupReady", () => {
+			popup.addEventListener("entryReady", () => {
 				popup.setDueDate(dayDate);
 			});
 		});
