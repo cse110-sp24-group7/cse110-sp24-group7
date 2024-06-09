@@ -1,7 +1,7 @@
 // Declare a variable to manage file operations
 let fileMgr;
 
-document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", async () => {
 	// Retrieve DOM elements
 	const uploadForm = document.getElementById("uploadForm");
 	const fileInput = document.getElementById("file");
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 	// Initialize the file manager with user data path
 	fileMgr = await window.path.getUserData().then((appDataPath) => {
 		// console.log("App data path:", appDataPath); // Log the path
-		let manager = window.file.fileManager(appDataPath);
+		const manager = window.file.fileManager(appDataPath);
 		return manager;
 	});
 
@@ -23,20 +23,20 @@ document.addEventListener("DOMContentLoaded", async function () {
 	const images = fileMgr.getImageNames();
 
 	// Display all files and images
-	for (let i in files) {
+	for (const i in files) {
 		displayFile(files[i], false);
 	}
 
-	for (let i in images) {
+	for (const i in images) {
 		displayFile(images[i], true);
 	}
 
 	// Add event listener for file upload form changes
-	uploadForm.addEventListener("change", function (event) {
+	uploadForm.addEventListener("change", (event) => {
 		event.preventDefault(); // Prevent default form submission
 		const files = fileInput.files;
 		if (files.length > 0) {
-			for (let file of files) {
+			for (const file of files) {
 				// console.log("Uploading file:", file.name); // Log the file name
 				try {
 					fileMgr.add(file); // Add file to file manager
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 	const filterFiles = document.getElementById("filter");
 
 	// Add event listener for filter changes
-	filterFiles.addEventListener("change", (event) => {
+	filterFiles.addEventListener("change", () => {
 		// console.log("filter!");
 		const filesSection = document.getElementById("files");
 		const imagesSection = document.getElementById("images");
@@ -75,14 +75,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 	});
 
 	// Add event listener for search input changes
-	searchInput.addEventListener("input", function () {
+	searchInput.addEventListener("input", () => {
 		const query = searchInput.value.toLowerCase();
 		// console.log("Searching for:", query); // Log search query
 		searchFiles(query); // Perform the search
 	});
 
 	// Add event listener for menu button click
-	menuButton.addEventListener("click", function () {
+	menuButton.addEventListener("click", () => {
 		if (menuOptions.classList.contains("visible")) {
 			menuOptions.classList.remove("visible");
 			setTimeout(() => {
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		}
 	});
 
-	document.addEventListener("click", function (event) {
+	document.addEventListener("click", (event) => {
 		if (
 			!menuButton.contains(event.target) &&
 			!menuOptions.contains(event.target)
@@ -109,12 +109,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 	});
 
 	// Add event listener for tasks link click
-	tasksLink.addEventListener("click", function (event) {
+	tasksLink.addEventListener("click", () => {
 		window.location.href = "../all-tasks/all-tasks.html";
 	});
 
 	// Add event listener for calendar link click
-	calendarLink.addEventListener("click", function (event) {
+	calendarLink.addEventListener("click", () => {
 		window.location.href = "../mainview/mainview.html";
 	});
 });
@@ -137,14 +137,14 @@ function searchFiles(query) {
 	imageSection.innerHTML = "";
 
 	// Display files matching the query
-	for (let i in files) {
+	for (const i in files) {
 		if (files[i].toLowerCase().includes(query)) {
 			displayFile(files[i], false);
 		}
 	}
 
 	// Display images matching the query
-	for (let i in images) {
+	for (const i in images) {
 		if (images[i].toLowerCase().includes(query)) {
 			displayFile(images[i], true);
 		}
@@ -169,7 +169,7 @@ function displayFile(file_name, is_img) {
 	// Create a button element for the file
 	const fileElement = document.createElement("button");
 	fileElement.classList.add("file-item");
-	fileElement.addEventListener("click", function (event) {
+	fileElement.addEventListener("click", () => {
 		window.open(fileMgr.getFileLocation(file_name, is_img));
 	});
 

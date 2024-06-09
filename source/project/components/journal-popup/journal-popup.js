@@ -15,6 +15,8 @@ class JournalPopup extends HTMLElement {
 
 		// set to store selected labels
 		this.selectedLabels = new Set();
+		this.editMode = false; // Track whether we're editing an existing journal
+		this.editJournalId = null; // Track the ID of the journal being edited
 
 		// map to store label colors with labels
 		// this.labelToColor = new Map(
@@ -92,7 +94,26 @@ class JournalPopup extends HTMLElement {
 					})
 				);
 			});
+			if (this.dueDate) {
+				this.setDueDate(this.dueDate);
+			}
 		};
+	}
+
+	/**
+	 * @method setDueDate
+	 * @description Sets the due date input field to the specified date.
+	 * @param {Date} date - The date to set in the due date input field.
+	 */
+	setDueDate(date) {
+		this.dueDate = date; // Store the date to use it later if needed
+		const dueDateInput = this.shadowRoot.getElementById("dueDate");
+		if (dueDateInput) {
+			date.setHours(16, 59, 0, 0); // Set time to 11:59 PM
+			const isoString = date.toISOString();
+			const formattedDate = isoString.substring(0, isoString.length - 8);
+			dueDateInput.value = formattedDate;
+		}
 	}
 
 	/**
@@ -144,7 +165,7 @@ class JournalPopup extends HTMLElement {
 		const labelContainer = this.shadowRoot.getElementById("label");
 		const selectedLabelsContainer =
 			this.shadowRoot.querySelector(".selectedLabels");
-		const labels = JSON.parse(window.localStorage.getItem("labels")) || [];
+		const labels = JSON.parse(window.localStorage.getItem("labels")) || []; //eslint-disable-line no-unused-vars
 
 		window.api.getLabels((labels) => {
 			// Clear the label container

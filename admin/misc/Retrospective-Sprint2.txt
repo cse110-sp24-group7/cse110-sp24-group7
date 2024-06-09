@@ -1,0 +1,71 @@
+Retrium Retrospective, June 9, 2024
+Technique: SWOT Analysis
+===================================
+
+Strengths
+---------
+Add notes on the ideas, tools, and positive attributes of the topic.
+
+- Communication (6 votes)
+    - I think we were very good with communication and just keeping everyone in the loop
+    - Communication; daily check-ins helped and groups were responsive
+    - Significant improvement as a team with communication and cohesion. Better time management and overall workflow!
+    - Active Daily, and responsive communication from everyone!
+    - Responsive and collaborative team - team has high cohesion
+    - Communication game has improved significantly. The team as a whole became more comfortable talking about our blockers/concerns
+    - Communication between team members
+    - Cohesion across different teams
+
+- Collaborative Development/Fast Work (8 votes)
+    - Getting work done! It felt like we got more done in the last sprint then the two before. More organized and everyone was more accountable.
+    - Really good at collaborative development, excellent at building from feedback. Great development skills from everyone on the team, and much better time management this time around. 
+- Team lead and team members are responsible and supportive (1 vote)
+
+Weaknesses
+----------
+Add notes on the areas or items that need to be made better or are holding you back.
+
+- Bus Factor for Backend (8 votes)
+    - Hard to point weaknesses this time around, but we could've had less of a bus factor on the backend maybe - mainly dependent on 2-3 devs
+    - Slight Bus Factor on Backend
+
+- Improvement over time (0 votes)
+    - It a took a little bit for everyone to become accountable. The check in everyday I think really helped to put pressure on and get everyone working.
+    - We may have had a relatively more rockier start but this was significantly improved 
+- Personally I think I should clean up my code more often - there's alot of random commented out code that is very distracting if others were to read my code. (1 vote)
+- The lack of java scripts and web development experience (0 votes)
+- Honestly not much, I think we really improved with being considerate of everyone's schedules (0 votes)
+- I think that time was an issue for us but not as much as the first sprint (0 votes)
+
+Opportunities
+-------------
+Add notes on areas where your team can see future benefits.
+
+- All around development (6 votes)
+    - We could spend some time going briefly how new code works to reduce bus factor
+    - Maybe we can switch teams around more and switch backend to frontend and so forth if there is enough time
+    - For more people to be aware of the project as a whole, more full-stacky issues/roles
+
+- Smooth Workflow (5 votes)
+    - we learned how to effectively work together and have a smooth workflow
+    - Working together in the future, we could definitely build much better products given the great team dynamic we have right now.
+- Our app is modular and supports quick development, as seen with the case of the vault page. (0 votes)
+- Project looks good on our resumes (0 votes)
+
+Threats
+-------
+Add notes on issues that stand in the way of success or the negative ramifications that could occur.
+
+- Bus Factor (4 votes)
+    - Not knowing how the entire backend and frontend works as an individual
+    - Low bus factor for backend - could hinder future development past this course.
+
+- Inconsistent Dev Workflow (1 vote)
+    - It took a bit before we had everyone consistently contributing. I think we would have benefited from daily checkins at the start but overall everything came out great
+    - Inconsistent dev cycle
+- Having to make a brainrot video for our app to curry favor :( (0 votes)
+
+Wrap-Up
+=======
+
+With 2 total votes, participants gave this retro an average rating of 3.

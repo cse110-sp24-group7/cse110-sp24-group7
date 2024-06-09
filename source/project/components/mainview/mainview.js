@@ -49,7 +49,7 @@ function tasksRendererCallback(tasks) {
 		taskPv.appendChild(taskPriority);
 
 		const taskExpectedTime = document.createElement("p");
-		taskExpectedTime.textContent = `Expected Time: ${task.expected_time}`;
+		taskExpectedTime.textContent = `Expected Time: ${task.expected_time} hours`;
 		taskPv.appendChild(taskExpectedTime);
 
 		// for each label, create a small colored box representing that label
@@ -88,7 +88,7 @@ function tasksRendererCallback(tasks) {
 		deleteButton.innerHTML = `<img id="img2" src="../../assets/res/delete-icon.jpg" alt="Delete">`;
 		deleteButton.setAttribute("data-tooltip", "double click to delete");
 		deleteButton.addEventListener("dblclick", () => {
-			window.api.deleteTask(task.task_id, (tasks) => {
+			window.api.deleteTask(task.task_id, () => {
 				updateMainview();
 			});
 		});
@@ -187,7 +187,7 @@ function entriesRendererCallback(entries) {
 		deleteButton.innerHTML = `<img id="img2" src="../../assets/res/delete-icon.jpg" alt="Delete">`;
 		deleteButton.setAttribute("data-tooltip", "double click to delete");
 		deleteButton.addEventListener("dblclick", () => {
-			window.api.deleteEntry(entry.entry_id, (entries) => {
+			window.api.deleteEntry(entry.entry_id, () => {
 				updateMainview();
 			});
 		});
@@ -287,6 +287,12 @@ function setWeeklyView(weekOffset) {
 		const dayNumber = dayDate.getDate();
 		dateElement.textContent = dayNumber;
 
+		const addButtonTask = dayColumn.querySelector(".add-task");
+		addButtonTask.dataset.date = dayDate.toISOString();
+
+		const addButtonJournal = dayColumn.querySelector(".add-journal");
+		addButtonJournal.dataset.date = dayDate.toISOString();
+
 		if (dayNumber === currentDate && weekOffset === 0) {
 			dateElement.classList.add("today");
 		} else {
@@ -346,17 +352,35 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// creates the popup when the add task button is clicked
 	document.querySelectorAll(".add-task").forEach((button) => {
-		button.addEventListener("click", () => {
+		button.addEventListener("click", (event) => {
 			const popup = document.createElement("task-popup");
 			document.body.appendChild(popup);
+
+			// Retrieve the date from the button's dataset and set the due date
+			const dateString = event.target.dataset.date;
+			const dayDate = new Date(dateString);
+
+			// Ensure the due date is set to the clicked date after the popup is ready
+			popup.addEventListener("popupReady", () => {
+				popup.setDueDate(dayDate);
+			});
 		});
 	});
 
 	// creates the popup when the add journal entry button is clicked
 	document.querySelectorAll(".add-journal").forEach((button) => {
-		button.addEventListener("click", () => {
+		button.addEventListener("click", (event) => {
 			const popup = document.createElement("journal-popup");
 			document.body.appendChild(popup);
+
+			// Retrieve the date from the button's dataset and set the due date
+			const dateString = event.target.dataset.date;
+			const dayDate = new Date(dateString);
+
+			// Ensure the due date is set to the clicked date after the popup is ready
+			popup.addEventListener("entryReady", () => {
+				popup.setDueDate(dayDate);
+			});
 		});
 	});
 
@@ -378,7 +402,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	});
 
 	// menu slide in from the right
-	menuButton.addEventListener("click", function () {
+	menuButton.addEventListener("click", () => {
 		if (menuOptions.classList.contains("visible")) {
 			menuOptions.classList.remove("visible");
 			setTimeout(() => {
@@ -392,7 +416,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 		}
 	});
 
-	document.addEventListener("click", function (event) {
+	document.addEventListener("click", (event) => {
 		if (
 			!menuButton.contains(event.target) &&
 			!menuOptions.contains(event.target)
@@ -405,12 +429,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 	});
 
 	// tasks link
-	tasksLink.addEventListener("click", function (event) {
+	tasksLink.addEventListener("click", () => {
 		window.location.href = "../all-tasks/all-tasks.html";
 	});
 
 	// vault link
-	vaultLink.addEventListener("click", function (event) {
+	vaultLink.addEventListener("click", () => {
 		window.location.href = "../vault/vault.html";
 	});
 	// updateMainview();
