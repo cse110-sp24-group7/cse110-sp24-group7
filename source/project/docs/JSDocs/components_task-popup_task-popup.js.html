@@ -33,7 +33,7 @@
  */
 class TaskPopup extends HTMLElement {
 	/**
-	 * @constructor
+	 * @constructor TaskPopup
 	 * @description Creates an instance of TaskPopup, sets up the shadow DOM, and initializes
 	 * the component with CSS and HTML content loaded asynchronously.
 	 */
@@ -112,7 +112,26 @@ class TaskPopup extends HTMLElement {
 					})
 				);
 			});
+			if (this.dueDate) {
+				this.setDueDate(this.dueDate);
+			}
 		};
+	}
+
+	/**
+	 * @method setDueDate
+	 * @description Sets the due date input field to the specified date.
+	 * @param {Date} date - The date to set in the due date input field.
+	 */
+	setDueDate(date) {
+		this.dueDate = date; // Store the date to use it later if needed
+		const dueDateInput = this.shadowRoot.getElementById("dueDate");
+		if (dueDateInput) {
+			date.setHours(16, 59, 0, 0); // Set time to 11:59 PM
+			const isoString = date.toISOString();
+			const formattedDate = isoString.substring(0, isoString.length - 8);
+			dueDateInput.value = formattedDate;
+		}
 	}
 
 	/**
@@ -120,6 +139,7 @@ class TaskPopup extends HTMLElement {
 	 * @param {Task} task - the task to edit
 	 * @description Populates the popup component with data from taskpv when edit button is
 	 * clicked.
+	 * @memberof TaskPopup
 	 */
 	taskEdit(task) {
 		this.editMode = true;
@@ -155,12 +175,14 @@ class TaskPopup extends HTMLElement {
 	 * @method connectedCallback
 	 * @description Lifecycle method that is called when the component is inserted into the DOM.
 	 * It sets up event listeners for form submission within the shadow DOM.
+	 * @memberof TaskPopup
 	 */
 	connectedCallback() {}
 
 	/**
 	 * @method populateLabels
 	 * @description Populates the label selector with labels.
+	 * @memberof TaskPopup
 	 */
 	populateLabels() {
 		const labelContainer = this.shadowRoot.getElementById("label");
@@ -186,6 +208,7 @@ class TaskPopup extends HTMLElement {
 	 * @method addNewLabelInput
 	 * @description Adds an input field for creating new labels.
 	 * @param {HTMLElement} container - The container to add the input field to
+	 * @memberof TaskPopup
 	 */
 	addNewLabelInput(container) {
 		const newLabelDiv = document.createElement("div");
@@ -240,6 +263,7 @@ class TaskPopup extends HTMLElement {
 	 * @method randomColor
 	 * @description Returns a random color from the colors array.
 	 * @returns {string} - A random color from the colors array
+	 * @memberof TaskPopup
 	 */
 	randomColor() {
 		return this.colors[Math.floor(Math.random() * this.colors.length)];
@@ -250,6 +274,7 @@ class TaskPopup extends HTMLElement {
 	 * @description Populates the label dropdown with stored labels.
 	 * @param {HTMLElement} container - The container to add the labels to
 	 * @param {Array} labels - The list of labels to populate
+	 * @memberof TaskPopup
 	 */
 	populateLabelDropdown(container, labels) {
 		// this.setColors(labels);
@@ -288,6 +313,7 @@ class TaskPopup extends HTMLElement {
 	 * @method populateSelectedLabels
 	 * @description Populates the container with the selected labels.
 	 * @param {HTMLElement} container - The container to add the selected labels to
+	 * @memberof TaskPopup
 	 */
 	populateSelectedLabels(container) {
 		container.innerHTML = "";
@@ -325,6 +351,7 @@ class TaskPopup extends HTMLElement {
 	 * @description Handles the selection of a label, moving it to the selected labels container.
 	 * @param {string} label - The label to select
 	 * @param {HTMLElement} labelElement - The label element to remove from the dropdown
+	 * @memberof TaskPopup
 	 */
 	selectLabel(label, labelElement) {
 		this.selectedLabels.add(label);
@@ -337,6 +364,7 @@ class TaskPopup extends HTMLElement {
 	 * @description Handles the removal of a selected label, moving it back to the dropdown.
 	 * @param {string} label - The label to remove
 	 * @param {HTMLElement} selectedLabelDiv - The selected label element to remove
+	 * @memberof TaskPopup
 	 */
 	removeLabel(label, selectedLabelDiv) {
 		this.selectedLabels.delete(label);
@@ -349,6 +377,7 @@ class TaskPopup extends HTMLElement {
 	 * @description Deletes a label from the local storage and the selected labels set.
 	 * @param {HTMLElement} labelElement - The label element to delete
 	 * @returns {void}
+	 * @memberof TaskPopup
 	 */
 	deleteLabel(labelElement) {
 		const labelDiv = labelElement.parentElement;
@@ -378,7 +407,8 @@ class TaskPopup extends HTMLElement {
 	/**
 	 * @method getTasksFromStorage
 	 * @description Retrieves the tasks array from local storage, or returns an empty array if no tasks are found.
-	 * @returns {Array} The array of tasks
+	 * @returns {Task[]} The array of tasks
+	 * @memberof TaskPopup
 	 */
 	getTasksFromStorage() {
 		return JSON.parse(window.localStorage.getItem("tasks")) || [];
@@ -387,7 +417,8 @@ class TaskPopup extends HTMLElement {
 	/**
 	 * @method saveTasksToStorage
 	 * @description Saves the given tasks array to local storage after converting it to a JSON string, then closes the popup.
-	 * @param {Array} tasks - The array of tasks to save
+	 * @param {Task[]} tasks - The array of tasks to save
+	 * @memberof TaskPopup
 	 */
 	saveTasksToStorage(tasks) {
 		localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -403,6 +434,7 @@ class TaskPopup extends HTMLElement {
 	 * @method onSubmit
 	 * @description Handles form submission, prevents default submission, saves and logs data, resets form, and hides popup.
 	 * @param {Event} event - The form submission event
+	 * @memberof TaskPopup
 	 */
 	onSubmit(event) {
 		event.preventDefault();
@@ -451,13 +483,13 @@ customElements.define("task-popup", TaskPopup);
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Filter.html">Filter</a></li><li><a href="JournalPopup.html">JournalPopup</a></li><li><a href="TaskPopup.html">TaskPopup</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addEntries">addEntries</a></li><li><a href="global.html#addEntry">addEntry</a></li><li><a href="global.html#addLabel">addLabel</a></li><li><a href="global.html#addLabels">addLabels</a></li><li><a href="global.html#addNewLabelInput">addNewLabelInput</a></li><li><a href="global.html#addPriorityListeners">addPriorityListeners</a></li><li><a href="global.html#addResetListener">addResetListener</a></li><li><a href="global.html#addTask">addTask</a></li><li><a href="global.html#addTasks">addTasks</a></li><li><a href="global.html#appendTaskHTML">appendTaskHTML</a></li><li><a href="global.html#clearFilter">clearFilter</a></li><li><a href="global.html#connectedCallback">connectedCallback</a></li><li><a href="global.html#deleteEntries">deleteEntries</a></li><li><a href="global.html#deleteEntry">deleteEntry</a></li><li><a href="global.html#deleteLabel">deleteLabel</a></li><li><a href="global.html#deleteLabels">deleteLabels</a></li><li><a href="global.html#deleteTask">deleteTask</a></li><li><a href="global.html#deleteTasks">deleteTasks</a></li><li><a href="global.html#displayTasks">displayTasks</a></li><li><a href="global.html#editEntry">editEntry</a></li><li><a href="global.html#editTask">editTask</a></li><li><a href="global.html#entriesRendererCallback">entriesRendererCallback</a></li><li><a href="global.html#factorial">factorial</a></li><li><a href="global.html#fetchEntry">fetchEntry</a></li><li><a href="global.html#fetchTask">fetchTask</a></li><li><a href="global.html#formatNote">formatNote</a></li><li><a href="global.html#getEntries">getEntries</a></li><li><a href="global.html#getFilteredEntries">getFilteredEntries</a></li><li><a href="global.html#getFilteredTasks">getFilteredTasks</a></li><li><a href="global.html#getJournalsFromStorage">getJournalsFromStorage</a></li><li><a href="global.html#getLabelColorMap">getLabelColorMap</a></li><li><a href="global.html#getLabels">getLabels</a></li><li><a href="global.html#getLabelsFromStorage">getLabelsFromStorage</a></li><li><a href="global.html#getTasks">getTasks</a></li><li><a href="global.html#getTasksConjunctLabels">getTasksConjunctLabels</a></li><li><a href="global.html#getTasksDisjunctLabels">getTasksDisjunctLabels</a></li><li><a href="global.html#getTasksFromStorage">getTasksFromStorage</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#journalEdit">journalEdit</a></li><li><a href="global.html#onSubmit">onSubmit</a></li><li><a href="global.html#openJournalPopupForEdit">openJournalPopupForEdit</a></li><li><a href="global.html#openTaskPopupForEdit">openTaskPopupForEdit</a></li><li><a href="global.html#populateLabelDropdown">populateLabelDropdown</a></li><li><a href="global.html#populateLabels">populateLabels</a></li><li><a href="global.html#populateSelectedLabels">populateSelectedLabels</a></li><li><a href="global.html#randomColor">randomColor</a></li><li><a href="global.html#removeLabel">removeLabel</a></li><li><a href="global.html#saveJournalsToStorage">saveJournalsToStorage</a></li><li><a href="global.html#saveTasksToStorage">saveTasksToStorage</a></li><li><a href="global.html#selectLabel">selectLabel</a></li><li><a href="global.html#setWeeklyView">setWeeklyView</a></li><li><a href="global.html#taskEdit">taskEdit</a></li><li><a href="global.html#tasksRendererCallback">tasksRendererCallback</a></li><li><a href="global.html#testing">testing</a></li><li><a href="global.html#toggleSelection">toggleSelection</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-All_Tasks.html">All_Tasks</a></li><li><a href="module-MainView.html">MainView</a></li><li><a href="module-dbMgr.html">dbMgr</a></li></ul><h3>Classes</h3><ul><li><a href="Filter.html">Filter</a></li><li><a href="JournalPopup.html">JournalPopup</a></li><li><a href="TaskPopup.html">TaskPopup</a></li></ul><h3>Global</h3><ul><li><a href="global.html#setDueDate">setDueDate</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Thu Jun 06 2024 01:14:24 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Sun Jun 09 2024 20:33:28 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -1,5 +1,6 @@
 //import * as dbMgr from '../scripts/database/dbMgr';
 const dbMgr = require("../scripts/database/dbMgr");
+const path = require("path");
 
 describe("Database functions", () => {
 	let taskLength = 0;

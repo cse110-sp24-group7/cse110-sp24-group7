@@ -13,6 +13,7 @@
 			rel="stylesheetJournal"
 			href="../journal-popup/journal-popup.css"
 		/>
+		<link rel="stylesheetVault" href="../vault/vault.css" />
 
 		<!--References to component js files-->
 		<script src="../mainview/mainview.js" type="module"></script>
@@ -37,9 +38,17 @@
 			<h1 id="current-month"></h1>
 
 			<!-- Menu Icon Button -->
-			<div class="menu-icon">
-				<button>All Tasks</button>
-				<!-- <img src="../../assets/res/menuBtn.png" alt="Menu" /> -->
+			<img
+				src="../../assets/res/menuBtn.png"
+				alt="Menu"
+				class="menu"
+				id="menu"
+			/>
+			<div class="menu-options" id="menu-options">
+				<ul>
+					<li><span id="tasks">tasks</span></li>
+					<li><span id="vault">vault</span></li>
+				</ul>
 			</div>
 		</div>
 
@@ -184,6 +193,6 @@
 			</div>
 			<!--Day (container)-->
 		</div>
-		<!--Calendar (container)-->
+		<!--Calendar-->
 	</body>
 </html>

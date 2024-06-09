@@ -1,4 +1,7 @@
-/* eslint-disable no-undef */
+/**
+ * @module MainView
+ * @description This module is responsible for rendering the main view of the application, which includes the weekly view of tasks and journal entries.
+ */
 
 const filters = {
 	startTime: "",
@@ -11,8 +14,10 @@ const filters = {
 let labelColorMap = new Map();
 
 /**
- * Adds tasks to the task containers.
+ * @method tasksRendererCallback
+ * @description Adds tasks to the task containers.
  * @param {Task[]} tasks - an array of task objects.
+ * @returns {void}
  */
 function tasksRendererCallback(tasks) {
 	// Clear all existing task entries first
@@ -44,7 +49,7 @@ function tasksRendererCallback(tasks) {
 		taskPv.appendChild(taskPriority);
 
 		const taskExpectedTime = document.createElement("p");
-		taskExpectedTime.textContent = `Expected Time: ${task.expected_time}`;
+		taskExpectedTime.textContent = `Expected Time: ${task.expected_time} hours`;
 		taskPv.appendChild(taskExpectedTime);
 
 		// for each label, create a small colored box representing that label
@@ -68,7 +73,7 @@ function tasksRendererCallback(tasks) {
 		const editButton = document.createElement("button");
 		editButton.textContent = "Edit";
 		editButton.classList.add("edit-task"); // Adding class for event delegation
-		editButton.innerHTML = `<img id="img1" src="edit-icon.png" alt="Edit">`;
+		editButton.innerHTML = `<img id="img1" src="../../assets/res/edit-icon.png" alt="Edit">`;
 		editButton.addEventListener("click", () => {
 			// Open task popup for editing with task details
 			openTaskPopupForEdit(taskPv.getAttribute("data-task-id"));
@@ -80,10 +85,10 @@ function tasksRendererCallback(tasks) {
 		const deleteButton = document.createElement("button");
 		deleteButton.textContent = "Delete";
 		deleteButton.classList.add("delete");
-		deleteButton.innerHTML = `<img id="img2" src="delete-icon.jpg" alt="Delete">`;
+		deleteButton.innerHTML = `<img id="img2" src="../../assets/res/delete-icon.jpg" alt="Delete">`;
 		deleteButton.setAttribute("data-tooltip", "double click to delete");
 		deleteButton.addEventListener("dblclick", () => {
-			window.api.deleteTask(task.task_id, (tasks) => {
+			window.api.deleteTask(task.task_id, () => {
 				updateMainview();
 			});
 		});
@@ -106,8 +111,10 @@ function tasksRendererCallback(tasks) {
 }
 
 /**
- * Opens the task popup for editing with the provided task details and the corresponding task preview element.
+ * @method openTaskPopupForEdit
+ * @description Opens the task popup for editing with the provided task details and the corresponding task preview element.
  * @param {string} task_id - the task ID to edit
+ * @returns {void}
  */
 function openTaskPopupForEdit(task_id) {
 	window.api.fetchTask(task_id, (task) => {
@@ -120,8 +127,9 @@ function openTaskPopupForEdit(task_id) {
 }
 
 /**
- * Adds journal entries to the journal containers.
+ * @description Adds journal entries to the journal containers.
  * @param {Entry[]} entries - an array of journal entry objects.
+ *
  */
 function entriesRendererCallback(entries) {
 	// Clear all existing journal entries first
@@ -164,7 +172,7 @@ function entriesRendererCallback(entries) {
 		const editButton = document.createElement("button");
 		editButton.textContent = "Edit";
 		editButton.classList.add("edit-entry"); // Adding class for event delegation
-		editButton.innerHTML = `<img id="img1" src="edit-icon.png" alt="Edit">`;
+		editButton.innerHTML = `<img id="img1" src="../../assets/res/edit-icon.png" alt="Edit">`;
 		editButton.addEventListener("click", () => {
 			// Open journal popup for editing with task details
 			openJournalPopupForEdit(journalPv.getAttribute("data-entry-id"));
@@ -176,10 +184,10 @@ function entriesRendererCallback(entries) {
 		const deleteButton = document.createElement("button");
 		deleteButton.textContent = "Delete";
 		deleteButton.classList.add("delete");
-		deleteButton.innerHTML = `<img id="img2" src="delete-icon.jpg" alt="Delete">`;
+		deleteButton.innerHTML = `<img id="img2" src="../../assets/res/delete-icon.jpg" alt="Delete">`;
 		deleteButton.setAttribute("data-tooltip", "double click to delete");
 		deleteButton.addEventListener("dblclick", () => {
-			window.api.deleteEntry(entry.entry_id, (entries) => {
+			window.api.deleteEntry(entry.entry_id, () => {
 				updateMainview();
 			});
 		});
@@ -202,7 +210,8 @@ function entriesRendererCallback(entries) {
 }
 
 /**
- * Opens the journal popup for editing with the provided journal details.
+ * @method openJournalPopupForEdit
+ * @description Opens the journal popup for editing with the provided journal details.
  * @param {string} entry_id - the journal entry ID to edit
  */
 function openJournalPopupForEdit(entry_id) {
@@ -216,7 +225,8 @@ function openJournalPopupForEdit(entry_id) {
 }
 
 /**
- * Loads the dates on the weekly view
+ * @method setWeeklyView
+ * @description Loads the dates on the weekly view
  * @param {number} weekOffset = index value relative to today's current week
  */
 function setWeeklyView(weekOffset) {
@@ -277,6 +287,12 @@ function setWeeklyView(weekOffset) {
 		const dayNumber = dayDate.getDate();
 		dateElement.textContent = dayNumber;
 
+		const addButtonTask = dayColumn.querySelector(".add-task");
+		addButtonTask.dataset.date = dayDate.toISOString();
+
+		const addButtonJournal = dayColumn.querySelector(".add-journal");
+		addButtonJournal.dataset.date = dayDate.toISOString();
+
 		if (dayNumber === currentDate && weekOffset === 0) {
 			dateElement.classList.add("today");
 		} else {
@@ -287,6 +303,13 @@ function setWeeklyView(weekOffset) {
 	updateMainview();
 }
 
+/**
+ * @method updateMainview
+ * @description Updates the main view by fetching tasks and entries based on the current the current date range.
+ * @returns {void}
+ * @callback tasksRendererCallback
+ *
+ */
 function updateMainview() {
 	// First update color map, then update tasks and entries.
 	window.api.getLabelColorMap((map) => {
@@ -302,8 +325,15 @@ function updateMainview() {
 	});
 }
 
+/*
+ * Adding HTML Elements to the main view and setting up event listeners to tie to the SQLlite backend.
+ */
 document.addEventListener("DOMContentLoaded", async () => {
 	let currentWeekOffset = 0;
+	const menuButton = document.getElementById("menu");
+	const menuOptions = document.getElementById("menu-options");
+	const tasksLink = document.getElementById("tasks");
+	const vaultLink = document.getElementById("vault");
 
 	// Establish database connection
 	await window.path.getUserData().then((userData) => {
@@ -322,17 +352,35 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// creates the popup when the add task button is clicked
 	document.querySelectorAll(".add-task").forEach((button) => {
-		button.addEventListener("click", () => {
+		button.addEventListener("click", (event) => {
 			const popup = document.createElement("task-popup");
 			document.body.appendChild(popup);
+
+			// Retrieve the date from the button's dataset and set the due date
+			const dateString = event.target.dataset.date;
+			const dayDate = new Date(dateString);
+
+			// Ensure the due date is set to the clicked date after the popup is ready
+			popup.addEventListener("popupReady", () => {
+				popup.setDueDate(dayDate);
+			});
 		});
 	});
 
 	// creates the popup when the add journal entry button is clicked
 	document.querySelectorAll(".add-journal").forEach((button) => {
-		button.addEventListener("click", () => {
+		button.addEventListener("click", (event) => {
 			const popup = document.createElement("journal-popup");
 			document.body.appendChild(popup);
+
+			// Retrieve the date from the button's dataset and set the due date
+			const dateString = event.target.dataset.date;
+			const dayDate = new Date(dateString);
+
+			// Ensure the due date is set to the clicked date after the popup is ready
+			popup.addEventListener("entryReady", () => {
+				popup.setDueDate(dayDate);
+			});
 		});
 	});
 
@@ -353,9 +401,41 @@ document.addEventListener("DOMContentLoaded", async () => {
 		setWeeklyView(currentWeekOffset);
 	});
 
-	document.querySelector(".menu-icon").addEventListener("click", () => {
-		window.location = "../all-tasks/all-tasks.html";
+	// menu slide in from the right
+	menuButton.addEventListener("click", () => {
+		if (menuOptions.classList.contains("visible")) {
+			menuOptions.classList.remove("visible");
+			setTimeout(() => {
+				menuOptions.style.display = "none";
+			}, 300);
+		} else {
+			menuOptions.style.display = "block";
+			setTimeout(() => {
+				menuOptions.classList.add("visible");
+			}, 10);
+		}
 	});
 
+	document.addEventListener("click", (event) => {
+		if (
+			!menuButton.contains(event.target) &&
+			!menuOptions.contains(event.target)
+		) {
+			menuOptions.classList.remove("visible");
+			setTimeout(() => {
+				menuOptions.style.display = "none";
+			}, 300);
+		}
+	});
+
+	// tasks link
+	tasksLink.addEventListener("click", () => {
+		window.location.href = "../all-tasks/all-tasks.html";
+	});
+
+	// vault link
+	vaultLink.addEventListener("click", () => {
+		window.location.href = "../vault/vault.html";
+	});
 	// updateMainview();
 });

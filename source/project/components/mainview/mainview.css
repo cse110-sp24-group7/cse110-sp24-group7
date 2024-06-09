@@ -23,7 +23,7 @@
 .logo img {
 	width: 30px;
 	height: 30px;
-	margin-right: 10px;
+	margin-right: 5px;
 }
 
 .logo span {
@@ -32,25 +32,66 @@
 	padding-right: 20px;
 }
 
-.menu-icon img {
-	width: 35px;
-	height: 35px;
+.logo {
+	margin-left: 3px;
 }
-.menu-icon img:hover {
+
+.menu {
+	width: 30px;
+	height: auto;
+	cursor: pointer;
+	margin-right: 7px;
+	margin-left: auto;
+	z-index: 1001;
+}
+
+.menu-options {
+	display: none;
+	opacity: 0;
+	transform: translateX(100%);
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+	background-color: white;
+	border-left: 1px solid #b4b4b4;
+	z-index: 1000;
+	padding-top: 30px;
+	transition:
+		opacity 0.3s ease,
+		transform 0.3s ease;
+	width: 180px;
+}
+
+.menu-options.visible {
+	display: block;
+	opacity: 1;
+	transform: translateX(0);
+}
+
+.menu-options ul {
+	list-style-type: none;
+	padding: 20px;
+	margin: 0;
+}
+
+.menu-options ul li {
+	margin: 10px 0;
+}
+
+.menu-options ul li span {
+	text-decoration: none;
+	color: black;
+	display: block;
+	padding: 5px 10px;
+	font-family: "Roboto Mono", monospace;
+	font-weight: normal;
+	font-size: 22px;
 	cursor: pointer;
 }
 
-/* Styling the All Tasks button */
-.menu-icon button {
-	font-family: "Roboto Mono";
-	font-size: 18px;
-	background-color: transparent;
-	border: none;
-	transition: color 0.5s ease;
-}
-.menu-icon button:hover {
-	color: #8b0000;
-	cursor: pointer;
+.menu-options ul li span:hover {
+	background-color: #f0f0f0;
 }
 
 #today-button {
@@ -295,7 +336,7 @@
 .button-container button[data-tooltip]:hover::after,
 .button-container button[data-tooltip]:hover::before {
 	animation: show-tooltip 0.3s forwards;
-	animation-delay: 1.5s;
+	animation-delay: 0.75s;
 }
 
 @keyframes show-tooltip {

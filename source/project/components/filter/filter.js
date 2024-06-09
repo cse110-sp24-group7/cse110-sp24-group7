@@ -4,6 +4,10 @@
  * @extends HTMLElement
  */
 class Filter extends HTMLElement {
+	/**
+	 * @constructor Filter
+	 * @description Initializes the filter component.
+	 */
 	constructor() {
 		super();
 		this.attachShadow({ mode: "open" });
@@ -36,6 +40,7 @@ class Filter extends HTMLElement {
 	 * @method populateLabels
 	 * @description Populates the labels as options in the multi-select dropdown.
 	 * @returns {void}
+	 * @memberof Filter
 	 */
 	populateLabels() {
 		const labelContainer = this.shadowRoot.getElementById("labels");
@@ -74,6 +79,7 @@ class Filter extends HTMLElement {
 	 * @method addPriorityListeners
 	 * @description Adds event listeners to priority items.
 	 * @returns {void}
+	 * @memberof Filter
 	 */
 	addPriorityListeners() {
 		const priorityContainer = this.shadowRoot.getElementById("priority");
@@ -97,6 +103,7 @@ class Filter extends HTMLElement {
 	 * @method addResetListener
 	 * @description Adds an event listener to the reset button to clear the filter.
 	 * @returns {void}
+	 * @memberof Filter
 	 */
 	addResetListener() {
 		const resetButton = this.shadowRoot.getElementById("resetBtn");
@@ -108,6 +115,7 @@ class Filter extends HTMLElement {
 	 * @method getLabelsFromStorage
 	 * @description Retrieves the labels from local storage.
 	 * @returns {Array} An array of labels.
+	 * @memberof Filter
 	 */
 	getLabelsFromStorage() {
 		return JSON.parse(localStorage.getItem("labels")) || [];
@@ -120,6 +128,7 @@ class Filter extends HTMLElement {
 	 * @param {HTMLElement} element - The element to toggle.
 	 * @param {string} type - The type of selection ('labels' or 'priorities').
 	 * @returns {void}
+	 * @memberof Filter
 	 */
 	toggleSelection(e, element, type) {
 		// Prevent checkbox from toggling twice when clicked
@@ -171,6 +180,7 @@ class Filter extends HTMLElement {
 	 * @method clearFilter
 	 * @description Clears the filter by removing the selected labels and priorities from local storage.
 	 * @returns {void}
+	 * @memberof Filter
 	 */
 	clearFilter() {
 		localStorage.removeItem("selectedlabels");
@@ -197,12 +207,35 @@ class Filter extends HTMLElement {
 				item.querySelector('input[type="checkbox"]').checked = false;
 			});
 		}
+
+		// clear search bar
+		const searchInput = document.getElementById("searchInput");
+		if (searchInput) {
+			searchInput.value = "";
+		}
+
+		const filters = {
+			startTime: "",
+			endTime: "",
+			labels: [],
+			priorities: [],
+			exclusive: false
+		};
+
+		this.dispatchEvent(
+			new CustomEvent("filterUpdate", {
+				bubbles: true,
+				composed: true,
+				detail: filters
+			})
+		);
 	}
 
 	/**
 	 * @method connectedCallback
 	 * @description Called when the element is added to the DOM.
 	 * @returns {void}
+	 * @memberof Filter
 	 */
 	connectedCallback() {
 		// Clear previous selections when the component is connected to the DOM

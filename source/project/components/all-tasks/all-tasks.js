@@ -1,4 +1,7 @@
-console.log("all-tasks.js script loaded"); // Add this line
+/**
+ * @module All_Tasks
+ * @description This module is responsible for displaying all tasks in a seperate view, with dynamic filtering and search functionality.
+ */
 
 let filters = {
 	startTime: "",
@@ -8,8 +11,10 @@ let filters = {
 	exclusive: false
 };
 
+let allTasks = [];
+
 /**
- * Generates an HTML element for task preview given a task object
+ * @description Generates an HTML element for task preview given a task object
  * @param {Task} task - the task to append
  * @param {Object} taskContainer - the HTML element to append tasks to.
  * @returns {Object} taskContainer - the HTML element with appended task
@@ -38,16 +43,16 @@ function appendTaskHTML(task, taskContainer) {
 	taskContent.textContent = task.task_content;
 	taskPv.appendChild(taskContent);
 
-	const taskDueDate = document.createElement("p");
-	taskDueDate.textContent = `Due: ${dueDate.toDateString()}`;
-	taskPv.appendChild(taskDueDate);
+	// const taskDueDate = document.createElement("p");
+	// taskDueDate.textContent = `Due: ${dueDate.toDateString()}`;
+	// taskPv.appendChild(taskDueDate);
 
 	const taskPriority = document.createElement("p");
 	taskPriority.textContent = `Priority: ${task.priority}`;
 	taskPv.appendChild(taskPriority);
 
 	const taskExpectedTime = document.createElement("p");
-	taskExpectedTime.textContent = `Expected Time: ${task.expected_time}`;
+	taskExpectedTime.textContent = `Expected Time: ${task.expected_time} hours`;
 	taskPv.appendChild(taskExpectedTime);
 
 	taskContainer.appendChild(taskPv);
@@ -60,7 +65,7 @@ function appendTaskHTML(task, taskContainer) {
 	// Edge case: total days negative (task is created after it was due...?)
 	// In this case should be no greens, all gray.
 	const graySquares =
-		totalDays < 0
+		totalDays <= 0
 			? 10
 			: Math.min(Math.round((daysPast / totalDays) * 10), 10);
 	const greenSquares = 10 - graySquares;
@@ -103,17 +108,16 @@ function appendTaskHTML(task, taskContainer) {
 }
 
 /**
- * Generates the dates to show for each row of visible tasks
+ * @description Generates the dates to show for each row of visible tasks
  * @param {Task[]} tasks - an array of task objects.
  */
 function displayTasks(tasks) {
 	const calendar = document.querySelector(".calendar");
 	calendar.innerHTML = ""; // Clear the calendar content
-	// const dayTemplates = document.querySelectorAll('.day');
 
 	let currDate = null;
 	let currDayContainer = null;
-	let currDayDate = "";
+	let currTaskWrapper = null;
 	tasks.forEach((task) => {
 		let needUpdate = false;
 		let flushed = false;
@@ -122,7 +126,6 @@ function displayTasks(tasks) {
 			needUpdate = true;
 			currDate = dueDate;
 		}
-		// dueDate.setDate(dueDate.getDate() + 1);
 		const dueYear = dueDate.toLocaleString("en-US", { year: "numeric" });
 		const dueMonth = dueDate.toLocaleString("en-US", { month: "long" });
 		const dueDay = dueDate.toLocaleString("en-US", { day: "numeric" });
@@ -131,23 +134,22 @@ function displayTasks(tasks) {
 		const currMonth = currDate.toLocaleString("en-US", { month: "long" });
 		const currDay = currDate.toLocaleString("en-US", { day: "numeric" });
 
-		// Displays year divider
 		if (needUpdate || dueYear != currYear) {
 			if (!flushed && currDayContainer != null) {
+				currDayContainer.appendChild(currTaskWrapper);
 				calendar.appendChild(currDayContainer);
 				flushed = true;
 				currDate = dueDate;
 			}
 			const yearDivider = document.createElement("div");
-			// TODO: add styling for year-divider
 			yearDivider.classList.add("month-divider");
 			yearDivider.textContent = dueYear;
 			calendar.appendChild(yearDivider);
 		}
 
-		// Displays month divider
 		if (needUpdate || dueMonth != currMonth) {
 			if (!flushed && currDayContainer != null) {
+				currDayContainer.appendChild(currTaskWrapper);
 				calendar.appendChild(currDayContainer);
 				flushed = true;
 				currDate = dueDate;
@@ -158,16 +160,14 @@ function displayTasks(tasks) {
 			calendar.appendChild(monthDivider);
 		}
 
-		// Checks day container to see if a new one is required.
 		if (needUpdate || dueDay != currDay) {
-			// Flush the current day container
 			if (!flushed && currDayContainer != null) {
+				currDayContainer.appendChild(currTaskWrapper);
 				calendar.appendChild(currDayContainer);
 				flushed = true;
 				currDate = dueDate;
 			}
 
-			// Create a new day container
 			const dayOfWeek = dueDate
 				.toLocaleDateString("en-US", { weekday: "short" })
 				.toLowerCase()
@@ -176,43 +176,59 @@ function displayTasks(tasks) {
 			currDayContainer.classList.add("day");
 			currDayContainer.id = dayOfWeek;
 
-			const dayTitle = document.createElement("h2");
-			dayTitle.textContent = `${dayOfWeek.toUpperCase()}, ${dueMonth} ${dueDay}`;
+			currTaskWrapper = document.createElement("div");
+			currTaskWrapper.classList.add("tasks-wrapper");
+
+			const dayTitle = document.createElement("h4");
+			const dayOfWeekNode = document.createTextNode(
+				dayOfWeek.toUpperCase()
+			);
+			const lineBreak = document.createElement("br");
+			const dueDateNode = document.createTextNode(`${dueDay}`);
+
+			dayTitle.appendChild(dayOfWeekNode);
+			dayTitle.appendChild(lineBreak);
+			dayTitle.appendChild(dueDateNode);
+
 			currDayContainer.appendChild(dayTitle);
-			// const lineBreak = document.createElement('br');
-			// currDayContainer.appendChild(lineBreak);
-			// ALERT: I skipped day-date div here
 		}
 
-		// Create task container
 		let taskContainer = document.createElement("div");
 		taskContainer.classList.add("task-container");
 		taskContainer = appendTaskHTML(task, taskContainer);
-		// Append task to current day.
-		currDayContainer.appendChild(taskContainer);
-		// const lineBreak = document.createElement('br');
-		// currDayContainer.appendChild(lineBreak);
-
-		// ALERT: division between new and old method
+		currTaskWrapper.appendChild(taskContainer);
 	});
 
-	// Flush last remaining container.
 	if (currDayContainer != null) {
+		currDayContainer.appendChild(currTaskWrapper);
 		calendar.appendChild(currDayContainer);
 	}
 }
 
+/**
+ * @description Updates the tasklist based on the current filters selected
+ * @returns {void}
+ *
+ */
 function updateTasklist() {
-	window.api.getFilteredTasks(filters, displayTasks);
+	window.api.getFilteredTasks(filters, (tasks) => {
+		allTasks = tasks;
+		displayTasks(tasks);
+	});
 }
 
-document.addEventListener("DOMContentLoaded", async function () {
-	// Establish database connection
+document.addEventListener("DOMContentLoaded", async () => {
+	const menuButton = document.getElementById("menu");
+	const menuOptions = document.getElementById("menu-options");
+	const vaultLink = document.getElementById("vault");
+	const calendarLink = document.getElementById("calendar");
+
 	await window.path.getUserData().then((userData) => {
 		console.log("Renderer access userdata: " + userData);
 		window.api.connect(userData, () => {
 			window.api.init(() => {
 				console.log("Renderer init table.");
+				updateTasklist();
 			});
 		});
 	});
@@ -222,85 +238,59 @@ document.addEventListener("DOMContentLoaded", async function () {
 		updateTasklist();
 	});
 
-	// creates the popup when the add task button is clicked
 	document.querySelectorAll(".add-task").forEach((button) => {
-		button.addEventListener("click", function () {
+		button.addEventListener("click", () => {
 			const popup = document.createElement("task-popup");
 			document.body.appendChild(popup);
 		});
 	});
 
-	document.querySelector(".menu-icon").addEventListener("click", () => {
-		window.location = "../mainview/mainview.html";
+	// menu slide in from the right
+	menuButton.addEventListener("click", () => {
+		if (menuOptions.classList.contains("visible")) {
+			menuOptions.classList.remove("visible");
+			setTimeout(() => {
+				menuOptions.style.display = "none";
+			}, 300);
+		} else {
+			menuOptions.style.display = "block";
+			setTimeout(() => {
+				menuOptions.classList.add("visible");
+			}, 10);
+		}
 	});
 
-	const testTasks = [
-		{
-			task_name: "Task 1 05-15",
-			task_content: "This is the first task",
-			due_date: "2024-06-01",
-			creation_date: "2024-05-15",
-			priority: "P1",
-			expected_time: "2 hours"
-		},
-		{
-			task_name: "Task 2 06-05",
-			task_content: "This is the second task",
-			due_date: "2024-06-05",
-			creation_date: "2024-05-30",
-			priority: "P2",
-			expected_time: "1 hour"
-		},
-		{
-			task_name: "Task 2.5 06-05",
-			task_content: "This is the second.5 task",
-			due_date: "2024-06-05",
-			creation_date: "2024-05-30",
-			priority: "P2",
-			expected_time: "1 hour"
-		},
-		{
-			task_name: "Task 3 06-10",
-			task_content: "This is the third task",
-			due_date: "2024-06-10",
-			creation_date: "2024-06-01",
-			priority: "P1",
-			expected_time: "3 hours"
-		},
-		{
-			task_name: "Task 4 06-15",
-			task_content: "This is the fourth task",
-			due_date: "2024-06-15",
-			creation_date: "2024-06-05",
-			priority: "P3",
-			expected_time: "2 hours"
-		},
-		{
-			task_name: "Task 5 06-20",
-			task_content: "This is the fifth task",
-			due_date: "2024-06-20",
-			creation_date: "2024-06-05",
-			priority: "P2",
-			expected_time: "1.5 hours"
-		},
-		{
-			task_name: "Task 6 06-25",
-			task_content: "This is the sixth task",
-			due_date: "2024-06-25",
-			creation_date: "2024-06-01",
-			priority: "P1",
-			expected_time: "2 hours"
-		},
-		{
-			task_name: "Task 7 07-10",
-			task_content: "This is the seventh task",
-			due_date: "2024-07-01",
-			creation_date: "2024-06-05",
-			priority: "P3",
-			expected_time: "1 hour"
+	document.addEventListener("click", (event) => {
+		if (
+			!menuButton.contains(event.target) &&
+			!menuOptions.contains(event.target)
+		) {
+			menuOptions.classList.remove("visible");
+			setTimeout(() => {
+				menuOptions.style.display = "none";
+			}, 300);
 		}
-	];
+	});
+
+	// tasks link
+	calendarLink.addEventListener("click", () => {
+		window.location.href = "../mainview/mainview.html";
+	});
+
+	// vault link
+	vaultLink.addEventListener("click", () => {
+		window.location.href = "../vault/vault.html";
+	});
+
+	// search
+	const searchInput = document.getElementById("searchInput");
+	searchInput.addEventListener("input", () => {
+		const query = searchInput.value.toLowerCase();
+		const filteredTasks = allTasks.filter((task) =>
+			task.task_name.toLowerCase().includes(query)
+		);
+		displayTasks(filteredTasks);
+	});
 
 	updateTasklist();
-	// displayTasks(testTasks);
 });
