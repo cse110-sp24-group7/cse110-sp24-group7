@@ -23,7 +23,7 @@ Given our number **Team 7**, we decided to name ourselves after the Akatsuki, a 
 
 Have you ever found it difficult keeping track of your daily tasks as a developer or wanting to write a thought down but don't know where to put it? Ever felt overwhelemed with the myriad of tasks that you have to do? This app might be for you!
 
-![AbsentMinded](admin/branding/memes/AbsentMinded.jpeg)
+![AbsentMinded](admin/branding/Memes/AbsentMinded.jpeg)
 
 With the Dev Journal, you can keep track of all of your tasks and thoughts in a calendar format. You can even create labels to keep track of tasks that related to each other.We also allow you to upload photos and files so that you can keep all thing related to your developer life in one place.
 
