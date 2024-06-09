@@ -35,21 +35,27 @@ body,
 	justify-content: space-between;
 	padding: 10px 20px;
 	border-bottom: 1px solid var(--border-color);
+	height: 78px;
+}
+
+.logo {
+	margin-left: 5px;
 }
 
 .logo img {
-	width: 30px;
-	height: 30px;
-	margin-right: 10px;
+	width: 33px;
+	height: 33px;
+	margin-bottom: 0;
+	margin-right: 5px;
 }
 
 .logo span {
-	font-weight: bold;
+	font-weight: normal;
 	font-size: var(--font-size-large);
 	font-family: var(--font-family);
 }
 .menu {
-	width: 30px;
+	width: 33px;
 	height: auto;
 	cursor: pointer;
 	margin-right: 7px;
@@ -72,6 +78,7 @@ body,
 	transition:
 		opacity 0.3s ease,
 		transform 0.3s ease;
+	width: 180px;
 }
 
 .menu-options.visible {

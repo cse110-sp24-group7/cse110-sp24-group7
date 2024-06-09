@@ -23,13 +23,17 @@
 .logo img {
 	width: 30px;
 	height: 30px;
-	margin-right: 10px;
+	margin-right: 5px;
 }
 
 .logo span {
 	font-size: 35px;
 	font-family: "Roboto Mono";
 	padding-right: 20px;
+}
+
+.logo {
+	margin-left: 3px;
 }
 
 .menu {
@@ -56,6 +60,7 @@
 	transition:
 		opacity 0.3s ease,
 		transform 0.3s ease;
+	width: 180px;
 }
 
 .menu-options.visible {
