@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	});
 
 	// Add event listener for menu button click
-	menuButton.addEventListener("click", function () {
+	menuButton.addEventListener("click", () => {
 		if (menuOptions.classList.contains("visible")) {
 			menuOptions.classList.remove("visible");
 			setTimeout(() => {
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 		}
 	});
 
-	document.addEventListener("click", function (event) {
+	document.addEventListener("click", (event) => {
 		if (
 			!menuButton.contains(event.target) &&
 			!menuOptions.contains(event.target)

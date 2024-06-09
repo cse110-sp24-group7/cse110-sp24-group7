@@ -15,7 +15,8 @@ Our app was constructed via modular feature and component additions, ensuring a 
 ## Testing
 
 To test our maintainability, we used the following methods during our development progress:
-- Code Reviews: During our pull requests, we have 2+ developers review the branch and comment on any discrepencies, concerns, and overall progress of the new feature before it is pushed to our combined branch, the "dev" branch
-- Branch protection: We have multiple levels of development protection of our app, such that the main branch is only updated at the end of development, and the dev branch is the main branch for *completed* component integration. Before that is created, we have a mainview and backend branch that incorporate these features at lower-stakes, ensuring that once the proof of concept that the components are able to be integrated correctly, it can be pushed to the dev branch via a Pull-request and assume no issues. 
-- biweekly meetings: Through verbal and digital note-taking progress updates and task assignments, we are able to be up to date with each developer's progress, addressing any sources of blockage or concern at that meeting. 
-- Unit testing: We write unit tests for all individual functions and modules to verify their correctness and isolate issues quickly. This helps maintain the integrity of the codebase as new features are added.
+
+-   Code Reviews: During our pull requests, we have 2+ developers review the branch and comment on any discrepencies, concerns, and overall progress of the new feature before it is pushed to our combined branch, the "dev" branch
+-   Branch protection: We have multiple levels of development protection of our app, such that the main branch is only updated at the end of development, and the dev branch is the main branch for _completed_ component integration. Before that is created, we have a mainview and backend branch that incorporate these features at lower-stakes, ensuring that once the proof of concept that the components are able to be integrated correctly, it can be pushed to the dev branch via a Pull-request and assume no issues.
+-   biweekly meetings: Through verbal and digital note-taking progress updates and task assignments, we are able to be up to date with each developer's progress, addressing any sources of blockage or concern at that meeting.
+-   Unit testing: We write unit tests for all individual functions and modules to verify their correctness and isolate issues quickly. This helps maintain the integrity of the codebase as new features are added.

@@ -13,4 +13,3 @@ Key Tenet: **Extensive Unit and E2E Testing**
 ## Testing
 
 We used multiple libraries to test our application, including Jest, Puppeteer, and Playwright. Initially, we conducted an extensive testing suite for our backend SQLite3 Database and other static components when we initially hosted our app on a website rather than a PWA with Electron. This enabled us to conduct unit tests on our backend and frontend components, as well as end-to-end tests for each component and interleaving components/pages. **Since our app does not rely on the network**, we don't have to worry about network errors, caching, or other network-related issues. As as result, we were able to focus on testing the reliability of our app in terms of its ability to handle errors and other issues that may occur during regular use.
-

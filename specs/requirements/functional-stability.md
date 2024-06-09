@@ -7,10 +7,11 @@ Our team defines functional stability as the means to determine the software's a
 ## Target
 
 Our target is to achieve these overlying functions, ensuring that our app can execute these items without issue. These are part of our key ideologies when creating our developer journal, as guidelines and target points that we must hit in order for our components to be considered done.
-- Achieve a maximum of 2 seconds response time during normal loads
-- Ensure constant uptime during app usage
-- Page buttons correctly switch pages, popup buttons correctly summon the correct popup component 
-- User inputted data is correctly stored on the database
+
+-   Achieve a maximum of 2 seconds response time during normal loads
+-   Ensure constant uptime during app usage
+-   Page buttons correctly switch pages, popup buttons correctly summon the correct popup component
+-   User inputted data is correctly stored on the database
 
 ## Design Elements
 
@@ -18,7 +19,8 @@ Our app emphasizes minimalism, ensuring that all the intended functionalities of
 
 ## Testing
 
-To test our functional stability, we used the following means of comparable testing, 
-- Unit testing: Testing the individual functions and commands to ensure they work as intended
-- Stress testing: Testing excessively long user inputs and data
-- Styling testing: Check the app has consistent styling on different size screens
+To test our functional stability, we used the following means of comparable testing,
+
+-   Unit testing: Testing the individual functions and commands to ensure they work as intended
+-   Stress testing: Testing excessively long user inputs and data
+-   Styling testing: Check the app has consistent styling on different size screens

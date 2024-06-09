@@ -402,7 +402,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	});
 
 	// menu slide in from the right
-	menuButton.addEventListener("click", function () {
+	menuButton.addEventListener("click", () => {
 		if (menuOptions.classList.contains("visible")) {
 			menuOptions.classList.remove("visible");
 			setTimeout(() => {

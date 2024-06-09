@@ -23,7 +23,7 @@ let db = {};
  */
 function connect(pathToDB, callback) {
 	// Connects to the specified database file or the default path.
-    // Throws an error if the connection fails.
+	// Throws an error if the connection fails.
 	if (pathToDB != "") {
 		db = new sqlite.Database(path.resolve(pathToDB, "data.db"), (err) => {
 			if (err) throw err;
