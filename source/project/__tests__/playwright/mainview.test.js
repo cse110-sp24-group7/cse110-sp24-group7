@@ -5,16 +5,6 @@ const { test, expect } = require('@playwright/test');
 
 const dbMgr = require('../../scripts/database/dbMgr');
 
-function getPosition(string, subString, postion) {
-  return string.split(subString, postion).join(subString).length;
-}
-
-const getCurrentDate = () => {
-  const date = new Date(Date.now()).toISOString();
-  const index = getPosition(date, ':', 1);
-  return date.substring(0, index + 3);
-}
-
 test('should open and interact with the TaskPopup and JournalPopup', async () => {
   const electronApp = await electron.launch({ args: ['.'] });
   const window = await electronApp.firstWindow();
@@ -40,8 +30,7 @@ test('should open and interact with the TaskPopup and JournalPopup', async () =>
   // Interact with the TaskPopup
   await window.fill('task-popup #title', 'Test Task');
   await window.fill('task-popup #description', 'Test Description');
-  const currentTime = getCurrentDate();
-  await window.fill('task-popup #dueDate', currentTime);
+  await window.fill('task-popup #dueDate', '2024-06-11T01:30');
   await window.selectOption('task-popup #priority', 'P1');
   await window.fill('task-popup #expectedTime', '2');
 
@@ -66,7 +55,7 @@ test('should open and interact with the TaskPopup and JournalPopup', async () =>
   expect(addedTask.task_content).toBe('Test Description');
   expect(addedTask.priority).toBe('P1');
   expect(addedTask.expected_time).toBe('2');
-  expect(addedTask.due_date).toBe(getCurrentDate());
+  expect(addedTask.due_date).toBe('2024-06-11T01:30');
 
 
   // Open the JournalPopup
@@ -77,7 +66,7 @@ test('should open and interact with the TaskPopup and JournalPopup', async () =>
   // Interact with the JournalPopup
   await window.fill('journal-popup #title', 'Test Journal');
   await window.fill('journal-popup #description', 'Test Journal Description');
-  await window.fill('journal-popup #dueDate', currentTime);
+  await window.fill('journal-popup #dueDate', '2024-06-11T01:30');
 
   // Ensure the add button is interactable and click it
   const addButton = await window.$('journal-popup #addBtn');
@@ -97,7 +86,7 @@ test('should open and interact with the TaskPopup and JournalPopup', async () =>
   const addedJournal = journals.find(journal => journal.entry_title === 'Test Journal');
   expect(addedJournal).toBeTruthy();
   expect(addedJournal.entry_content).toBe('Test Journal Description');
-  expect(addedJournal.creation_date).toBe('2024-06-08T01:30');
+  expect(addedJournal.creation_date).toBe('2024-06-11T01:30');
 
   await window.click(`.task-pv[data-task-id="${addedTask.task_id}"] .edit-task`);
   await window.fill('task-popup #title', 'Updated Task');
