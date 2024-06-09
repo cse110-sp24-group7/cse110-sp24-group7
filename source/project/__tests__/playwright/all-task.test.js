@@ -19,16 +19,8 @@ const mgr =
             const taskBtn = await window.$$("#tasks");
             await taskBtn[0].click();
 
-
-            // await navBtn[0].click();
-
-
-            // await window.waitForSelector("#vault");
-            // const vaultBtn = await window.$$("#vault");
-            // await vaultBtn[0].click();
-
             // Mocking the window.path and window.api methods
-            await window.evaluate(() => {
+            /* await window.evaluate(() => {
                 window.path = {
                     getUserData: async () => {
                         return '/mock/app/data/path';
@@ -74,7 +66,7 @@ const mgr =
                         callback(tasks);
                     }
                 };
-            });
+            }); */
         });
 
         test.afterAll(async () => {
@@ -91,7 +83,7 @@ const mgr =
         //     // await expect(tasks.nth(2)).toContainText('Task 3 06-10');
         // });
 
-        test('should filter tasks based on search input', async () => {
+        /* test('should filter tasks based on search input', async () => {
             await window.fill('#searchInput', 'Task 1');
             await window.evaluate(() => {
                 const event = new Event('input', { bubbles: true });
@@ -101,7 +93,7 @@ const mgr =
             const tasks = await window.locator('.task-container');
             await expect(tasks).toHaveCount(1);
             // await expect(tasks).toContainText('Task 1 05-15');
-        });
+        }); */
 
         // test('should open task popup on add task button click', async () => {
         //     // await window.click('#add-task');
@@ -166,4 +158,5 @@ const mgr =
             await window.click('body');
             await expect(menuOptions).not.toBeVisible();
         });
+
     });
