@@ -8,6 +8,8 @@ Here is our link to our Team Website: [Team Website](admin/team.md) or the full 
 
 Here is also the WIKI link to our project: [WIKI](https://github.com/cse110-sp24-group7/cse110-sp24-group7/wiki/), https://github.com/cse110-sp24-group7/cse110-sp24-group7/wiki/
 
+If you're an interested developer or a prospective CSE 112 Student: Welcome! Take a look at this developer guide on our Wiki on how to get started with our project: [Developer Guide](https://github.com/cse110-sp24-group7/cse110-sp24-group7/wiki/Dev-Guide)
+
 ### Team Video
 
 Watch our Team Video here: [Team Video](https://youtu.be/FQCCy9b4-sM)
@@ -66,4 +68,11 @@ Here are some funny examples of what happens when you don't read the documentati
 
 If you're a CSE 112 Student or just another developer who wants to contribute to our project, just `git clone` and have fun coding! We have a list of issues that you can work on or expand on and create your own!
 
-
+Some issues that we thought would be fun to work on are: 
+- Making sure the button when clicked to Add journal or Add Task auto populates the date
+- Creating a month and calendar view for easy navigation
+- Creating a dark mode for the app
+- Creating a way to export the data to a CSV file
+- Code Styling and Highlighting for Vault Features
+- Add In-house file preview and modification
+- Add a `node` runner for the app in the Vault. 
