@@ -86,10 +86,7 @@ const FileManager = (data_location) => {
 		const is_img = file.type.includes("image");
 		const fileLocation = getFileLocation(file.name, is_img);
 		if (fs.existsSync(fileLocation))
-			return {
-				errorCode: 403,
-				errorMsg: `A file with the name ${file.name} already exists. No new file was created.`
-			};
+			throw new Error("A file with that name already exists");
 		try {
 			fs.copyFileSync(file.path, fileLocation);
 			console.log("file added at " + fileLocation);
@@ -108,10 +105,9 @@ const FileManager = (data_location) => {
 	const remove = (file_name, is_img = false) => {
 		const fileLocation = getFileLocation(file_name, is_img);
 		if (!fs.existsSync(fileLocation))
-			return {
-				errorCode: 404,
-				errorMsg: `A file with the name ${file_name} was not found. No files were deleted.`
-			};
+			throw new Error(
+				`A file with the name ${file_name} was not found. No files were deleted.`
+			);
 		return new Promise((resolve, reject) => {
 			fs.unlink(fileLocation, (err) => {
 				if (err) reject(err);

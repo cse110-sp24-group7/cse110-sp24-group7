@@ -1,7 +1,7 @@
 const { test, _electron, expect } = require("@playwright/test");
 const electron = _electron;
 
-const mainLocation = "./source/project/scripts/main.cjs";
+const mainLocation = "./source/project/scripts/main.js";
 
 test("App launches and can get isPackaged", async () => {
 	const electronApp = await electron.launch({ args: [mainLocation] });
