@@ -58,9 +58,9 @@ Make sure to read the documentation!
 
 Here are some funny examples of what happens when you don't read the documentation:
 
-![Docs](admin/branding/memes/Docs_You.png)
+![Docs](admin/branding/Memes/Docs_You.png)
 
-![Coffee](admin/branding/memes/Coffee_Docs.jpeg)
+![Coffee](admin/branding/Memes/Coffee_Docs.jpeg)
 
 ## How to Contribute
 
