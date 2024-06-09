@@ -25,7 +25,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 	for (let i in images) {
 		displayFile(images[i], true);
 	}
-
+/* 
+	uploadForm.addEventListener("change", e => {
+		uploadForm.requestSubmit();
+	})
+ */
 	uploadForm.addEventListener("change", function (event) {
 		event.preventDefault(); // Prevent default form submission
 		const files = fileInput.files;
@@ -36,6 +40,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 					fileMgr.add(file);
 					console.log(`File added: ${file.name}`);
 					const is_img = file.type.includes("image");
+					console.log("File at " + fileMgr.getFileLocation(file.name, is_img))
 					displayFile(file.name, is_img);
 				} catch (err) {
 					console.error("Error adding file:", err);
