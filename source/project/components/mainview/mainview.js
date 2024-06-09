@@ -49,7 +49,7 @@ function tasksRendererCallback(tasks) {
 		taskPv.appendChild(taskPriority);
 
 		const taskExpectedTime = document.createElement("p");
-		taskExpectedTime.textContent = `Expected Time: ${task.expected_time}`;
+		taskExpectedTime.textContent = `Expected Time: ${task.expected_time} hours`;
 		taskPv.appendChild(taskExpectedTime);
 
 		// for each label, create a small colored box representing that label

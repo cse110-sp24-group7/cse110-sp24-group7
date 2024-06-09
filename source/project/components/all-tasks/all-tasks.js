@@ -52,7 +52,7 @@ function appendTaskHTML(task, taskContainer) {
 	taskPv.appendChild(taskPriority);
 
 	const taskExpectedTime = document.createElement("p");
-	taskExpectedTime.textContent = `Expected Time: ${task.expected_time}`;
+	taskExpectedTime.textContent = `Expected Time: ${task.expected_time} hours`;
 	taskPv.appendChild(taskExpectedTime);
 
 	taskContainer.appendChild(taskPv);
