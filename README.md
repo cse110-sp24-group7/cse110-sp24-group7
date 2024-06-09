@@ -6,6 +6,8 @@ Attached in this repository is our team website, our meeting agendas and time ta
 
 Here is our link to our Team Website: [Team Website](admin/team.md) or the full link: https://cse110-sp24-group7.github.io/cse110-sp24-group7/admin/team.html
 
+Here is also the WIKI link to our project: [WIKI](https://github.com/cse110-sp24-group7/cse110-sp24-group7/wiki/), https://github.com/cse110-sp24-group7/cse110-sp24-group7/wiki/
+
 ### Team Video
 
 Watch our Team Video here: [Team Video](https://youtu.be/FQCCy9b4-sM)

@@ -64,21 +64,21 @@ function tasksRendererCallback(tasks) {
 		taskName.textContent = task.task_name;
 		taskPv.appendChild(taskName);
 
-    const taskContent = document.createElement("p");
-    taskContent.textContent = task.task_content;
-    taskPv.appendChild(taskContent);
+		const taskContent = document.createElement("p");
+		taskContent.textContent = task.task_content;
+		taskPv.appendChild(taskContent);
 
-    const taskDueDate = document.createElement("p");
-    taskDueDate.textContent = `Due: ${task.due_date}`;
-    taskPv.appendChild(taskDueDate);
+		const taskDueDate = document.createElement("p");
+		taskDueDate.textContent = `Due: ${task.due_date}`;
+		taskPv.appendChild(taskDueDate);
 
-    const taskPriority = document.createElement("p");
-    taskPriority.textContent = `Priority: ${task.priority}`;
-    taskPv.appendChild(taskPriority);
+		const taskPriority = document.createElement("p");
+		taskPriority.textContent = `Priority: ${task.priority}`;
+		taskPv.appendChild(taskPriority);
 
-    const taskExpectedTime = document.createElement("p");
-    taskExpectedTime.textContent = `Expected Time: ${task.expected_time}`;
-    taskPv.appendChild(taskExpectedTime);
+		const taskExpectedTime = document.createElement("p");
+		taskExpectedTime.textContent = `Expected Time: ${task.expected_time}`;
+		taskPv.appendChild(taskExpectedTime);
 
 		// for each label, create a small colored box representing that label
 		if (task.labels.length > 0) {
@@ -124,13 +124,13 @@ function tasksRendererCallback(tasks) {
 
 		taskPv.appendChild(buttonContainer);
 
-    // Find the appropriate day container based on the task's due date
-    // Assuming due_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
-    const dueDate = new Date(task.due_date);
-    const dayIndex = dueDate.getDay(); // Sunday - Saturday : 0 - 6
-    const dayContainer = document.querySelector(
-      `.day${dayIndex + 1} .task-container`,
-    );
+		// Find the appropriate day container based on the task's due date
+		// Assuming due_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
+		const dueDate = new Date(task.due_date);
+		const dayIndex = dueDate.getDay(); // Sunday - Saturday : 0 - 6
+		const dayContainer = document.querySelector(
+			`.day${dayIndex + 1} .task-container`
+		);
 
 		if (dayContainer) {
 			dayContainer.appendChild(taskPv);
@@ -223,13 +223,13 @@ function entriesRendererCallback(entries) {
 
 		journalPv.appendChild(buttonContainer);
 
-    // Find the appropriate day container based on the entry's creation date
-    // Assuming creation_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
-    	const creationDate = new Date(entry.creation_date);
-    	const dayIndex = creationDate.getDay(); // Sunday - Saturday : 0 - 6
-    	const dayContainer = document.querySelector(
-      		`.day${dayIndex + 1} .journal-container`,
-    	);
+		// Find the appropriate day container based on the entry's creation date
+		// Assuming creation_date is in 'YYYY-MM-DD' format and you need to map it to a specific day
+		const creationDate = new Date(entry.creation_date);
+		const dayIndex = creationDate.getDay(); // Sunday - Saturday : 0 - 6
+		const dayContainer = document.querySelector(
+			`.day${dayIndex + 1} .journal-container`
+		);
 
 		if (dayContainer) {
 			dayContainer.appendChild(journalPv);
@@ -380,13 +380,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 		});
 	});
 
-  // creates the popup when the add journal entry button is clicked
-  document.querySelectorAll(".add-journal").forEach((button) => {
-    button.addEventListener("click", () => {
-      const popup = document.createElement("journal-popup");
-      document.body.appendChild(popup);
-    });
-  });
+	// creates the popup when the add journal entry button is clicked
+	document.querySelectorAll(".add-journal").forEach((button) => {
+		button.addEventListener("click", () => {
+			const popup = document.createElement("journal-popup");
+			document.body.appendChild(popup);
+		});
+	});
 
 	// Display correct week when clicking arrows
 	document.getElementById("prev-week").addEventListener("click", () => {
@@ -405,11 +405,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 		setWeeklyView(currentWeekOffset);
 	});
 
-	// menu
-	menuButton.addEventListener("click", () => {
-		console.log("Menu clicked"); // Log menu click
-		menuOptions.style.display =
-			menuOptions.style.display === "block" ? "none" : "block";
+	// menu slide in from the right
+	menuButton.addEventListener("click", function () {
+		if (menuOptions.classList.contains("visible")) {
+			menuOptions.classList.remove("visible");
+			setTimeout(() => {
+				menuOptions.style.display = "none";
+			}, 300);
+		} else {
+			menuOptions.style.display = "block";
+			setTimeout(() => {
+				menuOptions.classList.add("visible");
+			}, 10);
+		}
 	});
 
 	document.addEventListener("click", (event) => {
@@ -417,7 +425,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 			!menuButton.contains(event.target) &amp;&amp;
 			!menuOptions.contains(event.target)
 		) {
-			menuOptions.style.display = "none";
+			menuOptions.classList.remove("visible");
+			setTimeout(() => {
+				menuOptions.style.display = "none";
+			}, 300);
 		}
 	});
 
@@ -442,13 +453,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-All_Tasks.html">All_Tasks</a></li><li><a href="module-MainView.html">MainView</a></li><li><a href="module-Renderer.html">Renderer</a></li><li><a href="module-dbMgr.html">dbMgr</a></li></ul><h3>Classes</h3><ul><li><a href="Filter.html">Filter</a></li><li><a href="JournalPopup.html">JournalPopup</a></li><li><a href="TaskPopup.html">TaskPopup</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-All_Tasks.html">All_Tasks</a></li><li><a href="module-MainView.html">MainView</a></li><li><a href="module-dbMgr.html">dbMgr</a></li></ul><h3>Classes</h3><ul><li><a href="Filter.html">Filter</a></li><li><a href="JournalPopup.html">JournalPopup</a></li><li><a href="TaskPopup.html">TaskPopup</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Sat Jun 08 2024 09:18:57 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Sat Jun 08 2024 21:40:49 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
