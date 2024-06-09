@@ -94,7 +94,26 @@ class JournalPopup extends HTMLElement {
 					})
 				);
 			});
+			if (this.dueDate) {
+				this.setDueDate(this.dueDate);
+			}
 		};
+	}
+
+	/**
+	 * @method setDueDate
+	 * @description Sets the due date input field to the specified date.
+	 * @param {Date} date - The date to set in the due date input field.
+	 */
+	setDueDate(date) {
+		this.dueDate = date; // Store the date to use it later if needed
+		const dueDateInput = this.shadowRoot.getElementById("dueDate");
+		if (dueDateInput) {
+			date.setHours(16, 59, 0, 0); // Set time to 11:59 PM
+			const isoString = date.toISOString();
+			const formattedDate = isoString.substring(0, isoString.length - 8);
+			dueDateInput.value = formattedDate;
+		}
 	}
 
 	/**

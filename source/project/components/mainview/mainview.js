@@ -287,6 +287,12 @@ function setWeeklyView(weekOffset) {
 		const dayNumber = dayDate.getDate();
 		dateElement.textContent = dayNumber;
 
+		const addButtonTask = dayColumn.querySelector(".add-task");
+		addButtonTask.dataset.date = dayDate.toISOString();
+
+		const addButtonJournal = dayColumn.querySelector(".add-journal");
+		addButtonJournal.dataset.date = dayDate.toISOString();
+
 		if (dayNumber === currentDate && weekOffset === 0) {
 			dateElement.classList.add("today");
 		} else {
@@ -346,17 +352,35 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 	// creates the popup when the add task button is clicked
 	document.querySelectorAll(".add-task").forEach((button) => {
-		button.addEventListener("click", () => {
+		button.addEventListener("click", (event) => {
 			const popup = document.createElement("task-popup");
 			document.body.appendChild(popup);
+
+			// Retrieve the date from the button's dataset and set the due date
+			const dateString = event.target.dataset.date;
+			const dayDate = new Date(dateString);
+
+			// Ensure the due date is set to the clicked date after the popup is ready
+			popup.addEventListener("popupReady", () => {
+				popup.setDueDate(dayDate);
+			});
 		});
 	});
 
 	// creates the popup when the add journal entry button is clicked
 	document.querySelectorAll(".add-journal").forEach((button) => {
 		button.addEventListener("click", () => {
-			const popup = document.createElement("journal-popup");
+			const popup = document.createElement("task-popup");
 			document.body.appendChild(popup);
+
+			// Retrieve the date from the button's dataset and set the due date
+			const dateString = event.target.dataset.date;
+			const dayDate = new Date(dateString);
+
+			// Ensure the due date is set to the clicked date after the popup is ready
+			popup.addEventListener("popupReady", () => {
+				popup.setDueDate(dayDate);
+			});
 		});
 	});
 
