@@ -65,7 +65,7 @@ function appendTaskHTML(task, taskContainer) {
 	// Edge case: total days negative (task is created after it was due...?)
 	// In this case should be no greens, all gray.
 	const graySquares =
-		totalDays < 0
+		totalDays <= 0
 			? 10
 			: Math.min(Math.round((daysPast / totalDays) * 10), 10);
 	const greenSquares = 10 - graySquares;
