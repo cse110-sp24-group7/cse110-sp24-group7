@@ -65,7 +65,7 @@ function appendTaskHTML(task, taskContainer) {
 	// Edge case: total days negative (task is created after it was due...?)
 	// In this case should be no greens, all gray.
 	const graySquares =
-		totalDays < 0
+		totalDays <= 0
 			? 10
 			: Math.min(Math.round((daysPast / totalDays) * 10), 10);
 	const greenSquares = 10 - graySquares;
@@ -250,11 +250,19 @@ document.addEventListener("DOMContentLoaded", async function () {
 		});
 	});
 
-	// menu
+	// menu slide in from the right
 	menuButton.addEventListener("click", function () {
-		console.log("Menu clicked"); // Log menu click
-		menuOptions.style.display =
-			menuOptions.style.display === "block" ? "none" : "block";
+		if (menuOptions.classList.contains("visible")) {
+			menuOptions.classList.remove("visible");
+			setTimeout(() => {
+				menuOptions.style.display = "none";
+			}, 300);
+		} else {
+			menuOptions.style.display = "block";
+			setTimeout(() => {
+				menuOptions.classList.add("visible");
+			}, 10);
+		}
 	});
 
 	document.addEventListener("click", function (event) {
@@ -262,7 +270,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 			!menuButton.contains(event.target) &&
 			!menuOptions.contains(event.target)
 		) {
-			menuOptions.style.display = "none";
+			menuOptions.classList.remove("visible");
+			setTimeout(() => {
+				menuOptions.style.display = "none";
+			}, 300);
 		}
 	});
 
