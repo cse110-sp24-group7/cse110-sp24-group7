@@ -6,6 +6,7 @@ This document describes the second phase of the CI/CD pipeline for the project. 
 
 Our approach can be defined into two different approaches, what occurs on the cloud and what occurs on the local machine.
 
+![Diagram](./phase2.drawio.png)
 ## Local Machine
 
 On top of the scripts that we defined in Phase 1, we have added a few more scripts, namely all the scripts associated with `eslint` and `electron`, `electron-forge` for consolidating Javascript standards as well as electron dependencies for testing. We revised our actions to combine the linting and standard-fixing scripts into one action, and we have a local script to run **Playwright** E2E Tests. 
