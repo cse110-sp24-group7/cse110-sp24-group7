@@ -9,9 +9,19 @@ Here is our link to our Team Website: [Team Website](admin/team.md) or the full 
 Here is also the WIKI link to our project: [WIKI](https://github.com/cse110-sp24-group7/cse110-sp24-group7/wiki/), https://github.com/cse110-sp24-group7/cse110-sp24-group7/wiki/
 
 If you're an interested developer or a prospective CSE 112 Student: Welcome! Take a look at this developer guide on our Wiki on how to get started with our project: [Developer Guide](https://github.com/cse110-sp24-group7/cse110-sp24-group7/wiki/Dev-Guide)
-### Team Video
+## Team Videos
 
 Watch our Team Video here: [Team Video](https://youtu.be/FQCCy9b4-sM)
+
+### Final Public Video
+
+Watch our **Public** Final Project Video here: [Public Video](https://youtu.be/GzGc9i88YCQ)
+
+*Enjoy the hijinks littered through the video*. 
+
+### Final Private Video
+
+Watch our **Private** Final Project Video here: [Final Private Video](https://youtu.be/jcWZVFqjOiY)
 
 ### Inspiration behind the Brand
 
