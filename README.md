@@ -72,7 +72,6 @@ Our Usage Guide can be found here: [Usage Guide](https://github.com/cse110-sp24-
 
 ## Docs
 Make sure to read the documentation!: [Documentation](https://cse110-sp24-group7.github.io/cse110-sp24-group7/source/project/docs/JSDocs/index.html)
-Or click on this link!: https://cse110-sp24-group7.github.io/cse110-sp24-group7/source/project/docs/JSDocs/index.html
 
 Here are some funny examples of what happens when you don't read the documentation:
 
