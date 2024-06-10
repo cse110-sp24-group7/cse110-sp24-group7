@@ -4,7 +4,7 @@ Welcome to the Akatsuki 7 README! We are a group of 11 students representing **T
 
 Attached in this repository is our team website, our meeting agendas and time tables, our workflow preferences, and our quarterly project for CSE 110.
 
-Here is our link to our Team Website: [Team Website](admin/team.md) or the full link: https://cse110-sp24-group7.github.io/cse110-sp24-group7/admin/team.html
+Here is our link to our Team Website: [Team Website](https://cse110-sp24-group7.github.io/cse110-sp24-group7/admin/team.html). 
 
 Here is also the Wiki link to our project: [Wiki](https://github.com/cse110-sp24-group7/cse110-sp24-group7/wiki/)
 
