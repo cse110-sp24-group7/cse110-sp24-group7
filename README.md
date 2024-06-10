@@ -6,9 +6,14 @@ Attached in this repository is our team website, our meeting agendas and time ta
 
 Here is our link to our Team Website: [Team Website](admin/team.md) or the full link: https://cse110-sp24-group7.github.io/cse110-sp24-group7/admin/team.html
 
-Here is also the WIKI link to our project: [WIKI](https://github.com/cse110-sp24-group7/cse110-sp24-group7/wiki/), https://github.com/cse110-sp24-group7/cse110-sp24-group7/wiki/
+Here is also the Wiki link to our project: [Wiki](https://github.com/cse110-sp24-group7/cse110-sp24-group7/wiki/)
 
 If you're an interested developer or a prospective CSE 112 Student: Welcome! Take a look at this developer guide on our Wiki on how to get started with our project: [Developer Guide](https://github.com/cse110-sp24-group7/cse110-sp24-group7/wiki/Dev-Guide)
+
+## Releases
+
+Our latest release can be found here: [Release 1.0.0](https://github.com/cse110-sp24-group7/cse110-sp24-group7/releases/tag/v1.0.0) to download our latest installers. 
+
 ## Team Videos
 
 Watch our Team Video here: [Team Video](https://youtu.be/FQCCy9b4-sM)
